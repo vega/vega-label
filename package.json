@@ -1,0 +1,48 @@
+{
+  "name": "vega-label",
+  "version": "1.0.0",
+  "description": "Labeling algorithm for Vega.",
+  "keywords": [
+    "vega",
+    "label",
+    "layout"
+  ],
+  "license": "BSD-3-Clause",
+  "author": {
+    "name": "Jeffrey Heer",
+    "url": "http://idl.cs.washington.edu"
+  },
+  "main": "build/label.js",
+  "jsnext:main": "index",
+  "module": "index",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chanwutk/vega-label.git"
+  },
+  "scripts": {
+    "build": "npm run test && uglifyjs build/label.js -c -m -o build/label.min.js",
+    "pretest": "rm -rf build && mkdir build && rollup -g vega-canvas:vega,vega-dataflow:vega,vega-scale:vega,vega-statistics:vega,vega-util:vega -f umd -n Label -o build/label.js -- index.js",
+    "test": "tape 'test/**/*-test.js' && eslint index.js src test",
+    "prepublishOnly": "npm run build",
+    "postpublish": "git push && git push --tags && zip -j build/label.zip -- LICENSE README.md build/label.js build/label.min.js"
+  },
+  "dependencies": {
+    "vega-canvas": "^1.1.0",
+    "vega-dataflow": "^4.0.3",
+    "vega-scale": "^2.4.0",
+    "vega-statistics": "^1.2.1",
+    "vega-util": "^1.7.0"
+  },
+  "devDependencies": {
+    "canvas": "^1.6.10",
+    "eslint": "4",
+    "rollup": "0.58.2",
+    "tape": "4",
+    "uglify-js": "3",
+    "vega-transforms": "^2.0.0"
+  },
+  "browser": {
+    "canvas": false,
+    "canvas-prebuilt": false
+  }
+}
