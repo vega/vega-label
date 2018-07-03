@@ -1,10 +1,10 @@
 {
-  "name": "vega-label",
+  "name": "vega-label-from-wordcloud",
   "version": "1.0.0",
-  "description": "Labeling algorithm for Vega.",
+  "description": "Testing transform",
   "keywords": [
     "vega",
-    "label",
+    "label-wordcloud",
     "layout"
   ],
   "license": "BSD-3-Clause",
@@ -17,14 +17,15 @@
   "module": "index",
   "repository": {
     "type": "git",
-    "url": "https://github.com/chanwutk/vega-label.git"
+    "url": "https://github.com/vega/vega-label-from-wordcloud.git"
   },
   "scripts": {
     "build": "npm run test && uglifyjs build/label.js -c -m -o build/label.min.js",
     "pretest": "rm -rf build && mkdir build && rollup -g vega-canvas:vega,vega-dataflow:vega,vega-scale:vega,vega-statistics:vega,vega-util:vega -f umd -n Label -o build/label.js -- index.js",
     "test": "tape 'test/**/*-test.js' && eslint index.js src test",
     "prepublishOnly": "npm run build",
-    "postpublish": "git push && git push --tags && zip -j build/label.zip -- LICENSE README.md build/label.js build/label.min.js"
+    "postpublish": "git push && git push --tags && zip -j build/label.zip -- LICENSE README.md build/label.js build/label.min.js",
+    "start": "parcel demo.html"
   },
   "dependencies": {
     "vega-canvas": "^1.1.0",

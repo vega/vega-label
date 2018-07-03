@@ -1,7 +1,7 @@
-# vega-label
+# vega-wordcloud
 
-Labeling algorithm for Vega.
+Wordcloud layout algorithm for Vega dataflows.
 
 This module provides the following Vega data transform:
 
-- **Label**
+- [**Wordcloud**](https://vega.github.io/vega/docs/transforms/wordcloud/) [&lt;&gt;](https://github.com/vega/vega-wordcloud/blob/master/src/Wordcloud.js "Source")
