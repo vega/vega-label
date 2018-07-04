@@ -9,18 +9,18 @@ export default function() {
 
   label.layout = function() {
     var data = points.map(function(d) {
-      var fontSize1 = ~~fontSize(d);
+      var _fontSize = ~~fontSize(d);
       return {
-        fontSize: fontSize1,
+        fontSize: _fontSize,
         x: d.x,
         y: d.y,
-        dx: labelWidth(d.text, fontSize, context),
-        dy: fontSize1,
+        dx: labelWidth(d.text, _fontSize, context),
+        dy: _fontSize,
         angle: rotate(d),
         fill: d.fill,
         datum: d
       };
-    }).sort(function(a, b) { return b.datum.year - a.datum.year; });
+    });
 
     return placeLabel(data);
   };
@@ -61,6 +61,18 @@ function placeLabel(data) {
       n = data.length,
       di, dj;
 
+  while (++i < n) {
+    di = data[i];
+    di.numCollision = 0;
+    j = -1;
+    while (++j < i) {
+      di.numCollision += isCollision(di, data[j], 10);
+    }
+  }
+
+  data.sort(function(a, b) { return a.numCollision - b.numCollision; })
+
+  i = -1;
   while (++i < n) {
     di = data[i];
     j = -1;
