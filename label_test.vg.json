@@ -90,19 +90,6 @@
 
   "marks": [
     {
-      "type": "line",
-      "from": {"data": "drive"},
-      "encode": {
-        "enter": {
-          "interpolate": {"value": "cardinal"},
-          "x": {"scale": "x", "field": "miles"},
-          "y": {"scale": "y", "field": "gas"},
-          "stroke": {"value": "#000"},
-          "strokeWidth": {"value": 3}
-        }
-      }
-    },
-    {
       "type": "symbol",
       "from": {"data": "drive"},
       "encode": {
