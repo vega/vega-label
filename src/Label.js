@@ -2,9 +2,9 @@ import cloud from './LabelLayout';
 import {Transform} from 'vega-dataflow';
 import {inherits, isFunction} from 'vega-util';
 
-var Output = ['x', 'y', 'angle', 'fontSize', 'fill'];
+var Output = ['x', 'y', 'angle', 'fontSize', 'fill', 'align', 'baseline'];
 
-var Params = ['text', 'rotate', 'fontSize'];
+var Params = ['fontSize'];
 
 export default function Label(params) {
   Transform.call(this, cloud(), params);
@@ -15,8 +15,6 @@ Label.Definition = {
   "metadata": {"modifies": true},
   "params": [
     { "name": "fontSize", "type": "number", "expr": false, "default": 14 },
-    { "name": "rotate", "type": "number", "expr": false, "default": 0 },
-    { "name": "text", "type": "field" },
     { "name": "as", "type": "string", "array": true, "length": 3, "default": Output }
   ]
 };
@@ -45,7 +43,6 @@ prototype.transform = function(_, pulse) {
   // configure layout
   var labels = labelLayout
     .points(data)
-    .rotate(_.rotate || 0)
     .fontSize(fontSize)
     .layout();
 
@@ -60,8 +57,10 @@ prototype.transform = function(_, pulse) {
     t[as[0]] = w.x;
     t[as[1]] = w.y;
     t[as[2]] = w.angle;
-    t[as[3]] = w.size;
+    t[as[3]] = w.fontSize;
     t[as[4]] = w.fill;
+    t[as[5]] = 'center';
+    t[as[6]] = 'middle';
   }
 
   return pulse.reflow(mod).modifies(as);
