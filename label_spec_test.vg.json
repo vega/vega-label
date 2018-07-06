@@ -7,7 +7,7 @@
   "data": [
     {
       "name": "drive",
-      "url": "./data/test_label_100.json"
+      "url": "./data/test_label_1k.json"
     }
   ],
 
@@ -111,14 +111,13 @@
           "x": {"scale": "x", "field": "miles"},
           "y": {"scale": "y", "field": "gas"},
           "fill": {"value": "#000"},
-          "text": {"field": "year"}
+          "text": {"field": "year"},
+          "fontSize": {"value": 14}
         }
       },
-      "transform": [
-        {
-          "type": "label"
-        }
-      ]
+      "transform": [{
+        "type": "label"
+      }]
     }
   ]
 }
