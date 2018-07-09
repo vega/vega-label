@@ -43,9 +43,9 @@ prototype.transform = function(_, pulse) {
     t = l.datum;
     t[as[0]] = l.x;
     t[as[1]] = l.y;
-    t[as[3]] = l.fill;
-    t[as[4]] = 'center';
-    t[as[5]] = 'middle';
+    t[as[2]] = l.fill;
+    t[as[3]] = 'center';
+    t[as[4]] = 'middle';
   });
 
   return pulse.reflow(mod).modifies(as);
