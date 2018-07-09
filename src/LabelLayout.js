@@ -8,7 +8,7 @@ export default function() {
   label.layout = function() {
     var data = points.map(function(d) {
       var textWidth = labelWidth(d.text, d.fontSize, d.font, context),
-          textHeight = d.fontSize * 0.7;
+          textHeight = d.fontSize;
       return {
         fontSize: d.fontSize,
         x: d.x,
@@ -44,7 +44,7 @@ function placeLabel(data) {
       meanTextWidth = 0, meanTextHeight = 0,
       binXSize, binYSize,
       startX, endX, startY, endY,
-      dx = 1, dy = -1, padding = 0;
+      dx = 1, dy = 1, padding = 0;
   
   data.forEach(function(d) {
     meanTextWidth += d.textWidth;
@@ -82,8 +82,10 @@ function placeLabel(data) {
               });
             }
           }
-          d1.x = d1Bound.x;
-          d1.y = d1Bound.y;
+          if (d1.x !== d1Bound.xc)
+            d1.x = d1Bound.xc;
+          if (d1.y !== d1Bound.yc)
+            d1.y = d1Bound.yc;
         }
       });
     }
@@ -139,13 +141,15 @@ function binData(binW, binH, data) {
 function getBoundaryFunction (x, y, w, h) {
 
   return function (dx, dy, padding) {
-    var _y = y - (h * dx / 2.0) - (padding * dx),
-        _x = x - (w * dy / 2.0) - (padding * dy);
+    var _y = y - (h * dy / 2.0) - (padding * dy),
+        _x = x + (w * dx / 2.0) + (padding * dx);
     return {
-      y: _y,
-      y2: _y + h,
-      x: _x,
-      x2: _x + w,
+      y: _y - (h / 2.0),
+      yc: _y,
+      y2: _y + (h / 2.0),
+      x: _x - (w / 2.0),
+      xc: _x,
+      x2: _x + (w / 2.0),
     }
   };
 }
