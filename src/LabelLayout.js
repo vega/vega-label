@@ -15,7 +15,7 @@ export default function() {
         y: d.y,
         textWidth: textWidth,
         textHeight: textHeight,
-        boundary: getBoundaryFunction(d.x, d.y, textWidth, textHeight),
+        boundaryFun: getBoundaryFunction(d.x, d.y, textWidth, textHeight),
         fill: d.fill,
         datum: d
       };
@@ -37,71 +37,128 @@ export default function() {
 }
   
 function placeLabel(data) {
-  var i1, j1, i2, j2,
+  var i, j,
       n = data.length,
-      d1Bound, d2Bound,
-      binned,
+      binnedParticle,
       meanTextWidth = 0, meanTextHeight = 0,
-      binXSize, binYSize,
+      gridXSize, gridYSize,
       startX, endX, startY, endY,
-      dx = 1, dy = 1, padding = 0;
+      dx = 1, dy = 1, padding = 0,
+      minTextWidth = Number.MAX_VALUE, minTextHeight = Number.MAX_VALUE;
   
   data.forEach(function(d) {
     meanTextWidth += d.textWidth;
     meanTextHeight += d.textHeight;
+
+    minTextWidth = d.textWidth < minTextWidth ? d.textWidth : minTextWidth;
+    minTextHeight = d.textHeight < minTextHeight ? d.textHeight : minTextHeight;
   });
   meanTextWidth /= n;
   meanTextHeight /= n;
 
-  binned = binData(meanTextWidth, meanTextHeight, data);
-  binXSize = binned.length;
-  binYSize = binXSize ? binned[0].length : 0;
+  binnedParticle = binParticle(meanTextWidth, meanTextHeight, data);
+  gridXSize = binnedParticle.length;
+  gridYSize = gridXSize ? binnedParticle[0].length : 0;
 
-  for (i1 = 0; i1 < binXSize; i1++) {
-    for (j1 = 0; j1 < binYSize; j1++) {
-      binned[i1][j1].forEach(function(d1) {
-        if (d1.fill !== 'none') {
-          startX = ~~(i1 - (meanTextWidth / d1.textWidth));
-          endX = i1 + Math.ceil(meanTextWidth / d1.textWidth);
-          startY = ~~(j1 - (meanTextHeight / d1.textHeight));
-          endY = j1 + Math.ceil(meanTextHeight / d1.textHeight);
+  data.forEach(function(d) {
+    startX = ~~(d.binCol - (meanTextWidth / d.textWidth));
+    endX = d.binCol + Math.ceil(meanTextWidth / d.textWidth);
+    startY = ~~(d.binRow - (meanTextHeight / d.textHeight));
+    endY = d.binRow + Math.ceil(meanTextHeight / d.textHeight);
 
-          startX = startX > 0 ? startX : 0;
-          startY = startY > 0 ? startY : 0;
-          endX = endX < binXSize ? endX : binXSize - 1;
-          endY = endY < binYSize ? endY : binYSize - 1;
+    startX = startX > 0 ? startX : 0;
+    startY = startY > 0 ? startY : 0;
+    endX = endX < gridXSize ? endX : gridXSize - 1;
+    endY = endY < gridYSize ? endY : gridYSize - 1;
 
-          d1Bound = d1.boundary(dx, dy, padding);
-          for (i2 = startX; i2 <= endX; i2++) {
-            for (j2 = startY; j2 <= endY; j2++) {
-              binned[i2][j2].forEach(function(d2) {
-                d2Bound = d2.boundary(dx, dy, padding);
-                if (d1 !== d2 && d2.fill !== 'none' && isCollision(d1Bound, d2Bound, padding)) {
-                  d2.fill = 'none';
-                }
-              });
-            }
-          }
-          if (d1.x !== d1Bound.xc)
-            d1.x = d1Bound.xc;
-          if (d1.y !== d1Bound.yc)
-            d1.y = d1Bound.yc;
-        }
-      });
+    d.boundary = d.boundaryFun(dx, dy, padding);
+    delete d.boundaryFun;
+    d.numCollision = 0;
+    for (i = startX; i <= endX; i++) {
+      for (j = startY; j <= endY; j++) {
+        binnedParticle[i][j].forEach(function(p) {
+          d.numCollision += isCollision(d.boundary, p, padding);
+        });
+      }
     }
-  }
+    if (d.x !== d.boundary.xc)
+      d.x = d.boundary.xc;
+    if (d.y !== d.boundary.yc)
+      d.y = d.boundary.yc;
+  });
+
+  data.sort(function(a, b) {return a.numCollision - b.numCollision});
+
+  data.forEach(function(d) {
+    if (outOfBound(d.boundary, gridXSize * meanTextWidth, gridYSize * meanTextHeight) || d.numCollision > 1) {
+      d.fill = 'none';
+    } else if (d.fill !== 'none') {
+      startX = ~~(d.binCol - (meanTextWidth / d.textWidth));
+      endX = d.binCol + Math.ceil(meanTextWidth / d.textWidth);
+      startY = ~~(d.binRow - (meanTextHeight / d.textHeight));
+      endY = d.binRow + Math.ceil(meanTextHeight / d.textHeight);
+
+      startX = startX > 0 ? startX : 0;
+      startY = startY > 0 ? startY : 0;
+      endX = endX < gridXSize ? endX : gridXSize - 1;
+      endY = endY < gridYSize ? endY : gridYSize - 1;
+
+      for (i = startX; i <= endX; i++) {
+        for (j = startY; j <= endY; j++) {
+          binnedParticle[i][j].forEach(function(p) {
+            if (d !== p.datum && isCollision(d.boundary, p, padding)) {
+              d.fill = 'none';
+            }
+          });
+        }
+      }
+
+      if (d.fill !== 'none') {
+        placeParticle(d, binnedParticle, minTextWidth, minTextHeight, meanTextWidth, meanTextHeight);
+      }
+    }
+  });
+
 
   return data;
 }
 
-function binData(binW, binH, data) {
+function outOfBound(bound, maxX, maxY) {
+  return bound.x2 > maxX || bound.y2 > maxY || bound.x < 0 || bound.y < 0;
+}
+
+function placeParticle(datum, binned, minW, minH, binW, binH) {
+  var i, j,
+      bound = datum.boundary,
+      particle;
+  for (i = bound.x; i <= bound.x2; i = (i + minW > bound.x2 && i !== bound.x2) ? bound.x2 : i + minW) {
+    for (j = bound.y; j <= bound.y2; j = (j + minH > bound.y2 && j !== bound.y2) ? bound.y2 : j + minH) {
+      particle = createParticle(i, j, false, datum);
+      binned[~~(i / binW)][~~(j / binH)].push(particle);
+    }
+  }
+}
+
+function createParticle(_x, _y, _mark, _datum) {
+  return {
+    x: _x,
+    y: _y,
+    x2: _x,
+    y2: _y,
+    mark: _mark,
+    datum: _datum,
+  };
+}
+
+function binParticle(binW, binH, data) {
   var maxX = 0, maxY = 0,
       binXSize, binYSize,
       binnedX, binnedY,
       i, j,
       itrX = 0, itrY,
       binned = [],
-      n = data.length;
+      n = data.length,
+      particle;
   
   if (!n) return [[[]]];
 
@@ -129,7 +186,10 @@ function binData(binW, binH, data) {
     for (j = 0; j < binYSize; j++) {
       binnedY = [];
       while (itrY < binnedX.length && binnedX[itrY].y < (j + 1) * binH) {
-        binnedY.push(binnedX[itrY]);
+        particle = createParticle(binnedX[itrY].x, binnedX[itrY].y, true, binnedX[itrY]);
+        binnedY.push(particle);
+        binnedX.binRow = j;
+        binnedX.binCol = i;
         itrY++;
       }
       binned[i].push(binnedY);
