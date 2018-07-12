@@ -10,7 +10,7 @@ class TestLabel {
 		int n = console.nextInt();
 
 		try {
-			String fileName = "test_label_" + n + ".json";
+			String fileName = "test_label_" + n + ".vg.json";
 			writer = new PrintWriter(fileName, "UTF-8");
 			writer.println("[");
 
