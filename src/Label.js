@@ -14,7 +14,8 @@ Label.Definition = {
   "type": "Label",
   "metadata": {"modifies": true},
   "params": [
-    { "name": "as", "type": "string", "array": true, "length": 3, "default": Output }
+    { "name": "size", "type": "number", "array": true, "length": 2 },
+    { "name": "as", "type": "string", "array": true, "length": Output.length, "default": Output }
   ]
 };
 
@@ -35,7 +36,8 @@ prototype.transform = function(_, pulse) {
 
   // configure layout
   var labels = labelLayout
-    .points(data)
+    .markData(data)
+    .size(_.size)
     .layout(),
     t;
 

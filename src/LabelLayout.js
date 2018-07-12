@@ -1,12 +1,15 @@
-import {canvas} from 'vega-canvas';
+/*eslint no-unused-vars: "warn"*/
+import { canvas } from 'vega-canvas';
+import { HeatMap } from './HeatMap';
 
 export default function() {
   var context = canvas().getContext("2d"),
-      points = [],
+      markData = [],
+      size,
       label = {};
 
   label.layout = function() {
-    var data = points.map(function(d) {
+    var data = markData.map(function(d) {
       var textWidth = labelWidth(d.text, d.fontSize, d.font, context),
           textHeight = d.fontSize;
       return {
@@ -21,187 +24,149 @@ export default function() {
       };
     });
 
-    return placeLabel(data);
+    return placeLabels(data, size);
   };
 
-  label.points = function(_) {
+  label.markData = function(_) {
     if (arguments.length) {
-      points = _;
+      markData = _;
       return label;
     } else {
-      return points;
+      return markData;
+    }
+  };
+
+  label.size = function(_) {
+    if (arguments.length) {
+      size = _ ? [+_[0], +_[1]] : undefined;
+      return label;
+    } else {
+      return size;
     }
   };
 
   return label;
 }
   
-function placeLabel(data) {
-  var i, j,
-      n = data.length,
-      binnedParticle,
-      meanTextWidth = 0, meanTextHeight = 0,
-      gridXSize, gridYSize,
-      startX, endX, startY, endY,
-      dx = 1, dy = 1, padding = 0,
-      minTextWidth = Number.MAX_VALUE, minTextHeight = Number.MAX_VALUE;
-  
-  data.forEach(function(d) {
-    meanTextWidth += d.textWidth;
-    meanTextHeight += d.textHeight;
+function placeLabels(data, size) {
+  var heatMap,
+      sumTextWidth = 0.0,
+      sortBinSize,
+      width = 0, height = 0;
 
-    minTextWidth = d.textWidth < minTextWidth ? d.textWidth : minTextWidth;
-    minTextHeight = d.textHeight < minTextHeight ? d.textHeight : minTextHeight;
+  data.forEach(function(d) {
+    sumTextWidth += d.textWidth;
+    width = Math.max(width, d.x + d.textWidth);
+    height = Math.max(height, d.y + d.textHeight);
   });
-  meanTextWidth /= n;
-  meanTextHeight /= n;
-
-  binnedParticle = binParticle(meanTextWidth, meanTextHeight, data);
-  gridXSize = binnedParticle.length;
-  gridYSize = gridXSize ? binnedParticle[0].length : 0;
-
-  data.forEach(function(d) {
-    startX = ~~(d.binCol - (meanTextWidth / d.textWidth));
-    endX = d.binCol + Math.ceil(meanTextWidth / d.textWidth);
-    startY = ~~(d.binRow - (meanTextHeight / d.textHeight));
-    endY = d.binRow + Math.ceil(meanTextHeight / d.textHeight);
-
-    startX = startX > 0 ? startX : 0;
-    startY = startY > 0 ? startY : 0;
-    endX = endX < gridXSize ? endX : gridXSize - 1;
-    endY = endY < gridYSize ? endY : gridYSize - 1;
-
-    d.boundary = d.boundaryFun(dx, dy, padding);
-    delete d.boundaryFun;
-    d.numCollision = 0;
-    for (i = startX; i <= endX; i++) {
-      for (j = startY; j <= endY; j++) {
-        binnedParticle[i][j].forEach(function(p) {
-          d.numCollision += isCollision(d.boundary, p, padding);
-        });
-      }
+  sortBinSize = sumTextWidth / data.length;
+  data.sort(function(a, b) {
+    if (-sortBinSize <= a.x - b.x && a.x - b.x <= sortBinSize &&
+        -sortBinSize <= a.y - b.y && a.y - b.y <= sortBinSize) {
+      return a.y - b.y;
     }
-    if (d.x !== d.boundary.xc)
-      d.x = d.boundary.xc;
-    if (d.y !== d.boundary.yc)
-      d.y = d.boundary.yc;
+    return a.x - b.x;
   });
 
-  data.sort(function(a, b) {return a.numCollision - b.numCollision});
+  if (size) {
+    width = size[0];
+    height = size[1];
+  }
+  heatMap = getHeatMap(data, width, height);
 
   data.forEach(function(d) {
-    if (outOfBound(d.boundary, gridXSize * meanTextWidth, gridYSize * meanTextHeight) || d.numCollision > 1) {
-      d.fill = 'none';
-    } else if (d.fill !== 'none') {
-      startX = ~~(d.binCol - (meanTextWidth / d.textWidth));
-      endX = d.binCol + Math.ceil(meanTextWidth / d.textWidth);
-      startY = ~~(d.binRow - (meanTextHeight / d.textHeight));
-      endY = d.binRow + Math.ceil(meanTextHeight / d.textHeight);
+    heatMap.add(d.x, d.y, -1);
+    d.currentPosition = [-1, -1];
+    findAvailablePosition(d, heatMap);
 
-      startX = startX > 0 ? startX : 0;
-      startY = startY > 0 ? startY : 0;
-      endX = endX < gridXSize ? endX : gridXSize - 1;
-      endY = endY < gridYSize ? endY : gridYSize - 1;
+    if (!heatMap.get(d.x, d.y)) {
+      heatMap.add(d.x, d.y, 1);
+    }
+  });
 
-      for (i = startX; i <= endX; i++) {
-        for (j = startY; j <= endY; j++) {
-          binnedParticle[i][j].forEach(function(p) {
-            if (d !== p.datum && isCollision(d.boundary, p, padding)) {
-              d.fill = 'none';
-            }
-          });
+  data.forEach(function(d) {
+    if (d.labelPlaced) {
+      if (!placeLabel(d.searchBound, heatMap, 0)) {
+        placeLabel(d.searchBound, heatMap, 1);
+      } else {
+        findAvailablePosition(d, heatMap);
+
+        if (d.labelPlaced) {
+          placeLabel(d.searchBound, heatMap, 1);
+        } else {
+          d.fill = 'none';
         }
       }
-
-      if (d.fill !== 'none') {
-        placeParticle(d, binnedParticle, minTextWidth, minTextHeight, meanTextWidth, meanTextHeight);
-      }
+    } else {
+      d.fill = 'none';
     }
+    d.x = d.boundary.xc;
+    d.y = d.boundary.yc;
   });
-
 
   return data;
 }
 
-function outOfBound(bound, maxX, maxY) {
-  return bound.x2 > maxX || bound.y2 > maxY || bound.x < 0 || bound.y < 0;
-}
-
-function placeParticle(datum, binned, minW, minH, binW, binH) {
+function findAvailablePosition(datum, heatMap) {
   var i, j,
-      bound = datum.boundary,
-      particle;
-  for (i = bound.x; i <= bound.x2; i = (i + minW > bound.x2 && i !== bound.x2) ? bound.x2 : i + minW) {
-    for (j = bound.y; j <= bound.y2; j = (j + minH > bound.y2 && j !== bound.y2) ? bound.y2 : j + minH) {
-      particle = createParticle(i, j, false, datum);
-      binned[~~(i / binW)][~~(j / binH)].push(particle);
+      searchBound,
+      PADDING = 2;
+
+  datum.labelPlaced = false;
+  for (i = datum.currentPosition[0]; i <= 1 && !datum.labelPlaced; i++) {
+    for (j = datum.currentPosition[1]; j <= 1 && !datum.labelPlaced; j++) {
+      if (!i && !j) continue;
+      datum.boundary = datum.boundaryFun(j, i, PADDING);
+      searchBound = getSearchBound(datum.boundary, heatMap);
+
+      if (searchBound.startX < 0 || searchBound.startY < 0 || 
+        searchBound.endY >= heatMap.height || searchBound.endX >= heatMap.width) {
+        continue;
+      }
+      
+      datum.currentPosition = [i, j];
+      datum.searchBound = searchBound;
+      datum.labelPlaced = !placeLabel(searchBound, heatMap, 0);
     }
   }
 }
 
-function createParticle(_x, _y, _mark, _datum) {
+function getSearchBound(bound, heatMap) {
   return {
-    x: _x,
-    y: _y,
-    x2: _x,
-    y2: _y,
-    mark: _mark,
-    datum: _datum,
+    startX: heatMap.bin(bound.x),
+    startY: heatMap.bin(bound.y),
+    endX: heatMap.bin(bound.x2),
+    endY: heatMap.bin(bound.y2),
   };
 }
 
-function binParticle(binW, binH, data) {
-  var maxX = 0, maxY = 0,
-      binXSize, binYSize,
-      binnedX, binnedY,
-      i, j,
-      itrX = 0, itrY,
-      binned = [],
-      n = data.length,
-      particle;
+function placeLabel(b, heatMap, addVal) {
+  var x, y, count = 0;
   
-  if (!n) return [[[]]];
-
-  for (i = 0; i < n; i++) {
-    maxX = maxX > data[i].x ? maxX : data[i].x;
-    maxY = maxY > data[i].y ? maxY : data[i].y;
-  }
-
-  binXSize = ~~(maxX / binW) + 1;
-  binYSize = ~~(maxY / binH) + 1;
-
-  data.sort(function(a, b) { return a.x - b.x; })
-  
-  for (i = 0; i < binXSize; i++) {
-    binnedX = [];
-    while (itrX < n && data[itrX].x < (i + 1) * binW) {
-      binnedX.push(data[itrX]);
-      itrX++;
-    }
-
-    binnedX.sort(function(a, b) { return a.y - b.y; });
-    binned.push([]);
-
-    itrY = 0;
-    for (j = 0; j < binYSize; j++) {
-      binnedY = [];
-      while (itrY < binnedX.length && binnedX[itrY].y < (j + 1) * binH) {
-        particle = createParticle(binnedX[itrY].x, binnedX[itrY].y, true, binnedX[itrY]);
-        binnedY.push(particle);
-        binnedX.binRow = j;
-        binnedX.binCol = i;
-        itrY++;
-      }
-      binned[i].push(binnedY);
+  for (x = b.startX; x <= b.endX; x++) {
+    for (y = b.startY; y <= b.endY; y++) {
+      count += heatMap.getBinned(x, y);
+      heatMap.addBinned(x, y, addVal);
     }
   }
-  return binned;
+  return count;
 }
 
-function getBoundaryFunction (x, y, w, h) {
+function getHeatMap(data, width, height, pixelSize) {
+  if (!data.length) return null;
+  var heatMap = new HeatMap(width, height, pixelSize);
+
+  data.forEach(function(d) {
+    heatMap.add(d.x, d.y, 1);
+  });
+  
+  return heatMap;
+}
+
+function getBoundaryFunction(x, y, w, h) {
 
   return function (dx, dy, padding) {
-    var _y = y - (h * dy / 2.0) - (padding * dy),
+    var _y = y + (h * dy / 2.0) + (padding * dy),
         _x = x + (w * dx / 2.0) + (padding * dx);
     return {
       y: _y - (h / 2.0),
@@ -217,14 +182,4 @@ function getBoundaryFunction (x, y, w, h) {
 function labelWidth (text, fontSize, font, context) {
   context.font = fontSize + "px " + font;
   return context.measureText(text).width;
-}
-
-function isCollision (p1, p2, padding) {
-  return is1dCollision(p1.y, p1.y2, p2.y, p2.y2, padding) &&
-         is1dCollision(p1.x, p1.x2, p2.x, p2.x2, padding);
-}
-
-function is1dCollision (start1, end1, start2, end2, padding) {
-  return (start1 <= end2 && start2 - end1 <= padding) ||
-         (start2 <= end1 && start1 - end2 <= padding);
 }
