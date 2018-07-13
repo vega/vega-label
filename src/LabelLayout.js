@@ -79,12 +79,13 @@ function placeLabels(data, size) {
     d.currentPosition = [-1, -1];
     findAvailablePosition(d, heatMap);
 
-    if (!heatMap.get(d.x, d.y)) {
+    if (heatMap.get(d.x, d.y) <= 0) {
       heatMap.add(d.x, d.y, 1);
     }
   });
 
   data.forEach(function(d) {
+    d.z = 1;
     if (d.labelPlaced) {
       if (!placeLabel(d.searchBound, heatMap, 0)) {
         placeLabel(d.searchBound, heatMap, 1);
@@ -95,10 +96,12 @@ function placeLabels(data, size) {
           placeLabel(d.searchBound, heatMap, 1);
         } else {
           d.fill = 'none';
+          d.z = 0;
         }
       }
     } else {
       d.fill = 'none';
+      d.z = 0;
     }
     d.x = d.boundary.xc;
     d.y = d.boundary.yc;
@@ -110,13 +113,14 @@ function placeLabels(data, size) {
 function findAvailablePosition(datum, heatMap) {
   var i, j,
       searchBound,
-      PADDING = 2;
+      PADDING = 2,
+      initJ = datum.currentPosition[1];
 
   datum.labelPlaced = false;
   for (i = datum.currentPosition[0]; i <= 1 && !datum.labelPlaced; i++) {
-    for (j = datum.currentPosition[1]; j <= 1 && !datum.labelPlaced; j++) {
+    for (j = initJ; j <= 1 && !datum.labelPlaced; j++) {
       if (!i && !j) continue;
-      datum.boundary = datum.boundaryFun(j, i, PADDING);
+      datum.boundary = datum.boundaryFun(i, j, PADDING);
       searchBound = getSearchBound(datum.boundary, heatMap);
 
       if (searchBound.startX < 0 || searchBound.startY < 0 || 
@@ -126,8 +130,12 @@ function findAvailablePosition(datum, heatMap) {
       
       datum.currentPosition = [i, j];
       datum.searchBound = searchBound;
-      datum.labelPlaced = !placeLabel(searchBound, heatMap, 0);
+
+      if (placeLabel(searchBound, heatMap, 0) <= 0) {
+        datum.labelPlaced = true;
+      }
     }
+    initJ = -1;
   }
 }
 

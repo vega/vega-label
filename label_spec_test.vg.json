@@ -7,7 +7,18 @@
   "data": [
     {
       "name": "drive",
-      "url": "./data/test_label_cluster_1_1k.vg.json"
+      "url": "./data/test_label_cluster_1_1k.json"
+    }
+  ],
+
+  "signals": [
+    {
+      "name": "active",
+      "value": {},
+      "on": [
+        {"events": "@label:mouseover", "update": "datum"},
+        {"events": "@label:mouseout", "update": "{}"}
+      ]
     }
   ],
 
@@ -100,10 +111,20 @@
           "stroke": {"value": "#000"},
           "strokeWidth": {"value": 1},
           "size": {"value": 2}
+        },
+        "update": {
+          "strokeWidth": [
+            {
+              "test": "active == datum",
+              "value": 5
+            },
+            {"value": 1}
+          ]
         }
       }
     },
     {
+      "name": "label",
       "type": "text",
       "from": {"data": "drive"},
       "encode": {
@@ -116,7 +137,8 @@
         }
       },
       "transform": [{
-        "type": "label"
+        "type": "label",
+        "size": [800, 500]
       }]
     }
   ]
