@@ -1,0 +1,144 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "width": 400,
+  "height": 400,
+  "padding": 5,
+
+  "data": [
+    {
+      "name": "source",
+      "url": "data/cars.json",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum['Horsepower'] != null && datum['Miles_per_Gallon'] != null && datum['Acceleration'] != null"
+        }
+      ]
+    }
+  ],
+
+  "signals": [
+    {
+      "name": "active",
+      "value": {},
+      "on": [
+        {"events": "@point:mouseover", "update": "datum"},
+        {"events": "@point:mouseout", "update": "{}"}
+      ]
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "round": true,
+      "nice": true,
+      "zero": true,
+      "domain": {"data": "source", "field": "Horsepower"},
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "round": true,
+      "nice": true,
+      "zero": true,
+      "domain": {"data": "source", "field": "Miles_per_Gallon"},
+      "range": "height"
+    },
+    {
+      "name": "size",
+      "type": "linear",
+      "round": true,
+      "nice": false,
+      "zero": true,
+      "domain": {"data": "source", "field": "Acceleration"},
+      "range": [4,361]
+    }
+  ],
+
+  "axes": [
+    {
+      "scale": "x",
+      "grid": true,
+      "domain": false,
+      "orient": "bottom",
+      "tickCount": 5,
+      "title": "Horsepower"
+    },
+    {
+      "scale": "y",
+      "grid": true,
+      "domain": false,
+      "orient": "left",
+      "titlePadding": 5,
+      "title": "Miles_per_Gallon"
+    }
+  ],
+
+  "legends": [
+    {
+      "size": "size",
+      "title": "Acceleration",
+      "format": "s",
+      "encode": {
+        "symbols": {
+          "update": {
+            "strokeWidth": {"value": 2},
+            "opacity": {"value": 0.5},
+            "stroke": {"value": "#4682b4"},
+            "shape": {"value": "circle"}
+          }
+        }
+      }
+    }
+  ],
+
+  "marks": [
+    {
+      "name": "point",
+      "type": "symbol",
+      "from": {"data": "source"},
+      "encode": {
+        "update": {
+          "x": {"scale": "x", "field": "Horsepower"},
+          "y": {"scale": "y", "field": "Miles_per_Gallon"},
+          "size": {"value": 20},
+          "shape": {"value": "circle"},
+          "strokeWidth": {"value": 2},
+          "opacity": {"value": 0.5},
+          "stroke": {"value": "#4682b4"},
+          "fill": {"value": "#4682b4"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "source"},
+      "encode": {
+        "enter": {
+
+          "x": {"scale": "x", "field": "Horsepower"},
+          "y": {"scale": "y", "field": "Miles_per_Gallon"},
+          "text": {"field": "Acceleration"}
+        },
+        "update": {
+          "fontWeight": [
+            {
+              "test": "active == datum",
+              "value": "bold"
+            },
+            {"value": "normal"}
+          ]
+        }
+      },
+      "transform": [
+        {
+          "type": "label",
+          "size": [400, 400]
+        }
+      ]
+    }
+  ]
+}
