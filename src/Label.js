@@ -15,6 +15,7 @@ Label.Definition = {
   "metadata": {"modifies": true},
   "params": [
     { "name": "size", "type": "number", "array": true, "length": 2 },
+    { "name": "padding", "type": "number", "default": 2},
     { "name": "as", "type": "string", "array": true, "length": Output.length, "default": Output }
   ]
 };
@@ -32,12 +33,14 @@ prototype.transform = function(_, pulse) {
 
   var data = pulse.materialize(pulse.SOURCE).source,
       labelLayout = this.value,
-      as = _.as || Output;
+      as = _.as || Output,
+      padding = _.padding || 3;
 
   // configure layout
   var labels = labelLayout
     .markData(data)
     .size(_.size)
+    .padding(padding)
     .layout(),
     t;
 

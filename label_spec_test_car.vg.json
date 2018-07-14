@@ -22,8 +22,8 @@
       "name": "active",
       "value": {},
       "on": [
-        {"events": "@point:mouseover", "update": "datum"},
-        {"events": "@point:mouseout", "update": "{}"}
+        {"events": "@label:mouseover", "update": "datum"},
+        {"events": "@label:mouseout", "update": "{}"}
       ]
     }
   ],
@@ -97,7 +97,6 @@
 
   "marks": [
     {
-      "name": "point",
       "type": "symbol",
       "from": {"data": "source"},
       "encode": {
@@ -107,13 +106,20 @@
           "size": {"value": 20},
           "shape": {"value": "circle"},
           "strokeWidth": {"value": 2},
-          "opacity": {"value": 0.5},
+          "opacity": [
+            {
+              "test": "active == datum",
+              "value": 1
+            },
+            {"value": 0.5}
+          ],
           "stroke": {"value": "#4682b4"},
           "fill": {"value": "#4682b4"}
         }
       }
     },
     {
+      "name": "label",
       "type": "text",
       "from": {"data": "source"},
       "encode": {
@@ -122,20 +128,12 @@
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
           "text": {"field": "Acceleration"}
-        },
-        "update": {
-          "fontWeight": [
-            {
-              "test": "active == datum",
-              "value": "bold"
-            },
-            {"value": "normal"}
-          ]
         }
       },
       "transform": [
         {
           "type": "label",
+          "padding": 5,
           "size": [400, 400]
         }
       ]
