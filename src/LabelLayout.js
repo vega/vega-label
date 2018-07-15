@@ -59,9 +59,9 @@ export default function() {
 }
   
 function placeLabels(data, size, padding) {
-  var heatMap,
-      textWidth, textHeight,
-      width = 0, height = 0;
+  var textWidth, textHeight,
+      width = 0, height = 0,
+      heatMaps = {};
 
   data.sort(function(a, b) {
     textWidth = a.textWidth > b.textWidth ? a.textWidth : b.textWidth;
@@ -81,32 +81,40 @@ function placeLabels(data, size, padding) {
     width = size[0];
     height = size[1];
   }
-  heatMap = getHeatMap(data, width, height);
+  heatMaps.mark = getHeatMap(data, width, height);
+  heatMaps.label = new HeatMap(width, height);
 
   data.forEach(function(d) {
-    heatMap.add(d.x, d.y, -1);
+    var tmp = heatMaps.mark.get(d.x, d.y);
+    heatMaps.mark.add(d.x, d.y, -tmp);
     d.currentPosition = [-1, -1];
-    findAvailablePosition(d, heatMap, padding);
-
-    if (heatMap.get(d.x, d.y) <= 0) {
-      heatMap.add(d.x, d.y, 1);
-    }
+    findAvailablePosition(d, heatMaps, padding, function() {
+      if (placeLabel(d.searchBound, heatMaps.mark, 0) <= 0) {
+        d.labelPlaced = true;
+      }
+    });
+    heatMaps.mark.add(d.x, d.y, tmp);
   });
   data.forEach(function(d) {
     d.z = 1;
     if (d.labelPlaced) {
-      if (!placeLabel(d.searchBound, heatMap, 0)) {
-        placeLabel(d.searchBound, heatMap, 1);
-      } else {
-        findAvailablePosition(d, heatMap, padding);
+      // if (!placeLabel(d.searchBound, heatMaps.label, 0)) {
+      //   placeLabel(d.searchBound, heatMaps.label, 1);
+      // } else {
+        findAvailablePosition(d, heatMaps, padding, function() {
+          d.extendedSearchBound = getExtendedSearchBound(d, heatMaps.mark);
+          if (placeLabel(d.extendedSearchBound, heatMaps.mark, 0) <= 0 && placeLabel(d.searchBound, heatMaps.label, 0) <= 0) {
+            d.labelPlaced = true;
+          }
+        });
 
         if (d.labelPlaced) {
-          placeLabel(d.searchBound, heatMap, 1);
+          placeLabel(d.searchBound, heatMaps.label, 1);
         } else {
           d.fill = 'none';
           d.z = 0;
         }
-      }
+      // }
     } else {
       d.fill = 'none';
       d.z = 0;
@@ -118,35 +126,7 @@ function placeLabels(data, size, padding) {
   return data;
 }
 
-function findAvailablePosition(datum, heatMap, padding) {
-  var i, j,
-      searchBound,
-      initJ = datum.currentPosition[1];
-
-  datum.labelPlaced = false;
-  for (i = datum.currentPosition[0]; i <= 1 && !datum.labelPlaced; i++) {
-    for (j = initJ; j <= 1 && !datum.labelPlaced; j++) {
-      if (!i && !j) continue;
-      datum.boundary = datum.boundaryFun(i, j, padding);
-      searchBound = getSearchBound(datum.boundary, heatMap);
-
-      if (searchBound.startX < 0 || searchBound.startY < 0 || 
-        searchBound.endY >= heatMap.height || searchBound.endX >= heatMap.width) {
-        continue;
-      }
-      
-      datum.currentPosition = [i, j];
-      datum.searchBound = searchBound;
-
-      if (placeLabel(searchBound, heatMap, 0) <= 0) {
-        datum.labelPlaced = true;
-      }
-    }
-    initJ = -1;
-  }
-}
-
-function findAvailableExtendedPosition(datum, heatMaps, padding) {
+function findAvailablePosition(datum, heatMaps, padding, checkAvailability) {
   var i, j,
       searchBound,
       initJ = datum.currentPosition[1];
@@ -165,10 +145,7 @@ function findAvailableExtendedPosition(datum, heatMaps, padding) {
       
       datum.currentPosition = [i, j];
       datum.searchBound = searchBound;
-      datum.extendedSearchBound = getExtendedSearchBound(datum, heatMaps.mark);
-      if (placeLabel(datum.extendedSearchBound, heatMaps.mark, 0) <= 0 && placeLabel(datum.searchBound, heatMaps.label, 0) <= 0) {
-        datum.labelPlaced = true;
-      }
+      checkAvailability();
     }
     initJ = -1;
   }
