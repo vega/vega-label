@@ -2,8 +2,8 @@ vega.transforms.label = Label.label;
 
 var jsonText;
 var rawFile = new XMLHttpRequest();
-// rawFile.open('GET', './label_spec_test.vg.json', false);
-rawFile.open('GET', './label_spec_test_car.vg.json', false);
+rawFile.open('GET', './label_spec_test.vg.json', false);
+// rawFile.open('GET', './label_spec_test_car.vg.json', false);
 rawFile.onreadystatechange = () => {
   if(rawFile.readyState === 4)
     if(rawFile.status === 200 || rawFile.status === 0)
