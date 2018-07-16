@@ -1,5 +1,6 @@
 export function BitMap(_width, _height) {
-  this.pixelSize = Math.ceil(Math.min(_width, _height) / 1000.0);
+  this.pixelSize = ~~(Math.min(_width, _height) / 1000.0);
+  this.pixelSize = this.pixelSize ? this.pixelSize : 1;
   this.width = ~~((_width + this.pixelSize - 1) / this.pixelSize);
   this.height = ~~((_height + this.pixelSize - 1) / this.pixelSize);
   this.array = new Int8Array(~~(((this.width * this.height) + 8) / 8));
