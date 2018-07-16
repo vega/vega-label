@@ -1,6 +1,6 @@
 /*eslint no-unused-vars: "warn"*/
 import { canvas } from 'vega-canvas';
-import { HeatMap } from './HeatMap';
+import { BitMap } from './BitMap';
 
 export default function() {
   var context = canvas().getContext("2d"),
@@ -61,7 +61,7 @@ export default function() {
 function placeLabels(data, size, padding) {
   var textWidth, textHeight,
       width = 0, height = 0,
-      heatMaps = {};
+      bitMaps = {};
 
   data.sort(function(a, b) {
     textWidth = a.textWidth > b.textWidth ? a.textWidth : b.textWidth;
@@ -81,40 +81,35 @@ function placeLabels(data, size, padding) {
     width = size[0];
     height = size[1];
   }
-  heatMaps.mark = getHeatMap(data, width, height);
-  heatMaps.label = new HeatMap(width, height);
+  bitMaps.mark = getMarkBitMap(data, width, height);
+  bitMaps.label = new BitMap(width, height);
 
   data.forEach(function(d) {
-    var tmp = heatMaps.mark.get(d.x, d.y);
-    heatMaps.mark.add(d.x, d.y, -tmp);
+    bitMaps.mark.unmark(d.x, d.y);
     d.currentPosition = [-1, -1];
-    findAvailablePosition(d, heatMaps, padding, function() {
-      if (placeLabel(d.searchBound, heatMaps.mark, 0) <= 0) {
+    findAvailablePosition(d, bitMaps, padding, function() {
+      if (!checkCollision(d.searchBound, bitMaps.mark)) {
         d.labelPlaced = true;
       }
     });
-    heatMaps.mark.add(d.x, d.y, tmp);
+    bitMaps.mark.mark(d.x, d.y);
   });
   data.forEach(function(d) {
     d.z = 1;
     if (d.labelPlaced) {
-      // if (!placeLabel(d.searchBound, heatMaps.label, 0)) {
-      //   placeLabel(d.searchBound, heatMaps.label, 1);
-      // } else {
-        findAvailablePosition(d, heatMaps, padding, function() {
-          d.extendedSearchBound = getExtendedSearchBound(d, heatMaps.mark);
-          if (placeLabel(d.extendedSearchBound, heatMaps.mark, 0) <= 0 && placeLabel(d.searchBound, heatMaps.label, 0) <= 0) {
+        findAvailablePosition(d, bitMaps, padding, function() {
+          d.extendedSearchBound = getExtendedSearchBound(d, bitMaps.mark);
+          if (!checkCollision(d.extendedSearchBound, bitMaps.mark) && !checkCollision(d.searchBound, bitMaps.label)) {
             d.labelPlaced = true;
           }
         });
 
         if (d.labelPlaced) {
-          placeLabel(d.searchBound, heatMaps.label, 1);
+          placeLabel(d.searchBound, bitMaps.label);
         } else {
           d.fill = 'none';
           d.z = 0;
         }
-      // }
     } else {
       d.fill = 'none';
       d.z = 0;
@@ -126,7 +121,7 @@ function placeLabels(data, size, padding) {
   return data;
 }
 
-function findAvailablePosition(datum, heatMaps, padding, checkAvailability) {
+function findAvailablePosition(datum, bitMaps, padding, checkAvailability) {
   var i, j,
       searchBound,
       initJ = datum.currentPosition[1];
@@ -136,10 +131,10 @@ function findAvailablePosition(datum, heatMaps, padding, checkAvailability) {
     for (j = initJ; j <= 1 && !datum.labelPlaced; j++) {
       if (!i && !j) continue;
       datum.boundary = datum.boundaryFun(i, j, padding);
-      searchBound = getSearchBound(datum.boundary, heatMaps.mark);
+      searchBound = getSearchBound(datum.boundary, bitMaps.mark);
 
       if (searchBound.startX < 0 || searchBound.startY < 0 || 
-        searchBound.endY >= heatMaps.mark.height || searchBound.endX >= heatMaps.mark.width) {
+        searchBound.endY >= bitMaps.mark.height || searchBound.endX >= bitMaps.mark.width) {
         continue;
       }
       
@@ -151,53 +146,69 @@ function findAvailablePosition(datum, heatMaps, padding, checkAvailability) {
   }
 }
 
-function getExtendedSearchBound(d, heatMap) {
+function getExtendedSearchBound(d, bm) {
   var bound = d.boundary,
       w = d.textWidth * d.currentPosition[0],
       h = d.textHeight * d.currentPosition[1];
     
   return {
-    startX: heatMap.bin(bound.x + (w < 0 ? w : 0)),
-    startY: heatMap.bin(bound.y + (h < 0 ? h : 0)),
-    endX: heatMap.bin(bound.x2 + (w > 0 ? w : 0)),
-    endY: heatMap.bin(bound.y2 + (h > 0 ? h : 0)),
+    startX: bm.bin(bound.x + (w < 0 ? w : 0)),
+    startY: bm.bin(bound.y + (h < 0 ? h : 0)),
+    endX: bm.bin(bound.x2 + (w > 0 ? w : 0)),
+    endY: bm.bin(bound.y2 + (h > 0 ? h : 0)),
   };
 }
 
-function getSearchBound(bound, heatMap) {
+function getSearchBound(bound, bm) {
   return {
-    startX: heatMap.bin(bound.x),
-    startY: heatMap.bin(bound.y),
-    endX: heatMap.bin(bound.x2),
-    endY: heatMap.bin(bound.y2),
+    startX: bm.bin(bound.x),
+    startY: bm.bin(bound.y),
+    endX: bm.bin(bound.x2),
+    endY: bm.bin(bound.y2),
   };
 }
 
-function placeLabel(b, heatMap, addVal) {
-  var x, y, count = 0;
+function placeLabel(b, bitMap) {
+  var x, y;
   b.startX = b.startX > 0 ? b.startX : 0;
   b.startY = b.startY > 0 ? b.startY : 0;
-  b.endX = b.endX < heatMap.width ? b.endX : heatMap.width;
-  b.endY = b.endY < heatMap.height ? b.endY : heatMap.height;
+  b.endX = b.endX < bitMap.width ? b.endX : bitMap.width;
+  b.endY = b.endY < bitMap.height ? b.endY : BitMap.height;
   
   for (x = b.startX; x <= b.endX; x++) {
     for (y = b.startY; y <= b.endY; y++) {
-      count += heatMap.getBinned(x, y);
-      heatMap.addBinned(x, y, addVal);
+      bitMap.markBinned(x, y);
     }
   }
-  return count;
 }
 
-function getHeatMap(data, width, height) {
+function checkCollision(b, bitMap) {
+  var x, y;
+  b.startX = b.startX > 0 ? b.startX : 0;
+  b.startY = b.startY > 0 ? b.startY : 0;
+  b.endX = b.endX < bitMap.width ? b.endX : bitMap.width;
+  b.endY = b.endY < bitMap.height ? b.endY : BitMap.height;
+
+  for (x = b.startX; x <= b.endX; x++) {
+    for (y = b.startY; y <= b.endY; y++) {
+      if (bitMap.getBinned(x, y)) {
+        return true;
+      }
+    }
+  }
+  
+  return false;
+}
+
+function getMarkBitMap(data, width, height) {
   if (!data.length) return null;
-  var heatMap = new HeatMap(width, height);
+  var bitMap = new BitMap(width, height);
 
   data.forEach(function(d) {
-    heatMap.add(d.x, d.y, 1);
+    bitMap.mark(d.x, d.y);
   });
   
-  return heatMap;
+  return bitMap;
 }
 
 function getBoundaryFunction(x, y, w, h) {
