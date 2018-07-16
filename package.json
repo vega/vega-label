@@ -9,8 +9,7 @@
   ],
   "license": "BSD-3-Clause",
   "author": {
-    "name": "Jeffrey Heer",
-    "url": "http://idl.cs.washington.edu"
+    "name": "Chanwut Kittivorawong"
   },
   "main": "build/label.js",
   "jsnext:main": "index",

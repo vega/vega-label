@@ -1,22 +1,26 @@
+import {canvas} from 'vega-canvas';
+
 export default function() {
-  var fontSize,
+  var context = canvas().getContext("2d"),
+      fontSize,
       rotate,
       points = [],
       label = {};
 
   label.layout = function() {
     var data = points.map(function(d) {
+      var fontSize1 = ~~fontSize(d);
       return {
-        size: ~~fontSize(d),
+        fontSize: fontSize1,
         x: d.x,
         y: d.y,
-        dx: labelSize(d.text, ~~fontSize(d))[0],
-        dy: labelSize(d.text, ~~fontSize(d))[1],
+        dx: labelWidth(d.text, fontSize, context),
+        dy: fontSize1,
         angle: rotate(d),
         fill: d.fill,
         datum: d
       };
-    }).sort(function(a, b) { return b.size - a.size; });
+    }).sort(function(a, b) { return b.datum.year - a.datum.year; });
 
     return placeLabel(data);
   };
@@ -62,7 +66,7 @@ function placeLabel(data) {
     j = -1;
     while (++j < i) {
       dj = data[j];
-      if (distance(di, dj) < 30 && dj.fill !== 'none') {
+      if (isCollision(di, dj, 10) && dj.fill !== 'none') {
         di.fill = 'none';
         break;
       }
@@ -72,15 +76,19 @@ function placeLabel(data) {
   return tags;
 }
 
-function distance (a, b) {
-  var dx = a.x - b.x,
-      dy = a.y - b.y;
-  return Math.sqrt((dx * dx) + (dy * dy));
+function labelWidth(text, fontSize, context) {
+  context.font = fontSize + "px";
+  return context.measureText(text).width;
 }
 
-function labelSize(text, fontSize) {
-  // TODO: Calculate dx and dy of a label given text and fontSize.
-  return [text, fontSize]
+function isCollision(p1, p2, distance) {
+  return is1dCollision(p1.y, p1.y + p1.dy, p2.y, p2.y + p2.dy, distance) &&
+         is1dCollision(p1.x, p1.x + p1.dx, p2.x, p2.x + p2.dx, distance);
+}
+
+function is1dCollision(start1, end1, start2, end2, distance) {
+  return (start1 <= end2 && start2 - end1 <= distance) ||
+         (start2 <= end1 && start1 - end2 <= distance);
 }
 
 function functor(d) {
