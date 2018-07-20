@@ -6,36 +6,41 @@ import { placeLabels as placeLabelsPixel } from './PixelBasedLabel';
 
 export default function() {
   var context = canvas().getContext("2d"),
-      markData = [],
+      dataFromMark = [],
       size,
       padding = 3,
       label = {};
 
   label.layout = function() {
-    var data = markData.map(function(d) {
-      var textWidth = labelWidth(d.text, d.fontSize, d.font, context),
-          textHeight = d.fontSize;
-      return {
-        fontSize: d.fontSize,
-        x: d.x,
-        y: d.y,
+    var n = dataFromMark.length,
+        md, data = Array(n);
+
+    for (var i = 0; i < n; i++) {
+      md = dataFromMark[i];
+      var textWidth = labelWidth(md.text, md.fontSize, md.font, context),
+          textHeight = md.fontSize;
+
+      data[i] = {
+        fontSize: md.fontSize,
+        x: md.x,
+        y: md.y,
         textWidth: textWidth,
         textHeight: textHeight,
-        boundaryFun: getBoundaryFunction(d.x, d.y, textWidth, textHeight),
-        fill: d.fill,
-        datum: d
+        boundFun: getBoundFunction(md.x, md.y, textWidth, textHeight),
+        fill: md.fill,
+        datum: md
       };
-    });
+    }
     
     return placeLabelsPixel(data, size, padding);
   };
 
-  label.markData = function(_) {
+  label.dataFromMark = function(_) {
     if (arguments.length) {
-      markData = _;
+      dataFromMark = _;
       return label;
     } else {
-      return markData;
+      return dataFromMark;
     }
   };
 
@@ -60,7 +65,7 @@ export default function() {
   return label;
 }
 
-function getBoundaryFunction(x, y, w, h) {
+function getBoundFunction(x, y, w, h) {
 
   return function (dx, dy, padding) {
     var size = (dy * dy) + (dx * dx),

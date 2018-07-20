@@ -1,16 +1,15 @@
-var right0 = new Uint32Array(33);
-var right1 = new Uint32Array(33);
+var DIV = 0x5;
+var MOD = 0x1f;
+var SIZE = 0x20;
+var right0 = new Uint32Array(SIZE + 1);
+var right1 = new Uint32Array(SIZE + 1);
 
 right1[0] = 0x0;
 right0[0] = ~right1[0];
-for (var i = 1; i <= 32; i++) {
+for (var i = 1; i <= SIZE; i++) {
   right1[i] = (right1[i - 1] << 0x1) | 0x1;
   right0[i] = ~right1[i];
 }
-
-var DIV = 0x5;
-var MOD = 0x1f;
-var SIZE = 0x20
 
 
 export function BitMap(_width, _height) {
@@ -47,21 +46,21 @@ export function BitMap(_width, _height) {
     return this.getBinned(this.bin(x), this.bin(y));
   };
 
-  this.getInBoundBinned = function (sx, sy, ex, ey) {
-    var from, to,
-        dFrom, dTo;
-    for (; sy <= ey; sy++) {
-      from = (sy * this.width) + sx;
-      to = (sy * this.width) + ex;
-      dFrom = from >>> DIV;
-      dTo = to >>> DIV;
-      if (dFrom === dTo) {
-        if (this.array[dFrom] & right0[from & MOD] & right1[(to & MOD) + 1]) return true;
+  this.getInBoundBinned = function (x, y, x2, y2) {
+    var start, end,
+        indexStart, indexEnd;
+    for (; y <= y2; y++) {
+      start = (y * this.width) + x;
+      end = (y * this.width) + x2;
+      indexStart = start >>> DIV;
+      indexEnd = end >>> DIV;
+      if (indexStart === indexEnd) {
+        if (this.array[indexStart] & right0[start & MOD] & right1[(end & MOD) + 1]) return true;
       } else {
-        if (this.array[dFrom] & right0[from & MOD]) return true;
-        if (this.array[dTo] & right1[(to & MOD) + 1]) return true;
+        if (this.array[indexStart] & right0[start & MOD]) return true;
+        if (this.array[indexEnd] & right1[(end & MOD) + 1]) return true;
 
-        for (var i = dFrom + 1; i < dTo; i++) {
+        for (var i = indexStart + 1; i < indexEnd; i++) {
           if (this.array[i]) return true;
         }
       }
@@ -69,33 +68,33 @@ export function BitMap(_width, _height) {
     return false;
   }
 
-  this.getInBound = function (sx, sy, ex, ey) {
-    return this.getRangeBinned(this.bin(sx), this.bin(sy), this.bin(ex), this.bin(ey));
+  this.getInBound = function (x, y, x2, y2) {
+    return this.getRangeBinned(this.bin(x), this.bin(y), this.bin(x2), this.bin(y2));
   }
 
-  this.flushBinned = function (sx, sy, ex, ey) {
-    var from, to,
-        dFrom, dTo;
-    for (; sy <= ey; sy++) {
-      from = (sy * this.width) + sx;
-      to = (sy * this.width) + ex;
-      dFrom = from >>> DIV;
-      dTo = to >>> DIV;
-      if (dFrom === dTo) {
-        this.array[dFrom] |= right0[from & MOD] & right1[(to & MOD) + 1];
+  this.flushBinned = function (x, y, x2, y2) {
+    var start, end,
+        indexStart, indexEnd;
+    for (; y <= y2; y++) {
+      start = (y * this.width) + x;
+      end = (y * this.width) + x2;
+      indexStart = start >>> DIV;
+      indexEnd = end >>> DIV;
+      if (indexStart === indexEnd) {
+        this.array[indexStart] |= right0[start & MOD] & right1[(end & MOD) + 1];
       } else {
-        this.array[dFrom] |= right0[from & MOD];
-        this.array[dTo] |= right1[(to & MOD) + 1];
+        this.array[indexStart] |= right0[start & MOD];
+        this.array[indexEnd] |= right1[(end & MOD) + 1];
 
-        for (var i = dFrom + 1; i < dTo; i++) {
-          this.array[i] = ~0x0;
+        for (var i = indexStart + 1; i < indexEnd; i++) {
+          this.array[i] = 0xffffffff;
         }
       }
     }
   }
 
-  this.getRange = function (sx, sy, ex, ey) {
-    return this.getRangeBinned(this.bin(sx), this.bin(sy), this.bin(ex), this.bin(ey));
+  this.getRange = function (x, y, x2, y2) {
+    return this.getRangeBinned(this.bin(x), this.bin(y), this.bin(x2), this.bin(y2));
   }
 
   this.bin = function (coordinate) {

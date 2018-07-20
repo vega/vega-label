@@ -39,21 +39,23 @@ prototype.transform = function(_, pulse) {
 
   // configure layout
   var labels = labelLayout
-    .markData(data)
-    .size(_.size)
-    .padding(padding)
-    .layout(),
-    t;
+      .dataFromMark(data)
+      .size(_.size)
+      .padding(padding)
+      .layout(),
+      n = data.length;
 
-  labels.forEach(function(l) {
-    t = l.datum;
+  for (var i = 0; i < n; i++) {
+    var l = labels[i],
+        t = l.datum;
+    
     t[as[0]] = l.x;
     t[as[1]] = l.y;
     t[as[2]] = l.z
     t[as[3]] = l.fill;
     t[as[4]] = 'center';
     t[as[5]] = 'middle';
-  });
+  }
 
   return pulse.reflow(mod).modifies(as);
 };
