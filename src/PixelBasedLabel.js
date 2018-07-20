@@ -23,9 +23,9 @@ export function placeLabels(data, size, padding) {
     height = size[1];
   } else {
     data.forEach(function(d) {
-        width = Math.max(width, d.x + d.textWidth);
-        height = Math.max(height, d.y + d.textHeight);
-      });
+      width = Math.max(width, d.x + d.textWidth);
+      height = Math.max(height, d.y + d.textHeight);
+    });
   }
   bitMaps.mark = getMarkBitMap(data, width, height);
   bitMaps.label = new BitMap(width, height);
@@ -52,21 +52,23 @@ export function placeLabels(data, size, padding) {
   data.forEach(function(d) {
     d.z = 1;
     if (d.labelPlaced) {
-        findAvailablePosition(d, bitMaps, padding, function() {
-          d.extendedSearchBound = getExtendedSearchBound(d, bitMaps.mark);
-          if (!checkCollision(d.extendedSearchBound, bitMaps.mark) && !checkCollision(d.searchBound, bitMaps.label)) {
-            d.labelPlaced = true;
-          }
-        });
-
-        if (d.labelPlaced) {
-          placeLabel(d.searchBound, bitMaps.label, minTextWidth, minTextHeight);
-        } else {
-          d.fill = 'none';
-          d.z = 0;
+      bitMaps.mark.unmark(d.x, d.y);
+      findAvailablePosition(d, bitMaps, padding, function() {
+        d.extendedSearchBound = getExtendedSearchBound(d, bitMaps.mark);
+        if (!checkCollision(d.extendedSearchBound, bitMaps.mark) && !checkCollision(d.searchBound, bitMaps.label)) {
+          d.labelPlaced = true;
         }
+      });
+      bitMaps.mark.mark(d.x, d.y);
+
+      if (d.labelPlaced) {
+        placeLabel(d.searchBound, bitMaps.label);
+      } else {
+        d.fill = null;
+        d.z = 0;
+      }
     } else {
-      d.fill = 'none';
+      d.fill = null;
       d.z = 0;
     }
     d.x = d.boundary.xc;
@@ -88,10 +90,7 @@ function findAvailablePosition(datum, bitMaps, padding, checkAvailability) {
       datum.boundary = datum.boundaryFun(i, j, padding);
       searchBound = getSearchBound(datum.boundary, bitMaps.mark);
 
-      if (searchBound.startX < 0 || searchBound.startY < 0 || 
-        searchBound.endY >= bitMaps.mark.height || searchBound.endX >= bitMaps.mark.width) {
-        continue;
-      }
+      if (outOfBound(searchBound, bitMaps.mark)) continue;
       
       datum.currentPosition = [i, j];
       datum.searchBound = searchBound;
@@ -99,6 +98,10 @@ function findAvailablePosition(datum, bitMaps, padding, checkAvailability) {
     }
     initJ = -1;
   }
+}
+
+function outOfBound(b, bm) {
+  return b.startX < 0 || b.startY < 0 || b.endY >= bm.height || b.endX >= bm.width;
 }
 
 function getExtendedSearchBound(d, bm) {
@@ -123,42 +126,13 @@ function getSearchBound(bound, bm) {
   };
 }
 
-function placeLabel(b, bitMap, minTextWidth, minTextHeight) {
-  var x, y;
-  b.startX = b.startX > 0 ? b.startX : 0;
-  b.startY = b.startY > 0 ? b.startY : 0;
-  b.endX = b.endX < bitMap.width ? b.endX : bitMap.width;
-  b.endY = b.endY < bitMap.height ? b.endY : BitMap.height;
-  
-  for (x = b.startX; x < b.endX; x += minTextWidth) {
-    for (y = b.startY; y < b.endY; y += minTextHeight) {
-      bitMap.markBinned(x, y);
-    }
-  }
-
-  [b.startX, b.endX].forEach(function(_x) {
-    [b.startY, b.endY].forEach(function(_y) {
-      bitMap.markBinned(_x, _y);
-    });
-  });
+function placeLabel(b, bitMap) {
+  bitMap.flushBinned(b.startX, b.startY, b.endX, b.endY);
 }
 
 function checkCollision(b, bitMap) {
-  var x, y;
-  b.startX = b.startX > 0 ? b.startX : 0;
-  b.startY = b.startY > 0 ? b.startY : 0;
-  b.endX = b.endX < bitMap.width ? b.endX : bitMap.width;
-  b.endY = b.endY < bitMap.height ? b.endY : BitMap.height;
 
-  for (x = b.startX; x <= b.endX; x++) {
-    for (y = b.startY; y <= b.endY; y++) {
-      if (bitMap.getBinned(x, y)) {
-        return true;
-      }
-    }
-  }
-  
-  return false;
+  return bitMap.getInBoundBinned(b.startX, b.startY, b.endX, b.endY);
 }
 
 function getMarkBitMap(data, width, height) {

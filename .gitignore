@@ -6,3 +6,5 @@ npm-debug.log
 dist
 .cache
 *.class
+runtime_test
+test_code

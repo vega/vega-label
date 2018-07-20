@@ -1,3 +1,4 @@
+/*eslint no-console: "warn"*/
 import cloud from './LabelLayout';
 import {Transform} from 'vega-dataflow';
 import {inherits, isFunction} from 'vega-util';
@@ -36,7 +37,6 @@ prototype.transform = function(_, pulse) {
       as = _.as || Output,
       padding = _.padding || 3;
 
-  var n1 = Date.now();
   // configure layout
   var labels = labelLayout
     .markData(data)
@@ -54,9 +54,6 @@ prototype.transform = function(_, pulse) {
     t[as[4]] = 'center';
     t[as[5]] = 'middle';
   });
-  var n2 = Date.now();
-  var n3 = n2-n1;
-  n1 = n3;
 
   return pulse.reflow(mod).modifies(as);
 };

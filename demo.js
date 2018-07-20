@@ -2,8 +2,9 @@ vega.transforms.label = Label.label;
 
 var jsonText;
 var rawFile = new XMLHttpRequest();
-rawFile.open('GET', './label_spec_test.vg.json', false);
-// rawFile.open('GET', './label_spec_test_car.vg.json', false);
+rawFile.open('GET', '../spec/label_spec_test.vg.json', false);
+// rawFile.open('GET', '../spec/label_spec_test_car.vg.json', false);
+// rawFile.open('GET', '../spec/label_spec_test_zoom.vg.json', false);
 rawFile.onreadystatechange = () => {
   if(rawFile.readyState === 4)
     if(rawFile.status === 200 || rawFile.status === 0)
@@ -13,7 +14,7 @@ rawFile.send(null);
 
 var spec = JSON.parse(jsonText);
 new vega.View(vega.parse(spec))
-  .renderer('svg')     // set renderer (canvas or svg)
+  .renderer('canvas')     // set renderer (canvas or svg)
   .initialize('#vis')  // initialize view within parent DOM container
   .hover()             // enable hover encode set processing
   .run();

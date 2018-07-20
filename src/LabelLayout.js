@@ -1,6 +1,8 @@
 /*eslint no-unused-vars: "warn"*/
+/*eslint no-console: "warn"*/
 import { canvas } from 'vega-canvas';
-import { placeLabels } from './PixelBasedLabel'
+import { placeLabels as placeLabelsParticle } from './ParticleBasedLabel';
+import { placeLabels as placeLabelsPixel } from './PixelBasedLabel';
 
 export default function() {
   var context = canvas().getContext("2d"),
@@ -24,8 +26,8 @@ export default function() {
         datum: d
       };
     });
-
-    return placeLabels(data, size, padding);
+    
+    return placeLabelsPixel(data, size, padding);
   };
 
   label.markData = function(_) {
