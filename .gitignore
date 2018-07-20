@@ -1,10 +1,9 @@
 *.sublime-workspace
 .DS_Store
 build/
-node_modules
+node_modules/
 npm-debug.log
-dist
-.cache
-*.class
-runtime_test
-test_code
+runtime_test/
+test_code/
+data/
+.vscode
