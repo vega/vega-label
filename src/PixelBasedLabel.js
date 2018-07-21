@@ -100,19 +100,19 @@ function getExtendedSearchBound(d, bm) {
       h = d.textHeight * d.currentPosition[1];
     
   return {
-    x: bm.bin(bound.x + (w < 0 ? w : 0)),
-    y: bm.bin(bound.y + (h < 0 ? h : 0)),
-    x2: bm.bin(bound.x2 + (w > 0 ? w : 0)),
-    y2: bm.bin(bound.y2 + (h > 0 ? h : 0)),
+    x: bm.binH(bound.x + (w < 0 ? w : 0)),
+    y: bm.binV(bound.y + (h < 0 ? h : 0)),
+    x2: bm.binH(bound.x2 + (w > 0 ? w : 0)),
+    y2: bm.binV(bound.y2 + (h > 0 ? h : 0)),
   };
 }
 
 function getSearchBound(bound, bm) {
   return {
-    x: bm.bin(bound.x),
-    y: bm.bin(bound.y),
-    x2: bm.bin(bound.x2),
-    y2: bm.bin(bound.y2),
+    x: bm.binH(bound.x),
+    y: bm.binV(bound.y),
+    x2: bm.binH(bound.x2),
+    y2: bm.binV(bound.y2),
   };
 }
 

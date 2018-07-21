@@ -3,7 +3,4 @@
 build/
 node_modules/
 npm-debug.log
-runtime_test/
-test_code/
-data/
 .vscode
