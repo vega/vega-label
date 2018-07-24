@@ -1,24 +1,34 @@
 /*eslint no-unused-vars: "warn"*/
 /*eslint no-console: "warn"*/
+/*eslint no-empty: "warn"*/
 import { canvas } from 'vega-canvas';
 import { placeLabels as placeLabelsParticle } from './ParticleBasedLabel';
 import { placeLabels as placeLabelsPixel } from './PixelBasedLabel';
+import layoutSymbol from './layouts/symbol';
 
 export default function() {
   var context = canvas().getContext("2d"),
       dataFromMark = [],
       size,
-      padding = 3,
+      distance,
+      priority,
       label = {};
 
   label.layout = function() {
     var n = dataFromMark.length,
-        md, data = Array(n);
+        md, data = Array(n),
+        isReactive = n && dataFromMark[0].datum && dataFromMark[0].datum.mark;
 
     for (var i = 0; i < n; i++) {
       md = dataFromMark[i];
       var textWidth = labelWidth(md.text, md.fontSize, md.font, context),
-          textHeight = md.fontSize;
+          textHeight = md.fontSize,
+          mb = isReactive ? md.datum.bounds : {
+            x1: md.x,
+            x2: md.x,
+            y1: md.y,
+            y2: md.y
+          };
 
       data[i] = {
         fontSize: md.fontSize,
@@ -26,13 +36,27 @@ export default function() {
         y: md.y,
         textWidth: textWidth,
         textHeight: textHeight,
-        boundFun: getBoundFunction(md.x, md.y, textWidth, textHeight),
+        boundFun: getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], textWidth, textHeight, distance),
         fill: md.fill,
+        priority: priority ? md[priority] : undefined,
+        markBound: mb,
         datum: md
       };
     }
+
+    if (priority) data.sort(function(a, b) { return a.priority - b.priority; });
+
+    // if (isReactive) {
+    //   if (dataFromMark[0].datum.mark.markType === 'symbol') {
+    //     return layoutSymbol(data, size);
+    //   } else if (dataFromMark[0].datum.mark.markType === 'line') {
+        
+    //   } else if (dataFromMark[0].datum.mark.markType === 'rect') {
+    //     return layoutRect(data, size);
+    //   }
+    // }
     
-    return placeLabelsPixel(data, size, padding);
+    return placeLabelsPixel(data, size);
   };
 
   label.dataFromMark = function(_) {
@@ -53,24 +77,31 @@ export default function() {
     }
   };
 
-  label.padding = function(_) {
+  label.distance = function(_) {
     if (arguments.length) {
-      padding = _ ? _ : 3;
+      distance = _;
       return label;
     } else {
-      return padding;
+      return distance;
+    }
+  }
+
+  label.priority = function(_) {
+    if (arguments.length) {
+      priority = _;
+      return label;
+    } else {
+      return priority;
     }
   }
 
   return label;
 }
 
-function getBoundFunction(x, y, w, h) {
-
-  return function (dx, dy, padding) {
-    var size = (dy * dy) + (dx * dx),
-        _y = y + (h * dy / 2.0) + (padding * dy / size),
-        _x = x + (w * dx / 2.0) + (padding * dx / size);
+function getBoundFunction(b, w, h, distance) {
+  return function (dx, dy) {
+    var _y = b[4 + dy] + (h * dy / 2.0) + (distance * dy),
+        _x = b[1 + dx] + (w * dx / 2.0) + (distance * dx);
     return {
       y: _y - (h / 2.0),
       yc: _y,

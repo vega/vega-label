@@ -103,6 +103,7 @@
     {
       "type": "symbol",
       "from": {"data": "drive"},
+      "name": "baseMark",
       "encode": {
         "enter": {
           "x": {"scale": "x", "field": "miles"},
@@ -126,19 +127,20 @@
     {
       "name": "label",
       "type": "text",
-      "from": {"data": "drive"},
+      "from": {"data": "baseMark"},
       "encode": {
         "enter": {
-          "x": {"scale": "x", "field": "miles"},
-          "y": {"scale": "y", "field": "gas"},
+          "x": {"field": "x"},
+          "y": {"field": "y"},
           "fill": {"value": "#000"},
-          "text": {"field": "year"},
+          "text": {"field": "datum.year"},
           "fontSize": {"value": 14}
         }
       },
       "transform": [{
         "type": "label",
-        "size": [800, 500]
+        "size": [800, 500],
+        "distance": 5
       }]
     }
   ]

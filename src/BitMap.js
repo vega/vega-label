@@ -12,13 +12,10 @@ for (var i = 1; i <= SIZE; i++) {
 }
 
 export function BitMap(_width, _height) {
-  this.pixelWidth = _width / 1000.0;
-  this.pixelWidth = this.pixelWidth >= 1 ? this.pixelWidth : 1;
-  this.width = ~~((_width + this.pixelWidth) / this.pixelWidth);
-
-  this.pixelHeight = _height / 1000.0;
-  this.pixelHeight = this.pixelHeight >= 1 ? this.pixelHeight : 1;
-  this.height = ~~((_height + this.pixelHeight) / this.pixelHeight);
+  this.pixelSize = (_width) * _height / 1000000.0;
+  this.pixelSize = this.pixelSize >= 1 ? this.pixelSize : 1;
+  this.width = ~~((_width + this.pixelSize) / this.pixelSize);
+  this.height = ~~((_height + this.pixelSize) / this.pixelSize);
 
   this.array = new Uint32Array(~~(((this.width * this.height) + SIZE) / SIZE));
 
@@ -28,7 +25,7 @@ export function BitMap(_width, _height) {
   };
 
   this.mark = function (x, y) {
-    this.markBinned(this.binH(x), this.binV(y));
+    this.markBinned(this.bin(x), this.bin(y));
   };
 
   this.unmarkBinned = function(x, y) {
@@ -37,7 +34,7 @@ export function BitMap(_width, _height) {
   }
 
   this.unmark = function(x, y) {
-      this.unmarkBinned(this.binH(x), this.binV(y));
+      this.unmarkBinned(this.bin(x), this.bin(y));
   }
 
   this.getBinned = function (x, y) {
@@ -46,7 +43,7 @@ export function BitMap(_width, _height) {
   };
 
   this.get = function (x, y) {
-    return this.getBinned(this.binH(x), this.binV(y));
+    return this.getBinned(this.bin(x), this.bin(y));
   };
 
   this.getInBoundBinned = function (x, y, x2, y2) {
@@ -72,7 +69,7 @@ export function BitMap(_width, _height) {
   }
 
   this.getInBound = function (x, y, x2, y2) {
-    return this.getRangeBinned(this.binH(x), this.binV(y), this.binH(x2), this.binV(y2));
+    return this.getRangeBinned(this.bin(x), this.bin(y), this.bin(x2), this.bin(y2));
   }
 
   this.flushBinned = function (x, y, x2, y2) {
@@ -97,14 +94,10 @@ export function BitMap(_width, _height) {
   }
 
   this.getRange = function (x, y, x2, y2) {
-    return this.getRangeBinned(this.binH(x), this.binV(y), this.binH(x2), this.binV(y2));
+    return this.getRangeBinned(this.bin(x), this.bin(y), this.bin(x2), this.bin(y2));
   }
 
-  this.binH = function (coordinate) {
-    return ~~(coordinate / this.pixelWidth);
-  };
-
-  this.binV = function (coordinate) {
-    return ~~(coordinate / this.pixelHeight);
+  this.bin = function (coordinate) {
+    return ~~(coordinate / this.pixelSize);
   };
 }

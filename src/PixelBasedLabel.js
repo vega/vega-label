@@ -1,22 +1,12 @@
 /*eslint no-unused-vars: "warn"*/
 import { BitMap } from './BitMap';
 
-export function placeLabels(data, size, padding) {
-  var textWidth, textHeight,
+export function placeLabels(data, size) {
+  var // textWidth, textHeight,
       width = 0, height = 0,
       bitMaps = {},
       n = data.length,
       d, i;
-
-  data.sort(function(a, b) {
-    textWidth = a.textWidth > b.textWidth ? a.textWidth : b.textWidth;
-    textHeight = a.textHeight + b.textHeight;
-    if (-textWidth <= a.x - b.x && a.x - b.x <= textWidth &&
-        -textHeight <= a.y - b.y && a.y - b.y <= textHeight) {
-      return a.y - b.y;
-    }
-    return a.x - b.x;
-  });
 
   if (size) {
     width = size[0];
@@ -35,7 +25,7 @@ export function placeLabels(data, size, padding) {
     d = data[i];
     bitMaps.mark.unmark(d.x, d.y);
     d.currentPosition = [-1, -1];
-    findAvailablePosition(d, bitMaps, padding, function() {
+    findAvailablePosition(d, bitMaps, function() {
       return !checkCollision(d.searchBound, bitMaps.mark);
     });
     bitMaps.mark.mark(d.x, d.y);
@@ -45,7 +35,7 @@ export function placeLabels(data, size, padding) {
     d = data[i];
     if (d.labelPlaced) {
       bitMaps.mark.unmark(d.x, d.y);
-      findAvailablePosition(d, bitMaps, padding, function() {
+      findAvailablePosition(d, bitMaps, function() {
         return !checkCollision(getExtendedSearchBound(d, bitMaps.mark), bitMaps.mark) && 
                !checkCollision(d.searchBound, bitMaps.label);
       });
@@ -66,7 +56,7 @@ export function placeLabels(data, size, padding) {
   return data;
 }
 
-function findAvailablePosition(datum, bitMaps, padding, checkCollisions) {
+function findAvailablePosition(datum, bitMaps, checkCollisions) {
   var i, j,
       searchBound,
       initJ = datum.currentPosition[1];
@@ -75,7 +65,7 @@ function findAvailablePosition(datum, bitMaps, padding, checkCollisions) {
   for (i = datum.currentPosition[0]; i <= 1 && !datum.labelPlaced; i++) {
     for (j = initJ; j <= 1 && !datum.labelPlaced; j++) {
       if (!i && !j) continue;
-      datum.bound = datum.boundFun(i, j, padding);
+      datum.bound = datum.boundFun(i, j);
       searchBound = getSearchBound(datum.bound, bitMaps.mark);
 
       if (outOfBound(searchBound, bitMaps.mark)) continue;
@@ -100,19 +90,19 @@ function getExtendedSearchBound(d, bm) {
       h = d.textHeight * d.currentPosition[1];
     
   return {
-    x: bm.binH(bound.x + (w < 0 ? w : 0)),
-    y: bm.binV(bound.y + (h < 0 ? h : 0)),
-    x2: bm.binH(bound.x2 + (w > 0 ? w : 0)),
-    y2: bm.binV(bound.y2 + (h > 0 ? h : 0)),
+    x: bm.bin(bound.x + (w < 0 ? w : 0)),
+    y: bm.bin(bound.y + (h < 0 ? h : 0)),
+    x2: bm.bin(bound.x2 + (w > 0 ? w : 0)),
+    y2: bm.bin(bound.y2 + (h > 0 ? h : 0)),
   };
 }
 
 function getSearchBound(bound, bm) {
   return {
-    x: bm.binH(bound.x),
-    y: bm.binV(bound.y),
-    x2: bm.binH(bound.x2),
-    y2: bm.binV(bound.y2),
+    x: bm.bin(bound.x),
+    y: bm.bin(bound.y),
+    x2: bm.bin(bound.x2),
+    y2: bm.bin(bound.y2),
   };
 }
 
