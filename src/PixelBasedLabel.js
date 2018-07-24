@@ -1,7 +1,7 @@
 /*eslint no-unused-vars: "warn"*/
 import { BitMap } from './BitMap';
 
-export function placeLabels(data, size, marktype) {
+export function placeLabels(data, size, marktype, positionOrder) {
   var // textWidth, textHeight,
       width = 0, height = 0,
       bitMaps = {},
@@ -24,8 +24,8 @@ export function placeLabels(data, size, marktype) {
   for (i = 0; i < n; i++) {
     d = data[i];
     bitMaps.mark.unmark(d.x, d.y);
-    d.currentPosition = [-1, -1];
-    findAvailablePosition(d, bitMaps, function() {
+    d.currentPosition = 0;
+    findAvailablePosition(d, bitMaps, positionOrder, function() {
       return !checkCollision(d.searchBound, bitMaps.mark);
     });
     bitMaps.mark.mark(d.x, d.y);
@@ -35,7 +35,7 @@ export function placeLabels(data, size, marktype) {
     d = data[i];
     if (d.labelPlaced) {
       bitMaps.mark.unmark(d.x, d.y);
-      findAvailablePosition(d, bitMaps, function() {
+      findAvailablePosition(d, bitMaps, positionOrder, function() {
         return !checkCollision(getExtendedSearchBound(d, bitMaps.mark), bitMaps.mark) && 
                !checkCollision(d.searchBound, bitMaps.label);
       });
@@ -56,27 +56,44 @@ export function placeLabels(data, size, marktype) {
   return data;
 }
 
-function findAvailablePosition(datum, bitMaps, checkCollisions) {
-  var i, j,
-      searchBound,
-      initJ = datum.currentPosition[1];
+function findAvailablePosition(datum, bitMaps, positionOrder, checkCollisions) {
+  var i, searchBound,
+      n = positionOrder.length,
+      dx, dy;
 
   datum.labelPlaced = false;
-  for (i = datum.currentPosition[0]; i <= 1 && !datum.labelPlaced; i++) {
-    for (j = initJ; j <= 1 && !datum.labelPlaced; j++) {
-      if (!i && !j) continue;
-      datum.bound = datum.boundFun(i, j);
-      searchBound = getSearchBound(datum.bound, bitMaps.mark);
+  // for (i = datum.currentPosition[0]; i <= 1 && !datum.labelPlaced; i++) {
+  //   for (j = initJ; j <= 1 && !datum.labelPlaced; j++) {
+  //     if (!i && !j) continue;
+  //     datum.bound = datum.boundFun(i, j);
+  //     searchBound = getSearchBound(datum.bound, bitMaps.mark);
 
-      if (outOfBound(searchBound, bitMaps.mark)) continue;
+  //     if (outOfBound(searchBound, bitMaps.mark)) continue;
       
-      datum.currentPosition = [i, j];
-      datum.searchBound = searchBound;
-      if (checkCollisions()) {
-        datum.labelPlaced = true;
-      }
+  //     datum.currentPosition = [i, j];
+  //     datum.searchBound = searchBound;
+  //     if (checkCollisions()) {
+  //       datum.labelPlaced = true;
+  //     }
+  //   }
+  //   initJ = -1;
+  // }
+
+  for (i = datum.currentPosition; i < n; i++) {
+    dx = (positionOrder[i] & 0xf) - 1;
+    dy = (positionOrder[i] >>> 0x4) - 1;
+
+    datum.bound = datum.boundFun(dx, dy);
+    searchBound = getSearchBound(datum.bound, bitMaps.mark);
+
+    if (outOfBound(searchBound, bitMaps.mark)) continue;
+    
+    datum.currentPosition = i;
+    datum.searchBound = searchBound;
+    if (checkCollisions()) {
+      datum.labelPlaced = true;
+      break;
     }
-    initJ = -1;
   }
 }
 

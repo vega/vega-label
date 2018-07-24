@@ -8,18 +8,18 @@
     {
       "name": "table",
       "values": [
-        {"category":"A", "position":0, "value":0.11111},
-        {"category":"A", "position":1, "value":0.61111},
-        {"category":"A", "position":2, "value":0.91111},
-        {"category":"A", "position":3, "value":0.41111},
-        {"category":"B", "position":0, "value":0.71111},
-        {"category":"B", "position":1, "value":0.21111},
-        {"category":"B", "position":2, "value":1.11111},
-        {"category":"B", "position":3, "value":0.81111},
-        {"category":"C", "position":0, "value":0.61111},
-        {"category":"C", "position":1, "value":0.11111},
-        {"category":"C", "position":2, "value":0.21111},
-        {"category":"C", "position":3, "value":0.71111}
+        {"category":"A", "position":0, "value":0.11111111111111111111},
+        {"category":"A", "position":1, "value":0.61111111111111111111},
+        {"category":"A", "position":2, "value":0.91111111111111111111},
+        {"category":"A", "position":3, "value":0.41111111111111111111},
+        {"category":"B", "position":0, "value":0.71111111111111111111},
+        {"category":"B", "position":1, "value":0.21111111111111111111},
+        {"category":"B", "position":2, "value":1.11111111111111111111},
+        {"category":"B", "position":3, "value":0.81111111111111111111},
+        {"category":"C", "position":0, "value":0.61111111111111111111},
+        {"category":"C", "position":1, "value":0.11111111111111111111},
+        {"category":"C", "position":2, "value":0.21111111111111111111},
+        {"category":"C", "position":3, "value":0.71111111111111111111}
       ]
     }
   ],
@@ -115,7 +115,8 @@
               {
                   "type": "label",
                   "size": [800, 800],
-                  "distance": 3
+                  "distance": 10,
+                  "positionOrder": "1121"
               }
           ]
         }

@@ -11,18 +11,19 @@ export default function() {
       size,
       distance,
       priority,
+      positionOrder,
       label = {};
 
   label.layout = function() {
     var n = dataFromMark.length,
         md, data = Array(n),
-        isReactive = !!n && !!dataFromMark[0].datum && !!dataFromMark[0].datum.mark;
+        marktype = n && dataFromMark[0].datum && dataFromMark[0].datum.mark ? dataFromMark[0].datum.mark.marktype : undefined;
 
     for (var i = 0; i < n; i++) {
       md = dataFromMark[i];
       var textWidth = labelWidth(md.text, md.fontSize, md.font, context),
           textHeight = md.fontSize,
-          mb = isReactive ? md.datum.bounds : {
+          mb = marktype ? md.datum.bounds : {
             x1: md.x,
             x2: md.x,
             y1: md.y,
@@ -45,17 +46,7 @@ export default function() {
 
     if (priority) data.sort(function(a, b) { return a.priority - b.priority; });
 
-    // if (isReactive) {
-    //   if (dataFromMark[0].datum.mark.markType === 'symbol') {
-    //     return layoutSymbol(data, size);
-    //   } else if (dataFromMark[0].datum.mark.markType === 'line') {
-        
-    //   } else if (dataFromMark[0].datum.mark.markType === 'rect') {
-    //     return layoutRect(data, size);
-    //   }
-    // }
-    
-    return placeLabelsPixel(data, size, isReactive ? dataFromMark[0].datum.mark.marktype : undefined);
+    return placeLabelsPixel(data, size, marktype, positionOrder);
   };
 
   label.dataFromMark = function(_) {
@@ -91,6 +82,19 @@ export default function() {
       return label;
     } else {
       return priority;
+    }
+  }
+
+  label.positionOrder = function(_) {
+    if (arguments.length) {
+      var n = _.length, i;
+      positionOrder = new Int8Array(~~((n + 1) / 2)).fill(0);
+      for (i = 0; i < n; i++) {
+        positionOrder[i >>> 0x1] |= Number(_.charAt(i)) << ((i & 0x1) << 0x2);
+      }
+      return label;
+    } else {
+      return positionOrder;
     }
   }
 
