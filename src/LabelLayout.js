@@ -4,7 +4,6 @@
 import { canvas } from 'vega-canvas';
 import { placeLabels as placeLabelsParticle } from './ParticleBasedLabel';
 import { placeLabels as placeLabelsPixel } from './PixelBasedLabel';
-import layoutSymbol from './layouts/symbol';
 
 export default function() {
   var context = canvas().getContext("2d"),
@@ -17,7 +16,7 @@ export default function() {
   label.layout = function() {
     var n = dataFromMark.length,
         md, data = Array(n),
-        isReactive = n && dataFromMark[0].datum && dataFromMark[0].datum.mark;
+        isReactive = !!n && !!dataFromMark[0].datum && !!dataFromMark[0].datum.mark;
 
     for (var i = 0; i < n; i++) {
       md = dataFromMark[i];
@@ -56,7 +55,7 @@ export default function() {
     //   }
     // }
     
-    return placeLabelsPixel(data, size);
+    return placeLabelsPixel(data, size, isReactive ? dataFromMark[0].datum.mark.marktype : undefined);
   };
 
   label.dataFromMark = function(_) {
@@ -114,6 +113,6 @@ function getBoundFunction(b, w, h, distance) {
 }
 
 function labelWidth (text, fontSize, font, context) {
-  context.font = fontSize + "px " + font;
-  return context.measureText(text + ".").width;
+  context.font = fontSize + "px " + font; // add other font properties
+  return context.measureText(text).width;
 }

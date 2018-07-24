@@ -93,8 +93,8 @@ export function BitMap(_width, _height) {
     }
   }
 
-  this.getRange = function (x, y, x2, y2) {
-    return this.getRangeBinned(this.bin(x), this.bin(y), this.bin(x2), this.bin(y2));
+  this.flush = function (x, y, x2, y2) {
+    return this.flushBinned(this.bin(x), this.bin(y), this.bin(x2), this.bin(y2));
   }
 
   this.bin = function (coordinate) {

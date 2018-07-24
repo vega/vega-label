@@ -2,8 +2,9 @@ vega.transforms.label = Label.label;
 
 var jsonText;
 var rawFile = new XMLHttpRequest();
-// rawFile.open('GET', '../spec/label_interpolate_line.vg.json', false);
-rawFile.open('GET', '../spec/label_spec_test.vg.json', false);
+rawFile.open('GET', '../spec/label_interpolate_line.vg.json', false);
+// rawFile.open('GET', '../spec/label_spec_test_rect.vg.json', false);
+// rawFile.open('GET', '../spec/label_spec_test.vg.json', false);
 // rawFile.open('GET', '../spec/label_spec_test_car.vg.json', false);
 // rawFile.open('GET', '../spec/label_spec_test_zoom.vg.json', false);
 rawFile.onreadystatechange = () => {

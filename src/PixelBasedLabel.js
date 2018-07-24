@@ -1,7 +1,7 @@
 /*eslint no-unused-vars: "warn"*/
 import { BitMap } from './BitMap';
 
-export function placeLabels(data, size) {
+export function placeLabels(data, size, marktype) {
   var // textWidth, textHeight,
       width = 0, height = 0,
       bitMaps = {},
@@ -18,7 +18,7 @@ export function placeLabels(data, size) {
       height = Math.max(height, d.y + d.textHeight);
     }
   }
-  bitMaps.mark = getMarkBitMap(data, width, height);
+  bitMaps.mark = getMarkBitMap(data, width, height, marktype);
   bitMaps.label = new BitMap(width, height);
 
   for (i = 0; i < n; i++) {
@@ -114,14 +114,35 @@ function checkCollision(b, bitMap) {
   return bitMap.getInBoundBinned(b.x, b.y, b.x2, b.y2);
 }
 
-function getMarkBitMap(data, width, height) {
+function getMarkBitMap(data, width, height, marktype) {
   var n = data.length;
 
   if (!n) return null;
-  var bitMap = new BitMap(width, height);
+  var bitMap = new BitMap(width, height), mb, i;
 
-  for (var i = 0; i < n; i++) {
-    bitMap.mark(data[i].x, data[i].y);
+  switch (marktype
+) {
+    case 'symbol':
+      for (i = 0; i < n; i++) {
+        mb = data[i].markBound;
+        bitMap.flush(mb.x1, mb.y1, mb.x2, mb.y2);
+      }
+      break;
+    case 'rect':
+      for (i = 0; i < n; i++) {
+        mb = data[i].markBound;
+        bitMap.flush(mb.x1, mb.y1, mb.x1, mb.y2);
+        bitMap.flush(mb.x2, mb.y1, mb.x2, mb.y2);
+        bitMap.flush(mb.x1, mb.y1, mb.x2, mb.y1);
+        bitMap.flush(mb.x1, mb.y2, mb.x2, mb.y2);
+      }
+      break;
+    case 'line':
+      break;
+    default:
+      for (i = 0; i < n; i++) {
+        bitMap.mark(data[i].x, data[i].y);
+      }
   }
   
   return bitMap;
