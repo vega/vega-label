@@ -116,7 +116,7 @@
                   "type": "label",
                   "size": [800, 800],
                   "distance": 10,
-                  "positionOrder": "1121"
+                  "anchors": ["middle", "right"]
               }
           ]
         }

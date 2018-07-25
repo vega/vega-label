@@ -1,12 +1,13 @@
 /*eslint no-unused-vars: "warn"*/
 import { BitMap } from './BitMap';
 
-export function placeLabels(data, size, marktype, positionOrder) {
+export function placeLabels(data, size, marktype, anchors) {
   var // textWidth, textHeight,
       width = 0, height = 0,
       bitMaps = {},
       n = data.length,
-      d, i;
+      d, i, mb,
+      x1, y1, x2, y2;
 
   if (size) {
     width = size[0];
@@ -23,23 +24,34 @@ export function placeLabels(data, size, marktype, positionOrder) {
 
   for (i = 0; i < n; i++) {
     d = data[i];
-    bitMaps.mark.unmark(d.x, d.y);
+    mb = d.markBound;
+    x1 = bitMaps.mark.bin(mb.x1);
+    x2 = bitMaps.mark.bin(mb.x2);
+    y1 = bitMaps.mark.bin(mb.y1);
+    y2 = bitMaps.mark.bin(mb.y2);
+    // bitMaps.mark.unmark(d.x, d.y);
+    if (marktype !== 'rect') bitMaps.mark.unmarkInBound(x1, y1, x2, y2);
     d.currentPosition = 0;
-    findAvailablePosition(d, bitMaps, positionOrder, function() {
-      return !checkCollision(d.searchBound, bitMaps.mark);
+    findAvailablePosition(d, bitMaps, anchors, function(d1, bm) {
+      return !checkCollision(d1.searchBound, bm.mark);
     });
-    bitMaps.mark.mark(d.x, d.y);
+    if (marktype !== 'rect') bitMaps.mark.markInBound(x1, y1, x2, y2);
+    // bitMaps.mark.mark(d.x, d.y);
   }
 
   for (i = 0; i < n; i++) {
     d = data[i];
+    mb = d.markBound;
+    x1 = bitMaps.mark.bin(mb.x1);
+    x2 = bitMaps.mark.bin(mb.x2);
+    y1 = bitMaps.mark.bin(mb.y1);
+    y2 = bitMaps.mark.bin(mb.y2);
+    if (marktype !== 'rect') bitMaps.mark.unmarkInBound(x1, y1, x2, y2);
     if (d.labelPlaced) {
-      bitMaps.mark.unmark(d.x, d.y);
-      findAvailablePosition(d, bitMaps, positionOrder, function() {
-        return !checkCollision(getExtendedSearchBound(d, bitMaps.mark), bitMaps.mark) && 
-               !checkCollision(d.searchBound, bitMaps.label);
+      findAvailablePosition(d, bitMaps, anchors, function(d1, bm) {
+        return !checkCollision(getExtendedSearchBound(d1, bm.mark), bm.mark) && 
+               !checkCollision(d1.searchBound, bm.label);
       });
-      bitMaps.mark.mark(d.x, d.y);
 
       if (d.labelPlaced) {
         placeLabel(d.searchBound, bitMaps.label);
@@ -51,37 +63,21 @@ export function placeLabels(data, size, marktype, positionOrder) {
     }
     d.x = d.bound.xc;
     d.y = d.bound.yc;
+    if (marktype !== 'rect') bitMaps.mark.markInBound(x1, y1, x2, y2);
   }
 
   return data;
 }
 
-function findAvailablePosition(datum, bitMaps, positionOrder, checkCollisions) {
+function findAvailablePosition(datum, bitMaps, anchors, checkCollisions) {
   var i, searchBound,
-      n = positionOrder.length,
+      n = anchors.length,
       dx, dy;
 
   datum.labelPlaced = false;
-  // for (i = datum.currentPosition[0]; i <= 1 && !datum.labelPlaced; i++) {
-  //   for (j = initJ; j <= 1 && !datum.labelPlaced; j++) {
-  //     if (!i && !j) continue;
-  //     datum.bound = datum.boundFun(i, j);
-  //     searchBound = getSearchBound(datum.bound, bitMaps.mark);
-
-  //     if (outOfBound(searchBound, bitMaps.mark)) continue;
-      
-  //     datum.currentPosition = [i, j];
-  //     datum.searchBound = searchBound;
-  //     if (checkCollisions()) {
-  //       datum.labelPlaced = true;
-  //     }
-  //   }
-  //   initJ = -1;
-  // }
-
   for (i = datum.currentPosition; i < n; i++) {
-    dx = (positionOrder[i] & 0xf) - 1;
-    dy = (positionOrder[i] >>> 0x4) - 1;
+    dx = (anchors[i] & 0xf) - 1;
+    dy = (anchors[i] >>> 0x4) - 1;
 
     datum.bound = datum.boundFun(dx, dy);
     searchBound = getSearchBound(datum.bound, bitMaps.mark);
@@ -90,7 +86,7 @@ function findAvailablePosition(datum, bitMaps, positionOrder, checkCollisions) {
     
     datum.currentPosition = i;
     datum.searchBound = searchBound;
-    if (checkCollisions()) {
+    if (checkCollisions(datum, bitMaps)) {
       datum.labelPlaced = true;
       break;
     }
@@ -124,7 +120,7 @@ function getSearchBound(bound, bm) {
 }
 
 function placeLabel(b, bitMap) {
-  bitMap.flushBinned(b.x, b.y, b.x2, b.y2);
+  bitMap.markInBoundBinned(b.x, b.y, b.x2, b.y2);
 }
 
 function checkCollision(b, bitMap) {
@@ -137,21 +133,25 @@ function getMarkBitMap(data, width, height, marktype) {
   if (!n) return null;
   var bitMap = new BitMap(width, height), mb, i;
 
-  switch (marktype
-) {
+  switch (marktype) {
     case 'symbol':
       for (i = 0; i < n; i++) {
         mb = data[i].markBound;
-        bitMap.flush(mb.x1, mb.y1, mb.x2, mb.y2);
+        bitMap.markInBound(mb.x1, mb.y1, mb.x2, mb.y2);
       }
       break;
     case 'rect':
+    var x1, x2, y1, y2;
       for (i = 0; i < n; i++) {
         mb = data[i].markBound;
-        bitMap.flush(mb.x1, mb.y1, mb.x1, mb.y2);
-        bitMap.flush(mb.x2, mb.y1, mb.x2, mb.y2);
-        bitMap.flush(mb.x1, mb.y1, mb.x2, mb.y1);
-        bitMap.flush(mb.x1, mb.y2, mb.x2, mb.y2);
+        x1 = bitMap.bin(mb.x1);
+        x2 = bitMap.bin(mb.x2);
+        y1 = bitMap.bin(mb.y1);
+        y2 = bitMap.bin(mb.x2);
+        bitMap.markInBoundBinned(x1, y1, x1, y2);
+        bitMap.markInBoundBinned(x2, y1, x2, y2);
+        bitMap.markInBoundBinned(x1, y1, x2, y1);
+        bitMap.markInBoundBinned(x1, y2, x2, y2);
       }
       break;
     case 'line':

@@ -11,7 +11,7 @@ export default function() {
       size,
       distance,
       priority,
-      positionOrder,
+      anchors,
       label = {};
 
   label.layout = function() {
@@ -46,7 +46,7 @@ export default function() {
 
     if (priority) data.sort(function(a, b) { return a.priority - b.priority; });
 
-    return placeLabelsPixel(data, size, marktype, positionOrder);
+    return placeLabelsPixel(data, size, marktype, anchors);
   };
 
   label.dataFromMark = function(_) {
@@ -85,16 +85,28 @@ export default function() {
     }
   }
 
-  label.positionOrder = function(_) {
+  var anchorsMap = {
+    'top-left': 0x00,
+    'top': 0x01,
+    'top-right': 0x02,
+    'left': 0x10,
+    'middle': 0x11,
+    'right': 0x12,
+    'bottom-left': 0x20,
+    'bottom': 0x21,
+    'bottom-right': 0x22
+  };
+
+  label.anchors = function(_) {
     if (arguments.length) {
       var n = _.length, i;
-      positionOrder = new Int8Array(~~((n + 1) / 2)).fill(0);
+      anchors = new Int8Array(n).fill(0);
       for (i = 0; i < n; i++) {
-        positionOrder[i >>> 0x1] |= Number(_.charAt(i)) << ((i & 0x1) << 0x2);
+        anchors[i] = anchorsMap[_[i]];
       }
       return label;
     } else {
-      return positionOrder;
+      return anchors;
     }
   }
 

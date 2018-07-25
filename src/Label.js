@@ -16,9 +16,9 @@ Label.Definition = {
   "metadata": {"modifies": true},
   "params": [
     { "name": "size", "type": "number", "array": true, "length": 2 },
-    { "name": "distance", "type": "number", "default": 1},
+    { "name": "distance", "type": "number", "default": 0},
     { "name": "priority", "type": "field" },
-    { "name": "positionOrder", "type": "string", "default": "0001021012202122" },
+    { "name": "anchors", "type": "string", "array": true, "default": ["top-left", "left", "bottom-left", "top", "bottom", "top-right", "right", "bottom-right"] },
     { "name": "as", "type": "string", "array": true, "length": Output.length, "default": Output }
   ]
 };
@@ -37,8 +37,8 @@ prototype.transform = function(_, pulse) {
   var data = pulse.materialize(pulse.SOURCE).source,
       labelLayout = this.value,
       as = _.as ? _.as : Output,
-      distance = _.distance ? _.distance : 1,
-      positionOrder = _.positionOrder ? _.positionOrder : "0001021012202122";
+      distance = _.distance ? _.distance : 0,
+      anchors = _.anchors ? _.anchors : ["top-left", "left", "bottom-left", "top", "bottom", "top-right", "right", "bottom-right"];
 
   // configure layout
   var labels = labelLayout
@@ -46,7 +46,7 @@ prototype.transform = function(_, pulse) {
       .size(_.size)
       .priority(_.priority)
       .distance(distance)
-      .positionOrder(positionOrder)
+      .anchors(anchors)
       .layout(),
       n = data.length;
 

@@ -121,7 +121,7 @@
           "fill": {"value": "#fff"},
           "stroke": {"value": "#000"},
           "strokeWidth": {"value": 1},
-          "size": {"value": 49}
+          "size": {"value": 100}
         }
       }
     },
@@ -140,7 +140,7 @@
           {
               "type": "label",
               "size": [800, 500],
-              "distance": 1
+              "distance": 0
           }
       ]
     }
