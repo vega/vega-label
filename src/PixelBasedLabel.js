@@ -3,8 +3,7 @@ import { BitMap } from './BitMap';
 import { MultiBitMap } from './MultiBitMap';
 
 export function placeLabels(data, size, marktype, anchors) {
-  var // textWidth, textHeight,
-      width = 0, height = 0,
+  var width = 0, height = 0,
       bitMaps = {},
       n = data.length,
       d, i, mb,
@@ -30,14 +29,12 @@ export function placeLabels(data, size, marktype, anchors) {
     x2 = bitMaps.mark.bin(mb.x2);
     y1 = bitMaps.mark.bin(mb.y1);
     y2 = bitMaps.mark.bin(mb.y2);
-    // bitMaps.mark.unmark(d.x, d.y);
-    if (marktype !== 'rect') bitMaps.mark.unmarkInBound(x1, y1, x2, y2);
+    bitMaps.mark.unmarkInBound(x1, y1, x2, y2);
     d.currentPosition = 0;
-    findAvailablePosition(d, bitMaps, anchors, function(d1, bm) {
+    findAvailablePosition(d, bitMaps, anchors, function(d1, bm, _dx, _dy) {
       return !checkCollision(d1.searchBound, bm.mark);
     });
-    if (marktype !== 'rect') bitMaps.mark.markInBound(x1, y1, x2, y2);
-    // bitMaps.mark.mark(d.x, d.y);
+    bitMaps.mark.markInBound(x1, y1, x2, y2);
   }
 
   for (i = 0; i < n; i++) {
@@ -47,24 +44,24 @@ export function placeLabels(data, size, marktype, anchors) {
     x2 = bitMaps.mark.bin(mb.x2);
     y1 = bitMaps.mark.bin(mb.y1);
     y2 = bitMaps.mark.bin(mb.y2);
-    if (marktype !== 'rect') bitMaps.mark.unmarkInBound(x1, y1, x2, y2);
+    bitMaps.mark.unmarkInBound(x1, y1, x2, y2);
     if (d.labelPlaced) {
-      findAvailablePosition(d, bitMaps, anchors, function(d1, bm) {
-        return !checkCollision(getExtendedSearchBound(d1, bm.mark), bm.mark) && 
+      findAvailablePosition(d, bitMaps, anchors, function(d1, bm, dx, dy) {
+        return !checkCollision(getExtendedSearchBound(d1, bm.mark, dx, dy), bm.mark) && 
                !checkCollision(d1.searchBound, bm.label);
       });
 
       if (d.labelPlaced) {
         placeLabel(d.searchBound, bitMaps.label);
       } else {
-        d.fill = null;
+        d.fill = 'none';
       }
     } else {
-      d.fill = null;
+      d.fill = 'none';
     }
     d.x = d.bound.xc;
     d.y = d.bound.yc;
-    if (marktype !== 'rect') bitMaps.mark.markInBound(x1, y1, x2, y2);
+    bitMaps.mark.markInBound(x1, y1, x2, y2);
   }
 
   return data;
@@ -87,17 +84,17 @@ function findAvailablePosition(datum, bitMaps, anchors, checkCollisions) {
     
     datum.currentPosition = i;
     datum.searchBound = searchBound;
-    if (checkCollisions(datum, bitMaps)) {
+    if (checkCollisions(datum, bitMaps, dx, dy)) {
       datum.labelPlaced = true;
       break;
     }
   }
 }
 
-function getExtendedSearchBound(d, bm) {
+function getExtendedSearchBound(d, bm, dx, dy) {
   var bound = d.bound,
-      w = d.textWidth * d.currentPosition[0],
-      h = d.textHeight * d.currentPosition[1];
+      w = d.textWidth * dx,
+      h = d.textHeight * dy;
     
   return {
     x: bm.bin(bound.x + (w < 0 ? w : 0)),
@@ -132,23 +129,10 @@ function getMarkBitMap(data, width, height, marktype) {
 
   switch (marktype) {
     case 'symbol':
+    case 'rect':
       for (i = 0; i < n; i++) {
         mb = data[i].markBound;
         bitMap.markInBound(mb.x1, mb.y1, mb.x2, mb.y2);
-      }
-      break;
-    case 'rect':
-    var x1, x2, y1, y2;
-      for (i = 0; i < n; i++) {
-        mb = data[i].markBound;
-        x1 = bitMap.bin(mb.x1);
-        x2 = bitMap.bin(mb.x2);
-        y1 = bitMap.bin(mb.y1);
-        y2 = bitMap.bin(mb.y2);
-        bitMap.markInBoundBinned(x1, y1, x1, y2);
-        bitMap.markInBoundBinned(x2, y1, x2, y2);
-        bitMap.markInBoundBinned(x1, y1, x2, y1);
-        bitMap.markInBoundBinned(x1, y2, x2, y2);
       }
       break;
     case 'line':
