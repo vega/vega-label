@@ -121,7 +121,7 @@
           "fill": {"value": "#fff"},
           "stroke": {"value": "#000"},
           "strokeWidth": {"value": 1},
-          "size": {"value": 100}
+          "size": {"value": 1500}
         }
       }
     },
@@ -140,7 +140,9 @@
           {
               "type": "label",
               "size": [800, 500],
-              "distance": 0
+              "distance": 0,
+              "priority": {"field": "datum.miles"},
+              "anchors": ["middle", "top-left", "left", "bottom-left", "top", "bottom", "top-right", "right", "bottom-right"]
           }
       ]
     }

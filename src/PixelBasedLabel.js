@@ -1,5 +1,6 @@
 /*eslint no-unused-vars: "warn"*/
 import { BitMap } from './BitMap';
+import { MultiBitMap } from './MultiBitMap';
 
 export function placeLabels(data, size, marktype, anchors) {
   var // textWidth, textHeight,
@@ -82,7 +83,7 @@ function findAvailablePosition(datum, bitMaps, anchors, checkCollisions) {
     datum.bound = datum.boundFun(dx, dy);
     searchBound = getSearchBound(datum.bound, bitMaps.mark);
 
-    if (outOfBound(searchBound, bitMaps.mark)) continue;
+    if (bitMaps.mark.searchOutOfBound(searchBound)) continue;
     
     datum.currentPosition = i;
     datum.searchBound = searchBound;
@@ -91,10 +92,6 @@ function findAvailablePosition(datum, bitMaps, anchors, checkCollisions) {
       break;
     }
   }
-}
-
-function outOfBound(b, bm) {
-  return b.x < 0 || b.y < 0 || b.y2 >= bm.height || b.x2 >= bm.width;
 }
 
 function getExtendedSearchBound(d, bm) {
@@ -131,7 +128,7 @@ function getMarkBitMap(data, width, height, marktype) {
   var n = data.length;
 
   if (!n) return null;
-  var bitMap = new BitMap(width, height), mb, i;
+  var bitMap = new MultiBitMap(width, height), mb, i;
 
   switch (marktype) {
     case 'symbol':
@@ -147,7 +144,7 @@ function getMarkBitMap(data, width, height, marktype) {
         x1 = bitMap.bin(mb.x1);
         x2 = bitMap.bin(mb.x2);
         y1 = bitMap.bin(mb.y1);
-        y2 = bitMap.bin(mb.x2);
+        y2 = bitMap.bin(mb.y2);
         bitMap.markInBoundBinned(x1, y1, x1, y2);
         bitMap.markInBoundBinned(x2, y1, x2, y2);
         bitMap.markInBoundBinned(x1, y1, x2, y1);

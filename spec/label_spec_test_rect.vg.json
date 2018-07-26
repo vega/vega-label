@@ -1,124 +1,74 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v4.json",
-  "width": 800,
-  "height": 800,
+  "width": 700,
+  "height": 500,
   "padding": 5,
-
   "data": [
     {
       "name": "table",
       "values": [
-        {"category":"A", "position":0, "value":0.11111111111111111111},
-        {"category":"A", "position":1, "value":0.61111111111111111111},
-        {"category":"A", "position":2, "value":0.91111111111111111111},
-        {"category":"A", "position":3, "value":0.41111111111111111111},
-        {"category":"B", "position":0, "value":0.71111111111111111111},
-        {"category":"B", "position":1, "value":0.21111111111111111111},
-        {"category":"B", "position":2, "value":1.11111111111111111111},
-        {"category":"B", "position":3, "value":0.81111111111111111111},
-        {"category":"C", "position":0, "value":0.61111111111111111111},
-        {"category":"C", "position":1, "value":0.11111111111111111111},
-        {"category":"C", "position":2, "value":0.21111111111111111111},
-        {"category":"C", "position":3, "value":0.71111111111111111111}
+        {"category": "A", "amount": 28000},
+        {"category": "B", "amount": 55000},
+        {"category": "C", "amount": 43000},
+        {"category": "D", "amount": 91000},
+        {"category": "E", "amount": 81000},
+        {"category": "F", "amount": 53000},
+        {"category": "G", "amount": 5000},
+        {"category": "H", "amount": 87000}
       ]
     }
   ],
-
   "scales": [
     {
       "name": "yscale",
       "type": "band",
       "domain": {"data": "table", "field": "category"},
       "range": "height",
-      "padding": 0.2
+      "padding": 0.05,
+      "round": true
     },
     {
       "name": "xscale",
-      "type": "linear",
-      "domain": {"data": "table", "field": "value"},
-      "range": "width",
-      "round": true,
-      "zero": true,
-      "nice": true
-    },
-    {
-      "name": "color",
-      "type": "ordinal",
-      "domain": {"data": "table", "field": "position"},
-      "range": {"scheme": "category20"}
+      "domain": {"data": "table", "field": "amount"},
+      "nice": true,
+      "range": "width"
     }
   ],
-
   "axes": [
-    {"orient": "left", "scale": "yscale", "tickSize": 0, "labelPadding": 4, "zindex": 1},
+    {"orient": "left", "scale": "yscale"},
     {"orient": "bottom", "scale": "xscale"}
   ],
-
   "marks": [
     {
-      "type": "group",
-
-      "from": {
-        "facet": {
-          "data": "table",
-          "name": "facet",
-          "groupby": "category"
-        }
-      },
-
+      "type": "rect",
+      "name": "bar",
+      "from": {"data": "table"},
       "encode": {
         "enter": {
-          "y": {"scale": "yscale", "field": "category"}
+          "y": {"scale": "yscale", "field": "category"},
+          "height": {"scale": "yscale", "band": 1},
+          "x": {"scale": "xscale", "field": "amount"},
+          "x2": {"scale": "xscale", "value": 0}
+        },
+        "update": {"fill": {"value": "skyblue"}}
+      }
+    },
+    {
+      "name": "dummyText",
+      "type": "text",
+      "from": {"data": "bar"},
+      "encode": {
+        "enter": {
+          "fontSize": {"value": 25},
+          "text": {"field": "datum.amount"}
         }
       },
-
-      "signals": [
-        {"name": "height", "update": "bandwidth('yscale')"}
-      ],
-
-      "scales": [
+      "transform": [
         {
-          "name": "pos",
-          "type": "band",
-          "range": "height",
-          "domain": {"data": "facet", "field": "position"}
-        }
-      ],
-
-      "marks": [
-        {
-          "name": "bars",
-          "from": {"data": "facet"},
-          "type": "rect",
-          "encode": {
-            "enter": {
-              "y": {"scale": "pos", "field": "position"},
-              "height": {"scale": "pos", "band": 1},
-              "x": {"scale": "xscale", "field": "value"},
-              "x2": {"scale": "xscale", "value": 0},
-              "fill": {"scale": "color", "field": "position"}
-            }
-          }
-        },
-        {
-          "type": "text",
-          "from": {"data": "bars"},
-          "encode": {
-            "enter": {
-              "x": {"field": "x2"},
-              "y": {"field": "y"},
-              "fill": {"value": "black"},
-              "text": {"field": "datum.value"}
-            }
-          },
-          "transform": [
-              {
-                  "type": "label",
-                  "size": [800, 800],
-                  "distance": 10,
-                  "anchors": ["middle", "right"]
-              }
-          ]
+          "type": "label",
+          "size": [700, 500],
+          "distance": 10,
+          "anchors": ["middle", "right"]
         }
       ]
     }
