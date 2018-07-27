@@ -1,6 +1,8 @@
 /*eslint no-unused-vars: "warn"*/
 import { BitMap } from './BitMap';
 import { MultiBitMap } from './MultiBitMap';
+import { pathCurves, shapes } from 'vega-scenegraph';
+import { canvas } from 'vega-canvas';
 
 export function placeLabels(data, size, marktype, anchors) {
   var width = 0, height = 0,
@@ -8,6 +10,9 @@ export function placeLabels(data, size, marktype, anchors) {
       n = data.length,
       d, i, mb,
       x1, y1, x2, y2;
+
+  // var x = pathCurves('step', 'vertical', 0.5);
+  // x1 = x;
 
   if (size) {
     width = size[0];

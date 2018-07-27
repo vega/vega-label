@@ -11,7 +11,7 @@
   "author": {
     "name": "Chanwut Kittivorawong"
   },
-  "main": "build/label.js",
+  "main": "build/vega-label.js",
   "jsnext:main": "index",
   "module": "index",
   "repository": {
@@ -19,16 +19,17 @@
     "url": "https://github.com/chanwutk/vega-label.git"
   },
   "scripts": {
-    "build": "npm run test && uglifyjs build/label.js -c -m -o build/label.min.js",
-    "pretest": "rm -rf build && mkdir build && rollup -g vega-canvas:vega,vega-dataflow:vega,vega-scale:vega,vega-statistics:vega,vega-util:vega -f umd -n Label -o build/label.js -- index.js",
+    "build": "npm run test && uglifyjs build/vega-label.js -c -m -o build/vega-label.min.js",
+    "pretest": "rm -rf build && mkdir build && rollup -g vega-scenegraph:vega,vega-canvas:vega,vega-dataflow:vega,vega-scale:vega,vega-statistics:vega,vega-util:vega -f umd -n vegaLabel -o build/vega-label.js -- index.js",
     "test": "tape 'test/**/*-test.js' && eslint index.js src test",
     "prepublishOnly": "npm run build",
-    "postpublish": "git push && git push --tags && zip -j build/label.zip -- LICENSE README.md build/label.js build/label.min.js"
+    "postpublish": "git push && git push --tags && zip -j build/vega-label.zip -- LICENSE README.md build/vega-label.js build/vega-label.min.js"
   },
   "dependencies": {
     "vega-canvas": "^1.1.0",
     "vega-dataflow": "^4.0.3",
     "vega-scale": "^2.4.0",
+    "vega-scenegraph": "^3.2.2",
     "vega-statistics": "^1.2.1",
     "vega-util": "^1.7.0"
   },
