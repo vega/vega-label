@@ -5,7 +5,7 @@ import {inherits, isFunction} from 'vega-util';
 
 var Output = ['x', 'y', 'z', 'fill', 'align', 'baseline'];
 
-var Params = ['distance'];
+var Params = ['offset'];
 
 export default function Label(params) {
   Transform.call(this, labelLayout(), params);
@@ -16,8 +16,8 @@ Label.Definition = {
   "metadata": {"modifies": true},
   "params": [
     { "name": "size", "type": "number", "array": true, "length": 2 },
-    { "name": "distance", "type": "number", "default": 0},
-    { "name": "priority", "type": "field" },
+    { "name": "offset", "type": "number", "default": 0},
+    { "name": "sort", "type": "field" },
     { "name": "anchors", "type": "string", "array": true, "default": ["top-left", "left", "bottom-left", "top", "bottom", "top-right", "right", "bottom-right"] },
     { "name": "as", "type": "string", "array": true, "length": Output.length, "default": Output }
   ]
@@ -37,15 +37,15 @@ prototype.transform = function(_, pulse) {
   var data = pulse.materialize(pulse.SOURCE).source,
       labelLayout = this.value,
       as = _.as ? _.as : Output,
-      distance = _.distance ? _.distance : 0,
+      offset = _.offset ? _.offset : 0,
       anchors = _.anchors ? _.anchors : ["top-left", "left", "bottom-left", "top", "bottom", "top-right", "right", "bottom-right"];
 
   // configure layout
   var labels = labelLayout
       .dataFromMark(data)
       .size(_.size)
-      .priority(_.priority)
-      .distance(distance)
+      .sort(_.sort)
+      .offset(offset)
       .anchors(anchors)
       .layout(),
       n = data.length;

@@ -9,8 +9,8 @@ export default function() {
   var context = canvas().getContext("2d"),
       dataFromMark = [],
       size,
-      distance,
-      priority,
+      offset,
+      sort,
       anchors,
       label = {};
 
@@ -36,15 +36,15 @@ export default function() {
         y: md.y,
         textWidth: textWidth,
         textHeight: textHeight,
-        boundFun: getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], textWidth, textHeight, distance),
+        boundFun: getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], textWidth, textHeight, offset),
         fill: md.fill,
-        priority: priority ? md[priority] : undefined,
+        sort: sort ? md[sort] : undefined,
         markBound: mb,
         datum: md
       };
     }
 
-    if (priority) data.sort(function(a, b) { return a.priority - b.priority; });
+    if (sort) data.sort(function(a, b) { return a.sort - b.sort; });
 
     return placeLabelsPixel(data, size, marktype, anchors);
   };
@@ -67,21 +67,21 @@ export default function() {
     }
   };
 
-  label.distance = function(_) {
+  label.offset = function(_) {
     if (arguments.length) {
-      distance = _;
+      offset = _;
       return label;
     } else {
-      return distance;
+      return offset;
     }
   }
 
-  label.priority = function(_) {
+  label.sort = function(_) {
     if (arguments.length) {
-      priority = _;
+      sort = _;
       return label;
     } else {
-      return priority;
+      return sort;
     }
   }
 
@@ -113,10 +113,10 @@ export default function() {
   return label;
 }
 
-function getBoundFunction(b, w, h, distance) {
+function getBoundFunction(b, w, h, offset) {
   return function (dx, dy) {
-    var _y = b[4 + dy] + (h * dy / 2.0) + (distance * dy),
-        _x = b[1 + dx] + (w * dx / 2.0) + (distance * dx);
+    var _y = b[4 + dy] + (h * dy / 2.0) + (offset * dy),
+        _x = b[1 + dx] + (w * dx / 2.0) + (offset * dx);
     return {
       y: _y - (h / 2.0),
       yc: _y,
