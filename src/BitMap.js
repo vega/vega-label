@@ -1,6 +1,6 @@
 var DIV = 0x5;
 var MOD = 0x1f;
-var SIZE = 0x20;
+export var SIZE = 0x20;
 var right0 = new Uint32Array(SIZE + 1);
 var right1 = new Uint32Array(SIZE + 1);
 

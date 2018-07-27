@@ -1,8 +1,5 @@
 /*eslint no-unused-vars: "warn"*/
-import {BitMap} from './BitMap';
-var DIV = 0x5;
-var MOD = 0x1f;
-var SIZE = 0x20;
+import {BitMap, SIZE} from './BitMap';
 
 export function MultiBitMap(_width, _height) {
   BitMap.call(this, _width, _height);

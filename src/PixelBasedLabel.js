@@ -31,31 +31,10 @@ export function placeLabels(data, size, marktype, anchors) {
     y2 = bitMaps.mark.bin(mb.y2);
     bitMaps.mark.unmarkInBound(x1, y1, x2, y2);
     d.currentPosition = 0;
-    findAvailablePosition(d, bitMaps, anchors, function(d1, bm, _dx, _dy) {
-      return !checkCollision(d1.searchBound, bm.mark);
-    });
-    bitMaps.mark.markInBound(x1, y1, x2, y2);
-  }
+    findAvailablePosition(d, bitMaps, anchors);
 
-  for (i = 0; i < n; i++) {
-    d = data[i];
-    mb = d.markBound;
-    x1 = bitMaps.mark.bin(mb.x1);
-    x2 = bitMaps.mark.bin(mb.x2);
-    y1 = bitMaps.mark.bin(mb.y1);
-    y2 = bitMaps.mark.bin(mb.y2);
-    bitMaps.mark.unmarkInBound(x1, y1, x2, y2);
     if (d.labelPlaced) {
-      findAvailablePosition(d, bitMaps, anchors, function(d1, bm, dx, dy) {
-        return !checkCollision(getExtendedSearchBound(d1, bm.mark, dx, dy), bm.mark) && 
-               !checkCollision(d1.searchBound, bm.label);
-      });
-
-      if (d.labelPlaced) {
-        placeLabel(d.searchBound, bitMaps.label);
-      } else {
-        d.fill = 'none';
-      }
+      placeLabel(d.searchBound, bitMaps.label);
     } else {
       d.fill = 'none';
     }
@@ -67,7 +46,7 @@ export function placeLabels(data, size, marktype, anchors) {
   return data;
 }
 
-function findAvailablePosition(datum, bitMaps, anchors, checkCollisions) {
+function findAvailablePosition(datum, bitMaps, anchors) {
   var i, searchBound,
       n = anchors.length,
       dx, dy;
@@ -84,7 +63,8 @@ function findAvailablePosition(datum, bitMaps, anchors, checkCollisions) {
     
     datum.currentPosition = i;
     datum.searchBound = searchBound;
-    if (checkCollisions(datum, bitMaps, dx, dy)) {
+    if (!checkCollision(getExtendedSearchBound(datum, bitMaps.mark, dx, dy), bitMaps.mark) &&
+        !checkCollision(datum.searchBound, bitMaps.label)) {
       datum.labelPlaced = true;
       break;
     }
