@@ -140,20 +140,19 @@ export function BitMap(_width, _height) {
   };
 
   this.print = function () {
-    var x, y;//, string;
+    var x, y;
     var canvas = document.getElementById("bitmap");
+    if (!canvas) return;
+    canvas.setAttribute("width", this.width);
+    canvas.setAttribute("height", this.height);
     var ctx = canvas.getContext("2d");
     for (y = 0; y < this.height; y++) {
-      //string = '';
       for (x = 0; x < this.width; x++) {
-        //string = string + (this.getBinned(x, y) === 0 ? '....' : 'xxxx');
         if (this.getBinned(x, y)) {
           ctx.fillStyle = "rgba(0, 0, 0, 1)";
           ctx.fillRect( x, y, 1, 1 );
         }
       }
-      //document.write('<p>' + string + '</p>');
     }
-    //document.write('<p>' + string + '</p>');
   }
 }

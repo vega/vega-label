@@ -140,7 +140,7 @@
       "transform": [{
         "type": "label",
         "size": [800, 500],
-        "distance": 0
+        "offset": 0
       }]
     }
   ]

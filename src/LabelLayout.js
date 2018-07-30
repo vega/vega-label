@@ -5,16 +5,35 @@ import { canvas } from 'vega-canvas';
 import { placeLabels as placeLabelsParticle } from './ParticleBasedLabel';
 import { placeLabels as placeLabelsPixel } from './PixelBasedLabel';
 
+// var anchorsMap = {
+//   'top-left': 0x00,
+//   'top': 0x01,
+//   'top-right': 0x02,
+//   'left': 0x10,
+//   'middle': 0x11,
+//   'right': 0x12,
+//   'bottom-left': 0x20,
+//   'bottom': 0x21,
+//   'bottom-right': 0x22
+// };
+
+var TOP = 0x0,
+    MIDDLE = 0x1 << 0x2,
+    BOTTOM = 0x2 << 0x2,
+    LEFT = 0x0,
+    CENTER = 0x1,
+    RIGHT = 0x2,
+    INNER = 0x1 << 0x4;
 var anchorsMap = {
-  'top-left': 0x00,
-  'top': 0x01,
-  'top-right': 0x02,
-  'left': 0x10,
-  'middle': 0x11,
-  'right': 0x12,
-  'bottom-left': 0x20,
-  'bottom': 0x21,
-  'bottom-right': 0x22
+  'top-left': TOP + LEFT,
+  'top': TOP + CENTER,
+  'top-right': TOP + RIGHT,
+  'left': MIDDLE + LEFT,
+  'middle': MIDDLE + CENTER,
+  'right': MIDDLE + RIGHT,
+  'bottom-left': BOTTOM + LEFT,
+  'bottom': BOTTOM + CENTER,
+  'bottom-right': BOTTOM + RIGHT,
 };
 
 export default function() {
@@ -32,7 +51,6 @@ export default function() {
     var n = dataFromMark.length,
         md, data = Array(n),
         marktype = marktypeFromUser ? marktypeFromUser : (n && dataFromMark[0].datum && dataFromMark[0].datum.mark ? dataFromMark[0].datum.mark.marktype : undefined);
-        // marktype = n && dataFromMark[0].datum && dataFromMark[0].datum.mark ? dataFromMark[0].datum.mark.marktype : marktypeFromUser; // mark type from user first?
 
     for (var i = 0; i < n; i++) {
       md = dataFromMark[i];
@@ -102,10 +120,15 @@ export default function() {
 
   label.anchors = function(_) {
     if (arguments.length) {
-      var n = _.length, i;
-      anchors = new Int8Array(n).fill(0);
+      var n = _.length, i, directions;
+      anchors = new Int8Array(n).fill(0x0);
       for (i = 0; i < n; i++) {
-        anchors[i] = anchorsMap[_[i]];
+        directions = _[i].split('-');
+        if (directions[0] === 'inner') {
+          anchors[i] = INNER;
+          directions.splice(0, 1);
+        }
+        anchors[i] |= anchorsMap[directions.join('-')];
       }
       return label;
     } else {
