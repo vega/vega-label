@@ -19,6 +19,8 @@ Label.Definition = {
     { "name": "offset", "type": "number", "default": 0},
     { "name": "sort", "type": "field" },
     { "name": "anchors", "type": "string", "array": true, "default": ["top-left", "left", "bottom-left", "top", "bottom", "top-right", "right", "bottom-right"] },
+    { "name": "groupby", "type": "string" },
+    { "name": "marktype", "type": "string" },
     { "name": "as", "type": "string", "array": true, "length": Output.length, "default": Output }
   ]
 };
@@ -38,7 +40,8 @@ prototype.transform = function(_, pulse) {
       labelLayout = this.value,
       as = _.as ? _.as : Output,
       offset = _.offset ? _.offset : 0,
-      anchors = _.anchors ? _.anchors : ["top-left", "left", "bottom-left", "top", "bottom", "top-right", "right", "bottom-right"];
+      anchors = _.anchors ? _.anchors : ["top-left", "left", "bottom-left", "top", "bottom", "top-right", "right", "bottom-right"],
+      groupby = _.groupby ? _.groupby : null;
 
   // configure layout
   var labels = labelLayout
@@ -47,6 +50,8 @@ prototype.transform = function(_, pulse) {
       .sort(_.sort)
       .offset(offset)
       .anchors(anchors)
+      .groupby(groupby)
+      .marktype(_.marktype)
       .layout(),
       n = data.length;
 

@@ -1,18 +1,14 @@
 /*eslint no-unused-vars: "warn"*/
+/*eslint no-fallthrough: "warn" */
 import { BitMap } from './BitMap';
 import { MultiBitMap } from './MultiBitMap';
-import { pathCurves, shapes } from 'vega-scenegraph';
-import { canvas } from 'vega-canvas';
 
-export function placeLabels(data, size, marktype, anchors) {
+export function placeLabels(data, size, marktype, anchors, groupby) {
   var width = 0, height = 0,
       bitMaps = {},
       n = data.length,
       d, i, mb,
       x1, y1, x2, y2;
-
-  // var x = pathCurves('step', 'vertical', 0.5);
-  // x1 = x;
 
   if (size) {
     width = size[0];
@@ -24,7 +20,7 @@ export function placeLabels(data, size, marktype, anchors) {
       height = Math.max(height, d.y + d.textHeight);
     }
   }
-  bitMaps.mark = getMarkBitMap(data, width, height, marktype);
+  bitMaps.mark = getMarkBitMap(data, width, height, marktype, groupby);
   bitMaps.label = new BitMap(width, height);
 
   for (i = 0; i < n; i++) {
@@ -106,13 +102,32 @@ function checkCollision(b, bitMap) {
   return bitMap.getInBoundBinned(b.x, b.y, b.x2, b.y2);
 }
 
-function getMarkBitMap(data, width, height, marktype) {
+function getMarkBitMap(data, width, height, marktype, groupby) {
   var n = data.length;
 
   if (!n) return null;
   var bitMap = new MultiBitMap(width, height), mb, i;
 
   switch (marktype) {
+    case 'line':
+      var group = {}, m, d, line, key, datum;
+      for (i = 0; i < n; i++) {
+        d = data[i];
+        datum = d.datum;
+        key = datum.datum ? datum.datum[groupby] : datum[groupby];
+        if (!group[key]) {
+          group[key] = [];
+        }
+
+        group[key].push(d);
+      }
+      for (key in group) {
+        line = group[key];
+        m = line.length;
+        for (i = 1; i < m; i++) {
+          markLine(line[i - 1], line[i], bitMap);
+        }
+      }
     case 'symbol':
     case 'rect':
       for (i = 0; i < n; i++) {
@@ -120,13 +135,40 @@ function getMarkBitMap(data, width, height, marktype) {
         bitMap.markInBound(mb.x1, mb.y1, mb.x2, mb.y2);
       }
       break;
-    case 'line':
-      break;
     default:
       for (i = 0; i < n; i++) {
         bitMap.mark(data[i].x, data[i].y);
       }
   }
-  
+  bitMap.print();
   return bitMap;
+}
+
+function markLine(p1, p2, bm) {
+  var tmp;
+  if (p1.y > p2.y) {
+    tmp = p1;
+    p1 = p2;
+    p2 = tmp;
+  }
+  var x1 = bm.bin(p1.x), y1 = bm.bin(p1.y);
+  var x2 = bm.bin(p2.x), y2 = bm.bin(p2.y);
+
+  if (y1 === y2) {
+    bm.markInBoundBinned(x1, y1, x2, y2);
+  } else {
+    var dx = x2 - x1;
+    var dy = y2 - y1;
+    var y;
+    for (y = y1; y < y2; y++) {
+      var startX = ~~((((y - y1) * dx) + (x1 * dy)) / dy),
+          endX = ~~((((y + 1 - y1) * dx) + (x1 * dy)) / dy);
+      if (startX > endX) {
+        tmp = startX;
+        startX = endX;
+        endX = tmp;
+      }
+      bm.markInBoundBinned(startX, y, endX, y);
+    }
+  }
 }

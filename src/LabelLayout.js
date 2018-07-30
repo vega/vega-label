@@ -5,6 +5,18 @@ import { canvas } from 'vega-canvas';
 import { placeLabels as placeLabelsParticle } from './ParticleBasedLabel';
 import { placeLabels as placeLabelsPixel } from './PixelBasedLabel';
 
+var anchorsMap = {
+  'top-left': 0x00,
+  'top': 0x01,
+  'top-right': 0x02,
+  'left': 0x10,
+  'middle': 0x11,
+  'right': 0x12,
+  'bottom-left': 0x20,
+  'bottom': 0x21,
+  'bottom-right': 0x22
+};
+
 export default function() {
   var context = canvas().getContext("2d"),
       dataFromMark = [],
@@ -12,18 +24,21 @@ export default function() {
       offset,
       sort,
       anchors,
+      groupby,
+      marktypeFromUser,
       label = {};
 
   label.layout = function() {
     var n = dataFromMark.length,
         md, data = Array(n),
-        marktype = n && dataFromMark[0].datum && dataFromMark[0].datum.mark ? dataFromMark[0].datum.mark.marktype : undefined;
+        marktype = marktypeFromUser ? marktypeFromUser : (n && dataFromMark[0].datum && dataFromMark[0].datum.mark ? dataFromMark[0].datum.mark.marktype : undefined);
+        // marktype = n && dataFromMark[0].datum && dataFromMark[0].datum.mark ? dataFromMark[0].datum.mark.marktype : marktypeFromUser; // mark type from user first?
 
     for (var i = 0; i < n; i++) {
       md = dataFromMark[i];
       var textWidth = labelWidth(md.text, md.fontSize, md.font, context),
           textHeight = md.fontSize,
-          mb = marktype ? md.datum.bounds : {
+          mb = marktype && md.datum.bounds ? md.datum.bounds : {
             x1: md.x,
             x2: md.x,
             y1: md.y,
@@ -38,7 +53,7 @@ export default function() {
         textHeight: textHeight,
         boundFun: getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], textWidth, textHeight, offset),
         fill: md.fill,
-        sort: sort ? md[sort] : undefined,
+        sort: sort ? sort(md.datum) : undefined,
         markBound: mb,
         datum: md
       };
@@ -46,7 +61,7 @@ export default function() {
 
     if (sort) data.sort(function(a, b) { return a.sort - b.sort; });
 
-    return placeLabelsPixel(data, size, marktype, anchors);
+    return placeLabelsPixel(data, size, marktype, anchors, groupby);
   };
 
   label.dataFromMark = function(_) {
@@ -85,18 +100,6 @@ export default function() {
     }
   }
 
-  var anchorsMap = {
-    'top-left': 0x00,
-    'top': 0x01,
-    'top-right': 0x02,
-    'left': 0x10,
-    'middle': 0x11,
-    'right': 0x12,
-    'bottom-left': 0x20,
-    'bottom': 0x21,
-    'bottom-right': 0x22
-  };
-
   label.anchors = function(_) {
     if (arguments.length) {
       var n = _.length, i;
@@ -107,6 +110,24 @@ export default function() {
       return label;
     } else {
       return anchors;
+    }
+  }
+
+  label.groupby = function(_) {
+    if (arguments.length) {
+      groupby = _;
+      return label;
+    } else {
+      return groupby;
+    }
+  }
+
+  label.marktype = function(_) {
+    if (arguments.length) {
+      marktypeFromUser = _;
+      return label;
+    } else {
+      return marktypeFromUser;
     }
   }
 
