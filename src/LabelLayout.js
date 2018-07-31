@@ -56,7 +56,7 @@ export default function() {
       md = dataFromMark[i];
       var textWidth = labelWidth(md.text, md.fontSize, md.font, context),
           textHeight = md.fontSize,
-          mb = marktype && md.datum.bounds ? md.datum.bounds : {
+          mb = marktype && md.datum.bounds && md.datum.mark.marktype !== 'line' ? md.datum.bounds : {
             x1: md.x,
             x2: md.x,
             y1: md.y,
@@ -158,9 +158,10 @@ export default function() {
 }
 
 function getBoundFunction(b, w, h, offset) {
-  return function (dx, dy) {
-    var _y = b[4 + dy] + (h * dy / 2.0) + (offset * dy),
-        _x = b[1 + dx] + (w * dx / 2.0) + (offset * dx);
+  return function (dx, dy, inner) {
+    var _inner = inner ? -1 : 1,
+        _y = b[4 + dy] + (_inner * h * dy / 2.0) + (offset * dy * _inner),
+        _x = b[1 + dx] + (_inner * w * dx / 2.0) + (offset * dx * _inner);
     return {
       y: _y - (h / 2.0),
       yc: _y,

@@ -67,8 +67,8 @@
         {
           "type": "label",
           "size": [700, 500],
-          "distance": 10,
-          "anchors": ["middle", "right"]
+          "offset": 15,
+          "anchors": ["inner-right", "right"]
         }
       ]
     }

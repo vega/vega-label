@@ -55,17 +55,18 @@ function findAvailablePosition(datum, bitMaps, anchors) {
   datum.labelPlaced = false;
   for (i = datum.currentPosition; i < n; i++) {
     dx = (anchors[i] & 0x3) - 1;
-    dy = (anchors[i] >>> 0x2) - 1;
+    dy = ((anchors[i] >>> 0x2) & 0x3) - 1;
     inner = anchors[i] >>> 0x4;
 
-    datum.bound = datum.boundFun(dx, dy);
+    datum.bound = datum.boundFun(dx, dy, inner);
     searchBound = getSearchBound(datum.bound, bitMaps.mark);
 
     if (bitMaps.mark.searchOutOfBound(searchBound)) continue;
     
     datum.currentPosition = i;
     datum.searchBound = searchBound;
-    if (!checkCollision(getExtendedSearchBound(datum, bitMaps.mark, dx, dy), bitMaps.mark) && // change checking method when label is inside the mark.
+    if (// !checkCollision(getExtendedSearchBound(datum, bitMaps.mark, dx, dy), bitMaps.mark) && // change checking method when label is inside the mark.
+        !checkCollision(datum.searchBound, bitMaps.mark) && 
         !checkCollision(datum.searchBound, bitMaps.label)) {
       datum.labelPlaced = true;
       break;
