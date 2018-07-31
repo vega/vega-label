@@ -65,13 +65,25 @@ function findAvailablePosition(datum, bitMaps, anchors) {
     
     datum.currentPosition = i;
     datum.searchBound = searchBound;
-    if (// !checkCollision(getExtendedSearchBound(datum, bitMaps.mark, dx, dy), bitMaps.mark) && // change checking method when label is inside the mark.
-        !checkCollision(datum.searchBound, bitMaps.mark) && 
-        !checkCollision(datum.searchBound, bitMaps.label)) {
+    if (
+      ((dx === 0 && dy === 0) || inner) ?
+        (
+          !checkCollision(datum.searchBound, bitMaps.mark) && // assuming that any label cannot be inside other mark
+          isIn(datum.bound, datum.markBound)
+        ) :
+        (
+          !checkCollision(getExtendedSearchBound(datum, bitMaps.mark, dx, dy), bitMaps.mark) &&
+          !checkCollision(datum.searchBound, bitMaps.label)
+        )
+    ) {
       datum.labelPlaced = true;
       break;
     }
   }
+}
+
+function isIn(b, mb) {
+  return mb.x1 <= b.x && b.x2 <= mb.x2 && mb.y1 <= b.y && b.y2 <= mb.y2;
 }
 
 function getExtendedSearchBound(d, bm, dx, dy) {
