@@ -1,7 +1,7 @@
 /*eslint no-unused-vars: "warn"*/
-import {BitMap, SIZE} from './BitMap';
+import {default as BitMap, SIZE} from './BitMap';
 
-export function MultiBitMap(_width, _height) {
+export default function MultiBitMap(_width, _height) {
   BitMap.call(this, _width, _height);
   this.arrayMulti = new Uint32Array(~~(((this.width * this.height) + SIZE) / SIZE));
 

@@ -11,7 +11,7 @@ for (var i = 1; i <= SIZE; i++) {
   right0[i] = ~right1[i];
 }
 
-export function BitMap(_width, _height) {
+export default function BitMap(_width, _height) {
   var pixelSize = Math.sqrt(_width * _height / 1000000.0);
   pixelSize = pixelSize >= 1 ? pixelSize : 1;
 

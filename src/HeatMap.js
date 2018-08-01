@@ -1,4 +1,4 @@
-export function HeatMap(_width, _height) {
+export default function HeatMap(_width, _height) {
   this.pixelSize = Math.ceil(Math.min(_width, _height) / 1000.0);
   this.width = ~~((_width + this.pixelSize - 1) / this.pixelSize);
   this.height = ~~((_height + this.pixelSize - 1) / this.pixelSize);

@@ -1,4 +1,4 @@
-export function ArrayMap(_width, _height, _binWidth, _binHeight) {
+export default function ArrayMap(_width, _height, _binWidth, _binHeight) {
   this.binWidthSize = ~~_binWidth;
   this.binHeightSize = ~~_binHeight;
   this.width = ~~((_width + this.binWidthSize - 1) / this.binWidthSize);

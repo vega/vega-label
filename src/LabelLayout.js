@@ -2,8 +2,8 @@
 /*eslint no-console: "warn"*/
 /*eslint no-empty: "warn"*/
 import { canvas } from 'vega-canvas';
-import { placeLabels as placeLabelsParticle } from './ParticleBasedLabel';
-import { placeLabels as placeLabelsPixel } from './PixelBasedLabel';
+import placeLabelsParticle from './ParticleBasedLabel';
+import placeLabelsPixel from './PixelBasedLabel';
 
 // var anchorsMap = {
 //   'top-left': 0x00,

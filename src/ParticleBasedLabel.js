@@ -1,7 +1,7 @@
 /*eslint no-unused-vars: "warn"*/
-import { ArrayMap } from './ArrayMap';
+import ArrayMap from './ArrayMap';
 
-export function placeLabels(data, size, padding) {
+export default function placeLabels(data, size, padding) {
   var width = 0, height = 0,
       bins = {},
       minTextWidth = Number.MAX_SAFE_INTEGER, 

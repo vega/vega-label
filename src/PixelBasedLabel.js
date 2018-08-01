@@ -1,10 +1,10 @@
 /*eslint no-unused-vars: "warn"*/
 /*eslint no-fallthrough: "warn" */
-import { BitMap } from './BitMap';
-import { MultiBitMap } from './MultiBitMap';
+import BitMap from './BitMap';
+import MultiBitMap from './MultiBitMap';
 import { Marks } from 'vega-scenegraph';
 
-export function placeLabels(data, size, marktype, anchors, groupby) {
+export default function placeLabels(data, size, marktype, anchors, groupby) {
   var width = 0, height = 0,
       bitMaps = {},
       n = data.length,
@@ -227,33 +227,4 @@ function getMarkBitMap(data, width, height, marktype, groupby) {
   }
   bitMap.print();
   return bitMap;
-}
-
-function markLine(p1, p2, bm) {
-  var tmp;
-  if (p1.y > p2.y) {
-    tmp = p1;
-    p1 = p2;
-    p2 = tmp;
-  }
-  var x1 = bm.bin(p1.x), y1 = bm.bin(p1.y);
-  var x2 = bm.bin(p2.x), y2 = bm.bin(p2.y);
-
-  if (y1 === y2) {
-    bm.markInBoundBinned(x1, y1, x2, y2);
-  } else {
-    var dx = x2 - x1;
-    var dy = y2 - y1;
-    var y;
-    for (y = y1; y < y2; y++) {
-      var startX = ~~((((y - y1) * dx) + (x1 * dy)) / dy),
-          endX = ~~((((y + 1 - y1) * dx) + (x1 * dy)) / dy);
-      if (startX > endX) {
-        tmp = startX;
-        startX = endX;
-        endX = tmp;
-      }
-      bm.markInBoundBinned(startX, y, endX, y);
-    }
-  }
 }
