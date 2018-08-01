@@ -5,18 +5,6 @@ import { canvas } from 'vega-canvas';
 import placeLabelsParticle from './ParticleBasedLabel';
 import placeLabelsPixel from './PixelBasedLabel';
 
-// var anchorsMap = {
-//   'top-left': 0x00,
-//   'top': 0x01,
-//   'top-right': 0x02,
-//   'left': 0x10,
-//   'middle': 0x11,
-//   'right': 0x12,
-//   'bottom-left': 0x20,
-//   'bottom': 0x21,
-//   'bottom-right': 0x22
-// };
-
 var TOP = 0x0,
     MIDDLE = 0x1 << 0x2,
     BOTTOM = 0x2 << 0x2,
@@ -24,6 +12,7 @@ var TOP = 0x0,
     CENTER = 0x1,
     RIGHT = 0x2,
     INNER = 0x1 << 0x4;
+
 var anchorsMap = {
   'top-left': TOP + LEFT,
   'top': TOP + CENTER,
@@ -43,7 +32,6 @@ export default function() {
       offset,
       sort,
       anchors,
-      groupby,
       marktypeFromUser,
       label = {};
 
@@ -79,7 +67,7 @@ export default function() {
 
     if (sort) data.sort(function(a, b) { return a.sort - b.sort; });
 
-    return placeLabelsPixel(data, size, marktype, anchors, groupby);
+    return placeLabelsPixel(data, size, marktype, anchors);
   };
 
   label.dataFromMark = function(_) {
@@ -133,15 +121,6 @@ export default function() {
       return label;
     } else {
       return anchors;
-    }
-  }
-
-  label.groupby = function(_) {
-    if (arguments.length) {
-      groupby = _;
-      return label;
-    } else {
-      return groupby;
     }
   }
 

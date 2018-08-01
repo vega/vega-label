@@ -156,4 +156,16 @@ export default function BitMap(_width, _height) {
       }
     }
   }
+
+  this.printContext = function (ctx) {
+    var x, y;
+    for (y = 0; y < this.height; y++) {
+      for (x = 0; x < this.width; x++) {
+        if (this.getBinned(x, y)) {
+          ctx.fillStyle = "rgba(0, 0, 0, 1)";
+          ctx.fillRect( x, y, 1, 1 );
+        }
+      }
+    }
+  }
 }

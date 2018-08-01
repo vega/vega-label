@@ -4,7 +4,7 @@ import BitMap from './BitMap';
 import MultiBitMap from './MultiBitMap';
 import { Marks } from 'vega-scenegraph';
 
-export default function placeLabels(data, size, marktype, anchors, groupby) {
+export default function placeLabels(data, size, marktype, anchors) {
   var width = 0, height = 0,
       bitMaps = {},
       n = data.length,
@@ -21,16 +21,14 @@ export default function placeLabels(data, size, marktype, anchors, groupby) {
       height = Math.max(height, d.y + d.textHeight);
     }
   }
-  bitMaps.mark = getMarkBitMap(data, width, height, marktype, groupby);
+  bitMaps.mark = getMarkBitMap(data, width, height, marktype);
   bitMaps.label = new BitMap(width, height);
-
-  // Marks.line.draw(context, scene, bound);
 
   for (i = 0; i < n; i++) {
     d = data[i];
     mb = d.markBound;
     x1 = bitMaps.mark.bin(mb.x1);
-    x2 = bitMaps.mark.bin(mb.x2);
+    x2 = bitMaps.mark.bin(mb.x2); 
     y1 = bitMaps.mark.bin(mb.y1);
     y2 = bitMaps.mark.bin(mb.y2);
     bitMaps.mark.unmarkInBound(x1, y1, x2, y2);
@@ -49,6 +47,15 @@ export default function placeLabels(data, size, marktype, anchors, groupby) {
 
   bitMaps.mark.print('markBitMap');
   bitMaps.label.print('labelBitMap');
+
+  var canvas = document.getElementById('all-bitmaps');
+  canvas.setAttribute("width", bitMaps.mark.bin(width));
+  canvas.setAttribute("height", bitMaps.mark.bin(height));
+  var ctx = canvas.getContext("2d");
+
+  bitMaps.mark.printContext(ctx);
+  bitMaps.label.printContext(ctx);
+
   return data;
 }
 
@@ -57,6 +64,10 @@ function findAvailablePosition(datum, bitMaps, anchors) {
       n = anchors.length,
       dx, dy, inner;
 
+
+  if (datum.datum.datum.datum.year === 1975) {
+    dx = 1;
+  }
   datum.labelPlaced = false;
   for (i = datum.currentPosition; i < n; i++) {
     dx = (anchors[i] & 0x3) - 1;
@@ -77,7 +88,8 @@ function findAvailablePosition(datum, bitMaps, anchors) {
           isIn(datum.bound, datum.markBound)
         ) :
         (
-          !checkCollision(getExtendedSearchBound(datum, bitMaps.mark, dx, dy), bitMaps.mark) &&
+          // !checkCollision(getExtendedSearchBound(datum, bitMaps.mark, dx, dy), bitMaps.mark) &&
+          !checkCollision(searchBound, bitMaps.mark) &&
           !checkCollision(searchBound, bitMaps.label)
         )
     ) {
@@ -106,8 +118,8 @@ function getExtendedSearchBound(d, bm, dx, dy) {
 
   _x = _x < 0 ? 0 : _x;
   _y = _y < 0 ? 0 : _y;
-  _x2 = _x2 > bm.width ? bm.width : _x2;
-  _y2 = _y2 > bm.height ? bm.height : _y2;
+  _x2 = _x2 >= bm.width ? bm.width - 1 : _x2;
+  _y2 = _y2 >= bm.height ? bm.height - 1 : _y2;
   return {
     x: _x,
     y: _y,
@@ -123,8 +135,8 @@ function getSearchBound(bound, bm) {
       _y2 = bm.bin(bound.y2);
   _x = _x < 0 ? 0 : _x;
   _y = _y < 0 ? 0 : _y;
-  _x2 = _x2 > bm.width ? bm.width : _x2;
-  _y2 = _y2 > bm.height ? bm.height : _y2;
+  _x2 = _x2 >= bm.width ? bm.width - 1 : _x2;
+  _y2 = _y2 >= bm.height ? bm.height - 1 : _y2;
   return {
     x: _x,
     y: _y,
@@ -141,67 +153,38 @@ function checkCollision(b, bitMap) {
   return bitMap.getInBoundBinned(b.x, b.y, b.x2, b.y2);
 }
 
-function getMarkBitMap(data, width, height, marktype, groupby) {
+function getMarkBitMap(data, width, height, marktype) {
   var n = data.length;
 
   if (!n) return null;
-  var bitMap = new MultiBitMap(width, height), mb, i;
+  var bitMap = new MultiBitMap(width, height), i;
+
+  var canvas = document.getElementById('canvasrender');
+  var context = canvas.getContext('2d');
+
+  canvas.setAttribute("width", width);
+  canvas.setAttribute("height", height);
+  
+  var scene;
 
   switch (marktype) {
     case 'line':
-      var group = {}, m, d, line, key, datum;
+      scene = { items: [] };
+      n = data.length;
       for (i = 0; i < n; i++) {
-        d = data[i];
-        datum = d.datum;
-        key = datum.datum ? datum.datum[groupby] : datum[groupby];
-        if (!group[key]) {
-          group[key] = [];
-        }
+        scene.items.push({
+          interpolate: 'cardinal',
+          stroke: '#000',
+          strokeWidth: 3,
+          x: data[i].x,
+          y: data[i].y
+        });
+      }
+      Marks.line.draw(context, scene, null);
 
-        group[key].push(d);
-      }
-      var canvas = document.getElementById('canvasrender');
-      var context = canvas.getContext('2d');
-      canvas.setAttribute("width", width);
-      canvas.setAttribute("height", height);
-      for (key in group) {
-        line = group[key];
-        var scene = {};
-        scene.items = [];
-        m = line.length;
-        for (i = 1; i < m; i++) {
-          // markLine(line[i - 1], line[i], bitMap);
-          scene.items.push({
-            interpolate: 'cardinal',
-            stroke: '#000',
-            strokeWidth: 3,
-            x: line[i].x,
-            y: line[i].y
-          });
-        }
-        Marks.line.draw(context, scene, null);
-      }
-      var idata = context.getImageData(0, 0, width, height),
-          u32 = new Uint32Array(idata.data.buffer);
-      for (var y = 0; y < height; y++) { // make it faster by not checking every pixel.
-        for (var x = 0; x < width; x++) {
-          if (u32[(y * width) + x] & 0xff000000) {
-            bitMap.mark(x, y);
-          }
-        }
-      }
     case 'symbol':
     case 'rect':
-      // for (i = 0; i < n; i++) {
-      //   mb = data[i].markBound;
-      //   bitMap.markInBound(mb.x1, mb.y1, mb.x2, mb.y2);
-      // }
-      canvas = document.getElementById('canvasrender');
-      context = canvas.getContext('2d');
-      canvas.setAttribute("width", width);
-      canvas.setAttribute("height", height);
-      scene = {};
-      scene.items = [];
+      scene = { items: [] };
       for (i = 0; i < n; i++) {
         scene.items.push(data[i].datum.datum);
       }
@@ -210,21 +193,26 @@ function getMarkBitMap(data, width, height, marktype, groupby) {
       } else {
         Marks.symbol.draw(context, scene, null);
       }
-      idata = context.getImageData(0, 0, width, height);
-      u32 = new Uint32Array(idata.data.buffer);
-      for (y = 0; y < height; y++) { // make it faster by not checking every pixel.
-        for (x = 0; x < width; x++) {
-          if (u32[(y * width) + x] & 0xff000000) {
-            bitMap.mark(x, y);
-          }
-        }
-      }
       break;
+
     default:
       for (i = 0; i < n; i++) {
         bitMap.mark(data[i].x, data[i].y);
       }
+      return bitMap;
   }
+
+  var imageData = context.getImageData(0, 0, width, height),
+      canvasBuffer = new Uint32Array(imageData.data.buffer);
+
+  for (var y = 0; y < height; y++) { // make it faster by not checking every pixel.
+    for (var x = 0; x < width; x++) {
+      if (canvasBuffer[(y * width) + x] & 0xff000000) {
+        bitMap.mark(x, y);
+      }
+    }
+  }
+
   bitMap.print();
   return bitMap;
 }
