@@ -170,7 +170,6 @@ function getMarkBitMap(data, width, height, marktype) {
   switch (marktype) {
     case 'line':
       scene = { items: [] };
-      n = data.length;
       for (i = 0; i < n; i++) {
         scene.items.push({
           interpolate: 'cardinal',

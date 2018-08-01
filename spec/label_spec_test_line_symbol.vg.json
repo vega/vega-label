@@ -142,7 +142,7 @@
         {
           "type": "label",
           "size": [800, 500],
-          "offset": 3,
+          "offset": 2.5,
           "sort": { "field": "datum.year" },
           "marktype": "line"
         }
