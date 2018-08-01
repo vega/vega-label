@@ -139,9 +139,10 @@ export function BitMap(_width, _height) {
     return bound.x < 0 || bound.y < 0 || bound.y2 >= this.height || bound.x2 >= this.width;
   };
 
-  this.print = function () {
+  this.print = function (id) {
+    if (!arguments.length) id = 'bitmap';
     var x, y;
-    var canvas = document.getElementById("bitmap");
+    var canvas = document.getElementById(id);
     if (!canvas) return;
     canvas.setAttribute("width", this.width);
     canvas.setAttribute("height", this.height);

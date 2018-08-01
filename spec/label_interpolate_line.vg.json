@@ -141,7 +141,7 @@
               "type": "label",
               "size": [800, 500],
               "distance": 0,
-              "priority": {"field": "datum.miles"},
+              "sort": {"field": "datum.year"},
               "anchors": ["middle", "top-left", "left", "bottom-left", "top", "bottom", "top-right", "right", "bottom-right"]
           }
       ]

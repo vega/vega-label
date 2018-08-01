@@ -24,7 +24,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "drive", "field": "miles"},
+      "domain": { "data": "drive", "field": "miles" },
       "range": "width",
       "nice": true,
       "zero": false,
@@ -33,7 +33,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "drive", "field": "gas"},
+      "domain": { "data": "drive", "field": "gas" },
       "range": "height",
       "nice": true,
       "zero": false,
@@ -99,51 +99,72 @@
     {
       "type": "line",
       "name": "baseLine",
-      "from": {"data": "drive"},
+      "from": { "data": "drive" },
       "encode": {
         "enter": {
-          "x": {"scale": "x", "field": "miles"},
-          "y": {"scale": "y", "field": "gas"},
-          "stroke": {"value": "#000"},
-          "strokeWidth": {"value": 3}
+          "interpolate": { "value": "cardinal" },
+          "x": { "scale": "x", "field": "miles" },
+          "y": { "scale": "y", "field": "gas" },
+          "stroke": { "value": "#000" },
+          "strokeWidth": { "value": 3 }
         }
       }
     },
     {
       "type": "symbol",
       "name": "basePoint",
-      "from": {"data": "drive"},
+      "from": { "data": "drive" },
       "encode": {
         "enter": {
-          "x": {"scale": "x", "field": "miles"},
-          "y": {"scale": "y", "field": "gas"},
-          "fill": {"value": "#fff"},
-          "stroke": {"value": "#000"},
-          "strokeWidth": {"value": 1},
-          "size": {"value": 50}
+          "x": { "scale": "x", "field": "miles" },
+          "y": { "scale": "y", "field": "gas" },
+          "fill": { "value": "#fff" },
+          "stroke": { "value": "#000" },
+          "strokeWidth": { "value": 1 },
+          "size": { "value": 50 }
         }
       }
     },
     {
       "type": "text",
-      "from": {"data": "basePoint"},
+      "from": { "data": "basePoint" },
+      "name": "label",
       "encode": {
         "enter": {
-          "x": {"field": "x"},
-          "y": {"field": "y"},
-          "fill": {"value": "#000"},
-          "text": {"field": "datum.year"}
+          "x": { "field": "x" },
+          "y": { "field": "y" },
+          "fill": { "value": "#000" },
+          "text": { "field": "datum.year" },
+          "zindex": { "value": 100 }
         }
       },
       "transform": [
-          {
-              "type": "label",
-              "size": [800, 500],
-              "offset": 1,
-              "sort": {"field": "datum.year"},
-              "marktype": "line"
-          }
+        {
+          "type": "label",
+          "size": [800, 500],
+          "offset": 3,
+          "sort": { "field": "datum.year" },
+          "marktype": "line"
+        }
       ]
+    },
+    {
+      "type": "rule",
+      "name": "hi",
+      "from": { "data": "label" },
+      "encode": {
+        "enter": {
+          "x": { "field": "anchor_x" },
+          "y": { "field": "anchor_y" },
+          "x2": { "field": "datum.x" },
+          "y2": { "field": "datum.y" },
+          "stroke": { "field": "fill" },
+          "strokeWidth": { "value": 1 }
+        },
+        "update": {
+          "zindex": { "value": 0 }
+        }
+      }
     }
   ]
 }
