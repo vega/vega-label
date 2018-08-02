@@ -27,6 +27,8 @@ export default function placeLabels(data, size, anchors, marks) {
   for (i = 0; i < n; i++) {
     d = data[i];
     mb = d.markBound;
+    if (mb.x1 < 0 || width < mb.x2 || mb.y1 < 0 || height < mb.y2) continue;
+    
     x1 = bitMaps.mark.bin(mb.x1);
     x2 = bitMaps.mark.bin(mb.x2); 
     y1 = bitMaps.mark.bin(mb.y1);
@@ -45,16 +47,16 @@ export default function placeLabels(data, size, anchors, marks) {
     bitMaps.mark.markInBound(x1, y1, x2, y2);
   }
 
-  bitMaps.mark.print('markBitMap');
-  bitMaps.label.print('labelBitMap');
+  // bitMaps.mark.print('markBitMap');
+  // bitMaps.label.print('labelBitMap');
 
-  var canvas = document.getElementById('all-bitmaps');
-  canvas.setAttribute("width", bitMaps.mark.bin(width));
-  canvas.setAttribute("height", bitMaps.mark.bin(height));
-  var ctx = canvas.getContext("2d");
+  // var canvas = document.getElementById('all-bitmaps');
+  // canvas.setAttribute("width", bitMaps.mark.bin(width));
+  // canvas.setAttribute("height", bitMaps.mark.bin(height));
+  // var ctx = canvas.getContext("2d");
 
-  bitMaps.mark.printContext(ctx);
-  bitMaps.label.printContext(ctx);
+  // bitMaps.mark.printContext(ctx);
+  // bitMaps.label.printContext(ctx);
 
   return data;
 }
@@ -73,7 +75,7 @@ function findAvailablePosition(datum, bitMaps, anchors) {
     datum.bound = datum.boundFun(dx, dy, inner);
     searchBound = getSearchBound(datum.bound, bitMaps.mark);
 
-    // if (bitMaps.mark.searchOutOfBound(searchBound)) continue;
+    if (bitMaps.mark.searchOutOfBound(searchBound)) continue;
     
     datum.currentPosition = i;
     datum.searchBound = searchBound;
@@ -190,6 +192,6 @@ function getMarkBitMap(data, width, height, marks) {
     }
   }
 
-  bitMap.print();
+  // bitMap.print();
   return bitMap;
 }

@@ -33,6 +33,7 @@ export default function() {
       sort,
       anchors,
       marks,
+      fill,
       label = {};
 
   label.layout = function() {
@@ -42,7 +43,7 @@ export default function() {
     
     marktype = marks.length && marks[0].length && marks[0][0].mark ? marks[0][0].mark.marktype : undefined;
 
-    var i, textWidth, textHeight, id;
+    var i, textWidth, textHeight, id, mb;
     for (i = 0; i < n; i++) {
       d = texts[i];
       textWidth = labelWidth(d.text, d.fontSize, d.font, context);
@@ -61,7 +62,7 @@ export default function() {
         textWidth: textWidth,
         textHeight: textHeight,
         // boundFun: getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], textWidth, textHeight, offset),
-        fill: d.fill,
+        fill: fill(d),
         sort: sort ? sort(d.datum) : undefined,
         markBound: {
           x1: d.x,
@@ -78,7 +79,7 @@ export default function() {
     if (marktype && marktype !== 'line') {
       var mark0 = marks[0],
           m = mark0.length,
-          markBounds = {}, mb;
+          markBounds = {};
       for (i = 0; i < m; i++) {
         id = mark0[i];
         while (id.datum) {
@@ -93,6 +94,12 @@ export default function() {
         if (markBounds[id]) {
           d.markBound = markBounds[id];
         }
+        mb = d.markBound;
+        d.boundFun = getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], d.textWidth, d.textHeight, offset);
+      }
+    } else {
+      for (i = 0; i < n; i++) {
+        d = data[i];
         mb = d.markBound;
         d.boundFun = getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], d.textWidth, d.textHeight, offset);
       }
@@ -159,10 +166,19 @@ export default function() {
 
   label.marks = function(_) {
     if (arguments.length) {
-      marks = _ ? _ : [];
+      marks = _;
       return label;
     } else {
       return sort;
+    }
+  }
+
+  label.fill = function(_) {
+    if (arguments.length) {
+      fill = functor(_);
+      return label;
+    } else {
+      return fill;
     }
   }
 
@@ -188,4 +204,8 @@ function getBoundFunction(b, w, h, offset) {
 function labelWidth (text, fontSize, font, context) {
   context.font = fontSize + "px " + font; // add other font properties
   return context.measureText(text).width;
+}
+
+function functor(d) {
+  return typeof d === "function" ? d : function() { return d; };
 }

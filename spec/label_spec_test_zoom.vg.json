@@ -3,10 +3,10 @@
   "width": 500,
   "height": 300,
   "padding": {
-    "top":    10,
-    "left":   40,
+    "top": 10,
+    "left": 40,
     "bottom": 20,
-    "right":  10
+    "right": 10
   },
   "autosize": "none",
 
@@ -27,10 +27,10 @@
     {
       "name": "hover",
       "on": [
-        {"events": "*:mouseover", "encode": "hover"},
-        {"events": "*:mouseout",  "encode": "leave"},
-        {"events": "*:mousedown", "encode": "select"},
-        {"events": "*:mouseup",   "encode": "release"}
+        { "events": "*:mouseover", "encode": "hover" },
+        { "events": "*:mouseout", "encode": "leave" },
+        { "events": "*:mousedown", "encode": "select" },
+        { "events": "*:mouseup", "encode": "release" }
       ]
     },
     {
@@ -45,14 +45,16 @@
     { "name": "yrange", "update": "[height, 0]" },
 
     {
-      "name": "down", "value": null,
+      "name": "down",
+      "value": null,
       "on": [
-        {"events": "touchend", "update": "null"},
-        {"events": "mousedown, touchstart", "update": "xy()"}
+        { "events": "touchend", "update": "null" },
+        { "events": "mousedown, touchstart", "update": "xy()" }
       ]
     },
     {
-      "name": "xcur", "value": null,
+      "name": "xcur",
+      "value": null,
       "on": [
         {
           "events": "mousedown, touchstart, touchend",
@@ -61,7 +63,8 @@
       ]
     },
     {
-      "name": "ycur", "value": null,
+      "name": "ycur",
+      "value": null,
       "on": [
         {
           "events": "mousedown, touchstart, touchend",
@@ -70,16 +73,23 @@
       ]
     },
     {
-      "name": "delta", "value": [0, 0],
+      "name": "delta",
+      "value": [0, 0],
       "on": [
         {
           "events": [
             {
-              "source": "window", "type": "mousemove", "consume": true,
-              "between": [{"type": "mousedown"}, {"source": "window", "type": "mouseup"}]
+              "source": "window",
+              "type": "mousemove",
+              "consume": true,
+              "between": [
+                { "type": "mousedown" },
+                { "source": "window", "type": "mouseup" }
+              ]
             },
             {
-              "type": "touchmove", "consume": true,
+              "type": "touchmove",
+              "consume": true,
               "filter": "event.touches.length === 1"
             }
           ],
@@ -89,20 +99,25 @@
     },
 
     {
-      "name": "anchor", "value": [0, 0],
+      "name": "anchor",
+      "value": [0, 0],
       "on": [
         {
           "events": "wheel",
           "update": "[invert('xscale', x()), invert('yscale', y())]"
         },
         {
-          "events": {"type": "touchstart", "filter": "event.touches.length===2"},
+          "events": {
+            "type": "touchstart",
+            "filter": "event.touches.length===2"
+          },
           "update": "[(xdom[0] + xdom[1]) / 2, (ydom[0] + ydom[1]) / 2]"
         }
       ]
     },
     {
-      "name": "zoom", "value": 1,
+      "name": "zoom",
+      "value": 1,
       "on": [
         {
           "events": "wheel!",
@@ -110,86 +125,107 @@
           "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
         },
         {
-          "events": {"signal": "dist2"},
+          "events": { "signal": "dist2" },
           "force": true,
           "update": "dist1 / dist2"
         }
       ]
     },
     {
-      "name": "dist1", "value": 0,
+      "name": "dist1",
+      "value": 0,
       "on": [
         {
-          "events": {"type": "touchstart", "filter": "event.touches.length===2"},
+          "events": {
+            "type": "touchstart",
+            "filter": "event.touches.length===2"
+          },
           "update": "pinchDistance(event)"
         },
         {
-          "events": {"signal": "dist2"},
+          "events": { "signal": "dist2" },
           "update": "dist2"
         }
       ]
     },
     {
-      "name": "dist2", "value": 0,
-      "on": [{
-        "events": {"type": "touchmove", "consume": true, "filter": "event.touches.length===2"},
-        "update": "pinchDistance(event)"
-      }]
+      "name": "dist2",
+      "value": 0,
+      "on": [
+        {
+          "events": {
+            "type": "touchmove",
+            "consume": true,
+            "filter": "event.touches.length===2"
+          },
+          "update": "pinchDistance(event)"
+        }
+      ]
     },
 
     {
-      "name": "xdom", "update": "slice(xext)", "react": false,
+      "name": "xdom",
+      "update": "slice(xext)",
+      "react": false,
       "on": [
         {
-          "events": {"signal": "delta"},
-          "update": "[xcur[0] + span(xcur) * delta[0] / width, xcur[1] + span(xcur) * delta[0] / width]"
+          "events": { "signal": "delta" },
+          "update":
+            "[xcur[0] + span(xcur) * delta[0] / width, xcur[1] + span(xcur) * delta[0] / width]"
         },
         {
-          "events": {"signal": "zoom"},
-          "update": "[anchor[0] + (xdom[0] - anchor[0]) * zoom, anchor[0] + (xdom[1] - anchor[0]) * zoom]"
+          "events": { "signal": "zoom" },
+          "update":
+            "[anchor[0] + (xdom[0] - anchor[0]) * zoom, anchor[0] + (xdom[1] - anchor[0]) * zoom]"
         }
       ]
     },
     {
-      "name": "ydom", "update": "slice(yext)", "react": false,
+      "name": "ydom",
+      "update": "slice(yext)",
+      "react": false,
       "on": [
         {
-          "events": {"signal": "delta"},
-          "update": "[ycur[0] + span(ycur) * delta[1] / height, ycur[1] + span(ycur) * delta[1] / height]"
+          "events": { "signal": "delta" },
+          "update":
+            "[ycur[0] + span(ycur) * delta[1] / height, ycur[1] + span(ycur) * delta[1] / height]"
         },
         {
-          "events": {"signal": "zoom"},
-          "update": "[anchor[1] + (ydom[0] - anchor[1]) * zoom, anchor[1] + (ydom[1] - anchor[1]) * zoom]"
+          "events": { "signal": "zoom" },
+          "update":
+            "[anchor[1] + (ydom[0] - anchor[1]) * zoom, anchor[1] + (ydom[1] - anchor[1]) * zoom]"
         }
       ]
     },
     {
       "name": "size",
-      "update": "clamp(20 / span(xdom), 1, 1000)"
+      "update": "clamp(20 / span(xdom), 1, 1000) * 10"
     }
   ],
 
   "data": [
     {
       "name": "points",
-      "url": "../data/normal-2d.json",
+      "url": "../data/cars.json",
       "transform": [
-        { "type": "extent", "field": "u", "signal": "xext" },
-        { "type": "extent", "field": "v", "signal": "yext" }
+        { "type": "extent", "field": "Miles_per_Gallon", "signal": "xext" },
+        { "type": "extent", "field": "Weight_in_lbs", "signal": "yext" }
       ]
     }
   ],
 
   "scales": [
     {
-      "name": "xscale", "zero": false,
-      "domain": {"signal": "xdom"},
-      "range": {"signal": "xrange"}
+      "name": "xscale",
+      "zero": false,
+      "domain": { "signal": "xdom" },
+      "range": { "signal": "xrange" }
     },
     {
-      "name": "yscale", "zero": false,
-      "domain": {"signal": "ydom"},
-      "range": {"signal": "yrange"}
+      "name": "yscale",
+      "zero": false,
+      "domain": { "signal": "ydom" },
+      "range": { "signal": "yrange" }
     }
   ],
 
@@ -197,60 +233,80 @@
     {
       "scale": "xscale",
       "orient": "top",
-      "offset": {"signal": "xoffset"}
+      "offset": { "signal": "xoffset" }
     },
     {
       "scale": "yscale",
       "orient": "right",
-      "offset": {"signal": "yoffset"}
+      "offset": { "signal": "yoffset" }
     }
   ],
 
   "marks": [
     {
       "type": "symbol",
-      "from": {"data": "points"},
+      "from": { "data": "points" },
       "name": "basePoint",
       "clip": true,
       "encode": {
         "enter": {
-          "fillOpacity": {"value": 0.6},
-          "fill": {"value": "steelblue"}
+          "fillOpacity": { "value": 0.6 },
+          "fill": { "value": "steelblue" }
         },
         "update": {
-          "x": {"scale": "xscale", "field": "u"},
-          "y": {"scale": "yscale", "field": "v"},
-          "size": {"signal": "size"}
+          "x": { "scale": "xscale", "field": "Miles_per_Gallon" },
+          "y": { "scale": "yscale", "field": "Weight_in_lbs" },
+          "size": { "signal": "size" }
         },
-        "hover":   { "fill": {"value": "firebrick"} },
-        "leave":   { "fill": {"value": "steelblue"} },
-        "select":  { "size": {"signal": "size", "mult": 5} },
-        "release": { "size": {"signal": "size"} }
+        "hover": { "fill": { "value": "firebrick" } },
+        "leave": { "fill": { "value": "steelblue" } },
+        "select": { "size": { "signal": "size", "mult": 5 } },
+        "release": { "size": { "signal": "size" } }
       }
     },
     {
-        "name": "label",
-        "type": "text",
-        "from": {"data": "points"},
-        "clip": true,
-        "encode": {
-          "enter": {
-            "fill": {"value": "#000"},
-            "text": {"value": "hi"},
-            "fontSize": {"value": 14}
-          },
-          "update": {
-            "x": {"scale": "xscale", "field": "u"},
-            "y": {"scale": "yscale", "field": "v"}
-          },
-          "select":  { "size": {"signal": "size", "mult": 5} },
-          "release": { "size": {"signal": "size"} }
+      "name": "label",
+      "type": "text",
+      "from": { "data": "points" },
+      "clip": true,
+      "encode": {
+        "enter": {
+          "fill": { "value": "#000" },
+          "text": { "field": "Origin" },
+          "fontSize": { "value": 14 }
         },
-        "transform": [{
+        "update": {
+          "x": { "scale": "xscale", "field": "Miles_per_Gallon" },
+          "y": { "scale": "yscale", "field": "Weight_in_lbs" }
+        },
+        "select": { "size": { "signal": "size", "mult": 5 } },
+        "release": { "size": { "signal": "size" } }
+      },
+      "transform": [
+        {
           "type": "label",
           "size": [800, 500],
+          "offset": 3,
+          "fill": "#000",
           "marks": ["basePoint"]
-        }]
+        }
+      ]
+    },
+    {
+      "type": "rule",
+      "from": { "data": "label" },
+      "encode": {
+        "enter": {
+          "strokeWidth": { "value": 1 }
+        },
+        "update": {
+          "x": { "field": "anchors.x" },
+          "y": { "field": "anchors.y" },
+          "x2": { "field": "anchors.x2" },
+          "y2": { "field": "anchors.y2" },
+          "stroke": { "field": "fill" }
+        }
       }
+    }
   ]
 }

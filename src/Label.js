@@ -27,11 +27,11 @@ Label.Definition = {
   "metadata": {"modifies": true},
   "params": [
     { "name": "size", "type": "number", "array": true, "length": 2 },
-    { "name": "offset", "type": "number", "default": 0},
+    { "name": "offset", "type": "number", "default": 1},
     { "name": "sort", "type": "field" },
     { "name": "anchors", "type": "string", "array": true, "default": defaultAnchors },
     { "name": "marks", "type": "data", "array": true },
-    { "name": "marktype", "type": "string" },
+    { "name": "fill", "type": "string", "expr": true, "default": "#000" },
     { "name": "as", "type": "string", "array": true, "length": Output.length, "default": Output }
   ]
 };
@@ -49,18 +49,17 @@ prototype.transform = function(_, pulse) {
 
   var data = pulse.materialize(pulse.SOURCE).source,
       labelLayout = this.value,
-      as = _.as ? _.as : Output,
-      offset = _.offset ? _.offset : 0,
-      anchors = _.anchors ? _.anchors : defaultAnchors;
+      as = _.as ? _.as : Output;
 
   // configure layout
   var labels = labelLayout
       .texts(data)
       .size(_.size)
       .sort(_.sort)
-      .offset(offset)
-      .anchors(anchors)
-      .marks(_.marks)
+      .offset(_.offset ? _.offset : 1)
+      .anchors(_.anchors ? _.anchors : defaultAnchors)
+      .marks(_.marks ? _.marks : [])
+      .fill(_.fill ? _.fill : "#000")
       .layout(),
       n = data.length;
 
