@@ -3,23 +3,20 @@
 Labeling algorithm for Vega.
 
 This module provides the following Vega post encoding transform:
+
 - **Label**
 
 ## Syntax for label transform
+
 ```
 "transform": [
   {
     "type": "label",
-    "size": [800, 500],          // size of the chart [width, height]
-    "offset": 2.5,               // offset from the boundbox of mark
-    "sort": {                    // order for labeling
-      "field": "datum.year"
-    },
-    "anchors": ["top", "right"]  // the order of positions to be considered by vega-label for placing a label
-    "marks": [                   // The data of mark that vega-label avoids when placing labels
-      "basePoint",
-      "baseLine"
-    ] 
+    "size": [800, 500],
+    "offset": 2.5,
+    "sort": { "field": "datum.year" },
+    "anchors": [ "top", "right" ]
+    "marks": [ "basePoint", "baseLine" ]
   }
 ]
 ```
