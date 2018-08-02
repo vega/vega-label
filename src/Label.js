@@ -1,4 +1,5 @@
 /*eslint no-console: "warn"*/
+/*eslint no-unused-vars: "warn"*/
 import labelLayout from './LabelLayout';
 import {Transform} from 'vega-dataflow';
 import {inherits, isFunction} from 'vega-util';
@@ -6,6 +7,16 @@ import {inherits, isFunction} from 'vega-util';
 var Output = ['x', 'y', 'z', 'fill', 'align', 'baseline', 'anchor_x', 'anchor_y'];
 
 var Params = ['offset'];
+
+var defaultAnchors = [
+  "top-left",
+  "left",
+  "bottom-left",
+  "top", "bottom",
+  "top-right",
+  "right",
+  "bottom-right"
+];
 
 export default function Label(params) {
   Transform.call(this, labelLayout(), params);
@@ -18,7 +29,8 @@ Label.Definition = {
     { "name": "size", "type": "number", "array": true, "length": 2 },
     { "name": "offset", "type": "number", "default": 0},
     { "name": "sort", "type": "field" },
-    { "name": "anchors", "type": "string", "array": true, "default": ["top-left", "left", "bottom-left", "top", "bottom", "top-right", "right", "bottom-right"] },
+    { "name": "anchors", "type": "string", "array": true, "default": defaultAnchors },
+    { "name": "marks", "type": "data", "array": true },
     { "name": "marktype", "type": "string" },
     { "name": "as", "type": "string", "array": true, "length": Output.length, "default": Output }
   ]
@@ -39,7 +51,7 @@ prototype.transform = function(_, pulse) {
       labelLayout = this.value,
       as = _.as ? _.as : Output,
       offset = _.offset ? _.offset : 0,
-      anchors = _.anchors ? _.anchors : ["top-left", "left", "bottom-left", "top", "bottom", "top-right", "right", "bottom-right"];
+      anchors = _.anchors ? _.anchors : defaultAnchors;
 
   // configure layout
   var labels = labelLayout
@@ -48,7 +60,7 @@ prototype.transform = function(_, pulse) {
       .sort(_.sort)
       .offset(offset)
       .anchors(anchors)
-      .marktype(_.marktype)
+      .marks(_.marks)
       .layout(),
       n = data.length;
 

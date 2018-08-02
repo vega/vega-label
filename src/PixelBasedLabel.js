@@ -4,7 +4,7 @@ import BitMap from './BitMap';
 import MultiBitMap from './MultiBitMap';
 import { Marks } from 'vega-scenegraph';
 
-export default function placeLabels(data, size, marktype, anchors) {
+export default function placeLabels(data, size, marktype, anchors, marks) {
   var width = 0, height = 0,
       bitMaps = {},
       n = data.length,
@@ -21,7 +21,7 @@ export default function placeLabels(data, size, marktype, anchors) {
       height = Math.max(height, d.y + d.textHeight);
     }
   }
-  bitMaps.mark = getMarkBitMap(data, width, height, marktype);
+  bitMaps.mark = getMarkBitMap(data, width, height, marktype, marks);
   bitMaps.label = new BitMap(width, height);
 
   for (i = 0; i < n; i++) {
@@ -153,61 +153,48 @@ function checkCollision(b, bitMap) {
   return bitMap.getInBoundBinned(b.x, b.y, b.x2, b.y2);
 }
 
-function getMarkBitMap(data, width, height, marktype) {
+function getMarkBitMap(data, width, height, marktype, marks) {
   var n = data.length;
 
   if (!n) return null;
-  var bitMap = new MultiBitMap(width, height), i;
+  var bitMap = new MultiBitMap(width, height), i, mb;
 
-  var canvas = document.getElementById('canvasrender');
-  var context = canvas.getContext('2d');
-
-  canvas.setAttribute("width", width);
-  canvas.setAttribute("height", height);
-  
-  var scene;
-
-  switch (marktype) {
-    case 'line':
-      scene = { items: [] };
-      for (i = 0; i < n; i++) {
-        scene.items.push({
-          interpolate: 'cardinal',
-          stroke: '#000',
-          strokeWidth: 3,
-          x: data[i].x,
-          y: data[i].y
-        });
-      }
-      Marks.line.draw(context, scene, null);
-
-    case 'symbol':
-    case 'rect':
-      scene = { items: [] };
-      for (i = 0; i < n; i++) {
-        scene.items.push(data[i].datum.datum);
-      }
-      if (marktype === 'rect') {
-        Marks.rect.draw(context, scene, null);
-      } else {
-        Marks.symbol.draw(context, scene, null);
-      }
-      break;
-
-    default:
-      for (i = 0; i < n; i++) {
-        bitMap.mark(data[i].x, data[i].y);
-      }
-      return bitMap;
+  if (marktype === 'rect' || marktype === 'symbol') {
+    for (i = 0; i < n; i++) {
+      mb = data[i].markBound;
+      bitMap.markInBound(mb.x1, mb.y1, mb.x2, mb.y2);
+    }
+  } else {
+    for (i = 0; i < n; i++) {
+      bitMap.mark(data[i].x, data[i].y);
+    }
   }
 
-  var imageData = context.getImageData(0, 0, width, height),
-      canvasBuffer = new Uint32Array(imageData.data.buffer);
+  if (marks.length) {
+    var canvas = document.getElementById('canvasrender');
+    var context = canvas.getContext('2d');
+  
+    canvas.setAttribute("width", width);
+    canvas.setAttribute("height", height);
+    
+    var m = marks.length,
+        items;
 
-  for (var y = 0; y < height; y++) { // make it faster by not checking every pixel.
-    for (var x = 0; x < width; x++) {
-      if (canvasBuffer[(y * width) + x] & 0xff000000) {
-        bitMap.mark(x, y);
+    for (i = 0; i < m; i++) {
+      items = marks[i];
+      if (!items.length) continue;
+
+      Marks[items[0].mark.marktype].draw(context, {items: items}, null);
+    }
+  
+    var imageData = context.getImageData(0, 0, width, height),
+        canvasBuffer = new Uint32Array(imageData.data.buffer);
+  
+    for (var y = 0; y < height; y++) { // make it faster by not checking every pixel.
+      for (var x = 0; x < width; x++) {
+        if (canvasBuffer[(y * width) + x] & 0xff000000) {
+          bitMap.mark(x, y);
+        }
       }
     }
   }

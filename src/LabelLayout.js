@@ -32,19 +32,19 @@ export default function() {
       offset,
       sort,
       anchors,
-      marktypeFromUser,
+      marks,
       label = {};
 
   label.layout = function() {
     var n = dataFromMark.length,
         md, data = Array(n),
-        marktype = marktypeFromUser ? marktypeFromUser : (n && dataFromMark[0].datum && dataFromMark[0].datum.mark ? dataFromMark[0].datum.mark.marktype : undefined);
+        marktype = n && dataFromMark[0].datum && dataFromMark[0].datum.mark ? dataFromMark[0].datum.mark.marktype : undefined;
 
     for (var i = 0; i < n; i++) {
       md = dataFromMark[i];
       var textWidth = labelWidth(md.text, md.fontSize, md.font, context),
           textHeight = md.fontSize,
-          mb = marktype && md.datum.bounds && md.datum.mark.marktype !== 'line' ? md.datum.bounds : {
+          mb = marktype && marktype !== 'line' && md.datum.bounds ? md.datum.bounds : {
             x1: md.x,
             x2: md.x,
             y1: md.y,
@@ -67,7 +67,7 @@ export default function() {
 
     if (sort) data.sort(function(a, b) { return a.sort - b.sort; });
 
-    return placeLabelsPixel(data, size, marktype, anchors);
+    return placeLabelsPixel(data, size, marktype, anchors, marks);
   };
 
   label.dataFromMark = function(_) {
@@ -124,12 +124,12 @@ export default function() {
     }
   }
 
-  label.marktype = function(_) {
+  label.marks = function(_) {
     if (arguments.length) {
-      marktypeFromUser = _;
+      marks = _ ? _ : [];
       return label;
     } else {
-      return marktypeFromUser;
+      return sort;
     }
   }
 

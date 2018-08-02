@@ -8,13 +8,15 @@ This module provides the following Vega post encoding transform:
 ## Syntax for label transform
 ```
 "transform": [
-    {
-        "type": "label",
-        "size": [800, 500],                 // size of the chart [width, height]
-        "offset": 2.5,                      // offset from the boundbox of mark
-        "sort": { "field": "datum.year" },  // order for labeling
-        "anchors": ["top", "right"]         // the order of positions to be considered by bega-label to place a label
-    }
+  {
+    "type": "label",
+    "size": [800, 500],          // size of the chart [width, height]
+    "offset": 2.5,               // offset from the boundbox of mark
+    "sort": {                    // order for labeling
+      "field": "datum.year"
+    },
+    "anchors": ["top", "right"]  // the order of positions to be considered by vega-label for placing a label
+  }
 ]
 ```
 
