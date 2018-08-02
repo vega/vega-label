@@ -99,6 +99,7 @@
     {
       "type": "symbol",
       "from": {"data": "source"},
+      "name": "basePoint",
       "encode": {
         "update": {
           "x": {"scale": "x", "field": "Horsepower"},
@@ -124,7 +125,6 @@
       "from": {"data": "source"},
       "encode": {
         "enter": {
-
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
           "text": {"field": "Acceleration"}
@@ -133,8 +133,9 @@
       "transform": [
         {
           "type": "label",
-          "padding": 5,
-          "size": [400, 400]
+          "offset": 5,
+          "size": [400, 400],
+          "marks": [ "basePoint" ]
         }
       ]
     }

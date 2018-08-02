@@ -54,13 +54,12 @@
       }
     },
     {
-      "name": "dummyText",
       "type": "text",
-      "from": {"data": "bar"},
+      "from": {"data": "table"},
       "encode": {
         "enter": {
           "fontSize": {"value": 25},
-          "text": {"field": "datum.amount"}
+          "text": {"field": "amount"}
         }
       },
       "transform": [
@@ -68,7 +67,8 @@
           "type": "label",
           "size": [700, 500],
           "offset": 15,
-          "anchors": ["inner-right", "right"]
+          "anchors": ["inner-right", "right"],
+          "marks": [ "bar" ]
         }
       ]
     }

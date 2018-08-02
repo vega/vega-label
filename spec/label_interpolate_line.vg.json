@@ -127,22 +127,23 @@
     },
     {
       "type": "text",
-      "from": {"data": "basePoint"},
+      "from": {"data": "drive"},
       "encode": {
         "enter": {
-          "x": {"field": "x"},
-          "y": {"field": "y"},
+          "x": {"scale": "x", "field": "miles"},
+          "y": {"scale": "y", "field": "gas"},
           "fill": {"value": "#000"},
-          "text": {"field": "datum.year"}
+          "text": {"field": "year"}
         }
       },
       "transform": [
           {
               "type": "label",
               "size": [800, 500],
-              "distance": 0,
-              "sort": {"field": "datum.year"},
-              "anchors": ["middle", "top-left", "left", "bottom-left", "top", "bottom", "top-right", "right", "bottom-right"]
+              "offset": 2,
+              "sort": {"field": "year"},
+              "anchors": ["middle", "top-left", "left", "bottom-left", "top", "bottom", "top-right", "right", "bottom-right"],
+              "marks": [ "basePoint", "baseLine" ]
           }
       ]
     }
