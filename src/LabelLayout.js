@@ -2,8 +2,8 @@
 /*eslint no-console: "warn"*/
 /*eslint no-empty: "warn"*/
 import { canvas } from 'vega-canvas';
-import placeLabelsParticle from './ParticleBasedLabel';
 import placeLabelsPixel from './PixelBasedLabel';
+import { tupleid } from 'vega-dataflow';
 
 var TOP = 0x0,
     MIDDLE = 0x1 << 0x2,
@@ -27,7 +27,7 @@ var anchorsMap = {
 
 export default function() {
   var context = canvas().getContext("2d"),
-      dataFromMark = [],
+      texts = [],
       size,
       offset,
       sort,
@@ -36,46 +36,79 @@ export default function() {
       label = {};
 
   label.layout = function() {
-    var n = dataFromMark.length,
-        md, data = Array(n),
-        marktype = n && dataFromMark[0].datum && dataFromMark[0].datum.mark ? dataFromMark[0].datum.mark.marktype : undefined;
+    var n = texts.length,
+        d, data = Array(n),
+        marktype = n && texts[0].datum && texts[0].datum.mark ? texts[0].datum.mark.marktype : undefined;
+    
+    marktype = marks.length && marks[0].length && marks[0][0].mark ? marks[0][0].mark.marktype : undefined;
 
-    for (var i = 0; i < n; i++) {
-      md = dataFromMark[i];
-      var textWidth = labelWidth(md.text, md.fontSize, md.font, context),
-          textHeight = md.fontSize,
-          mb = marktype && marktype !== 'line' && md.datum.bounds ? md.datum.bounds : {
-            x1: md.x,
-            x2: md.x,
-            y1: md.y,
-            y2: md.y
-          };
+    var i, textWidth, textHeight, id;
+    for (i = 0; i < n; i++) {
+      d = texts[i];
+      textWidth = labelWidth(d.text, d.fontSize, d.font, context);
+      textHeight = d.fontSize;
+
+      if (marktype && marktype !== 'line') {
+        id = d;
+        while (id.datum) {
+          id = id.datum;
+        }
+        id = tupleid(id);
+      }
 
       data[i] = {
-        fontSize: md.fontSize,
-        x: md.x,
-        y: md.y,
+        fontSize: d.fontSize,
         textWidth: textWidth,
         textHeight: textHeight,
-        boundFun: getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], textWidth, textHeight, offset),
-        fill: md.fill,
-        sort: sort ? sort(md.datum) : undefined,
-        markBound: mb,
-        datum: md
+        // boundFun: getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], textWidth, textHeight, offset),
+        fill: d.fill,
+        sort: sort ? sort(d.datum) : undefined,
+        markBound: {
+          x1: d.x,
+          x2: d.x,
+          y1: d.y,
+          y2: d.y
+        },
+        id: id,
+        anchors: { x: d.x, y: d.y },
+        datum: d
       };
+    }
+
+    if (marktype && marktype !== 'line') {
+      var mark0 = marks[0],
+          m = mark0.length,
+          markBounds = {}, mb;
+      for (i = 0; i < m; i++) {
+        id = mark0[i];
+        while (id.datum) {
+          id = id.datum;
+        }
+        markBounds[tupleid(id)] = mark0[i].bounds;
+      }
+
+      for (i = 0; i < n; i++) {
+        d = data[i];
+        id = d.id;
+        if (markBounds[id]) {
+          d.markBound = markBounds[id];
+        }
+        mb = d.markBound;
+        d.boundFun = getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], d.textWidth, d.textHeight, offset);
+      }
     }
 
     if (sort) data.sort(function(a, b) { return a.sort - b.sort; });
 
-    return placeLabelsPixel(data, size, marktype, anchors, marks);
+    return placeLabelsPixel(data, size, anchors, marks);
   };
 
-  label.dataFromMark = function(_) {
+  label.texts = function(_) {
     if (arguments.length) {
-      dataFromMark = _;
+      texts = _;
       return label;
     } else {
-      return dataFromMark;
+      return texts;
     }
   };
 

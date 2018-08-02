@@ -4,7 +4,7 @@ import labelLayout from './LabelLayout';
 import {Transform} from 'vega-dataflow';
 import {inherits, isFunction} from 'vega-util';
 
-var Output = ['x', 'y', 'z', 'fill', 'align', 'baseline', 'anchor_x', 'anchor_y'];
+var Output = ['x', 'y', 'z', 'fill', 'align', 'baseline', 'anchors'];
 
 var Params = ['offset'];
 
@@ -55,7 +55,7 @@ prototype.transform = function(_, pulse) {
 
   // configure layout
   var labels = labelLayout
-      .dataFromMark(data)
+      .texts(data)
       .size(_.size)
       .sort(_.sort)
       .offset(offset)
@@ -74,8 +74,7 @@ prototype.transform = function(_, pulse) {
     t[as[3]] = l.fill;
     t[as[4]] = 'center';
     t[as[5]] = 'middle';
-    t[as[6]] = l.anchor_x;
-    t[as[7]] = l.anchor_y;
+    t[as[6]] = l.anchors;
   }
 
   return pulse.reflow(mod).modifies(as);

@@ -127,15 +127,14 @@
     },
     {
       "type": "text",
-      "from": { "data": "basePoint" },
+      "from": { "data": "drive" },
       "name": "label",
       "encode": {
         "enter": {
-          "x": { "field": "x" },
-          "y": { "field": "y" },
+          "x": { "scale": "x", "field": "miles" },
+          "y": { "scale": "y", "field": "gas" },
           "fill": { "value": "#000" },
-          "text": { "field": "datum.year" },
-          "zindex": { "value": 100 }
+          "text": { "field": "year" }
         }
       },
       "transform": [
@@ -143,26 +142,22 @@
           "type": "label",
           "size": [800, 500],
           "offset": 2.5,
-          "sort": { "field": "datum.year" },
-          "marks": [ "baseLine" ]
+          "sort": { "field": "year" },
+          "marks": [ "basePoint", "baseLine" ]
         }
       ]
     },
     {
       "type": "rule",
-      "name": "hi",
       "from": { "data": "label" },
       "encode": {
         "enter": {
-          "x": { "field": "anchor_x" },
-          "y": { "field": "anchor_y" },
-          "x2": { "field": "datum.x" },
-          "y2": { "field": "datum.y" },
+          "x": { "field": "anchors.x" },
+          "y": { "field": "anchors.y" },
+          "x2": { "field": "anchors.x2" },
+          "y2": { "field": "anchors.y2" },
           "stroke": { "field": "fill" },
           "strokeWidth": { "value": 1 }
-        },
-        "update": {
-          "zindex": { "value": 0 }
         }
       }
     }

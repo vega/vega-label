@@ -4,7 +4,7 @@ import BitMap from './BitMap';
 import MultiBitMap from './MultiBitMap';
 import { Marks } from 'vega-scenegraph';
 
-export default function placeLabels(data, size, marktype, anchors, marks) {
+export default function placeLabels(data, size, anchors, marks) {
   var width = 0, height = 0,
       bitMaps = {},
       n = data.length,
@@ -21,7 +21,7 @@ export default function placeLabels(data, size, marktype, anchors, marks) {
       height = Math.max(height, d.y + d.textHeight);
     }
   }
-  bitMaps.mark = getMarkBitMap(data, width, height, marktype, marks);
+  bitMaps.mark = getMarkBitMap(data, width, height, marks);
   bitMaps.label = new BitMap(width, height);
 
   for (i = 0; i < n; i++) {
@@ -64,10 +64,6 @@ function findAvailablePosition(datum, bitMaps, anchors) {
       n = anchors.length,
       dx, dy, inner;
 
-
-  if (datum.datum.datum.datum.year === 1975) {
-    dx = 1;
-  }
   datum.labelPlaced = false;
   for (i = datum.currentPosition; i < n; i++) {
     dx = (anchors[i] & 0x3) - 1;
@@ -95,8 +91,8 @@ function findAvailablePosition(datum, bitMaps, anchors) {
     ) {
       datum.labelPlaced = true;
       var _inner = inner ? -1 : 1;
-      datum.anchor_x = datum.bound[dx * _inner === 0 ? 'xc' : (dx * _inner < 0 ? 'x2' : 'x')];
-      datum.anchor_y = datum.bound[dy * _inner === 0 ? 'yc' : (dy * _inner < 0 ? 'y2' : 'y')];
+      datum.anchors.x2 = datum.bound[dx * _inner === 0 ? 'xc' : (dx * _inner < 0 ? 'x2' : 'x')];
+      datum.anchors.y2 = datum.bound[dy * _inner === 0 ? 'yc' : (dy * _inner < 0 ? 'y2' : 'y')];
       break;
     }
   }
@@ -106,27 +102,27 @@ function isIn(b, mb) {
   return mb.x1 <= b.x && b.x2 <= mb.x2 && mb.y1 <= b.y && b.y2 <= mb.y2;
 }
 
-function getExtendedSearchBound(d, bm, dx, dy) {
-  var bound = d.bound,
-      w = d.textWidth * dx,
-      h = d.textHeight * dy;
+// function getExtendedSearchBound(d, bm, dx, dy) {
+//   var bound = d.bound,
+//       w = d.textWidth * dx,
+//       h = d.textHeight * dy;
   
-  var _x = bm.bin(bound.x + (w < 0 ? w : 0)),
-      _y = bm.bin(bound.y + (h < 0 ? h : 0)),
-      _x2 = bm.bin(bound.x2 + (w > 0 ? w : 0)),
-      _y2 = bm.bin(bound.y2 + (h > 0 ? h : 0));
+//   var _x = bm.bin(bound.x + (w < 0 ? w : 0)),
+//       _y = bm.bin(bound.y + (h < 0 ? h : 0)),
+//       _x2 = bm.bin(bound.x2 + (w > 0 ? w : 0)),
+//       _y2 = bm.bin(bound.y2 + (h > 0 ? h : 0));
 
-  _x = _x < 0 ? 0 : _x;
-  _y = _y < 0 ? 0 : _y;
-  _x2 = _x2 >= bm.width ? bm.width - 1 : _x2;
-  _y2 = _y2 >= bm.height ? bm.height - 1 : _y2;
-  return {
-    x: _x,
-    y: _y,
-    x2: _x2,
-    y2: _y2,
-  };
-}
+//   _x = _x < 0 ? 0 : _x;
+//   _y = _y < 0 ? 0 : _y;
+//   _x2 = _x2 >= bm.width ? bm.width - 1 : _x2;
+//   _y2 = _y2 >= bm.height ? bm.height - 1 : _y2;
+//   return {
+//     x: _x,
+//     y: _y,
+//     x2: _x2,
+//     y2: _y2,
+//   };
+// }
 
 function getSearchBound(bound, bm) {
   var _x = bm.bin(bound.x),
@@ -153,22 +149,11 @@ function checkCollision(b, bitMap) {
   return bitMap.getInBoundBinned(b.x, b.y, b.x2, b.y2);
 }
 
-function getMarkBitMap(data, width, height, marktype, marks) {
+function getMarkBitMap(data, width, height, marks) {
   var n = data.length;
 
   if (!n) return null;
-  var bitMap = new MultiBitMap(width, height), i, mb;
-
-  if (marktype === 'rect' || marktype === 'symbol') {
-    for (i = 0; i < n; i++) {
-      mb = data[i].markBound;
-      bitMap.markInBound(mb.x1, mb.y1, mb.x2, mb.y2);
-    }
-  } else {
-    for (i = 0; i < n; i++) {
-      bitMap.mark(data[i].x, data[i].y);
-    }
-  }
+  var bitMap = new MultiBitMap(width, height), i;
 
   if (marks.length) {
     var canvas = document.getElementById('canvasrender');
@@ -196,6 +181,12 @@ function getMarkBitMap(data, width, height, marktype, marks) {
           bitMap.mark(x, y);
         }
       }
+    }
+  } else {
+    var d;
+    for (i = 0; i < n; i++) {
+      d = data[i]
+      bitMap.mark(d.x, d.y);
     }
   }
 
