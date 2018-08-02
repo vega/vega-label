@@ -49,14 +49,6 @@ export default function() {
       textWidth = labelWidth(d.text, d.fontSize, d.font, context);
       textHeight = d.fontSize;
 
-      if (marktype && marktype !== 'line') {
-        id = d;
-        while (id.datum) {
-          id = id.datum;
-        }
-        id = tupleid(id);
-      }
-
       data[i] = {
         fontSize: d.fontSize,
         textWidth: textWidth,
@@ -70,7 +62,7 @@ export default function() {
           y1: d.y,
           y2: d.y
         },
-        id: id,
+        id: marktype && marktype !== 'line' ? getTupleId(d) : undefined,
         anchors: { x: d.x, y: d.y },
         datum: d
       };
@@ -81,11 +73,7 @@ export default function() {
           m = mark0.length,
           markBounds = {};
       for (i = 0; i < m; i++) {
-        id = mark0[i];
-        while (id.datum) {
-          id = id.datum;
-        }
-        markBounds[tupleid(id)] = mark0[i].bounds;
+        markBounds[getTupleId(mark0[i])] = mark0[i].bounds;
       }
 
       for (i = 0; i < n; i++) {
@@ -208,4 +196,11 @@ function labelWidth (text, fontSize, font, context) {
 
 function functor(d) {
   return typeof d === "function" ? d : function() { return d; };
+}
+
+function getTupleId (item) {
+  while (item.datum) {
+    item = item.datum;
+  }
+  return tupleid(item);
 }
