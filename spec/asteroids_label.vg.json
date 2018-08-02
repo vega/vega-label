@@ -1,0 +1,116 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "width": 1000,
+  "height": 1000,
+  "padding": 5,
+
+  "data": [
+    {
+      "name": "asteroids",
+      "url": "data/gaia_asteroids_pos_name.json",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum['denomination'] != null && datum['ra'] != null && datum['dec'] != null"
+        }
+      ]
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "round": true,
+      "nice": true,
+      "zero": true,
+      "domain": {"data": "asteroids", "field": "dec"},
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "round": true,
+      "nice": true,
+      "zero": true,
+      "domain": {"data": "asteroids", "field": "ra"},
+      "range": "height"
+    }
+  ],
+
+  "axes": [
+    {
+      "scale": "x",
+      "grid": true,
+      "domain": false,
+      "orient": "bottom",
+      "tickCount": 5,
+      "title": "dec"
+    },
+    {
+      "scale": "y",
+      "grid": true,
+      "domain": false,
+      "orient": "left",
+      "titlePadding": 5,
+      "title": "ra"
+    }
+  ],
+
+  "marks": [
+    {
+      "name": "base_mark",
+      "type": "symbol",
+      "from": {"data": "asteroids"},
+      "encode": {
+        "update": {
+          "x": {"scale": "x", "field": "dec"},
+          "y": {"scale": "y", "field": "ra"},
+          "size": { "value": 10 },
+          "shape": {"value": "circle"},
+          "strokeWidth": {"value": 2},
+          "opacity": {"value": 0.5},
+          "stroke": {"value": "#4682b4"},
+          "fill": {"value": "transparent"}
+        }
+      }
+    },
+    {
+        "name": "label",
+        "type": "text",
+        "from": {"data": "asteroids"},
+        "encode": {
+            "enter": {
+                "x": { "scale": "x", "field": "dec" },
+                "y": { "scale": "y", "field": "ra" },
+                "fill": { "value": "#ccc" },
+                "text": { "field": "denomination" },
+                "opacity": {"value": 0.1}
+            }
+        },
+        "transform": [
+          {
+            "type": "label",
+            "size": [1000, 1000],
+            "offset": 2.5,
+            "marks": [ "base_mark" ],
+            "fill": "#000"
+          }
+        ]
+    },
+    {
+      "type": "rule",
+      "from": { "data": "label" },
+      "encode": {
+        "enter": {
+          "x": { "field": "anchors.x" },
+          "y": { "field": "anchors.y" },
+          "x2": { "field": "anchors.x2" },
+          "y2": { "field": "anchors.y2" },
+          "stroke": { "field": "fill" },
+          "strokeWidth": { "value": 1 }
+        }
+      }
+    }
+  ]
+}

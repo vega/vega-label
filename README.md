@@ -16,7 +16,8 @@ This module provides the following Vega post encoding transform:
     "offset": 2.5,
     "sort": { "field": "datum.year" },
     "anchors": [ "top", "right" ]
-    "marks": [ "basePoint", "baseLine" ]
+    "marks": [ "basePoint", "baseLine" ],
+    "fill": "#000"
   }
 ]
 ```
@@ -35,3 +36,5 @@ This module provides the following Vega post encoding transform:
 - `marks`: list of data of mark; labels will not collide with these marks
   - The first mark data is the **base mark** vega-label use to calculate bounding box for `offset` and `anchor`.
   - Right now, vega-label works with `symbol`, `line`, and `rect`.
+
+- `fill`: color of the labels
