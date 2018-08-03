@@ -133,7 +133,7 @@
       "transform": [
         {
           "type": "label",
-          "offset": [5],
+          "offsets": [5],
           "size": [400, 400],
           "marks": [ "basePoint" ]
         }

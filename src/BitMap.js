@@ -1,8 +1,8 @@
-var DIV = 0x5;
-var MOD = 0x1f;
+export var DIV = 0x5;
+export var MOD = 0x1f;
 export var SIZE = 0x20;
-var right0 = new Uint32Array(SIZE + 1);
-var right1 = new Uint32Array(SIZE + 1);
+export var right0 = new Uint32Array(SIZE + 1);
+export var right1 = new Uint32Array(SIZE + 1);
 
 right1[0] = 0x0;
 right0[0] = ~right1[0];

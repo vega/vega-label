@@ -103,9 +103,8 @@
         {
           "type": "label",
           "size": [200, 200],
-          "groupby": "c",
-          "marktype": "line",
-          "offset": 3
+          "offsets": [3],
+          "marks": [ "group" ]
         }
       ]
     }

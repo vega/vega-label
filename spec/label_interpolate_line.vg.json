@@ -140,10 +140,10 @@
           {
               "type": "label",
               "size": [800, 500],
-              "offset": [2],
+              "offsets": [2],
               "sort": {"field": "year"},
               "anchors": ["middle", "top-left", "left", "bottom-left", "top", "bottom", "top-right", "right", "bottom-right"],
-              "marks": [ "basePoint", "baseLine" ]
+              "marks": [ "basePoint" ]
           }
       ]
     }

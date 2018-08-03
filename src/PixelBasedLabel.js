@@ -27,13 +27,16 @@ export default function placeLabels(data, size, anchors, marks, offsets) {
 
   for (i = 0; i < n; i++) {
     d = data[i];
-    mb = d.markBound;
+    // if (d.datum.text == 1981 || d.datum.text == 1979) {
+    //   console.log(d);
+    // }
+    // mb = d.markBound;
     
-    x1 = bitMaps.mark.bin(mb.x1);
-    x2 = bitMaps.mark.bin(mb.x2); 
-    y1 = bitMaps.mark.bin(mb.y1);
-    y2 = bitMaps.mark.bin(mb.y2);
-    bitMaps.mark.unmarkInBound(x1, y1, x2, y2);
+    // x1 = bitMaps.mark.bin(mb.x1);
+    // x2 = bitMaps.mark.bin(mb.x2); 
+    // y1 = bitMaps.mark.bin(mb.y1);
+    // y2 = bitMaps.mark.bin(mb.y2);
+    // bitMaps.mark.unmarkInBound(x1, y1, x2, y2);
     findAvailablePosition(d, bitMaps, anchors, offsets);
 
     if (d.labelPlaced) {
@@ -43,7 +46,7 @@ export default function placeLabels(data, size, anchors, marks, offsets) {
     }
     d.x = d.bound.xc;
     d.y = d.bound.yc;
-    bitMaps.mark.markInBound(x1, y1, x2, y2);
+    // bitMaps.mark.markInBound(x1, y1, x2, y2);
   }
 
   // bitMaps.mark.print('markBitMap');
@@ -82,7 +85,8 @@ function findAvailablePosition(datum, bitMaps, anchors, offsets) {
       if (
         ((dx === 0 && dy === 0) || inner) ?
           (
-            !checkCollision(searchBound, bitMaps.mark) && // any label cannot be inside other mark
+            // !checkCollision(searchBound, bitMaps.mark) && // any label cannot be inside other mark
+            !bitMaps.mark.getInBoundMultiBinned(searchBound.x, searchBound.y, searchBound.x2, searchBound.y2) &&
             isIn(datum.bound, datum.markBound)
           ) :
           (
@@ -143,23 +147,55 @@ function getMarkBitMap(data, width, height, marks) {
     canvas.setAttribute("height", height);
     
     var m = marks.length,
-        items;
+        originalItems,
+        items, itemsLen, maxLen,
+        j, key;
 
     for (i = 0; i < m; i++) {
-      items = marks[i];
-      if (!items.length) continue;
+      maxLen = maxLen < marks[i].length ? marks[i].length : maxLen;
+    }
+
+    for (i = 0; i < m; i++) {
+      originalItems = marks[i];
+      itemsLen = originalItems.length;
+      if (!itemsLen) continue;
+
+      items = new Array(itemsLen);
+      for (j = 0; j < itemsLen; j++) {
+        items[j] = {};
+        for (key in originalItems[j]) {
+          items[j][key] = originalItems[j][key];
+        }
+
+        if (items[j].fill !== undefined || items[j].fillOpacity != undefined) {
+          items[j].fill = '#000';
+          items[j].fillOpacity = 0.3;
+          items[j].strokeOpacity = 0;
+        }
+      }
 
       Marks[items[0].mark.marktype].draw(context, {items: items}, null);
     }
   
     var imageData = context.getImageData(0, 0, width, height),
-        canvasBuffer = new Uint32Array(imageData.data.buffer);
+        canvasBuffer = new Uint32Array(imageData.data.buffer),
+        alpha;
   
     for (var y = 0; y < height; y++) { // make it faster by not checking every pixel.
       for (var x = 0; x < width; x++) {
-        if (canvasBuffer[(y * width) + x] & 0xff000000) {
+        alpha = canvasBuffer[(y * width) + x] & 0xff000000;
+        // alpha = canvasBuffer[(y * width) + x] >>> 24;
+        if (alpha) {
           bitMap.mark(x, y);
+          if (alpha !== 0x4c000000) bitMap.mark(x, y);
+          // console.log(alpha >>> 24);
         }
+        // if (x == ~~((391+350) / 2) && y == ~~((143+184) / 2)) {
+        //   console.log(canvasBuffer[(y * width) + x]);
+        // }
+        // if (x == ~~((348+389) / 2) && y == ~~((2+43) / 2)) {
+        //   console.log(canvasBuffer[(y * width) + x]);
+        // }
       }
     }
   } else {
