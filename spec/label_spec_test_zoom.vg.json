@@ -286,7 +286,7 @@
         {
           "type": "label",
           "size": [800, 500],
-          "offset": 3,
+          "offset": [3],
           "fill": "#000",
           "marks": ["basePoint"]
         }

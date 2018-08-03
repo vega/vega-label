@@ -5,7 +5,7 @@ import BitMap from './BitMap';
 import MultiBitMap from './MultiBitMap';
 import { Marks } from 'vega-scenegraph';
 
-export default function placeLabels(data, size, anchors, marks, offset) {
+export default function placeLabels(data, size, anchors, marks, offsets) {
   var width = 0, height = 0,
       bitMaps = {},
       n = data.length,
@@ -34,8 +34,7 @@ export default function placeLabels(data, size, anchors, marks, offset) {
     y1 = bitMaps.mark.bin(mb.y1);
     y2 = bitMaps.mark.bin(mb.y2);
     bitMaps.mark.unmarkInBound(x1, y1, x2, y2);
-    d.currentPosition = 0;
-    findAvailablePosition(d, bitMaps, anchors, offset);
+    findAvailablePosition(d, bitMaps, anchors, offsets);
 
     if (d.labelPlaced) {
       placeLabel(d.searchBound, bitMaps.label);
@@ -46,56 +45,61 @@ export default function placeLabels(data, size, anchors, marks, offset) {
     d.y = d.bound.yc;
     bitMaps.mark.markInBound(x1, y1, x2, y2);
   }
+  console.log('--------------------------------------------------------------------');
 
-  // bitMaps.mark.print('markBitMap');
-  // bitMaps.label.print('labelBitMap');
+  bitMaps.mark.print('markBitMap');
+  bitMaps.label.print('labelBitMap');
 
-  // var canvas = document.getElementById('all-bitmaps');
-  // canvas.setAttribute("width", bitMaps.mark.bin(width));
-  // canvas.setAttribute("height", bitMaps.mark.bin(height));
-  // var ctx = canvas.getContext("2d");
+  var canvas = document.getElementById('all-bitmaps');
+  canvas.setAttribute("width", bitMaps.mark.bin(width));
+  canvas.setAttribute("height", bitMaps.mark.bin(height));
+  var ctx = canvas.getContext("2d");
 
-  // bitMaps.mark.printContext(ctx);
-  // bitMaps.label.printContext(ctx);
+  bitMaps.mark.printContext(ctx);
+  bitMaps.label.printContext(ctx);
 
   return data;
 }
 
-function findAvailablePosition(datum, bitMaps, anchors, offset) {
-  var i, searchBound,
-      n = anchors.length,
+function findAvailablePosition(datum, bitMaps, anchors, offsets) {
+  var i, j, searchBound,
+      n = offsets.length,
+      m = anchors.length,
       dx, dy, inner;
 
   datum.labelPlaced = false;
-  for (i = datum.currentPosition; i < n; i++) {
-    dx = (anchors[i] & 0x3) - 1;
-    dy = ((anchors[i] >>> 0x2) & 0x3) - 1;
-    inner = anchors[i] >>> 0x4;
-
-    datum.bound = datum.boundFun(dx, dy, inner, offset);
-    searchBound = getSearchBound(datum.bound, bitMaps.mark);
-    
-    if (bitMaps.mark.searchOutOfBound(searchBound)) continue;
-    
-    datum.currentPosition = i;
-    datum.searchBound = searchBound;
-    if (
-      ((dx === 0 && dy === 0) || inner) ?
-        (
-          !checkCollision(searchBound, bitMaps.mark) && // any label cannot be inside other mark
-          isIn(datum.bound, datum.markBound)
-        ) :
-        (
-          !checkCollision(searchBound, bitMaps.mark) &&
-          !checkCollision(searchBound, bitMaps.label)
-        )
-    ) {
-      datum.labelPlaced = true;
-      var _inner = inner ? -1 : 1;
-      datum.anchors.x2 = datum.bound[dx * _inner === 0 ? 'xc' : (dx * _inner < 0 ? 'x2' : 'x')];
-      datum.anchors.y2 = datum.bound[dy * _inner === 0 ? 'yc' : (dy * _inner < 0 ? 'y2' : 'y')];
-      break;
+  for (i = 0; i < n && !datum.labelPlaced; i++) {
+    for (j = 0; j < m && !datum.labelPlaced; j++) {
+      dx = (anchors[j] & 0x3) - 1;
+      dy = ((anchors[j] >>> 0x2) & 0x3) - 1;
+      inner = anchors[j] >>> 0x4;
+  
+      datum.bound = datum.boundFun(dx, dy, inner, offsets[i]);
+      searchBound = getSearchBound(datum.bound, bitMaps.mark);
+      
+      if (bitMaps.mark.searchOutOfBound(searchBound)) continue;
+      
+      datum.searchBound = searchBound;
+      if (
+        ((dx === 0 && dy === 0) || inner) ?
+          (
+            !checkCollision(searchBound, bitMaps.mark) && // any label cannot be inside other mark
+            isIn(datum.bound, datum.markBound)
+          ) :
+          (
+            !checkCollision(searchBound, bitMaps.mark) &&
+            !checkCollision(searchBound, bitMaps.label)
+          )
+      ) {
+        datum.labelPlaced = true;
+        var _inner = inner ? -1 : 1;
+        datum.anchors.x2 = datum.bound[!dx ? 'xc' : (dx ^ _inner >= 0 ? 'x2' : 'x')];
+        datum.anchors.y2 = datum.bound[!dy || dx ? 'yc' : (dy ^ _inner >= 0 ? 'y2' : 'y')];
+      }
     }
+  }
+  if (datum.datum.text == '2000 dm8' || datum.datum.text == '1999 jl8') {
+    console.log(datum);
   }
 }
 

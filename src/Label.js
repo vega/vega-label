@@ -27,7 +27,7 @@ Label.Definition = {
   "metadata": {"modifies": true},
   "params": [
     { "name": "size", "type": "number", "array": true, "length": 2 },
-    { "name": "offset", "type": "number", "default": 1},
+    { "name": "offsets", "type": "number", "array": true, "default": [ 1 ]},
     { "name": "sort", "type": "field" },
     { "name": "anchors", "type": "string", "array": true, "default": defaultAnchors },
     { "name": "marks", "type": "data", "array": true },
@@ -56,7 +56,7 @@ prototype.transform = function(_, pulse) {
       .texts(data)
       .size(_.size)
       .sort(_.sort)
-      .offset(_.offset ? _.offset : 1)
+      .offsets(_.offsets ? _.offsets : [1])
       .anchors(_.anchors ? _.anchors : defaultAnchors)
       .marks(_.marks ? _.marks : [])
       .fill(_.fill ? _.fill : "#000")

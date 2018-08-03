@@ -29,7 +29,7 @@ export default function() {
   var context = canvas().getContext("2d"),
       texts = [],
       size,
-      offset,
+      offsets,
       sort,
       anchors,
       marks,
@@ -96,7 +96,7 @@ export default function() {
 
     if (sort) data.sort(function(a, b) { return a.sort - b.sort; });
 
-    return placeLabelsPixel(data, size, anchors, marks, offset);
+    return placeLabelsPixel(data, size, anchors, marks, offsets);
   };
 
   label.texts = function(_) {
@@ -117,12 +117,12 @@ export default function() {
     }
   };
 
-  label.offset = function(_) {
+  label.offsets = function(_) {
     if (arguments.length) {
-      offset = _;
+      offsets = _;
       return label;
     } else {
-      return offset;
+      return offsets;
     }
   }
 
@@ -176,9 +176,10 @@ export default function() {
 
 function getBoundFunction(b, w, h) {
   return function (dx, dy, inner, offset) {
-    var _inner = inner ? -1 : 1,
-        _y = b[4 + dy] + (_inner * h * dy / 2.0) + (offset * dy * _inner),
-        _x = b[1 + dx] + (_inner * w * dx / 2.0) + (offset * dx * _inner);
+    var size = Math.sqrt((dx * dx) + (dy * dy)),
+        _inner = inner ? -1 : 1,
+        _y = b[4 + dy] + (_inner * h * dy / 2.0) + (offset * dy * _inner / size),
+        _x = b[1 + dx] + (_inner * w * dx / 2.0) + (offset * dx * _inner / size);
     return {
       y: _y - (h / 2.0),
       yc: _y,

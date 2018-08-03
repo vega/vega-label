@@ -92,7 +92,7 @@
         {
           "type": "label",
           "size": [800, 500],
-          "offset": 2.5,
+          "offsets": [2, 3],
           "marks": ["base_mark"],
           "fill": "#000",
           "sort": { "field": "ra" }

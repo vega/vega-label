@@ -141,7 +141,7 @@
         {
           "type": "label",
           "size": [800, 500],
-          "offset": 2.5,
+          "offsets": [1, 2, 2.5, 3],
           "sort": { "field": "year" },
           "marks": [ "basePoint", "baseLine" ]
         }

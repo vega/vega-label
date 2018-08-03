@@ -66,7 +66,7 @@
         {
           "type": "label",
           "size": [700, 500],
-          "offset": 15,
+          "offset": [15],
           "anchors": ["inner-right", "right"],
           "marks": [ "bar" ]
         }
