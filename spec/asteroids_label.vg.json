@@ -83,9 +83,8 @@
             "enter": {
                 "x": { "scale": "x", "field": "dec" },
                 "y": { "scale": "y", "field": "ra" },
-                "fill": { "value": "#ccc" },
-                "text": { "field": "denomination" },
-                "opacity": {"value": 0.1}
+                "fill": { "value": "#000" },
+                "text": { "field": "denomination" }
             }
         },
         "transform": [

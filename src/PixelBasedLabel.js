@@ -1,5 +1,6 @@
 /*eslint no-unused-vars: "warn"*/
 /*eslint no-fallthrough: "warn" */
+/*eslint no-console: "warn"*/
 import BitMap from './BitMap';
 import MultiBitMap from './MultiBitMap';
 import { Marks } from 'vega-scenegraph';
@@ -27,7 +28,6 @@ export default function placeLabels(data, size, anchors, marks) {
   for (i = 0; i < n; i++) {
     d = data[i];
     mb = d.markBound;
-    if (mb.x1 < 0 || width < mb.x2 || mb.y1 < 0 || height < mb.y2) continue;
     
     x1 = bitMaps.mark.bin(mb.x1);
     x2 = bitMaps.mark.bin(mb.x2); 
@@ -74,7 +74,7 @@ function findAvailablePosition(datum, bitMaps, anchors) {
 
     datum.bound = datum.boundFun(dx, dy, inner);
     searchBound = getSearchBound(datum.bound, bitMaps.mark);
-
+    
     if (bitMaps.mark.searchOutOfBound(searchBound)) continue;
     
     datum.currentPosition = i;
@@ -86,7 +86,6 @@ function findAvailablePosition(datum, bitMaps, anchors) {
           isIn(datum.bound, datum.markBound)
         ) :
         (
-          // !checkCollision(getExtendedSearchBound(datum, bitMaps.mark, dx, dy), bitMaps.mark) &&
           !checkCollision(searchBound, bitMaps.mark) &&
           !checkCollision(searchBound, bitMaps.label)
         )
@@ -104,37 +103,16 @@ function isIn(b, mb) {
   return mb.x1 <= b.x && b.x2 <= mb.x2 && mb.y1 <= b.y && b.y2 <= mb.y2;
 }
 
-// function getExtendedSearchBound(d, bm, dx, dy) {
-//   var bound = d.bound,
-//       w = d.textWidth * dx,
-//       h = d.textHeight * dy;
-  
-//   var _x = bm.bin(bound.x + (w < 0 ? w : 0)),
-//       _y = bm.bin(bound.y + (h < 0 ? h : 0)),
-//       _x2 = bm.bin(bound.x2 + (w > 0 ? w : 0)),
-//       _y2 = bm.bin(bound.y2 + (h > 0 ? h : 0));
-
-//   _x = _x < 0 ? 0 : _x;
-//   _y = _y < 0 ? 0 : _y;
-//   _x2 = _x2 >= bm.width ? bm.width - 1 : _x2;
-//   _y2 = _y2 >= bm.height ? bm.height - 1 : _y2;
-//   return {
-//     x: _x,
-//     y: _y,
-//     x2: _x2,
-//     y2: _y2,
-//   };
-// }
-
 function getSearchBound(bound, bm) {
   var _x = bm.bin(bound.x),
       _y = bm.bin(bound.y),
       _x2 = bm.bin(bound.x2),
-      _y2 = bm.bin(bound.y2);
-  _x = _x < 0 ? 0 : _x;
-  _y = _y < 0 ? 0 : _y;
-  _x2 = _x2 >= bm.width ? bm.width - 1 : _x2;
-  _y2 = _y2 >= bm.height ? bm.height - 1 : _y2;
+      _y2 = bm.bin(bound.y2),
+      w = bm.width, h = bm.height;
+  _x = _x < 0 ? 0 : _x > w - 1 ? w - 1 : _x;
+  _y = _y < 0 ? 0 : _y > h - 1 ? h - 1 : _y;
+  _x2 = _x2 < 0 ? 0 : _x2 > w - 1 ? w - 1 : _x2;
+  _y2 = _y2 < 0 ? 0 : _y2 > h - 1 ? h - 1 : _y2;
   return {
     x: _x,
     y: _y,

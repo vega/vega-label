@@ -48,11 +48,16 @@ export default function() {
       d = texts[i];
       textWidth = labelWidth(d.text, d.fontSize, d.font, context);
       textHeight = d.fontSize;
-
+      if (d.text == "1998 fn109") {
+        console.log(d);
+        console.log(d.baseline);
+      }
       data[i] = {
         fontSize: d.fontSize,
         textWidth: textWidth,
         textHeight: textHeight,
+        x: d.x,
+        y: d.y,
         // boundFun: getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], textWidth, textHeight, offset),
         fill: fill(d),
         sort: sort ? sort(d.datum) : undefined,
