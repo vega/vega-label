@@ -5,7 +5,7 @@ import BitMap from './BitMap';
 import MultiBitMap from './MultiBitMap';
 import { Marks } from 'vega-scenegraph';
 
-export default function placeLabels(data, size, anchors, marks) {
+export default function placeLabels(data, size, anchors, marks, offset) {
   var width = 0, height = 0,
       bitMaps = {},
       n = data.length,
@@ -35,7 +35,7 @@ export default function placeLabels(data, size, anchors, marks) {
     y2 = bitMaps.mark.bin(mb.y2);
     bitMaps.mark.unmarkInBound(x1, y1, x2, y2);
     d.currentPosition = 0;
-    findAvailablePosition(d, bitMaps, anchors);
+    findAvailablePosition(d, bitMaps, anchors, offset);
 
     if (d.labelPlaced) {
       placeLabel(d.searchBound, bitMaps.label);
@@ -61,7 +61,7 @@ export default function placeLabels(data, size, anchors, marks) {
   return data;
 }
 
-function findAvailablePosition(datum, bitMaps, anchors) {
+function findAvailablePosition(datum, bitMaps, anchors, offset) {
   var i, searchBound,
       n = anchors.length,
       dx, dy, inner;
@@ -72,7 +72,7 @@ function findAvailablePosition(datum, bitMaps, anchors) {
     dy = ((anchors[i] >>> 0x2) & 0x3) - 1;
     inner = anchors[i] >>> 0x4;
 
-    datum.bound = datum.boundFun(dx, dy, inner);
+    datum.bound = datum.boundFun(dx, dy, inner, offset);
     searchBound = getSearchBound(datum.bound, bitMaps.mark);
     
     if (bitMaps.mark.searchOutOfBound(searchBound)) continue;

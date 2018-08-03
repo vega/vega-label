@@ -48,17 +48,13 @@ export default function() {
       d = texts[i];
       textWidth = labelWidth(d.text, d.fontSize, d.font, context);
       textHeight = d.fontSize;
-      if (d.text == "1998 fn109") {
-        console.log(d);
-        console.log(d.baseline);
-      }
       data[i] = {
         fontSize: d.fontSize,
         textWidth: textWidth,
         textHeight: textHeight,
         x: d.x,
         y: d.y,
-        // boundFun: getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], textWidth, textHeight, offset),
+        // boundFun: getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], textWidth, textHeight),
         fill: fill(d),
         sort: sort ? sort(d.datum) : undefined,
         markBound: {
@@ -88,19 +84,19 @@ export default function() {
           d.markBound = markBounds[id];
         }
         mb = d.markBound;
-        d.boundFun = getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], d.textWidth, d.textHeight, offset);
+        d.boundFun = getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], d.textWidth, d.textHeight);
       }
     } else {
       for (i = 0; i < n; i++) {
         d = data[i];
         mb = d.markBound;
-        d.boundFun = getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], d.textWidth, d.textHeight, offset);
+        d.boundFun = getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], d.textWidth, d.textHeight);
       }
     }
 
     if (sort) data.sort(function(a, b) { return a.sort - b.sort; });
 
-    return placeLabelsPixel(data, size, anchors, marks);
+    return placeLabelsPixel(data, size, anchors, marks, offset);
   };
 
   label.texts = function(_) {
@@ -178,8 +174,8 @@ export default function() {
   return label;
 }
 
-function getBoundFunction(b, w, h, offset) {
-  return function (dx, dy, inner) {
+function getBoundFunction(b, w, h) {
+  return function (dx, dy, inner, offset) {
     var _inner = inner ? -1 : 1,
         _y = b[4 + dy] + (_inner * h * dy / 2.0) + (offset * dy * _inner),
         _x = b[1 + dx] + (_inner * w * dx / 2.0) + (offset * dx * _inner);
