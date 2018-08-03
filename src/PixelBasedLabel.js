@@ -45,18 +45,17 @@ export default function placeLabels(data, size, anchors, marks, offsets) {
     d.y = d.bound.yc;
     bitMaps.mark.markInBound(x1, y1, x2, y2);
   }
-  console.log('--------------------------------------------------------------------');
 
-  bitMaps.mark.print('markBitMap');
-  bitMaps.label.print('labelBitMap');
+  // bitMaps.mark.print('markBitMap');
+  // bitMaps.label.print('labelBitMap');
 
-  var canvas = document.getElementById('all-bitmaps');
-  canvas.setAttribute("width", bitMaps.mark.bin(width));
-  canvas.setAttribute("height", bitMaps.mark.bin(height));
-  var ctx = canvas.getContext("2d");
+  // var canvas = document.getElementById('all-bitmaps');
+  // canvas.setAttribute("width", bitMaps.mark.bin(width));
+  // canvas.setAttribute("height", bitMaps.mark.bin(height));
+  // var ctx = canvas.getContext("2d");
 
-  bitMaps.mark.printContext(ctx);
-  bitMaps.label.printContext(ctx);
+  // bitMaps.mark.printContext(ctx);
+  // bitMaps.label.printContext(ctx);
 
   return data;
 }
@@ -97,9 +96,6 @@ function findAvailablePosition(datum, bitMaps, anchors, offsets) {
         datum.anchors.y2 = datum.bound[!dy || dx ? 'yc' : (dy ^ _inner >= 0 ? 'y2' : 'y')];
       }
     }
-  }
-  if (datum.datum.text == '2000 dm8' || datum.datum.text == '1999 jl8') {
-    console.log(datum);
   }
 }
 

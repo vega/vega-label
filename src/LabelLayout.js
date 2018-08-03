@@ -13,6 +13,8 @@ var TOP = 0x0,
     RIGHT = 0x2,
     INNER = 0x1 << 0x4;
 
+var SIZE_FACTOR = 0.707106781186548;
+
 var anchorsMap = {
   'top-left': TOP + LEFT,
   'top': TOP + CENTER,
@@ -176,10 +178,10 @@ export default function() {
 
 function getBoundFunction(b, w, h) {
   return function (dx, dy, inner, offset) {
-    var size = Math.sqrt((dx * dx) + (dy * dy)),
+    var sizeFactor = (dx && dy) ? SIZE_FACTOR : 1,
         _inner = inner ? -1 : 1,
-        _y = b[4 + dy] + (_inner * h * dy / 2.0) + (offset * dy * _inner / size),
-        _x = b[1 + dx] + (_inner * w * dx / 2.0) + (offset * dx * _inner / size);
+        _y = b[4 + dy] + (_inner * h * dy / 2.0) + (offset * dy * _inner * sizeFactor),
+        _x = b[1 + dx] + (_inner * w * dx / 2.0) + (offset * dx * _inner * sizeFactor);
     return {
       y: _y - (h / 2.0),
       yc: _y,
