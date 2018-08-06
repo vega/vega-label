@@ -43,3 +43,11 @@ This module provides the following Vega post encoding transform:
 - `stroke`: stroke color of the labels
 
 - label transform has to be used with reactive geometry to use it as base mark to calculate positions of label
+
+
+## This is an example of vega-label in connected scatter plot
+
+![example](pics/label_connected_scatter.png)
+
+Here is the [Vega Specification](./spec/label_connected_scatter.vg.json)
+
