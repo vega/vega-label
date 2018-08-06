@@ -1,15 +1,15 @@
 /*eslint no-unused-vars: "warn"*/
 /*eslint no-fallthrough: "warn" */
 /*eslint no-console: "warn"*/
-import BitMap from './BitMap';
+// import BitMap from './BitMap';
 import MultiBitMap from './MultiBitMap';
 import { Marks } from 'vega-scenegraph';
 
 export default function placeLabels(data, size, anchors, marktype, marks, offsets) {
   var width = 0, height = 0,
-      bitMaps = {},
+      // bitMaps = {},
       n = data.length,
-      d, i;
+      d, i, bitMap;
 
   if (size) {
     width = size[0];
@@ -21,15 +21,16 @@ export default function placeLabels(data, size, anchors, marktype, marks, offset
       height = Math.max(height, d.y + d.textHeight);
     }
   }
-  bitMaps.mark = getMarkBitMap(data, width, height, marktype, marks, anchors);
-  bitMaps.label = new BitMap(width, height);
+  // bitMaps.mark = getMarkBitMap(data, width, height, marktype, marks, anchors);
+  // bitMaps.label = new BitMap(width, height);
+  bitMap = getMarkBitMap(data, width, height, marktype, marks, anchors);
 
   for (i = 0; i < n; i++) {
     d = data[i];
-    findAvailablePosition(d, bitMaps, anchors, offsets);
+    findAvailablePosition(d, bitMap, anchors, offsets);
 
     if (d.labelPlaced) {
-      placeLabel(d.searchBound, bitMaps.label);
+      placeLabel(d.searchBound, bitMap);
     } else {
       d.fill = undefined;
       d.stroke = undefined;
@@ -38,24 +39,12 @@ export default function placeLabels(data, size, anchors, marktype, marks, offset
     d.y = d.bound.yc;
   }
 
-  printBitmaps(bitMaps, width, height);
+  bitMap.print('markBitMap');
+
   return data;
 }
 
-function printBitmaps(bitMaps, width, height) {
-  bitMaps.mark.print('markBitMap');
-  bitMaps.label.print('labelBitMap');
-
-  var canvas = document.getElementById('all-bitmaps');
-  canvas.setAttribute("width", bitMaps.mark.bin(width));
-  canvas.setAttribute("height", bitMaps.mark.bin(height));
-  var ctx = canvas.getContext("2d");
-
-  bitMaps.mark.printContext(ctx);
-  bitMaps.label.printContext(ctx);
-}
-
-function findAvailablePosition(datum, bitMaps, anchors, offsets) {
+function findAvailablePosition(datum, bitMap, anchors, offsets) {
   var i, j, searchBound,
       n = offsets.length,
       m = anchors.length,
@@ -69,21 +58,20 @@ function findAvailablePosition(datum, bitMaps, anchors, offsets) {
       inner = anchors[j] & 0x10;
   
       datum.bound = datum.boundFun(dx, dy, inner, offsets[i]);
-      searchBound = getSearchBound(datum.bound, bitMaps.mark);
+      searchBound = getSearchBound(datum.bound, bitMap);
       
-      if (bitMaps.mark.searchOutOfBound(searchBound)) continue;
+      if (bitMap.searchOutOfBound(searchBound)) continue;
       
       datum.searchBound = searchBound;
       if (
         ((dx === 0 && dy === 0) || inner) ?
           (
             // !checkCollision(searchBound, bitMaps.mark) && // any label cannot be inside other mark
-            !bitMaps.mark.getInBoundMultiBinned(searchBound.x, searchBound.y, searchBound.x2, searchBound.y2) &&
+            !bitMap.getInBoundMultiBinned(searchBound.x, searchBound.y, searchBound.x2, searchBound.y2) &&
             isIn(datum.bound, datum.markBound)
           ) :
           (
-            !checkCollision(searchBound, bitMaps.mark) &&
-            !checkCollision(searchBound, bitMaps.label)
+            !checkCollision(searchBound, bitMap)
           )
       ) {
         datum.labelPlaced = true;
