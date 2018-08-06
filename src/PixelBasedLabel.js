@@ -21,8 +21,6 @@ export default function placeLabels(data, size, anchors, marktype, marks, offset
       height = Math.max(height, d.y + d.textHeight);
     }
   }
-  // bitMaps.mark = getMarkBitMap(data, width, height, marktype, marks, anchors);
-  // bitMaps.label = new BitMap(width, height);
   bitMap = getMarkBitMap(data, width, height, marktype, marks, anchors);
 
   for (i = 0; i < n; i++) {
@@ -66,7 +64,6 @@ function findAvailablePosition(datum, bitMap, anchors, offsets) {
       if (
         ((dx === 0 && dy === 0) || inner) ?
           (
-            // !checkCollision(searchBound, bitMaps.mark) && // any label cannot be inside other mark
             !bitMap.getInBoundMultiBinned(searchBound.x, searchBound.y, searchBound.x2, searchBound.y2) &&
             isIn(datum.bound, datum.markBound)
           ) :
@@ -77,7 +74,7 @@ function findAvailablePosition(datum, bitMap, anchors, offsets) {
         datum.labelPlaced = true;
         var _inner = inner ? -1 : 1;
         datum.anchors.x = datum.bound[!dx ? 'xc' : (dx ^ _inner >= 0 ? 'x2' : 'x')];
-        datum.anchors.y = datum.bound[!dy || dx ? 'yc' : (dy ^ _inner >= 0 ? 'y2' : 'y')];
+        datum.anchors.y = datum.bound[!dy ? 'yc' : (dy ^ _inner >= 0 ? 'y2' : 'y')];
       }
     }
   }
