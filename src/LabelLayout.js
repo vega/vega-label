@@ -3,7 +3,7 @@
 /*eslint no-empty: "warn"*/
 import { canvas } from 'vega-canvas';
 import placeLabelsPixel from './PixelBasedLabel';
-import { tupleid } from 'vega-dataflow';
+// import { tupleid } from 'vega-dataflow';
 
 var TOP = 0x0,
     MIDDLE = 0x1 << 0x2,
@@ -36,6 +36,7 @@ export default function() {
       anchors,
       marks,
       fill,
+      stroke,
       label = {};
 
   label.layout = function() {
@@ -43,7 +44,7 @@ export default function() {
         d, data = Array(n),
         marktype = n && texts[0].datum && texts[0].datum.mark ? texts[0].datum.mark.marktype : undefined;
 
-    var i, textWidth, textHeight, id, mb;
+    var i, textWidth, textHeight, mb;
     for (i = 0; i < n; i++) {
       d = texts[i];
       textWidth = labelWidth(d.text, d.fontSize, d.font, context);
@@ -64,6 +65,7 @@ export default function() {
         // y: d.y,
         boundFun: getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], textWidth, textHeight),
         fill: fill(d),
+        stroke: stroke(d),
         sort: sort ? sort(d.datum) : undefined,
         markBound: mb,
         // id: marktype && marktype !== 'line' ? getTupleId(d) : undefined,
@@ -171,6 +173,15 @@ export default function() {
       return label;
     } else {
       return fill;
+    }
+  }
+
+  label.stroke = function(_) {
+    if (arguments.length) {
+      stroke = functor(_);
+      return label;
+    } else {
+      return stroke;
     }
   }
 

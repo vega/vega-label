@@ -31,7 +31,8 @@ export default function placeLabels(data, size, anchors, marktype, marks, offset
     if (d.labelPlaced) {
       placeLabel(d.searchBound, bitMaps.label);
     } else {
-      d.fill = null;
+      d.fill = 'none';
+      d.stroke = 'none';
     }
     d.x = d.bound.xc;
     d.y = d.bound.yc;
@@ -214,11 +215,11 @@ function prepareMarkItem(originalItem) {
   for (var key in originalItem) {
     item[key] = originalItem[key];
   }
-  if (item.stroke || item.strokeOpacity) {
+  if (item.stroke) {
     item.stroke = '#000';
     item.strokeOpacity = 1;
   }
-  if (item.fill || item.fillOpacity) {
+  if (item.fill) {
     item.fill = '#000';
     item.fillOpacity = 0.0625;
     item.stroke = '#000';

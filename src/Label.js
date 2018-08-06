@@ -4,7 +4,7 @@ import labelLayout from './LabelLayout';
 import {Transform} from 'vega-dataflow';
 import {inherits, isFunction} from 'vega-util';
 
-var Output = ['x', 'y', 'z', 'fill', 'align', 'baseline', 'anchors'];
+var Output = ['x', 'y', 'z', 'fill', 'stroke', 'align', 'baseline', 'anchors'];
 
 var Params = ['offset'];
 
@@ -32,6 +32,7 @@ Label.Definition = {
     { "name": "anchors", "type": "string", "array": true, "default": defaultAnchors },
     { "name": "marks", "type": "data", "array": true },
     { "name": "fill", "type": "string", "expr": true, "default": "#000" },
+    { "name": "stroke", "type": "string", "expr": true, "default": "#000" },
     { "name": "as", "type": "string", "array": true, "length": Output.length, "default": Output }
   ]
 };
@@ -60,6 +61,7 @@ prototype.transform = function(_, pulse) {
       .anchors(_.anchors ? _.anchors : defaultAnchors)
       .marks(_.marks ? _.marks : [])
       .fill(_.fill ? _.fill : "#000")
+      .stroke(_.stroke ? _.stroke : "#000")
       .layout(),
       n = data.length;
 
@@ -71,9 +73,10 @@ prototype.transform = function(_, pulse) {
     t[as[1]] = l.y;
     t[as[2]] = l.z
     t[as[3]] = l.fill;
-    t[as[4]] = 'center';
-    t[as[5]] = 'middle';
-    t[as[6]] = l.anchors;
+    t[as[4]] = l.stroke;
+    t[as[5]] = 'center';
+    t[as[6]] = 'middle';
+    t[as[7]] = l.anchors;
   }
 
   return pulse.reflow(mod).modifies(as);
