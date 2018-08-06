@@ -32,7 +32,7 @@ Label.Definition = {
     { "name": "anchors", "type": "string", "array": true, "default": defaultAnchors },
     { "name": "marks", "type": "data", "array": true },
     { "name": "fill", "type": "string", "expr": true, "default": "#000" },
-    { "name": "stroke", "type": "string", "expr": true, "default": "#000" },
+    { "name": "stroke", "type": "string", "expr": true, "default": undefined },
     { "name": "as", "type": "string", "array": true, "length": Output.length, "default": Output }
   ]
 };
@@ -61,7 +61,7 @@ prototype.transform = function(_, pulse) {
       .anchors(_.anchors ? _.anchors : defaultAnchors)
       .marks(_.marks ? _.marks : [])
       .fill(_.fill ? _.fill : "#000")
-      .stroke(_.stroke ? _.stroke : "#000")
+      .stroke(_.stroke ? _.stroke : undefined)
       .layout(),
       n = data.length;
 

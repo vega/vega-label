@@ -31,25 +31,28 @@ export default function placeLabels(data, size, anchors, marktype, marks, offset
     if (d.labelPlaced) {
       placeLabel(d.searchBound, bitMaps.label);
     } else {
-      d.fill = 'none';
-      d.stroke = 'none';
+      d.fill = undefined;
+      d.stroke = undefined;
     }
     d.x = d.bound.xc;
     d.y = d.bound.yc;
   }
 
-  // bitMaps.mark.print('markBitMap');
-  // bitMaps.label.print('labelBitMap');
-
-  // var canvas = document.getElementById('all-bitmaps');
-  // canvas.setAttribute("width", bitMaps.mark.bin(width));
-  // canvas.setAttribute("height", bitMaps.mark.bin(height));
-  // var ctx = canvas.getContext("2d");
-
-  // bitMaps.mark.printContext(ctx);
-  // bitMaps.label.printContext(ctx);
-
+  printBitmaps(bitMaps, width, height);
   return data;
+}
+
+function printBitmaps(bitMaps, width, height) {
+  bitMaps.mark.print('markBitMap');
+  bitMaps.label.print('labelBitMap');
+
+  var canvas = document.getElementById('all-bitmaps');
+  canvas.setAttribute("width", bitMaps.mark.bin(width));
+  canvas.setAttribute("height", bitMaps.mark.bin(height));
+  var ctx = canvas.getContext("2d");
+
+  bitMaps.mark.printContext(ctx);
+  bitMaps.label.printContext(ctx);
 }
 
 function findAvailablePosition(datum, bitMaps, anchors, offsets) {
@@ -63,7 +66,7 @@ function findAvailablePosition(datum, bitMaps, anchors, offsets) {
     for (j = 0; j < m && !datum.labelPlaced; j++) {
       dx = (anchors[j] & 0x3) - 1;
       dy = ((anchors[j] >>> 0x2) & 0x3) - 1;
-      inner = anchors[j] >>> 0x4;
+      inner = anchors[j] & 0x10;
   
       datum.bound = datum.boundFun(dx, dy, inner, offsets[i]);
       searchBound = getSearchBound(datum.bound, bitMaps.mark);
@@ -129,7 +132,7 @@ function getMarkBitMap(data, width, height, marktype, marks, anchors) {
   var bitMap = new MultiBitMap(width, height), i, hasInner = false;
 
   for (i = 0; i < anchors.length; i++) {
-    if ((anchors[i] >>> 0x4) || ((anchors[i] & 0xf) === 0x5)) {
+    if ((anchors[i] & 0x10) || ((anchors[i] & 0xf) === 0x5)) {
       hasInner = true;
       break;
     }
@@ -202,11 +205,10 @@ function getMarkBitMap(data, width, height, marktype, marks, anchors) {
     var d;
     for (i = 0; i < n; i++) {
       d = data[i]
-      bitMap.mark(d.x, d.y);
+      bitMap.mark(d.markBound.x1, d.markBound.y1);
     }
   }
 
-  // bitMap.print();
   return bitMap;
 }
 
@@ -216,11 +218,9 @@ function prepareMarkItem(originalItem) {
     item[key] = originalItem[key];
   }
   if (item.stroke) {
-    item.stroke = '#000';
     item.strokeOpacity = 1;
   }
   if (item.fill) {
-    item.fill = '#000';
     item.fillOpacity = 0.0625;
     item.stroke = '#000';
     item.strokeOpacity = 1;

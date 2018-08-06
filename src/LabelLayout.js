@@ -3,7 +3,6 @@
 /*eslint no-empty: "warn"*/
 import { canvas } from 'vega-canvas';
 import placeLabelsPixel from './PixelBasedLabel';
-// import { tupleid } from 'vega-dataflow';
 
 var TOP = 0x0,
     MIDDLE = 0x1 << 0x2,
@@ -61,43 +60,15 @@ export default function() {
         fontSize: d.fontSize,
         textWidth: textWidth,
         textHeight: textHeight,
-        // x: d.x,
-        // y: d.y,
         boundFun: getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], textWidth, textHeight),
         fill: fill(d),
         stroke: stroke(d),
         sort: sort ? sort(d.datum) : undefined,
         markBound: mb,
-        // id: marktype && marktype !== 'line' ? getTupleId(d) : undefined,
         anchors: {},
         datum: d
       };
     }
-
-    // if (marktype && marktype !== 'line') {
-    //   var mark0 = marks[0],
-    //       m = mark0.length,
-    //       markBounds = {};
-    //   for (i = 0; i < m; i++) {
-    //     markBounds[getTupleId(mark0[i])] = mark0[i].bounds;
-    //   }
-
-    //   for (i = 0; i < n; i++) {
-    //     d = data[i];
-    //     id = d.id;
-    //     if (markBounds[id]) {
-    //       d.markBound = markBounds[id];
-    //     }
-    //     mb = d.markBound;
-    //     d.boundFun = getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], d.textWidth, d.textHeight);
-    //   }
-    // } else {
-    //   for (i = 0; i < n; i++) {
-    //     d = data[i];
-    //     mb = d.markBound;
-    //     d.boundFun = getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], d.textWidth, d.textHeight);
-    //   }
-    // }
 
     if (sort) data.sort(function(a, b) { return a.sort - b.sort; });
 
@@ -213,10 +184,3 @@ function labelWidth (text, fontSize, font, context) {
 function functor(d) {
   return typeof d === "function" ? d : function() { return d; };
 }
-
-// function getTupleId (item) {
-//   while (item.datum) {
-//     item = item.datum;
-//   }
-//   return tupleid(item);
-// }
