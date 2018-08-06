@@ -65,7 +65,7 @@ export default function() {
         stroke: stroke(d),
         sort: sort ? sort(d.datum) : undefined,
         markBound: mb,
-        anchors: {},
+        anchors: { x2: d.x, y2: d.y },
         datum: d
       };
     }

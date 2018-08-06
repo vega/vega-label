@@ -39,7 +39,7 @@ export default function placeLabels(data, size, anchors, marktype, marks, offset
     d.y = d.bound.yc;
   }
 
-  bitMap.print('markBitMap');
+  // bitMap.print('bit-map');
 
   return data;
 }
@@ -131,7 +131,8 @@ function getMarkBitMap(data, width, height, marktype, marks, anchors) {
       items;
 
   if (writeOnCanvas) {
-    canvas = document.getElementById('canvasrender');
+    // canvas = document.getElementById('canvas-render');
+    canvas = document.createElement('canvas');
     context = canvas.getContext('2d');
     canvas.setAttribute("width", width);
     canvas.setAttribute("height", height);

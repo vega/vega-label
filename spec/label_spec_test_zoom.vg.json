@@ -271,8 +271,10 @@
       "clip": true,
       "encode": {
         "enter": {
+          "x": { "field": "x" },
+          "y": { "field": "y" },
           "fill": { "value": "#000" },
-          "text": { "field": "datum.Origin" },
+          "text": { "field": "datum.Name" },
           "fontSize": { "value": 14 }
         },
         "select": { "size": { "signal": "size", "mult": 5 } },
