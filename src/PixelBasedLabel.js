@@ -21,7 +21,7 @@ export default function placeLabels(data, size, anchors, marktype, marks, offset
       height = Math.max(height, d.y + d.textHeight);
     }
   }
-  bitMaps.mark = getMarkBitMap(data, width, height, marktype, marks);
+  bitMaps.mark = getMarkBitMap(data, width, height, marktype, marks, anchors);
   bitMaps.label = new BitMap(width, height);
 
   for (i = 0; i < n; i++) {
@@ -121,15 +121,22 @@ function checkCollision(b, bitMap) {
   return bitMap.getInBoundBinned(b.x, b.y, b.x2, b.y2);
 }
 
-function getMarkBitMap(data, width, height, marktype, marks) {
+function getMarkBitMap(data, width, height, marktype, marks, anchors) {
   var n = data.length, m = marks.length;
 
   if (!n) return null;
-  var bitMap = new MultiBitMap(width, height), i;
+  var bitMap = new MultiBitMap(width, height), i, hasInner = false;
+
+  for (i = 0; i < anchors.length; i++) {
+    if ((anchors[i] >>> 0x4) || ((anchors[i] & 0xf) === 0x5)) {
+      hasInner = true;
+      break;
+    }
+  }
 
   var canvas, context,
       writeOnCanvas = m || (marktype && marktype !== 'line'),
-      items, item, originalItem, key;
+      items;
 
   if (writeOnCanvas) {
     canvas = document.getElementById('canvasrender');
@@ -140,17 +147,14 @@ function getMarkBitMap(data, width, height, marktype, marks) {
 
   if (marktype && marktype !== 'line') {
     items = new Array(n);
-    for (i = 0; i < n; i++) {
-      originalItem = data[i].datum.datum;
-      item = {};
-      for (key in originalItem) {
-        item[key] = originalItem[key];
+    if (hasInner) {
+      for (i = 0; i < n; i++) {
+        items[i] = prepareMarkItem(data[i].datum.datum);
       }
-      if (item.fill || item.fillOpacity) {
-        item.fill = '#000';
-        item.fillOpacity = 0.3;
+    } else {
+      for (i = 0; i < n; i++) {
+        items[i] = data[i].datum.datum;
       }
-      items[i] = item;
     }
     Marks[items[0].mark.marktype].draw(context, {items: items}, null);
   }
@@ -164,19 +168,13 @@ function getMarkBitMap(data, width, height, marktype, marks) {
       itemsLen = originalItems.length;
       if (!itemsLen) continue;
 
-      items = new Array(itemsLen);
-      for (j = 0; j < itemsLen; j++) {
-        item = {};
-        originalItem = originalItems[j];
-        for (key in originalItem) {
-          item[key] = originalItem[key];
+      if (hasInner) {
+        items = new Array(itemsLen);
+        for (j = 0; j < itemsLen; j++) {
+          items[j] = prepareMarkItem(originalItems[j]);
         }
-
-        if (item.fill || item.fillOpacity) {
-          item.fill = '#000';
-          item.fillOpacity = 0.3;
-        }
-        items[j] = item;
+      } else {
+        items = originalItems;
       }
 
       Marks[items[0].mark.marktype].draw(context, {items: items}, null);
@@ -193,7 +191,9 @@ function getMarkBitMap(data, width, height, marktype, marks) {
         alpha = canvasBuffer[(y * width) + x] & 0xff000000;
         if (alpha) {
           bitMap.mark(x, y);
-          if (alpha !== 0x4c000000) bitMap.mark(x, y);
+          if (!hasInner || alpha !== 0x10000000) {
+            bitMap.mark(x, y);
+          }
         }
       }
     }
@@ -207,4 +207,22 @@ function getMarkBitMap(data, width, height, marktype, marks) {
 
   // bitMap.print();
   return bitMap;
+}
+
+function prepareMarkItem(originalItem) {
+  var item = {};
+  for (var key in originalItem) {
+    item[key] = originalItem[key];
+  }
+  if (item.stroke || item.strokeOpacity) {
+    item.stroke = '#000';
+    item.strokeOpacity = 1;
+  }
+  if (item.fill || item.fillOpacity) {
+    item.fill = '#000';
+    item.fillOpacity = 0.0625;
+    item.stroke = '#000';
+    item.strokeOpacity = 1;
+  }
+  return item;
 }
