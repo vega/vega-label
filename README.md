@@ -18,6 +18,7 @@ This module provides the following Vega post encoding transform:
     "anchors": [ "top", "right" ]
     "marks": [ "basePoint", "baseLine" ],
     "fill": "#000"
+    "stroke": "#000"
   }
 ]
 ```
@@ -35,7 +36,10 @@ This module provides the following Vega post encoding transform:
   - If it cannot place the label, vega-label will try to place label with offset value 2.
 
 - `marks`: list of data of mark; labels will not collide with these marks
-  - The first mark data is the **base mark** vega-label use to calculate bounding box for `offset` and `anchor`.
   - Right now, vega-label works with `symbol`, `line`, and `rect`.
 
 - `fill`: color of the labels
+
+- `stroke`: stroke color of the labels
+
+- label transform has to be used with reactive geometry to use it as base mark to calculate positions of label
