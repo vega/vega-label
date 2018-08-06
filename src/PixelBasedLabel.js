@@ -5,12 +5,11 @@ import BitMap from './BitMap';
 import MultiBitMap from './MultiBitMap';
 import { Marks } from 'vega-scenegraph';
 
-export default function placeLabels(data, size, anchors, marks, offsets) {
+export default function placeLabels(data, size, anchors, marktype, marks, offsets) {
   var width = 0, height = 0,
       bitMaps = {},
       n = data.length,
-      d, i, mb,
-      x1, y1, x2, y2;
+      d, i;
 
   if (size) {
     width = size[0];
@@ -22,21 +21,11 @@ export default function placeLabels(data, size, anchors, marks, offsets) {
       height = Math.max(height, d.y + d.textHeight);
     }
   }
-  bitMaps.mark = getMarkBitMap(data, width, height, marks);
+  bitMaps.mark = getMarkBitMap(data, width, height, marktype, marks);
   bitMaps.label = new BitMap(width, height);
 
   for (i = 0; i < n; i++) {
     d = data[i];
-    // if (d.datum.text == 1981 || d.datum.text == 1979) {
-    //   console.log(d);
-    // }
-    // mb = d.markBound;
-    
-    // x1 = bitMaps.mark.bin(mb.x1);
-    // x2 = bitMaps.mark.bin(mb.x2); 
-    // y1 = bitMaps.mark.bin(mb.y1);
-    // y2 = bitMaps.mark.bin(mb.y2);
-    // bitMaps.mark.unmarkInBound(x1, y1, x2, y2);
     findAvailablePosition(d, bitMaps, anchors, offsets);
 
     if (d.labelPlaced) {
@@ -46,7 +35,6 @@ export default function placeLabels(data, size, anchors, marks, offsets) {
     }
     d.x = d.bound.xc;
     d.y = d.bound.yc;
-    // bitMaps.mark.markInBound(x1, y1, x2, y2);
   }
 
   // bitMaps.mark.print('markBitMap');
@@ -96,8 +84,8 @@ function findAvailablePosition(datum, bitMaps, anchors, offsets) {
       ) {
         datum.labelPlaced = true;
         var _inner = inner ? -1 : 1;
-        datum.anchors.x2 = datum.bound[!dx ? 'xc' : (dx ^ _inner >= 0 ? 'x2' : 'x')];
-        datum.anchors.y2 = datum.bound[!dy || dx ? 'yc' : (dy ^ _inner >= 0 ? 'y2' : 'y')];
+        datum.anchors.x = datum.bound[!dx ? 'xc' : (dx ^ _inner >= 0 ? 'x2' : 'x')];
+        datum.anchors.y = datum.bound[!dy || dx ? 'yc' : (dy ^ _inner >= 0 ? 'y2' : 'y')];
       }
     }
   }
@@ -133,27 +121,43 @@ function checkCollision(b, bitMap) {
   return bitMap.getInBoundBinned(b.x, b.y, b.x2, b.y2);
 }
 
-function getMarkBitMap(data, width, height, marks) {
-  var n = data.length;
+function getMarkBitMap(data, width, height, marktype, marks) {
+  var n = data.length, m = marks.length;
 
   if (!n) return null;
   var bitMap = new MultiBitMap(width, height), i;
 
-  if (marks.length) {
-    var canvas = document.getElementById('canvasrender');
-    var context = canvas.getContext('2d');
-  
+  var canvas, context,
+      writeOnCanvas = m || (marktype && marktype !== 'line'),
+      items, item, originalItem, key;
+
+  if (writeOnCanvas) {
+    canvas = document.getElementById('canvasrender');
+    context = canvas.getContext('2d');
     canvas.setAttribute("width", width);
     canvas.setAttribute("height", height);
-    
-    var m = marks.length,
-        originalItems,
-        items, itemsLen, maxLen,
-        j, key;
+  }
 
-    for (i = 0; i < m; i++) {
-      maxLen = maxLen < marks[i].length ? marks[i].length : maxLen;
+  if (marktype && marktype !== 'line') {
+    items = new Array(n);
+    for (i = 0; i < n; i++) {
+      originalItem = data[i].datum.datum;
+      item = {};
+      for (key in originalItem) {
+        item[key] = originalItem[key];
+      }
+      if (item.fill || item.fillOpacity) {
+        item.fill = '#000';
+        item.fillOpacity = 0.3;
+      }
+      items[i] = item;
     }
+    Marks[items[0].mark.marktype].draw(context, {items: items}, null);
+  }
+
+  if (m) {
+    var originalItems,
+        itemsLen, j;
 
     for (i = 0; i < m; i++) {
       originalItems = marks[i];
@@ -162,40 +166,35 @@ function getMarkBitMap(data, width, height, marks) {
 
       items = new Array(itemsLen);
       for (j = 0; j < itemsLen; j++) {
-        items[j] = {};
-        for (key in originalItems[j]) {
-          items[j][key] = originalItems[j][key];
+        item = {};
+        originalItem = originalItems[j];
+        for (key in originalItem) {
+          item[key] = originalItem[key];
         }
 
-        if (items[j].fill !== undefined || items[j].fillOpacity != undefined) {
-          items[j].fill = '#000';
-          items[j].fillOpacity = 0.3;
-          items[j].strokeOpacity = 0;
+        if (item.fill || item.fillOpacity) {
+          item.fill = '#000';
+          item.fillOpacity = 0.3;
         }
+        items[j] = item;
       }
 
       Marks[items[0].mark.marktype].draw(context, {items: items}, null);
     }
-  
+  }
+
+  if (writeOnCanvas) {
     var imageData = context.getImageData(0, 0, width, height),
         canvasBuffer = new Uint32Array(imageData.data.buffer),
-        alpha;
+        alpha, x, y;
   
-    for (var y = 0; y < height; y++) { // make it faster by not checking every pixel.
-      for (var x = 0; x < width; x++) {
+    for (y = 0; y < height; y++) { // make it faster by not checking every pixel.
+      for (x = 0; x < width; x++) {
         alpha = canvasBuffer[(y * width) + x] & 0xff000000;
-        // alpha = canvasBuffer[(y * width) + x] >>> 24;
         if (alpha) {
           bitMap.mark(x, y);
           if (alpha !== 0x4c000000) bitMap.mark(x, y);
-          // console.log(alpha >>> 24);
         }
-        // if (x == ~~((391+350) / 2) && y == ~~((143+184) / 2)) {
-        //   console.log(canvasBuffer[(y * width) + x]);
-        // }
-        // if (x == ~~((348+389) / 2) && y == ~~((2+43) / 2)) {
-        //   console.log(canvasBuffer[(y * width) + x]);
-        // }
       }
     }
   } else {

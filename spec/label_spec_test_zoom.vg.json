@@ -267,17 +267,13 @@
     {
       "name": "label",
       "type": "text",
-      "from": { "data": "points" },
+      "from": { "data": "basePoint" },
       "clip": true,
       "encode": {
         "enter": {
           "fill": { "value": "#000" },
-          "text": { "field": "Origin" },
+          "text": { "field": "datum.Origin" },
           "fontSize": { "value": 14 }
-        },
-        "update": {
-          "x": { "scale": "xscale", "field": "Miles_per_Gallon" },
-          "y": { "scale": "yscale", "field": "Weight_in_lbs" }
         },
         "select": { "size": { "signal": "size", "mult": 5 } },
         "release": { "size": { "signal": "size" } }
@@ -288,7 +284,7 @@
           "size": [800, 500],
           "offsets": [3],
           "fill": "#000",
-          "marks": ["basePoint"]
+          "marks": [ "basePoint"]
         }
       ]
     },
@@ -300,10 +296,10 @@
           "strokeWidth": { "value": 1 }
         },
         "update": {
-          "x": { "field": "anchors.x" },
-          "y": { "field": "anchors.y" },
-          "x2": { "field": "anchors.x2" },
-          "y2": { "field": "anchors.y2" },
+          "x": { "field": "datum.x" },
+          "y": { "field": "datum.y" },
+          "x2": { "field": "anchors.x" },
+          "y2": { "field": "anchors.y" },
           "stroke": { "field": "fill" }
         }
       }

@@ -127,21 +127,18 @@
     {
       "type": "text",
       "name": "label",
-      "from": {"data": "drive"},
+      "from": {"data": "baseMark"},
       "encode": {
         "enter": {
-          "x": {"scale": "x", "field": "miles"},
-          "y": {"scale": "y", "field": "gas"},
           "fill": {"value": "#000"},
-          "text": {"field": "year"},
+          "text": {"field": "datum.year"},
           "fontSize": {"value": 14}
         }
       },
       "transform": [{
         "type": "label",
         "size": [800, 500],
-        "offsets": [1, 2],
-        "marks": [ "baseMark" ]
+        "offsets": [1, 2]
       }]
     }
   ]

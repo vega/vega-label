@@ -55,11 +55,11 @@
     },
     {
       "type": "text",
-      "from": {"data": "table"},
+      "from": {"data": "bar"},
       "encode": {
         "enter": {
           "fontSize": {"value": 25},
-          "text": {"field": "amount"}
+          "text": {"field": "datum.amount"}
         }
       },
       "transform": [
@@ -67,8 +67,7 @@
           "type": "label",
           "size": [700, 500],
           "offsets": [15],
-          "anchors": ["inner-right", "right"],
-          "marks": [ "bar" ]
+          "anchors": ["inner-right", "right"]
         }
       ]
     }

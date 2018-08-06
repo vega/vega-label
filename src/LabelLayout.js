@@ -42,63 +42,64 @@ export default function() {
     var n = texts.length,
         d, data = Array(n),
         marktype = n && texts[0].datum && texts[0].datum.mark ? texts[0].datum.mark.marktype : undefined;
-    
-    marktype = marks.length && marks[0].length && marks[0][0].mark ? marks[0][0].mark.marktype : undefined;
 
     var i, textWidth, textHeight, id, mb;
     for (i = 0; i < n; i++) {
       d = texts[i];
       textWidth = labelWidth(d.text, d.fontSize, d.font, context);
       textHeight = d.fontSize;
+
+      mb = marktype && marktype !== 'line' ? d.datum.bounds : {
+        x1: d.x,
+        x2: d.x,
+        y1: d.y,
+        y2: d.y
+      };
+
       data[i] = {
         fontSize: d.fontSize,
         textWidth: textWidth,
         textHeight: textHeight,
-        x: d.x,
-        y: d.y,
-        // boundFun: getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], textWidth, textHeight),
+        // x: d.x,
+        // y: d.y,
+        boundFun: getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], textWidth, textHeight),
         fill: fill(d),
         sort: sort ? sort(d.datum) : undefined,
-        markBound: {
-          x1: d.x,
-          x2: d.x,
-          y1: d.y,
-          y2: d.y
-        },
-        id: marktype && marktype !== 'line' ? getTupleId(d) : undefined,
-        anchors: { x: d.x, y: d.y },
+        markBound: mb,
+        // id: marktype && marktype !== 'line' ? getTupleId(d) : undefined,
+        anchors: {},
         datum: d
       };
     }
 
-    if (marktype && marktype !== 'line') {
-      var mark0 = marks[0],
-          m = mark0.length,
-          markBounds = {};
-      for (i = 0; i < m; i++) {
-        markBounds[getTupleId(mark0[i])] = mark0[i].bounds;
-      }
+    // if (marktype && marktype !== 'line') {
+    //   var mark0 = marks[0],
+    //       m = mark0.length,
+    //       markBounds = {};
+    //   for (i = 0; i < m; i++) {
+    //     markBounds[getTupleId(mark0[i])] = mark0[i].bounds;
+    //   }
 
-      for (i = 0; i < n; i++) {
-        d = data[i];
-        id = d.id;
-        if (markBounds[id]) {
-          d.markBound = markBounds[id];
-        }
-        mb = d.markBound;
-        d.boundFun = getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], d.textWidth, d.textHeight);
-      }
-    } else {
-      for (i = 0; i < n; i++) {
-        d = data[i];
-        mb = d.markBound;
-        d.boundFun = getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], d.textWidth, d.textHeight);
-      }
-    }
+    //   for (i = 0; i < n; i++) {
+    //     d = data[i];
+    //     id = d.id;
+    //     if (markBounds[id]) {
+    //       d.markBound = markBounds[id];
+    //     }
+    //     mb = d.markBound;
+    //     d.boundFun = getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], d.textWidth, d.textHeight);
+    //   }
+    // } else {
+    //   for (i = 0; i < n; i++) {
+    //     d = data[i];
+    //     mb = d.markBound;
+    //     d.boundFun = getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], d.textWidth, d.textHeight);
+    //   }
+    // }
 
     if (sort) data.sort(function(a, b) { return a.sort - b.sort; });
 
-    return placeLabelsPixel(data, size, anchors, marks, offsets);
+    return placeLabelsPixel(data, size, anchors, marktype, marks, offsets);
   };
 
   label.texts = function(_) {
@@ -202,9 +203,9 @@ function functor(d) {
   return typeof d === "function" ? d : function() { return d; };
 }
 
-function getTupleId (item) {
-  while (item.datum) {
-    item = item.datum;
-  }
-  return tupleid(item);
-}
+// function getTupleId (item) {
+//   while (item.datum) {
+//     item = item.datum;
+//   }
+//   return tupleid(item);
+// }

@@ -122,20 +122,17 @@
     {
       "name": "label",
       "type": "text",
-      "from": {"data": "source"},
+      "from": {"data": "basePoint"},
       "encode": {
         "enter": {
-          "x": {"scale": "x", "field": "Horsepower"},
-          "y": {"scale": "y", "field": "Miles_per_Gallon"},
-          "text": {"field": "Acceleration"}
+          "text": {"field": "datum.Acceleration"}
         }
       },
       "transform": [
         {
           "type": "label",
           "offsets": [5],
-          "size": [400, 400],
-          "marks": [ "basePoint" ]
+          "size": [400, 400]
         }
       ]
     }
