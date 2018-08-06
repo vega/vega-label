@@ -16,9 +16,7 @@ This module provides the following Vega post encoding transform:
     "offsets": [ 1, 2 ],
     "sort": { "field": "datum.year" },
     "anchors": [ "top", "right" ]
-    "marks": [ "basePoint", "baseLine" ],
-    "fill": "#000"
-    "stroke": "#000"
+    "marks": [ "basePoint", "baseLine" ]
   }
 ]
 ```
@@ -37,10 +35,6 @@ This module provides the following Vega post encoding transform:
 
 - `marks`: list of data of mark; labels will not collide with these marks
   - Right now, vega-label works with `symbol`, `line`, and `rect`.
-
-- `fill`: color of the labels
-
-- `stroke`: stroke color of the labels
 
 - label transform has to be used with reactive geometry to use it as base mark to calculate positions of label
 

@@ -29,6 +29,8 @@ export default function placeLabels(data, size, anchors, marktype, marks, offset
 
     if (d.labelPlaced) {
       placeLabel(d.searchBound, bitMap);
+      d.fill = d.originalFillAndStroke.fill;
+      d.stroke = d.originalFillAndStroke.stroke;
     } else {
       d.fill = undefined;
       d.stroke = undefined;

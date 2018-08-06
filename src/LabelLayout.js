@@ -41,7 +41,8 @@ export default function() {
   label.layout = function() {
     var n = texts.length,
         d, data = Array(n),
-        marktype = n && texts[0].datum && texts[0].datum.mark ? texts[0].datum.mark.marktype : undefined;
+        marktype = n && texts[0].datum && texts[0].datum.mark ? texts[0].datum.mark.marktype : undefined,
+        transformed = n ? texts[0].originalFillAndStroke : false;
 
     var i, textWidth, textHeight, mb;
     for (i = 0; i < n; i++) {
@@ -61,11 +62,13 @@ export default function() {
         textWidth: textWidth,
         textHeight: textHeight,
         boundFun: getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], textWidth, textHeight),
-        fill: fill(d),
-        stroke: stroke(d),
         sort: sort ? sort(d.datum) : undefined,
         markBound: mb,
         anchors: { x2: d.x, y2: d.y },
+        originalFillAndStroke: transformed ? d.originalFillAndStroke : {
+          fill: d.fill,
+          stroke: d.stroke
+        },
         datum: d
       };
     }
