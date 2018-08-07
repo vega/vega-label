@@ -21,7 +21,7 @@ export default function placeLabels(data, size, anchors, marktype, marks, offset
       height = Math.max(height, d.y + d.textHeight);
     }
   }
-  bitMap = getMarkBitMap(data, width, height, marktype, marks, anchors);
+  bitMap = getMarkBitMap(data, width, height, marktype, marks, anchors, offsets);
 
   for (i = 0; i < n; i++) {
     d = data[i];
@@ -39,7 +39,7 @@ export default function placeLabels(data, size, anchors, marktype, marks, offset
     d.y = d.bound.yc;
   }
 
-  // bitMap.print('bit-map');
+  bitMap.print('bit-map');
 
   return data;
 }
@@ -48,23 +48,24 @@ function findAvailablePosition(datum, bitMap, anchors, offsets) {
   var i, j, searchBound,
       n = offsets.length,
       m = anchors.length,
-      dx, dy, inner;
+      dx, dy;
 
   datum.labelPlaced = false;
   for (i = 0; i < n && !datum.labelPlaced; i++) {
     for (j = 0; j < m && !datum.labelPlaced; j++) {
       dx = (anchors[j] & 0x3) - 1;
       dy = ((anchors[j] >>> 0x2) & 0x3) - 1;
-      inner = anchors[j] & 0x10;
+
+      if (dx === 0 && dy === 0 && i !== 0) continue;
   
-      datum.bound = datum.boundFun(dx, dy, inner, offsets[i]);
+      datum.bound = datum.boundFun(dx, dy, offsets[i]);
       searchBound = getSearchBound(datum.bound, bitMap);
       
       if (bitMap.searchOutOfBound(searchBound)) continue;
       
       datum.searchBound = searchBound;
       if (
-        ((dx === 0 && dy === 0) || inner) ?
+        ((dx === 0 && dy === 0) || offsets[i] < 0) ?
           (
             !bitMap.getInBoundMultiBinned(searchBound.x, searchBound.y, searchBound.x2, searchBound.y2) &&
             isIn(datum.bound, datum.markBound)
@@ -74,9 +75,8 @@ function findAvailablePosition(datum, bitMap, anchors, offsets) {
           )
       ) {
         datum.labelPlaced = true;
-        var _inner = inner ? -1 : 1;
-        datum.anchors.x = datum.bound[!dx ? 'xc' : (dx ^ _inner >= 0 ? 'x2' : 'x')];
-        datum.anchors.y = datum.bound[!dy ? 'yc' : (dy ^ _inner >= 0 ? 'y2' : 'y')];
+        datum.anchors.x = datum.bound[!dx ? 'xc' : (dx ^ offsets[i] >= 0 ? 'x2' : 'x')];
+        datum.anchors.y = datum.bound[!dy ? 'yc' : (dy ^ offsets[i] >= 0 ? 'y2' : 'y')];
       }
     }
   }
@@ -112,16 +112,23 @@ function checkCollision(b, bitMap) {
   return bitMap.getInBoundBinned(b.x, b.y, b.x2, b.y2);
 }
 
-function getMarkBitMap(data, width, height, marktype, marks, anchors) {
+function getMarkBitMap(data, width, height, marktype, marks, anchors, offsets) {
   var n = data.length, m = marks.length;
 
   if (!n) return null;
-  var bitMap = new MultiBitMap(width, height), i, hasInner = false;
+  var bitMap = new MultiBitMap(width, height),
+      i, hasInner = false;
 
   for (i = 0; i < anchors.length; i++) {
-    if ((anchors[i] & 0x10) || ((anchors[i] & 0xf) === 0x5)) {
+    if (anchors[i] === 0x5) {
       hasInner = true;
       break;
+    }
+  }
+
+  for (i = 0; i < offsets.length && !hasInner; i++) {
+    if (offsets[i] < 0) {
+      hasInner = true;
     }
   }
 

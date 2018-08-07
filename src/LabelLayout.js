@@ -9,8 +9,7 @@ var TOP = 0x0,
     BOTTOM = 0x2 << 0x2,
     LEFT = 0x0,
     CENTER = 0x1,
-    RIGHT = 0x2,
-    INNER = 0x1 << 0x4;
+    RIGHT = 0x2;
 
 var SIZE_FACTOR = 0.707106781186548;
 
@@ -34,8 +33,6 @@ export default function() {
       sort,
       anchors,
       marks,
-      fill,
-      stroke,
       label = {};
 
   label.layout = function() {
@@ -116,15 +113,10 @@ export default function() {
 
   label.anchors = function(_) {
     if (arguments.length) {
-      var n = _.length, i, directions;
-      anchors = new Int8Array(n).fill(0x0);
+      var n = _.length, i;
+      anchors = new Int8Array(n);
       for (i = 0; i < n; i++) {
-        directions = _[i].split('-');
-        if (directions[0] === 'inner') {
-          anchors[i] = INNER;
-          directions.splice(0, 1);
-        }
-        anchors[i] |= anchorsMap[directions.join('-')];
+        anchors[i] |= anchorsMap[_[i]];
       }
       return label;
     } else {
@@ -141,33 +133,15 @@ export default function() {
     }
   }
 
-  label.fill = function(_) {
-    if (arguments.length) {
-      fill = functor(_);
-      return label;
-    } else {
-      return fill;
-    }
-  }
-
-  label.stroke = function(_) {
-    if (arguments.length) {
-      stroke = functor(_);
-      return label;
-    } else {
-      return stroke;
-    }
-  }
-
   return label;
 }
 
 function getBoundFunction(b, w, h) {
-  return function (dx, dy, inner, offset) {
+  return function (dx, dy, offset) {
     var sizeFactor = (dx && dy) ? SIZE_FACTOR : 1,
-        _inner = inner ? -1 : 1,
-        _y = b[4 + dy] + (_inner * h * dy / 2.0) + (offset * dy * _inner * sizeFactor),
-        _x = b[1 + dx] + (_inner * w * dx / 2.0) + (offset * dx * _inner * sizeFactor);
+        isIn = offset < 0 ? -1 : 1,
+        _y = b[4 + dy] + (isIn * h * dy / 2.0) + (offset * dy * sizeFactor),
+        _x = b[1 + dx] + (isIn * w * dx / 2.0) + (offset * dx * sizeFactor);
     return {
       y: _y - (h / 2.0),
       yc: _y,
@@ -182,8 +156,4 @@ function getBoundFunction(b, w, h) {
 function labelWidth (text, fontSize, font, context) {
   context.font = fontSize + "px " + font; // add other font properties
   return context.measureText(text).width;
-}
-
-function functor(d) {
-  return typeof d === "function" ? d : function() { return d; };
 }
