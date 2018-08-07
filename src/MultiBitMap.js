@@ -48,7 +48,7 @@ export default function MultiBitMap(_width, _height) {
     for (y = 0; y < this.height; y++) {
       for (x = 0; x < this.width; x++) {
         if (this.getBinned(x, y)) {
-          ctx.fillStyle = "rgba(100, 100, 100, 1)";
+          ctx.fillStyle = "rgba(200, 200, 200, 1)";
           ctx.fillRect( x, y, 1, 1 );
         }
         if (this.getInBoundMultiBinned(x, y, x, y)) {

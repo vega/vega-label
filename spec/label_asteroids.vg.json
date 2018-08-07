@@ -94,7 +94,7 @@
           "size": [800, 500],
           "offsets": [2, 3],
           "fill": "#000",
-          "sort": { "field": "ra" }
+          "sort": { "field": "datum.ra" }
         }
       ]
     },

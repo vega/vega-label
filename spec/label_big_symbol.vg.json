@@ -97,20 +97,6 @@
 
   "marks": [
     {
-      "type": "line",
-      "name": "baseLine",
-      "from": {"data": "drive"},
-      "encode": {
-        "enter": {
-          "interpolate": {"value": "cardinal"},
-          "x": {"scale": "x", "field": "miles"},
-          "y": {"scale": "y", "field": "gas"},
-          "stroke": {"value": "#000"},
-          "strokeWidth": {"value": 3}
-        }
-      }
-    },
-    {
       "type": "symbol",
       "name": "basePoint",
       "from": {"data": "drive"},
@@ -128,6 +114,7 @@
     {
       "type": "text",
       "from": {"data": "basePoint"},
+      "name": "label",
       "encode": {
         "enter": {
           "fill": {"value": "#000"},
@@ -139,10 +126,25 @@
               "type": "label",
               "size": [800, 500],
               "offsets": [2],
-              "sort": {"field": "year"},
+              "sort": {"field": "datum.year"},
               "anchors": ["middle", "top-left", "left", "bottom-left", "top", "bottom", "top-right", "right", "bottom-right"]
           }
       ]
+    },
+    {
+      "type": "rule",
+      "from": { "data": "label" },
+      "encode": {
+        "enter": {
+          "x": { "field": "datum.x" },
+          "y": { "field": "datum.y" },
+          "x2": { "field": "anchors.x" },
+          "y2": { "field": "anchors.y" },
+          "stroke": { "field": "fill" },
+          "strokeWidth": { "value": 1 },
+          "strokeOpacity": { "value": 0.25 }
+        }
+      }
     }
   ]
 }
