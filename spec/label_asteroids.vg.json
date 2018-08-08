@@ -2,7 +2,14 @@
   "$schema": "https://vega.github.io/schema/vega/v4.json",
   "width": 800,
   "height": 500,
-  "padding": 5,
+  "padding": 10,
+
+  "signals": [
+    {
+      "name": "count",
+      "value": 100
+    }
+  ],
 
   "data": [
     {
@@ -11,8 +18,20 @@
       "transform": [
         {
           "type": "filter",
-          "expr":
-            "datum['denomination'] != null && datum['ra'] != null && datum['dec'] != null"
+          "expr": "datum['denomination'] != null && datum['ra'] != null && datum['dec'] != null"
+        }
+      ]
+    },
+    {
+      "name": "contours",
+      "source": "asteroids",
+      "transform": [
+        {
+          "type": "contour",
+          "x": { "expr": "scale('x', datum.ra)" },
+          "y": { "expr": "scale('y', datum.dec)" },
+          "size": [{ "signal": "width" }, { "signal": "height" }],
+          "count": { "signal": "count" }
         }
       ]
     }
@@ -23,7 +42,7 @@
       "name": "x",
       "type": "linear",
       "round": true,
-      "nice": true,
+      "nice": false,
       "zero": true,
       "domain": { "data": "asteroids", "field": "ra" },
       "range": "width"
@@ -36,6 +55,12 @@
       "zero": true,
       "domain": { "data": "asteroids", "field": "dec" },
       "range": "height"
+    },
+    {
+      "name": "color",
+      "type": "sequential",
+      "domain": [0, 1],
+      "range": { "scheme": "plasma" }
     }
   ],
 
@@ -43,18 +68,22 @@
     {
       "scale": "x",
       "grid": true,
-      "domain": false,
+      "domain": true,
       "orient": "bottom",
       "tickCount": 5,
-      "title": "ra"
+      "title": "Radius (degrees)",
+      "offset": 20,
+      "tickCount": 6,
+      "tickExtra": true
     },
     {
       "scale": "y",
       "grid": true,
-      "domain": false,
+      "domain": true,
       "orient": "left",
       "titlePadding": 5,
-      "title": "dec"
+      "title": "Declination (degrees)",
+      "offset": 20
     }
   ],
 
@@ -67,12 +96,10 @@
         "update": {
           "x": { "scale": "x", "field": "ra" },
           "y": { "scale": "y", "field": "dec" },
-          "size": { "value": 100 },
+          "size": { "value": 30 },
           "shape": { "value": "circle" },
-          "strokeWidth": { "value": 1 },
-          "opacity": { "value": 0.1 },
-          "stroke": { "value": "#4682b4" },
-          "fill": { "value": "transparent" }
+          "opacity": { "value": 0.5 },
+          "fill": { "scale": "color", "field": "density" }
         }
       }
     },
@@ -92,8 +119,7 @@
         {
           "type": "label",
           "size": [800, 500],
-          "offsets": [2, 3],
-          "fill": "#000",
+          "offsets": [2],
           "sort": { "field": "datum.ra" }
         }
       ]

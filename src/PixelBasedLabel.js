@@ -39,8 +39,7 @@ export default function placeLabels(data, size, anchors, marktype, marks, offset
     d.y = d.bound.yc;
   }
 
-  bitMap.print('bit-map');
-
+  // bitMap.print('bit-map');
   return data;
 }
 
@@ -92,10 +91,10 @@ function getSearchBound(bound, bm) {
       _x2 = bm.bin(bound.x2),
       _y2 = bm.bin(bound.y2),
       w = bm.width, h = bm.height;
-  _x = _x < 0 ? 0 : _x > w - 1 ? w - 1 : _x;
-  _y = _y < 0 ? 0 : _y > h - 1 ? h - 1 : _y;
-  _x2 = _x2 < 0 ? 0 : _x2 > w - 1 ? w - 1 : _x2;
-  _y2 = _y2 < 0 ? 0 : _y2 > h - 1 ? h - 1 : _y2;
+  // _x = _x < 0 ? 0 : _x > w - 1 ? w - 1 : _x;
+  // _y = _y < 0 ? 0 : _y > h - 1 ? h - 1 : _y;
+  // _x2 = _x2 < 0 ? 0 : _x2 > w - 1 ? w - 1 : _x2;
+  // _y2 = _y2 < 0 ? 0 : _y2 > h - 1 ? h - 1 : _y2;
   return {
     x: _x,
     y: _y,
@@ -190,7 +189,7 @@ function getMarkBitMap(data, width, height, marktype, marks, anchors, offsets) {
         alpha = canvasBuffer[(y * width) + x] & 0xff000000;
         if (alpha) {
           bitMap.mark(x, y);
-          if (!hasInner || alpha !== 0x10000000) {
+          if (hasInner && alpha !== 0x10000000) {
             bitMap.mark(x, y);
           }
         }

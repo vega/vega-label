@@ -71,7 +71,7 @@ export default function() {
     }
 
     if (sort) data.sort(function(a, b) { return a.sort - b.sort; });
-
+    
     return placeLabelsPixel(data, size, anchors, marktype, marks, offsets);
   };
 

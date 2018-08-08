@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v4.json",
-  "width": 500,
-  "height": 300,
+  "width": 600,
+  "height": 400,
   "padding": {
     "top": 10,
     "left": 40,
@@ -208,8 +208,12 @@
       "name": "points",
       "url": "../data/cars.json",
       "transform": [
-        { "type": "extent", "field": "Miles_per_Gallon", "signal": "xext" },
-        { "type": "extent", "field": "Weight_in_lbs", "signal": "yext" }
+        {
+          "type": "filter",
+          "expr": "datum['Horsepower'] != null && datum['Miles_per_Gallon'] != null && datum['Acceleration'] != null"
+        },
+        { "type": "extent", "field": "Horsepower", "signal": "xext" },
+        { "type": "extent", "field": "Miles_per_Gallon", "signal": "yext" }
       ]
     }
   ],
@@ -254,8 +258,8 @@
           "fill": { "value": "steelblue" }
         },
         "update": {
-          "x": { "scale": "xscale", "field": "Miles_per_Gallon" },
-          "y": { "scale": "yscale", "field": "Weight_in_lbs" },
+          "x": { "scale": "xscale", "field": "Horsepower" },
+          "y": { "scale": "yscale", "field": "Miles_per_Gallon" },
           "size": { "signal": "size" }
         },
         "hover": { "fill": { "value": "firebrick" } },
@@ -275,7 +279,7 @@
           "y": { "field": "y" },
           "fill": { "value": "#000" },
           "text": { "field": "datum.Name" },
-          "fontSize": { "value": 14 }
+          "fontSize": { "value": 8 }
         },
         "select": { "size": { "signal": "size", "mult": 5 } },
         "release": { "size": { "signal": "size" } }
@@ -283,7 +287,7 @@
       "transform": [
         {
           "type": "label",
-          "size": [800, 500],
+          "size": [600, 400],
           "offsets": [3],
           "fill": "#000",
           "marks": [ "basePoint"]
