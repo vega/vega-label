@@ -131,8 +131,7 @@
       "transform": [
         {
           "type": "label",
-          "offsets": [5],
-          "size": [400, 400]
+          "offsets": [5]
         }
       ]
     }

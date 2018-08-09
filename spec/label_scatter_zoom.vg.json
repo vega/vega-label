@@ -287,7 +287,6 @@
       "transform": [
         {
           "type": "label",
-          "size": [600, 400],
           "offsets": [3],
           "fill": "#000",
           "marks": [ "basePoint"]

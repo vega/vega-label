@@ -101,7 +101,6 @@
       "transform": [
         {
           "type": "label",
-          "size": [500, 500],
           "offsets": [3],
           "marks": ["group"]
         }

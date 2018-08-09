@@ -119,7 +119,6 @@
       "transform": [
         {
           "type": "label",
-          "size": [800, 500],
           "offsets": [2],
           "sort": { "field": "datum.ra" }
         }

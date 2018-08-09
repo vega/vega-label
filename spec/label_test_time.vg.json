@@ -102,8 +102,7 @@
         }
       },
       "transform": [{
-        "type": "label",
-        "size": [800, 500]
+        "type": "label"
       }]
     }
   ]

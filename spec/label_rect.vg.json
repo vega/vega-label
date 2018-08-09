@@ -65,7 +65,6 @@
       "transform": [
         {
           "type": "label",
-          "size": [700, 500],
           "offsets": [-15, 15],
           "anchors": ["right"]
         }
