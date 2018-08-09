@@ -39,7 +39,7 @@ export default function placeLabels(data, size, anchors, marktype, marks, offset
     d.y = d.bound.yc;
   }
 
-  // bitMap.print('bit-map');
+  bitMap.print('bit-map');
   return data;
 }
 
@@ -136,8 +136,8 @@ function getMarkBitMap(data, width, height, marktype, marks, anchors, offsets) {
       items;
 
   if (writeOnCanvas) {
-    // canvas = document.getElementById('canvas-render');
-    canvas = document.createElement('canvas');
+    canvas = document.getElementById('canvas-render');
+    // canvas = document.createElement('canvas');
     context = canvas.getContext('2d');
     canvas.setAttribute("width", width);
     canvas.setAttribute("height", height);
@@ -158,24 +158,21 @@ function getMarkBitMap(data, width, height, marktype, marks, anchors, offsets) {
   }
 
   if (m) {
-    var originalItems,
-        itemsLen, j;
+    var originalItems;
 
     for (i = 0; i < m; i++) {
       originalItems = marks[i];
-      itemsLen = originalItems.length;
+      var itemsLen = originalItems.length;
       if (!itemsLen) continue;
 
-      if (hasInner) {
-        items = new Array(itemsLen);
-        for (j = 0; j < itemsLen; j++) {
-          items[j] = prepareMarkItem(originalItems[j]);
-        }
+      if (originalItems[0].mark.marktype !== 'group') {
+        drawMark(context, originalItems, hasInner);
       } else {
-        items = originalItems;
+        var j;
+        for (j = 0; j < itemsLen; j++) {
+          drawGroup(context, originalItems[j].items, hasInner);
+        }
       }
-
-      Marks[items[0].mark.marktype].draw(context, {items: items}, null);
     }
   }
 
@@ -204,6 +201,35 @@ function getMarkBitMap(data, width, height, marktype, marks, anchors, offsets) {
   }
 
   return bitMap;
+}
+
+function drawMark(context, originalItems, hasInner) {
+  var items, i, n = originalItems.length;
+  if (hasInner) {
+    items = new Array(n);
+    for (i = 0; i < n; i++) {
+      items[i] = prepareMarkItem(originalItems[i]);
+    }
+  } else {
+    items = originalItems;
+  }
+
+  Marks[items[0].mark.marktype].draw(context, {items: items}, null);
+}
+
+function drawGroup(context, group, hasInner) {
+  var n = group.length, i, g;
+  for (i = 0; i < n; i++) {
+    g = group[i];
+    if (g.marktype !== 'group') {
+      drawMark(context, g.items, hasInner);
+    } else {
+      var j;
+      for (j = 0; j < g.items.length; j++) {
+        drawGroup(context, g.items[j].items, hasInner); // nested group might not work.
+      }
+    }
+  }
 }
 
 function prepareMarkItem(originalItem) {

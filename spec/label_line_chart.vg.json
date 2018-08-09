@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v4.json",
-  "width": 200,
-  "height": 200,
+  "width": 500,
+  "height": 500,
   "padding": 5,
 
   "data": [
@@ -75,7 +75,6 @@
         {
           "type": "line",
           "from": { "data": "series" },
-          "name": "line",
           "encode": {
             "enter": {
               "x": { "scale": "x", "field": "x" },
@@ -94,17 +93,17 @@
       "from": { "data": "table" },
       "encode": {
         "enter": {
-            "x": { "scale": "x", "field": "x" },
-            "y": { "scale": "y", "field": "y" },
+          "x": { "scale": "x", "field": "x" },
+          "y": { "scale": "y", "field": "y" },
           "text": { "field": "y" }
         }
       },
       "transform": [
         {
           "type": "label",
-          "size": [200, 200],
+          "size": [500, 500],
           "offsets": [3],
-          "marks": [ "group" ]
+          "marks": ["group"]
         }
       ]
     }
