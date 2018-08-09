@@ -4,6 +4,9 @@
 // import BitMap from './BitMap';
 import MultiBitMap from './MultiBitMap';
 import { Marks } from 'vega-scenegraph';
+import BitMap from './BitMap';
+
+var SIZE_FACTOR = 0.707106781186548;
 
 export default function placeLabels(data, size, anchors, marktype, marks, offsets) {
   var width = 0, height = 0,
@@ -35,11 +38,9 @@ export default function placeLabels(data, size, anchors, marktype, marks, offset
       d.fill = undefined;
       d.stroke = undefined;
     }
-    d.x = d.bound.xc;
-    d.y = d.bound.yc;
   }
 
-  bitMap.print('bit-map');
+  // bitMap.print('bit-map');
   return data;
 }
 
@@ -57,7 +58,7 @@ function findAvailablePosition(datum, bitMap, anchors, offsets) {
 
       if (dx === 0 && dy === 0 && i !== 0) continue;
   
-      datum.bound = datum.boundFun(dx, dy, offsets[i]);
+      datum.bound = getBound(datum, dx, dy, offsets[i]);
       searchBound = getSearchBound(datum.bound, bitMap);
       
       if (bitMap.searchOutOfBound(searchBound)) continue;
@@ -74,22 +75,44 @@ function findAvailablePosition(datum, bitMap, anchors, offsets) {
           )
       ) {
         datum.labelPlaced = true;
-        datum.anchors.x = datum.bound[!dx ? 'xc' : (dx ^ offsets[i] >= 0 ? 'x2' : 'x')];
-        datum.anchors.y = datum.bound[!dy ? 'yc' : (dy ^ offsets[i] >= 0 ? 'y2' : 'y')];
+        datum.anchors.x = datum.bound[!dx ? 1 : (dx ^ offsets[i] >= 0 ? 2 : 0)];
+        datum.anchors.y = datum.bound[!dy ? 4 : (dy ^ offsets[i] >= 0 ? 5 : 3)];
+
+        datum.x = datum.bound[1];
+        datum.y = datum.bound[4];
       }
     }
   }
 }
 
 function isIn(b, mb) {
-  return mb.x1 <= b.x && b.x2 <= mb.x2 && mb.y1 <= b.y && b.y2 <= mb.y2;
+  return mb[0] <= b[0] && b[2] <= mb[2] &&
+         mb[3] <= b[3] && b[5] <= mb[5];
+}
+
+function getBound(datum, dx, dy, offset) {
+  var mb = datum.markBound,
+      w = datum.textWidth,
+      h = datum.textHeight,
+      sizeFactor = (dx && dy) ? SIZE_FACTOR : 1,
+      isIn = offset < 0 ? -1 : 1,
+      y = mb[4 + dy] + (isIn * h * dy / 2.0) + (offset * dy * sizeFactor),
+      x = mb[1 + dx] + (isIn * w * dx / 2.0) + (offset * dx * sizeFactor);
+  return [
+    x - (w / 2.0),
+    x,
+    x + (w / 2.0),
+    y - (h / 2.0),
+    y,
+    y + (h / 2.0)
+  ];
 }
 
 function getSearchBound(bound, bm) {
-  var _x = bm.bin(bound.x),
-      _y = bm.bin(bound.y),
-      _x2 = bm.bin(bound.x2),
-      _y2 = bm.bin(bound.y2),
+  var _x = bm.bin(bound[0]),
+      _y = bm.bin(bound[3]),
+      _x2 = bm.bin(bound[2]),
+      _y2 = bm.bin(bound[5]),
       w = bm.width, h = bm.height;
   // _x = _x < 0 ? 0 : _x > w - 1 ? w - 1 : _x;
   // _y = _y < 0 ? 0 : _y > h - 1 ? h - 1 : _y;
@@ -115,8 +138,7 @@ function getMarkBitMap(data, width, height, marktype, marks, anchors, offsets) {
   var n = data.length, m = marks.length;
 
   if (!n) return null;
-  var bitMap = new MultiBitMap(width, height),
-      i, hasInner = false;
+  var i, hasInner = false;
 
   for (i = 0; i < anchors.length; i++) {
     if (anchors[i] === 0x5) {
@@ -133,7 +155,7 @@ function getMarkBitMap(data, width, height, marktype, marks, anchors, offsets) {
 
   var canvas, context,
       writeOnCanvas = m || (marktype && marktype !== 'line'),
-      items;
+      items, bitMap = hasInner ? new MultiBitMap(width, height) : new BitMap(width, height);
 
   if (writeOnCanvas) {
     canvas = document.getElementById('canvas-render');
@@ -196,7 +218,7 @@ function getMarkBitMap(data, width, height, marktype, marks, anchors, offsets) {
     var d;
     for (i = 0; i < n; i++) {
       d = data[i]
-      bitMap.mark(d.markBound.x1, d.markBound.y1);
+      bitMap.mark(d.markBound[0], d.markBound[3]);
     }
   }
 

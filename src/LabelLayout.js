@@ -11,8 +11,6 @@ var TOP = 0x0,
     CENTER = 0x1,
     RIGHT = 0x2;
 
-var SIZE_FACTOR = 0.707106781186548;
-
 var anchorsMap = {
   'top-left': TOP + LEFT,
   'top': TOP + CENTER,
@@ -54,11 +52,18 @@ export default function() {
         y2: d.y
       };
 
+      if (marktype && marktype !== 'line') {
+        var b = d.datum.bounds;
+        mb = [b.x1, (b.x1 + b.x2) / 2.0, b.x2, b.y1, (b.y1 + b.y2) / 2.0, b.y2];
+      } else {
+        mb = [d.x, d.x, d.x, d.y, d.y, d.y];
+      }
+
       data[i] = {
         fontSize: d.fontSize,
         textWidth: textWidth,
         textHeight: textHeight,
-        boundFun: getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], textWidth, textHeight),
+        // boundFun: getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], textWidth, textHeight),
         sort: sort ? sort(d.datum) : undefined,
         markBound: mb,
         anchors: { x2: d.x, y2: d.y },
@@ -136,22 +141,22 @@ export default function() {
   return label;
 }
 
-function getBoundFunction(b, w, h) {
-  return function (dx, dy, offset) {
-    var sizeFactor = (dx && dy) ? SIZE_FACTOR : 1,
-        isIn = offset < 0 ? -1 : 1,
-        _y = b[4 + dy] + (isIn * h * dy / 2.0) + (offset * dy * sizeFactor),
-        _x = b[1 + dx] + (isIn * w * dx / 2.0) + (offset * dx * sizeFactor);
-    return {
-      y: _y - (h / 2.0),
-      yc: _y,
-      y2: _y + (h / 2.0),
-      x: _x - (w / 2.0),
-      xc: _x,
-      x2: _x + (w / 2.0),
-    }
-  };
-}
+// function getBoundFunction(b, w, h) {
+//   return function (dx, dy, offset) {
+//     var sizeFactor = (dx && dy) ? SIZE_FACTOR : 1,
+//         isIn = offset < 0 ? -1 : 1,
+//         _y = b[4 + dy] + (isIn * h * dy / 2.0) + (offset * dy * sizeFactor),
+//         _x = b[1 + dx] + (isIn * w * dx / 2.0) + (offset * dx * sizeFactor);
+//     return {
+//       y: _y - (h / 2.0),
+//       yc: _y,
+//       y2: _y + (h / 2.0),
+//       x: _x - (w / 2.0),
+//       xc: _x,
+//       x2: _x + (w / 2.0),
+//     }
+//   };
+// }
 
 function labelWidth (text, fontSize, font, context) {
   context.font = fontSize + "px " + font; // add other font properties
