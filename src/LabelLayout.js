@@ -65,6 +65,12 @@ export default function() {
       };
     }
 
+    if (anchors.length < offsets.length) {
+      addPaddingToArray(anchors, offsets);
+    } else {
+      addPaddingToArray(offsets, anchors);
+    }
+
     if (sort) data.sort(function(a, b) { return a.sort - b.sort; });
     
     console.timeEnd("layout");
@@ -121,6 +127,14 @@ export default function() {
   }
 
   return label;
+}
+
+function addPaddingToArray(smaller, larger) {
+  var n = smaller.length, m = larger.length, i;
+  var lastValue = smaller[n - 1];
+  for (i = n; i < m; i++) {
+    smaller.push(lastValue);
+  }
 }
 
 function labelWidth (text, fontSize, font, context) {

@@ -36,41 +36,38 @@ export default function placeLabels(data, anchors, marktype, marks, offsets) {
 }
 
 function findAvailablePosition(datum, bitMap, anchors, offsets) {
-  var i, j, searchBound,
+  var i, searchBound,
       n = offsets.length,
-      m = anchors.length,
       dx, dy;
 
   for (i = 0; i < n; i++) {
-    for (j = 0; j < m; j++) {
-      dx = (anchors[j] & 0x3) - 1;
-      dy = ((anchors[j] >>> 0x2) & 0x3) - 1;
+    dx = (anchors[i] & 0x3) - 1;
+    dy = ((anchors[i] >>> 0x2) & 0x3) - 1;
 
-      if (dx === 0 && dy === 0 && i !== 0) continue;
-  
-      datum.bound = getBound(datum, dx, dy, offsets[i]);
-      searchBound = getSearchBound(datum.bound, bitMap);
-      
-      if (bitMap.searchOutOfBound(searchBound)) continue;
-      
-      datum.searchBound = searchBound;
-      if (
-        ((dx === 0 && dy === 0) || offsets[i] < 0) ?
-          (
-            !bitMap.getInBoundMultiBinned(searchBound.x, searchBound.y, searchBound.x2, searchBound.y2) &&
-            isIn(datum.bound, datum.markBound)
-          ) :
-          (
-            !checkCollision(searchBound, bitMap)
-          )
-      ) {
-        datum.anchors.x = datum.bound[!dx ? 1 : (dx ^ offsets[i] >= 0 ? 2 : 0)];
-        datum.anchors.y = datum.bound[!dy ? 4 : (dy ^ offsets[i] >= 0 ? 5 : 3)];
+    if (dx === 0 && dy === 0 && i !== 0) continue;
 
-        datum.x = datum.bound[1];
-        datum.y = datum.bound[4];
-        return true;
-      }
+    datum.bound = getBound(datum, dx, dy, offsets[i]);
+    searchBound = getSearchBound(datum.bound, bitMap);
+    
+    if (bitMap.searchOutOfBound(searchBound)) continue;
+    
+    datum.searchBound = searchBound;
+    if (
+      ((dx === 0 && dy === 0) || offsets[i] < 0) ?
+        (
+          !bitMap.getInBoundMultiBinned(searchBound.x, searchBound.y, searchBound.x2, searchBound.y2) &&
+          isIn(datum.bound, datum.markBound)
+        ) :
+        (
+          !checkCollision(searchBound, bitMap)
+        )
+    ) {
+      datum.anchors.x = datum.bound[!dx ? 1 : (dx ^ offsets[i] >= 0 ? 2 : 0)];
+      datum.anchors.y = datum.bound[!dy ? 4 : (dy ^ offsets[i] >= 0 ? 5 : 3)];
+
+      datum.x = datum.bound[1];
+      datum.y = datum.bound[4];
+      return true;
     }
   }
   return false;

@@ -19,7 +19,7 @@ rawFile.send(null);
 
 var spec = JSON.parse(jsonText);
 new vega.View(vega.parse(spec))
-  .renderer('canvas')     // set renderer (canvas or svg)
+  .renderer('canvas')  // set renderer (canvas or svg)
   .initialize('#vis')  // initialize view within parent DOM container
   .hover()             // enable hover encode set processing
   .run();

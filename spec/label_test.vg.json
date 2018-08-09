@@ -139,7 +139,7 @@
       },
       "transform": [{
         "type": "label",
-        "offsets": [1, 2]
+        "offsets": [2]
       }]
     }
   ]
