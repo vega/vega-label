@@ -26,7 +26,6 @@ var anchorsMap = {
 export default function() {
   var context = canvas().getContext("2d"),
       texts = [],
-      size,
       offsets,
       sort,
       anchors,
@@ -40,10 +39,10 @@ export default function() {
         transformed = n ? texts[0].transformed : false;
 
     console.time("layout");
-    var i, textWidth, textHeight, mb, originalFill, originalStroke;
+    var i, textWidth, textHeight, mb, originalOpacity;
     for (i = 0; i < n; i++) {
       d = texts[i];
-      textWidth = labelWidth(d.text, d.fontSize, d.font, context); // bottle neck!!
+      textWidth = labelWidth(d.text, d.fontSize, d.font, context); // bottle neck!! -> do it lazily
       textHeight = d.fontSize;
 
       if (marktype && marktype !== 'line') {
@@ -51,14 +50,6 @@ export default function() {
         mb = [b.x1, (b.x1 + b.x2) / 2.0, b.x2, b.y1, (b.y1 + b.y2) / 2.0, b.y2];
       } else {
         mb = [d.x, d.x, d.x, d.y, d.y, d.y];
-      }
-
-      if (transformed) {
-        originalFill = d.originalFill;
-        originalStroke = d.originalStroke;
-      } else {
-        originalFill = d.fill;
-        originalStroke = d.stroke;
       }
 
       data[i] = {
@@ -69,8 +60,7 @@ export default function() {
         sort: sort ? sort(d.datum) : undefined,
         markBound: mb,
         anchors: { x2: d.x, y2: d.y },
-        originalFill: originalFill,
-        originalStroke: originalStroke,
+        originalOpacity: transformed ? originalOpacity : d.opacity,
         datum: d
       };
     }
@@ -78,7 +68,7 @@ export default function() {
     if (sort) data.sort(function(a, b) { return a.sort - b.sort; });
     
     console.timeEnd("layout");
-    return placeLabelsPixel(data, size, anchors, marktype, marks, offsets);
+    return placeLabelsPixel(data, anchors, marktype, marks, offsets);
   };
 
   label.texts = function(_) {
@@ -87,15 +77,6 @@ export default function() {
       return label;
     } else {
       return texts;
-    }
-  };
-
-  label.size = function(_) {
-    if (arguments.length) {
-      size = _ ? [+_[0], +_[1]] : undefined;
-      return label;
-    } else {
-      return size;
     }
   };
 
@@ -141,23 +122,6 @@ export default function() {
 
   return label;
 }
-
-// function getBoundFunction(b, w, h) {
-//   return function (dx, dy, offset) {
-//     var sizeFactor = (dx && dy) ? SIZE_FACTOR : 1,
-//         isIn = offset < 0 ? -1 : 1,
-//         _y = b[4 + dy] + (isIn * h * dy / 2.0) + (offset * dy * sizeFactor),
-//         _x = b[1 + dx] + (isIn * w * dx / 2.0) + (offset * dx * sizeFactor);
-//     return {
-//       y: _y - (h / 2.0),
-//       yc: _y,
-//       y2: _y + (h / 2.0),
-//       x: _x - (w / 2.0),
-//       xc: _x,
-//       x2: _x + (w / 2.0),
-//     }
-//   };
-// }
 
 function labelWidth (text, fontSize, font, context) {
   context.font = fontSize + "px " + font; // add other font properties

@@ -4,7 +4,7 @@ import labelLayout from './LabelLayout';
 import {Transform} from 'vega-dataflow';
 import {inherits, isFunction} from 'vega-util';
 
-var Output = ['x', 'y', 'fill', 'stroke', 'align', 'baseline', 'anchors', 'originalFill', 'originalStroke', 'transformed'];
+var Output = ['x', 'y', 'opacity', 'align', 'baseline', 'anchors', 'originalOpacity', 'transformed'];
 
 var Params = ['offset'];
 
@@ -26,7 +26,6 @@ Label.Definition = {
   "type": "Label",
   "metadata": {"modifies": true},
   "params": [
-    { "name": "size", "type": "number", "array": true, "length": 2 },
     { "name": "offsets", "type": "number", "array": true, "default": [1]},
     { "name": "sort", "type": "field" },
     { "name": "anchors", "type": "string", "array": true, "default": defaultAnchors },
@@ -54,7 +53,6 @@ prototype.transform = function(_, pulse) {
   // configure layout
   var labels = labelLayout
       .texts(data)
-      .size(_.size)
       .sort(_.sort)
       .offsets(_.offsets ? _.offsets : [1])
       .anchors(_.anchors ? _.anchors : defaultAnchors)
@@ -68,14 +66,12 @@ prototype.transform = function(_, pulse) {
     
     t[as[0]] = l.x;
     t[as[1]] = l.y;
-    t[as[2]] = l.fill;
-    t[as[3]] = l.stroke;
-    t[as[4]] = 'center';
-    t[as[5]] = 'middle';
-    t[as[6]] = l.anchors;
-    t[as[7]] = l.originalFill;
-    t[as[8]] = l.originalStroke;
-    t[as[9]] = true;
+    t[as[2]] = l.opacity;
+    t[as[3]] = 'center';
+    t[as[4]] = 'middle';
+    t[as[5]] = l.anchors;
+    t[as[6]] = l.originalOpacity;
+    t[as[7]] = true;
   }
 
   console.timeEnd("label");

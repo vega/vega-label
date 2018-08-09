@@ -1,42 +1,32 @@
 /*eslint no-unused-vars: "warn"*/
 /*eslint no-fallthrough: "warn" */
 /*eslint no-console: "warn"*/
-// import BitMap from './BitMap';
+import BitMap from './BitMap';
 import MultiBitMap from './MultiBitMap';
 import { Marks } from 'vega-scenegraph';
-import BitMap from './BitMap';
 
 var SIZE_FACTOR = 0.707106781186548;
 
-export default function placeLabels(data, size, anchors, marktype, marks, offsets) {
-  var width = 0, height = 0,
-      // bitMaps = {},
+export default function placeLabels(data, anchors, marktype, marks, offsets) {
+  var width, height,
       n = data.length,
       d, i, bitMap;
   console.time("pixel-based");
-  if (size) {
-    width = size[0];
-    height = size[1];
-  } else {
-    for (i = 0; i < n; i++) {
-      d = data[i];
-      width = Math.max(width, d.x + d.textWidth);
-      height = Math.max(height, d.y + d.textHeight);
-    }
-  }
+
+  if (!n) return data;
+
+  width = data[0].datum.mark.group.width;
+  height = data[0].datum.mark.group.height;
   bitMap = getMarkBitMap(data, width, height, marktype, marks, anchors, offsets);
 
   for (i = 0; i < n; i++) {
     d = data[i];
-    findAvailablePosition(d, bitMap, anchors, offsets);
 
-    if (d.labelPlaced) {
+    if (findAvailablePosition(d, bitMap, anchors, offsets)) {
       placeLabel(d.searchBound, bitMap);
-      d.fill = d.originalFill;
-      d.stroke = d.originalStroke;
+      d.opacity = d.originalOpacity;
     } else {
-      d.fill = undefined;
-      d.stroke = undefined;
+      d.opacity = 0;
     }
   }
 
@@ -51,9 +41,8 @@ function findAvailablePosition(datum, bitMap, anchors, offsets) {
       m = anchors.length,
       dx, dy;
 
-  datum.labelPlaced = false;
-  for (i = 0; i < n && !datum.labelPlaced; i++) {
-    for (j = 0; j < m && !datum.labelPlaced; j++) {
+  for (i = 0; i < n; i++) {
+    for (j = 0; j < m; j++) {
       dx = (anchors[j] & 0x3) - 1;
       dy = ((anchors[j] >>> 0x2) & 0x3) - 1;
 
@@ -75,15 +64,16 @@ function findAvailablePosition(datum, bitMap, anchors, offsets) {
             !checkCollision(searchBound, bitMap)
           )
       ) {
-        datum.labelPlaced = true;
         datum.anchors.x = datum.bound[!dx ? 1 : (dx ^ offsets[i] >= 0 ? 2 : 0)];
         datum.anchors.y = datum.bound[!dy ? 4 : (dy ^ offsets[i] >= 0 ? 5 : 3)];
 
         datum.x = datum.bound[1];
         datum.y = datum.bound[4];
+        return true;
       }
     }
   }
+  return false;
 }
 
 function isIn(b, mb) {
@@ -110,20 +100,11 @@ function getBound(datum, dx, dy, offset) {
 }
 
 function getSearchBound(bound, bm) {
-  var _x = bm.bin(bound[0]),
-      _y = bm.bin(bound[3]),
-      _x2 = bm.bin(bound[2]),
-      _y2 = bm.bin(bound[5]),
-      w = bm.width, h = bm.height;
-  // _x = _x < 0 ? 0 : _x > w - 1 ? w - 1 : _x;
-  // _y = _y < 0 ? 0 : _y > h - 1 ? h - 1 : _y;
-  // _x2 = _x2 < 0 ? 0 : _x2 > w - 1 ? w - 1 : _x2;
-  // _y2 = _y2 < 0 ? 0 : _y2 > h - 1 ? h - 1 : _y2;
   return {
-    x: _x,
-    y: _y,
-    x2: _x2,
-    y2: _y2,
+    x: bm.bin(bound[0]),
+    y: bm.bin(bound[3]),
+    x2: bm.bin(bound[2]),
+    y2: bm.bin(bound[5]),
   };
 }
 

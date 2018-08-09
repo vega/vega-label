@@ -8,8 +8,8 @@ var rawFile = new XMLHttpRequest();
 // rawFile.open('GET', '../spec/label_rect.vg.json', false);
 // rawFile.open('GET', '../spec/label_test.vg.json', false);
 // rawFile.open('GET', '../spec/label_car.vg.json', false);
-rawFile.open('GET', '../spec/label_scatter_zoom.vg.json', false);
-// rawFile.open('GET', '../spec/label_asteroids.vg.json', false);
+// rawFile.open('GET', '../spec/label_scatter_zoom.vg.json', false);
+rawFile.open('GET', '../spec/label_asteroids.vg.json', false);
 rawFile.onreadystatechange = () => {
   if(rawFile.readyState === 4)
     if(rawFile.status === 200 || rawFile.status === 0)
