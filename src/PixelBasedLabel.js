@@ -13,7 +13,7 @@ export default function placeLabels(data, size, anchors, marktype, marks, offset
       // bitMaps = {},
       n = data.length,
       d, i, bitMap;
-
+  console.time("pixel-based");
   if (size) {
     width = size[0];
     height = size[1];
@@ -32,8 +32,8 @@ export default function placeLabels(data, size, anchors, marktype, marks, offset
 
     if (d.labelPlaced) {
       placeLabel(d.searchBound, bitMap);
-      d.fill = d.originalFillAndStroke.fill;
-      d.stroke = d.originalFillAndStroke.stroke;
+      d.fill = d.originalFill;
+      d.stroke = d.originalStroke;
     } else {
       d.fill = undefined;
       d.stroke = undefined;
@@ -41,6 +41,7 @@ export default function placeLabels(data, size, anchors, marktype, marks, offset
   }
 
   // bitMap.print('bit-map');
+  console.timeEnd("pixel-based");
   return data;
 }
 
@@ -221,6 +222,8 @@ function getMarkBitMap(data, width, height, marktype, marks, anchors, offsets) {
       bitMap.mark(d.markBound[0], d.markBound[3]);
     }
   }
+
+  // bitMap.print('bit-map-before');
 
   return bitMap;
 }

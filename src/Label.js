@@ -4,7 +4,7 @@ import labelLayout from './LabelLayout';
 import {Transform} from 'vega-dataflow';
 import {inherits, isFunction} from 'vega-util';
 
-var Output = ['x', 'y', 'fill', 'stroke', 'align', 'baseline', 'anchors', 'originalFillAndStroke'];
+var Output = ['x', 'y', 'fill', 'stroke', 'align', 'baseline', 'anchors', 'originalFill', 'originalStroke', 'transformed'];
 
 var Params = ['offset'];
 
@@ -38,6 +38,7 @@ Label.Definition = {
 var prototype = inherits(Label, Transform);
 
 prototype.transform = function(_, pulse) {
+  console.time("label");
   function modp(param) {
     var p = _[param];
     return isFunction(p) && pulse.modified(p.fields);
@@ -72,8 +73,12 @@ prototype.transform = function(_, pulse) {
     t[as[4]] = 'center';
     t[as[5]] = 'middle';
     t[as[6]] = l.anchors;
-    t[as[7]] = l.originalFillAndStroke;
+    t[as[7]] = l.originalFill;
+    t[as[8]] = l.originalStroke;
+    t[as[9]] = true;
   }
+
+  console.timeEnd("label");
 
   return pulse.reflow(mod).modifies(as);
 };

@@ -37,26 +37,28 @@ export default function() {
     var n = texts.length,
         d, data = Array(n),
         marktype = n && texts[0].datum && texts[0].datum.mark ? texts[0].datum.mark.marktype : undefined,
-        transformed = n ? texts[0].originalFillAndStroke : false;
+        transformed = n ? texts[0].transformed : false;
 
-    var i, textWidth, textHeight, mb;
+    console.time("layout");
+    var i, textWidth, textHeight, mb, originalFill, originalStroke;
     for (i = 0; i < n; i++) {
       d = texts[i];
-      textWidth = labelWidth(d.text, d.fontSize, d.font, context);
+      textWidth = labelWidth(d.text, d.fontSize, d.font, context); // bottle neck!!
       textHeight = d.fontSize;
-
-      mb = marktype && marktype !== 'line' ? d.datum.bounds : {
-        x1: d.x,
-        x2: d.x,
-        y1: d.y,
-        y2: d.y
-      };
 
       if (marktype && marktype !== 'line') {
         var b = d.datum.bounds;
         mb = [b.x1, (b.x1 + b.x2) / 2.0, b.x2, b.y1, (b.y1 + b.y2) / 2.0, b.y2];
       } else {
         mb = [d.x, d.x, d.x, d.y, d.y, d.y];
+      }
+
+      if (transformed) {
+        originalFill = d.originalFill;
+        originalStroke = d.originalStroke;
+      } else {
+        originalFill = d.fill;
+        originalStroke = d.stroke;
       }
 
       data[i] = {
@@ -67,16 +69,15 @@ export default function() {
         sort: sort ? sort(d.datum) : undefined,
         markBound: mb,
         anchors: { x2: d.x, y2: d.y },
-        originalFillAndStroke: transformed ? d.originalFillAndStroke : {
-          fill: d.fill,
-          stroke: d.stroke
-        },
+        originalFill: originalFill,
+        originalStroke: originalStroke,
         datum: d
       };
     }
 
     if (sort) data.sort(function(a, b) { return a.sort - b.sort; });
     
+    console.timeEnd("layout");
     return placeLabelsPixel(data, size, anchors, marktype, marks, offsets);
   };
 

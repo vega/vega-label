@@ -99,7 +99,8 @@
           "size": { "value": 30 },
           "shape": { "value": "circle" },
           "opacity": { "value": 0.5 },
-          "fill": { "scale": "color", "field": "density" }
+          "_fill": { "scale": "color", "field": "density" },
+          "fill": { "value": "#000" }
         }
       }
     },
