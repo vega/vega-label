@@ -99,8 +99,8 @@
           "size": { "value": 30 },
           "shape": { "value": "circle" },
           "opacity": { "value": 0.5 },
-          "_fill": { "scale": "color", "field": "density" },
-          "fill": { "value": "#000" }
+          "fill": { "scale": "color", "field": "density" },
+          "_fill": { "value": "#000" }
         }
       }
     },
@@ -131,8 +131,8 @@
         "enter": {
           "x": { "field": "datum.x" },
           "y": { "field": "datum.y" },
-          "x2": { "field": "anchors.x" },
-          "y2": { "field": "anchors.y" },
+          "x2": { "field": "x" },
+          "y2": { "field": "y" },
           "stroke": { "field": "fill" },
           "strokeWidth": { "value": 1 }
         }

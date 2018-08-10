@@ -8,6 +8,9 @@ import { canvas } from 'vega-canvas';
 
 var SIZE_FACTOR = 0.707106781186548;
 
+var ALIGN = ['right', 'center', 'left'];
+var BASELINE = ['bottom', 'middle', 'top'];
+
 export default function placeLabels(data, anchors, marktype, marks, offsets, allowOutside) {
   var context = canvas().getContext("2d"),
       width, height,
@@ -123,12 +126,11 @@ function placeLabel(datum, bitMap, anchors, offsets, allowOutside, context) {
           !checkCollision(sbx1, sby1, sbx2, sby2, bitMap)
         )
     ) {
+      datum.x = !dx ? xc : (dx * isIn < 0 ? x2 : x1);
+      datum.y = !dy ? yc : (dy * isIn < 0 ? y2 : y1);
 
-      datum.anchors.x = !dx ? xc : (dx * isIn < 0 ? x2 : x1);
-      datum.anchors.y = !dy ? yc : (dy * isIn < 0 ? y2 : y1);
-
-      datum.x = xc;
-      datum.y = yc;
+      datum.align = ALIGN[(dx * isIn) + 1];
+      datum.baseline = BASELINE[(dy * isIn) + 1];
 
       bitMap.markInBoundBinned(sbx1, sby1, sbx2, sby2);
       return true;

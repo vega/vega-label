@@ -4,7 +4,7 @@ import labelLayout from './LabelLayout';
 import {Transform} from 'vega-dataflow';
 import {inherits, isFunction} from 'vega-util';
 
-var Output = ['x', 'y', 'opacity', 'align', 'baseline', 'anchors', 'originalOpacity', 'transformed'];
+var Output = ['x', 'y', 'opacity', 'align', 'baseline', 'originalOpacity', 'transformed'];
 
 var Params = ['offset'];
 
@@ -72,11 +72,10 @@ prototype.transform = function(_, pulse) {
     t[as[0]] = l.x;
     t[as[1]] = l.y;
     t[as[2]] = l.opacity;
-    t[as[3]] = 'center';
-    t[as[4]] = 'middle';
-    t[as[5]] = l.anchors;
-    t[as[6]] = l.originalOpacity;
-    t[as[7]] = true;
+    t[as[3]] = l.align;
+    t[as[4]] = l.baseline;
+    t[as[5]] = l.originalOpacity;
+    t[as[6]] = true;
   }
 
   console.timeEnd("label");

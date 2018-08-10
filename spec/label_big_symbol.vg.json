@@ -137,8 +137,8 @@
         "enter": {
           "x": { "field": "datum.x" },
           "y": { "field": "datum.y" },
-          "x2": { "field": "anchors.x" },
-          "y2": { "field": "anchors.y" },
+          "x2": { "field": "x" },
+          "y2": { "field": "y" },
           "stroke": { "field": "fill" },
           "strokeWidth": { "value": 1 },
           "strokeOpacity": { "value": 0.25 }
