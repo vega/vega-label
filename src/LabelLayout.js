@@ -38,26 +38,24 @@ export default function() {
         transformed = n ? texts[0].transformed : false;
 
     console.time("layout");
-    var i, textWidth, textHeight, mb, originalOpacity;
+    var i, markBound, originalOpacity;
     for (i = 0; i < n; i++) {
       d = texts[i];
-      // textWidth = labelWidth(d.text, d.fontSize, d.font, context); // bottle neck!! -> do it lazily
-      textHeight = d.fontSize;
 
       if (marktype && marktype !== 'line') {
         var b = d.datum.bounds;
-        mb = [b.x1, (b.x1 + b.x2) / 2.0, b.x2, b.y1, (b.y1 + b.y2) / 2.0, b.y2];
+        markBound = [b.x1, (b.x1 + b.x2) / 2.0, b.x2, b.y1, (b.y1 + b.y2) / 2.0, b.y2];
       } else {
-        mb = [d.x, d.x, d.x, d.y, d.y, d.y];
+        markBound = [d.x, d.x, d.x, d.y, d.y, d.y];
       }
 
       data[i] = {
         textWidth: undefined,
-        textHeight: textHeight,
+        textHeight: d.fontSize,
         font: d.font,
         text: d.text,
         sort: sort ? sort(d.datum) : undefined,
-        markBound: mb,
+        markBound: markBound,
         anchors: { x2: d.x, y2: d.y },
         originalOpacity: transformed ? originalOpacity : d.opacity,
         datum: d
