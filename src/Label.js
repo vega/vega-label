@@ -26,6 +26,7 @@ Label.Definition = {
   "type": "Label",
   "metadata": {"modifies": true},
   "params": [
+    { "name": "allowOutside", "type": "boolean", "defalut": false },
     { "name": "offsets", "type": "number", "array": true, "default": [1]},
     { "name": "sort", "type": "field" },
     { "name": "anchors", "type": "string", "array": true, "default": defaultAnchors },
@@ -57,6 +58,7 @@ prototype.transform = function(_, pulse) {
       .offsets(_.offsets ? _.offsets : [1])
       .anchors(_.anchors ? _.anchors : defaultAnchors)
       .marks(_.marks ? _.marks : [])
+      .allowOutside(_.allowOutside ? _.allowOutside : false)
       .layout(),
       n = data.length;
 

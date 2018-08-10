@@ -7,7 +7,7 @@ import { Marks } from 'vega-scenegraph';
 
 var SIZE_FACTOR = 0.707106781186548;
 
-export default function placeLabels(data, anchors, marktype, marks, offsets) {
+export default function placeLabels(data, anchors, marktype, marks, offsets, allowOutside) {
   var width, height,
       n = data.length,
       d, i, bitMap;
@@ -22,7 +22,12 @@ export default function placeLabels(data, anchors, marktype, marks, offsets) {
   for (i = 0; i < n; i++) {
     d = data[i];
 
-    if (findAvailablePosition(d, bitMap, anchors, offsets)) {
+    if (d.markBound[0] < 0 || d.markBound[3] < 0 || d.markBound[2] > width || d.markBound[5] > height) {
+      d.opacity = 0;
+      continue;
+    }
+
+    if (findAvailablePosition(d, bitMap, anchors, offsets, allowOutside)) {
       placeLabel(d.searchBound, bitMap);
       d.opacity = d.originalOpacity;
     } else {
@@ -35,10 +40,10 @@ export default function placeLabels(data, anchors, marktype, marks, offsets) {
   return data;
 }
 
-function findAvailablePosition(datum, bitMap, anchors, offsets) {
+function findAvailablePosition(datum, bitMap, anchors, offsets, allowOutside) {
   var i, searchBound,
       n = offsets.length,
-      dx, dy;
+      dx, dy, mb = datum.markBound;
 
   for (i = 0; i < n; i++) {
     dx = (anchors[i] & 0x3) - 1;
@@ -46,8 +51,12 @@ function findAvailablePosition(datum, bitMap, anchors, offsets) {
 
     if (dx === 0 && dy === 0 && i !== 0) continue;
 
+    // check if have to calculate bound?
+    // labelWidth(d.text, d.fontSize, d.font, context); // bottle neck!! -> do it lazily
+    // split into boundx and boundy; calculate boundx first
+
     datum.bound = getBound(datum, dx, dy, offsets[i]);
-    searchBound = getSearchBound(datum.bound, bitMap);
+    searchBound = getSearchBound(datum.bound, bitMap, allowOutside);
     
     if (bitMap.searchOutOfBound(searchBound)) continue;
     
@@ -56,7 +65,7 @@ function findAvailablePosition(datum, bitMap, anchors, offsets) {
       ((dx === 0 && dy === 0) || offsets[i] < 0) ?
         (
           !bitMap.getInBoundMultiBinned(searchBound.x, searchBound.y, searchBound.x2, searchBound.y2) &&
-          isIn(datum.bound, datum.markBound)
+          isIn(datum.bound, mb)
         ) :
         (
           !checkCollision(searchBound, bitMap)
@@ -96,12 +105,23 @@ function getBound(datum, dx, dy, offset) {
   ];
 }
 
-function getSearchBound(bound, bm) {
+function getSearchBound(bound, bm, allowOutside) {
+  var _x = bm.bin(bound[0]),
+      _y = bm.bin(bound[3]),
+      _x2 = bm.bin(bound[2]),
+      _y2 = bm.bin(bound[5]),
+      w = bm.width, h = bm.height;
+  if (allowOutside) {
+    _x = _x < 0 ? 0 : _x > w - 1 ? w - 1 : _x;
+    _y = _y < 0 ? 0 : _y > h - 1 ? h - 1 : _y;
+    _x2 = _x2 < 0 ? 0 : _x2 > w - 1 ? w - 1 : _x2;
+    _y2 = _y2 < 0 ? 0 : _y2 > h - 1 ? h - 1 : _y2;
+  }
   return {
-    x: bm.bin(bound[0]),
-    y: bm.bin(bound[3]),
-    x2: bm.bin(bound[2]),
-    y2: bm.bin(bound[5]),
+    x: _x,
+    y: _y,
+    x2: _x2,
+    y2: _y2,
   };
 }
 
@@ -249,4 +269,9 @@ function prepareMarkItem(originalItem) {
     item.strokeOpacity = 1;
   }
   return item;
+}
+
+function labelWidth (text, fontSize, font, context) {
+  context.font = fontSize + "px " + font; // add other font properties
+  return context.measureText(text).width;
 }

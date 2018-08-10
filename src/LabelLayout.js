@@ -30,6 +30,7 @@ export default function() {
       sort,
       anchors,
       marks,
+      allowOutside,
       label = {};
 
   label.layout = function() {
@@ -74,7 +75,7 @@ export default function() {
     if (sort) data.sort(function(a, b) { return a.sort - b.sort; });
     
     console.timeEnd("layout");
-    return placeLabelsPixel(data, anchors, marktype, marks, offsets);
+    return placeLabelsPixel(data, anchors, marktype, marks, offsets, allowOutside);
   };
 
   label.texts = function(_) {
@@ -126,6 +127,15 @@ export default function() {
     }
   }
 
+  label.allowOutside = function(_) {
+    if (arguments.length) {
+      allowOutside = _;
+      return label;
+    } else {
+      return allowOutside;
+    }
+  }
+
   return label;
 }
 
@@ -135,9 +145,4 @@ function addPaddingToArray(smaller, larger) {
   for (i = n; i < m; i++) {
     smaller.push(lastValue);
   }
-}
-
-function labelWidth (text, fontSize, font, context) {
-  context.font = fontSize + "px " + font; // add other font properties
-  return context.measureText(text).width;
 }
