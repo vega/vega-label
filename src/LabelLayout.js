@@ -1,7 +1,6 @@
 /*eslint no-unused-vars: "warn"*/
 /*eslint no-console: "warn"*/
 /*eslint no-empty: "warn"*/
-import { canvas } from 'vega-canvas';
 import placeLabelsPixel from './PixelBasedLabel';
 
 var TOP = 0x0,
@@ -24,8 +23,7 @@ var anchorsMap = {
 };
 
 export default function() {
-  var context = canvas().getContext("2d"),
-      texts = [],
+  var texts = [],
       offsets,
       sort,
       anchors,
@@ -43,7 +41,7 @@ export default function() {
     var i, textWidth, textHeight, mb, originalOpacity;
     for (i = 0; i < n; i++) {
       d = texts[i];
-      textWidth = labelWidth(d.text, d.fontSize, d.font, context); // bottle neck!! -> do it lazily
+      // textWidth = labelWidth(d.text, d.fontSize, d.font, context); // bottle neck!! -> do it lazily
       textHeight = d.fontSize;
 
       if (marktype && marktype !== 'line') {
@@ -54,22 +52,16 @@ export default function() {
       }
 
       data[i] = {
-        fontSize: d.fontSize,
-        textWidth: textWidth,
+        textWidth: undefined,
         textHeight: textHeight,
-        // boundFun: getBoundFunction([mb.x1, (mb.x1 + mb.x2) / 2.0, mb.x2, mb.y1, (mb.y1 + mb.y2) / 2.0, mb.y2], textWidth, textHeight),
+        font: d.font,
+        text: d.text,
         sort: sort ? sort(d.datum) : undefined,
         markBound: mb,
         anchors: { x2: d.x, y2: d.y },
         originalOpacity: transformed ? originalOpacity : d.opacity,
         datum: d
       };
-    }
-
-    if (anchors.length < offsets.length) {
-      addPaddingToArray(anchors, offsets);
-    } else {
-      addPaddingToArray(offsets, anchors);
     }
 
     if (sort) data.sort(function(a, b) { return a.sort - b.sort; });
@@ -87,9 +79,16 @@ export default function() {
     }
   };
 
-  label.offsets = function(_) {
+  label.offsets = function(_, len) {
     if (arguments.length) {
-      offsets = _;
+      var n = _.length, i;
+      offsets = new Float64Array(len);
+      for (i = 0; i < n; i++) {
+        offsets[i] = _[i];
+      }
+      for (i = n; i < len; i++) {
+        offsets[i] = offsets[n - 1];
+      }
       return label;
     } else {
       return offsets;
@@ -105,12 +104,15 @@ export default function() {
     }
   }
 
-  label.anchors = function(_) {
+  label.anchors = function(_, len) {
     if (arguments.length) {
       var n = _.length, i;
-      anchors = new Int8Array(n);
+      anchors = new Int8Array(len);
       for (i = 0; i < n; i++) {
         anchors[i] |= anchorsMap[_[i]];
+      }
+      for (i = n; i < len; i++) {
+        anchors[i] = anchors[n - 1];
       }
       return label;
     } else {
@@ -137,12 +139,4 @@ export default function() {
   }
 
   return label;
-}
-
-function addPaddingToArray(smaller, larger) {
-  var n = smaller.length, m = larger.length, i;
-  var lastValue = smaller[n - 1];
-  for (i = n; i < m; i++) {
-    smaller.push(lastValue);
-  }
 }

@@ -4,11 +4,13 @@
 import BitMap from './BitMap';
 import MultiBitMap from './MultiBitMap';
 import { Marks } from 'vega-scenegraph';
+import { canvas } from 'vega-canvas';
 
 var SIZE_FACTOR = 0.707106781186548;
 
 export default function placeLabels(data, anchors, marktype, marks, offsets, allowOutside) {
-  var width, height,
+  var context = canvas().getContext("2d"),
+      width, height,
       n = data.length,
       d, i, bitMap;
   console.time("pixel-based");
@@ -27,8 +29,8 @@ export default function placeLabels(data, anchors, marktype, marks, offsets, all
       continue;
     }
 
-    if (findAvailablePosition(d, bitMap, anchors, offsets, allowOutside)) {
-      placeLabel(d.searchBound, bitMap);
+    if (placeLabel(d, bitMap, anchors, offsets, allowOutside, context)) {
+      // placeLabel(d.searchBound, bitMap);
       d.opacity = d.originalOpacity;
     } else {
       d.opacity = 0;
@@ -40,97 +42,108 @@ export default function placeLabels(data, anchors, marktype, marks, offsets, all
   return data;
 }
 
-function findAvailablePosition(datum, bitMap, anchors, offsets, allowOutside) {
-  var i, searchBound,
-      n = offsets.length,
-      dx, dy, mb = datum.markBound;
+function placeLabel(datum, bitMap, anchors, offsets, allowOutside, context) {
+  var i, n = offsets.length,
+      dx, dy,
+      textWidth = datum.textWidth,
+      textHeight = datum.textHeight,
+      markBound = datum.markBound,
+      text = datum.text, font = datum.font,
+      w = bitMap.width, h = bitMap.height,
+      isMiddle, sizeFactor, isIn;
+  
+  var x, sx,
+      x1, xc, x2,
+      y1, yc, y2,
+      sbx1, sbx2,
+      sby1, sby2;
 
   for (i = 0; i < n; i++) {
     dx = (anchors[i] & 0x3) - 1;
     dy = ((anchors[i] >>> 0x2) & 0x3) - 1;
 
-    if (dx === 0 && dy === 0 && i !== 0) continue;
+    isMiddle = (dx === 0 && dy === 0);
+    sizeFactor = (dx && dy) ? SIZE_FACTOR : 1;
+    isIn = offsets[i] < 0 ? -1 : 1;
 
-    // check if have to calculate bound?
-    // labelWidth(d.text, d.fontSize, d.font, context); // bottle neck!! -> do it lazily
-    // split into boundx and boundy; calculate boundx first
+    yc = markBound[4 + dy] + (isIn * textHeight * dy / 2.0) + (offsets[i] * dy * sizeFactor);
+    y1 = yc - (textHeight / 2.0);
+    y2 = yc + (textHeight / 2.0);
 
-    datum.bound = getBound(datum, dx, dy, offsets[i]);
-    searchBound = getSearchBound(datum.bound, bitMap, allowOutside);
-    
-    if (bitMap.searchOutOfBound(searchBound)) continue;
-    
-    datum.searchBound = searchBound;
-    if (
-      ((dx === 0 && dy === 0) || offsets[i] < 0) ?
+    sby1 = bitMap.bin(y1);
+    sby2 = bitMap.bin(y2);
+
+    x = markBound[1 + dx] + (offsets[i] * dx * sizeFactor);
+    sx = bitMap.bin(x);
+
+    if (allowOutside) {
+      sx = sx < 0 ? 0 : sx > w - 1 ? w - 1 : sx;
+      sby1 = sby1 < 0 ? 0 : sby1 > h - 1 ? h - 1 : sby1;
+      sby2 = sby2 < 0 ? 0 : sby2 > h - 1 ? h - 1 : sby2;
+    }
+
+    if (!textWidth) {
+      if (bitMap.searchOutOfBound(sx, sby1, sx, sby2)) continue;
+      if ((isMiddle || offsets[i] < 0) ? 
         (
-          !bitMap.getInBoundMultiBinned(searchBound.x, searchBound.y, searchBound.x2, searchBound.y2) &&
-          isIn(datum.bound, mb)
+          bitMap.getInBoundMultiBinned(sx, sby1, sx, sby2) ||
+          !isInMarkBound(x, y1, x, y2, markBound)
         ) :
         (
-          !checkCollision(searchBound, bitMap)
+          checkCollision(sx, sby1, sx, sby2, bitMap)
+        )
+      ) {
+        continue;
+      } else {
+        textWidth = labelWidth(text, textHeight, font, context)
+      }
+    }
+
+    xc = x + (isIn * textWidth * dx / 2.0);
+    x1 = xc - (textWidth / 2.0);
+    x2 = xc + (textWidth / 2.0);
+
+    sbx1 = bitMap.bin(x1);
+    sbx2 = bitMap.bin(x2);
+
+    if (allowOutside) {
+      sbx1 = sbx1 < 0 ? 0 : sbx1 > w - 1 ? w - 1 : sbx1;
+      sbx2 = sbx2 < 0 ? 0 : sbx2 > w - 1 ? w - 1 : sbx2;
+    }
+    
+    if (bitMap.searchOutOfBound(sbx1, sby1, sbx2, sby2)) continue;
+    
+    if (
+      (isMiddle || offsets[i] < 0) ?
+        (
+          !bitMap.getInBoundMultiBinned(sbx1, sby1, sbx2, sby2) &&
+          isInMarkBound(x1, y1, x2, y2, markBound)
+        ) :
+        (
+          !checkCollision(sbx1, sby1, sbx2, sby2, bitMap)
         )
     ) {
-      datum.anchors.x = datum.bound[!dx ? 1 : (dx ^ offsets[i] >= 0 ? 2 : 0)];
-      datum.anchors.y = datum.bound[!dy ? 4 : (dy ^ offsets[i] >= 0 ? 5 : 3)];
 
-      datum.x = datum.bound[1];
-      datum.y = datum.bound[4];
+      datum.anchors.x = !dx ? xc : (dx * isIn < 0 ? x2 : x1);
+      datum.anchors.y = !dy ? yc : (dy * isIn < 0 ? y2 : y1);
+
+      datum.x = xc;
+      datum.y = yc;
+
+      bitMap.markInBoundBinned(sbx1, sby1, sbx2, sby2);
       return true;
     }
   }
   return false;
 }
 
-function isIn(b, mb) {
-  return mb[0] <= b[0] && b[2] <= mb[2] &&
-         mb[3] <= b[3] && b[5] <= mb[5];
+function isInMarkBound(x1, y1, x2, y2, mb) {
+  return mb[0] <= x1 && x2 <= mb[2] &&
+         mb[3] <= y1 && y2 <= mb[5];
 }
 
-function getBound(datum, dx, dy, offset) {
-  var mb = datum.markBound,
-      w = datum.textWidth,
-      h = datum.textHeight,
-      sizeFactor = (dx && dy) ? SIZE_FACTOR : 1,
-      isIn = offset < 0 ? -1 : 1,
-      y = mb[4 + dy] + (isIn * h * dy / 2.0) + (offset * dy * sizeFactor),
-      x = mb[1 + dx] + (isIn * w * dx / 2.0) + (offset * dx * sizeFactor);
-  return [
-    x - (w / 2.0),
-    x,
-    x + (w / 2.0),
-    y - (h / 2.0),
-    y,
-    y + (h / 2.0)
-  ];
-}
-
-function getSearchBound(bound, bm, allowOutside) {
-  var _x = bm.bin(bound[0]),
-      _y = bm.bin(bound[3]),
-      _x2 = bm.bin(bound[2]),
-      _y2 = bm.bin(bound[5]),
-      w = bm.width, h = bm.height;
-  if (allowOutside) {
-    _x = _x < 0 ? 0 : _x > w - 1 ? w - 1 : _x;
-    _y = _y < 0 ? 0 : _y > h - 1 ? h - 1 : _y;
-    _x2 = _x2 < 0 ? 0 : _x2 > w - 1 ? w - 1 : _x2;
-    _y2 = _y2 < 0 ? 0 : _y2 > h - 1 ? h - 1 : _y2;
-  }
-  return {
-    x: _x,
-    y: _y,
-    x2: _x2,
-    y2: _y2,
-  };
-}
-
-function placeLabel(b, bitMap) {
-  bitMap.markInBoundBinned(b.x, b.y, b.x2, b.y2);
-}
-
-function checkCollision(b, bitMap) {
-  return bitMap.getInBoundBinned(b.x, b.y, b.x2, b.y2);
+function checkCollision(x1, y1, x2, y2, bitMap) {
+  return bitMap.getInBoundBinned(x1, y1, x2, y2);
 }
 
 function getMarkBitMap(data, width, height, marktype, marks, anchors, offsets) {
@@ -271,7 +284,7 @@ function prepareMarkItem(originalItem) {
   return item;
 }
 
-function labelWidth (text, fontSize, font, context) {
+function labelWidth(text, fontSize, font, context) {
   context.font = fontSize + "px " + font; // add other font properties
   return context.measureText(text).width;
 }

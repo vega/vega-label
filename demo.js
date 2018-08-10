@@ -6,13 +6,13 @@ var rawFile = new XMLHttpRequest();
 // rawFile.open('GET', '../spec/label_line_chart.vg.json', false);
 // rawFile.open('GET', '../spec/label_line_end.vg.json', false);
 // rawFile.open('GET', '../spec/label_area_end.vg.json', false);
-rawFile.open('GET', '../spec/job_voyager.vg.json', false);
+// rawFile.open('GET', '../spec/job_voyager.vg.json', false);
 // rawFile.open('GET', '../spec/label_connected_scatter.vg.json', false);
 // rawFile.open('GET', '../spec/label_rect.vg.json', false);
 // rawFile.open('GET', '../spec/label_test.vg.json', false);
 // rawFile.open('GET', '../spec/label_car.vg.json', false);
 // rawFile.open('GET', '../spec/label_scatter_zoom.vg.json', false);
-// rawFile.open('GET', '../spec/label_asteroids.vg.json', false);
+rawFile.open('GET', '../spec/label_asteroids.vg.json', false);
 rawFile.onreadystatechange = () => {
   if(rawFile.readyState === 4)
     if(rawFile.status === 200 || rawFile.status === 0)

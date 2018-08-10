@@ -49,14 +49,17 @@ prototype.transform = function(_, pulse) {
 
   var data = pulse.materialize(pulse.SOURCE).source,
       labelLayout = this.value,
-      as = _.as ? _.as : Output;
+      as = _.as ? _.as : Output,
+      offsets = _.offsets ? _.offsets : [1],
+      anchors = _.anchors ? _.anchors : defaultAnchors,
+      numberPositions = offsets.length > anchors.length ? offsets.length : anchors.length;
 
   // configure layout
   var labels = labelLayout
       .texts(data)
       .sort(_.sort)
-      .offsets(_.offsets ? _.offsets : [1])
-      .anchors(_.anchors ? _.anchors : defaultAnchors)
+      .offsets(offsets, numberPositions)
+      .anchors(anchors, numberPositions)
       .marks(_.marks ? _.marks : [])
       .allowOutside(_.allowOutside ? _.allowOutside : false)
       .layout(),

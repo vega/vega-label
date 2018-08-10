@@ -135,8 +135,8 @@ export default function BitMap(_width, _height) {
     return ~~(coordinate / pixelSize);
   };
 
-  this.searchOutOfBound = function (bound) {
-    return bound.x < 0 || bound.y < 0 || bound.y2 >= this.height || bound.x2 >= this.width;
+  this.searchOutOfBound = function (x, y, x2, y2) {
+    return x < 0 || y < 0 || y2 >= this.height || x2 >= this.width;
   };
 
   this.print = function (id) {
