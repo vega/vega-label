@@ -12,7 +12,6 @@ This module provides the following Vega post encoding transform:
 "transform": [
   {
     "type": "label",
-    "size": [ 800, 500 ],
     "offsets": [ 1, 2, -1 ],
     "sort": { "field": "datum.year" },
     "anchors": [ "top", "right" ]
@@ -20,8 +19,6 @@ This module provides the following Vega post encoding transform:
   }
 ]
 ```
-
-- `size`: size of the chart in format `[width, height]`
 
 - `sort`: order of label to be placed (**greater** will be placed **after**)
 

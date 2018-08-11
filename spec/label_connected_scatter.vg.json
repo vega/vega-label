@@ -150,11 +150,11 @@
       "from": { "data": "label" },
       "encode": {
         "enter": {
-          "x": { "field": "datum.x" },
-          "y": { "field": "datum.y" },
+          "x": { "scale": "x", "field": "datum.datum.miles" },
+          "y": { "scale": "y", "field": "datum.datum.gas" },
           "x2": { "field": "x" },
           "y2": { "field": "y" },
-          "stroke": { "field": "fill" },
+          "opacity": { "field": "opacity" },
           "strokeWidth": { "value": 1 }
         }
       }

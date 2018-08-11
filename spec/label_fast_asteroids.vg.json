@@ -107,20 +107,19 @@
     {
       "name": "label",
       "type": "text",
-      "from": { "data": "base_mark" },
+      "from": { "data": "asteroids" },
       "encode": {
         "enter": {
-          "x": { "field": "x" },
-          "y": { "field": "y" },
+          "x": { "scale": "x", "field": "ra" },
+          "y": { "scale": "y", "field": "dec" },
           "fill": { "value": "#000" },
-          "text": { "field": "datum.denomination" }
+          "text": { "field": "denomination" }
         }
       },
       "transform": [
         {
           "type": "label",
-          "offsets": [2],
-          "sort": { "field": "datum.ra" }
+          "offsets": [5]
         }
       ]
     },
@@ -131,8 +130,8 @@
         "enter": {
           "x": { "field": "x" },
           "y": { "field": "y" },
-          "x2": { "scale": "x", "field": "datum.datum.ra" },
-          "y2": { "scale": "y", "field": "datum.datum.dec" },
+          "x2": { "scale": "x", "field": "datum.ra" },
+          "y2": { "scale": "y", "field": "datum.dec" },
           "opacity": { "field": "opacity" },
           "strokeWidth": { "value": 1 }
         }

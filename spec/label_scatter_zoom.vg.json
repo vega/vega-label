@@ -289,7 +289,8 @@
           "type": "label",
           "offsets": [3],
           "fill": "#000",
-          "marks": [ "basePoint"]
+          "marks": [ "basePoint"],
+          "allowOutside": true
         }
       ]
     },
@@ -301,11 +302,11 @@
           "strokeWidth": { "value": 1 }
         },
         "update": {
-          "x": { "field": "datum.x" },
-          "y": { "field": "datum.y" },
+          "x": { "scale": "xscale", "field": "datum.datum.Horsepower" },
+          "y": { "scale": "yscale", "field": "datum.datum.Miles_per_Gallon" },
           "x2": { "field": "x" },
           "y2": { "field": "y" },
-          "stroke": { "field": "fill" }
+          "opacity": { "field": "opacity" }
         }
       }
     }

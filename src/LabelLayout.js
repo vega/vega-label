@@ -56,8 +56,8 @@ export default function() {
         text: d.text,
         sort: sort ? sort(d.datum) : undefined,
         markBound: markBound,
-        anchors: { x2: d.x, y2: d.y },
         originalOpacity: transformed ? originalOpacity : d.opacity,
+        opacity: 0,
         datum: d
       };
     }

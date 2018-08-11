@@ -2,13 +2,11 @@
 /*eslint no-fallthrough: "warn" */
 /*eslint no-console: "warn"*/
 import BitMap from './BitMap';
-// import BitMap from './BitMap';
 // import MultiBitMap from './MultiBitMap';
 import { Marks } from 'vega-scenegraph';
 import { canvas } from 'vega-canvas';
 
 var SIZE_FACTOR = 0.707106781186548;
-
 var ALIGN = ['right', 'center', 'left'];
 var BASELINE = ['bottom', 'middle', 'top'];
 
@@ -33,17 +31,14 @@ export default function placeLabels(data, anchors, marktype, marks, offsets, all
   console.time("layout");
   for (i = 0; i < n; i++) {
     d = data[i];
-    markBound = d.markBound
+    markBound = d.markBound;
 
     if (markBound[0] < 0 || markBound[3] < 0 || markBound[2] > width || markBound[5] > height) {
-      d.opacity = 0;
       continue;
     }
 
     if (placeLabel(d, layer1, layer2, anchors, offsets, allowOutside, context)) {
       d.opacity = d.originalOpacity;
-    } else {
-      d.opacity = 0;
     }
   }
   console.timeEnd("layout");
@@ -95,15 +90,10 @@ function placeLabel(datum, layer1, layer2, anchors, offsets, allowOutside, conte
 
     if (!textWidth) {
       if (layer1.searchOutOfBound(searchX, searchBoundY1, searchX, searchBoundY2)) continue;
+      var end = searchX + (searchBoundY2 - searchBoundY1) * (~~(text.length / 3));
       if ((isMiddle || offsets[i] < 0) ? 
-        (
-          checkCollision(searchX, searchBoundY1, searchX, searchBoundY2, layer2) ||
-          !isInMarkBound(x, y1, x, y2, markBound)
-        ) :
-        (
-          checkCollision(searchX, searchBoundY1, searchX, searchBoundY2, layer1)
-        )
-      ) {
+        ( checkCollision(searchX, searchBoundY1, end, searchBoundY2, layer2) || !isInMarkBound(x, y1, x, y2, markBound) ) :
+          checkCollision(searchX, searchBoundY1, end, searchBoundY2, layer1) ) {
         continue;
       } else {
         textWidth = labelWidth(text, textHeight, font, context)
@@ -124,16 +114,9 @@ function placeLabel(datum, layer1, layer2, anchors, offsets, allowOutside, conte
     
     if (layer1.searchOutOfBound(searchBoundX1, searchBoundY1, searchBoundX2, searchBoundY2)) continue;
     
-    if (
-      (isMiddle || offsets[i] < 0) ?
-        (
-          !checkCollision(searchBoundX1, searchBoundY1, searchBoundX2, searchBoundY2, layer2) &&
-          isInMarkBound(x1, y1, x2, y2, markBound)
-        ) :
-        (
-          !checkCollision(searchBoundX1, searchBoundY1, searchBoundX2, searchBoundY2, layer1)
-        )
-    ) {
+    if ((isMiddle || offsets[i] < 0) ?
+      ( !checkCollision(searchBoundX1, searchBoundY1, searchBoundX2, searchBoundY2, layer2) && isInMarkBound(x1, y1, x2, y2, markBound) ) :
+        !checkCollision(searchBoundX1, searchBoundY1, searchBoundX2, searchBoundY2, layer1) ) {
       datum.x = !dx ? xc : (dx * isIn < 0 ? x2 : x1);
       datum.y = !dy ? yc : (dy * isIn < 0 ? y2 : y1);
 
@@ -153,7 +136,8 @@ function isInMarkBound(x1, y1, x2, y2, mb) {
 }
 
 function checkCollision(x1, y1, x2, y2, bitMap) {
-  return bitMap.getInBoundBinned(x1, y1, x2, y2);
+  if (bitMap.getInBoundBinned(x1, y1, x2, y1) || bitMap.getInBoundBinned(x1, y2, x2, y2)) return true;
+  return bitMap.getInBoundBinned(x1, y1 + 1, x2, y2 - 1);
 }
 
 function getMarkBitMap(data, width, height, marktype, marks, anchors, offsets) {
@@ -169,20 +153,20 @@ function getMarkBitMap(data, width, height, marktype, marks, anchors, offsets) {
     }
   }
 
-  for (i = 0; i < offsets.length && !hasInner; i++) {
+  for (i = 0; i < offsets.length; i++) {
     if (offsets[i] < 0) {
       hasInner = true;
+      break;
     }
   }
 
-  var c, context,
+  var c, context, items,
       writeOnCanvas = m || (marktype && marktype !== 'line'),
-      items, // bitMap = hasInner ? new MultiBitMap(width, height) : new BitMap(width, height),
       layer1 = new BitMap(width, height),
       layer2 = hasInner ? new BitMap(width, height) : null;
 
   if (writeOnCanvas) {
-    // canvas = document.getElementById('canvas-render');
+    // c = document.getElementById('canvas-render');
     c = document.createElement('canvas');
     context = c.getContext('2d');
     c.setAttribute("width", width);
@@ -226,7 +210,7 @@ function getMarkBitMap(data, width, height, marktype, marks, anchors, offsets) {
     var imageData = context.getImageData(0, 0, width, height),
         canvasBuffer = new Uint32Array(imageData.data.buffer),
         alpha, x, y;
-  
+    
     for (y = 0; y < height; y++) { // make it faster by not checking every pixel.
       for (x = 0; x < width; x++) {
         alpha = canvasBuffer[(y * width) + x] & 0xff000000;
