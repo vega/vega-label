@@ -290,7 +290,8 @@
           "offsets": [3],
           "fill": "#000",
           "marks": [ "basePoint"],
-          "allowOutside": true
+          "allowOutside": true,
+          "size": [600, 400]
         }
       ]
     },

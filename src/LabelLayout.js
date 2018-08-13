@@ -29,6 +29,7 @@ export default function() {
       anchors,
       marks,
       allowOutside,
+      size,
       label = {};
 
   label.layout = function() {
@@ -36,6 +37,10 @@ export default function() {
         d, data = Array(n),
         marktype = n && texts[0].datum && texts[0].datum.mark ? texts[0].datum.mark.marktype : undefined,
         transformed = n ? texts[0].transformed : false;
+    
+    if (!size || size.length !== 2) {
+      return texts;
+    }
 
     console.time("layout");
     var i, markBound, originalOpacity;
@@ -52,6 +57,7 @@ export default function() {
       data[i] = {
         textWidth: undefined,
         textHeight: d.fontSize,
+        fontSize: d.fontSize,
         font: d.font,
         text: d.text,
         sort: sort ? sort(d.datum) : undefined,
@@ -65,7 +71,7 @@ export default function() {
     if (sort) data.sort(function(a, b) { return a.sort - b.sort; });
     
     console.timeEnd("layout");
-    return placeLabelsPixel(data, anchors, marktype, marks, offsets, allowOutside);
+    return placeLabelsPixel(data, anchors, marktype, marks, offsets, allowOutside, size);
   };
 
   label.texts = function(_) {
@@ -133,6 +139,15 @@ export default function() {
       return label;
     } else {
       return allowOutside;
+    }
+  }
+
+  label.size = function(_) {
+    if (arguments.length) {
+      size = _;
+      return label;
+    } else {
+      return size;
     }
   }
 

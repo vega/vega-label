@@ -2,7 +2,6 @@
 /*eslint no-fallthrough: "warn" */
 /*eslint no-console: "warn"*/
 import BitMap from './BitMap';
-// import MultiBitMap from './MultiBitMap';
 import { Marks } from 'vega-scenegraph';
 import { canvas } from 'vega-canvas';
 
@@ -10,7 +9,7 @@ var SIZE_FACTOR = 0.707106781186548;
 var ALIGN = ['right', 'center', 'left'];
 var BASELINE = ['bottom', 'middle', 'top'];
 
-export default function placeLabels(data, anchors, marktype, marks, offsets, allowOutside) {
+export default function placeLabels(data, anchors, marktype, marks, offsets, allowOutside, size) {
   var context = canvas().getContext("2d"),
       width, height,
       n = data.length,
@@ -20,8 +19,12 @@ export default function placeLabels(data, anchors, marktype, marks, offsets, all
 
   if (!n) return data;
 
-  width = data[0].datum.mark.group.width;
-  height = data[0].datum.mark.group.height;
+  if (marktype === 'area') {
+    offsets = [0];
+    anchors = [0x5];
+  }
+  width = size[0];
+  height = size[1];
   console.time("set-bitmap");
   bitMaps = getMarkBitMap(data, width, height, marktype, marks, anchors, offsets);
   layer1 = bitMaps[0];
@@ -29,6 +32,60 @@ export default function placeLabels(data, anchors, marktype, marks, offsets, all
   console.timeEnd("set-bitmap");
 
   console.time("layout");
+  // if (marktype === 'area') {
+  //   var textHeight = data[0].textHeight;
+  //   var textWidth = labelWidth(data[0].text, textHeight, data[0].font, context);
+  //   var placingLabel = undefined, maxSize = textHeight;
+  //   var x1, y1, x2, y2;
+  //   var x, y;
+  //   var datum, w;
+  //   for (i = 0; i < n; i++) {
+  //     d = data[i];
+  //     datum = d.datum.datum;
+  //     x1 = datum.x;
+  //     y1 = datum.y;
+  //     x2 = typeof datum.x2 === 'number' ? datum.x2 : x1;
+  //     y2 = typeof datum.y2 === 'number' ? datum.y2 : y1;
+  //     x = (x1 + x2) / 2.0;
+  //     y = (y1 + y2) / 2.0;
+  //     var lo = textHeight, hi = height, mid;
+
+  //     x1 = layer1.bin(x - (textWidth / 2.0));
+  //     x2 = layer1.bin(x + (textWidth / 2.0));
+  //     y1 = layer1.bin(y - (textHeight / 2.0));
+  //     y2 = layer1.bin(y + (textHeight / 2.0));
+
+  //     if (!checkCollision(x1, y1, x2, y2, layer2)) {
+  //       while (hi - lo > 1) {
+  //         mid = (lo + hi) / 2.0;
+  //         w = mid * textWidth / textHeight;
+  //         x1 = layer1.bin(x - (w / 2.0));
+  //         x2 = layer1.bin(x + (w / 2.0));
+  //         y1 = layer1.bin(y - (mid / 2.0));
+  //         y2 = layer1.bin(y + (mid / 2.0));
+  //         if (checkCollision(x1, y1, x2, y2, layer2)) {
+  //           hi = mid;
+  //         } else {
+  //           lo = mid;
+  //         }
+  //       }
+
+  //       if (lo >= maxSize) {
+  //         maxSize = lo;
+  //         placingLabel = d;
+  //       }
+  //     }
+  //   }
+
+  //   if (placingLabel) {
+  //     placingLabel.opacity = placingLabel.originalOpacity;
+  //     placingLabel.x = x;
+  //     placingLabel.y = y;
+  //     placingLabel.baseline = 'middle';
+  //     placingLabel.align = 'center';
+  //     placingLabel.fontSize = maxSize;
+  //   }
+  // } else {
   for (i = 0; i < n; i++) {
     d = data[i];
     markBound = d.markBound;
@@ -41,9 +98,10 @@ export default function placeLabels(data, anchors, marktype, marks, offsets, all
       d.opacity = d.originalOpacity;
     }
   }
+  // }
   console.timeEnd("layout");
-
-  // bitMap.print('bit-map');
+  layer1.print('bit-map-1');
+  if (layer2) layer2.print('bit-map-2');
   console.timeEnd("pixel-based");
   return data;
 }
@@ -89,11 +147,11 @@ function placeLabel(datum, layer1, layer2, anchors, offsets, allowOutside, conte
     }
 
     if (!textWidth) {
+      // var end = searchX + (searchBoundY2 - searchBoundY1) * (~~(text.length / 3));
       if (layer1.searchOutOfBound(searchX, searchBoundY1, searchX, searchBoundY2)) continue;
-      var end = searchX + (searchBoundY2 - searchBoundY1) * (~~(text.length / 3));
       if ((isMiddle || offsets[i] < 0) ? 
-        ( checkCollision(searchX, searchBoundY1, end, searchBoundY2, layer2) || !isInMarkBound(x, y1, x, y2, markBound) ) :
-          checkCollision(searchX, searchBoundY1, end, searchBoundY2, layer1) ) {
+        ( checkCollision(searchX, searchBoundY1, searchX, searchBoundY2, layer2) || !isInMarkBound(x, y1, x, y2, markBound) ) :
+          checkCollision(searchX, searchBoundY1, searchX, searchBoundY2, layer1) ) {
         continue;
       } else {
         textWidth = labelWidth(text, textHeight, font, context)
@@ -166,8 +224,8 @@ function getMarkBitMap(data, width, height, marktype, marks, anchors, offsets) {
       layer2 = hasInner ? new BitMap(width, height) : null;
 
   if (writeOnCanvas) {
-    // c = document.getElementById('canvas-render');
-    c = document.createElement('canvas');
+    c = document.getElementById('canvas-render');
+    // c = document.createElement('canvas');
     context = c.getContext('2d');
     c.setAttribute("width", width);
     c.setAttribute("height", height);

@@ -96,7 +96,7 @@
         "update": {
           "x": { "scale": "x", "field": "ra" },
           "y": { "scale": "y", "field": "dec" },
-          "size": { "value": 30 },
+          "size": { "value": 20 },
           "shape": { "value": "circle" },
           "opacity": { "value": 0.5 },
           "fill": { "scale": "color", "field": "density" },
@@ -119,7 +119,8 @@
       "transform": [
         {
           "type": "label",
-          "offsets": [5]
+          "offsets": [5],
+          "size": [800, 500]
         }
       ]
     },

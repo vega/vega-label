@@ -120,6 +120,7 @@
         {
           "type": "label",
           "offsets": [2],
+          "size": [800, 500],
           "sort": { "field": "datum.ra" }
         }
       ]

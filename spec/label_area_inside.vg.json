@@ -37,24 +37,6 @@
           "field": "y"
         }
       ]
-    },
-    {
-      "name": "label",
-      "source": "table",
-      "transform": [
-        {
-          "type": "aggregate",
-          "fields": ["x"],
-          "ops": ["argmax"],
-          "as": ["max"],
-          "groupby": ["c"]
-        },
-        {
-          "type": "formula",
-          "as": "yc",
-          "expr": "(datum.max.y0 + datum.max.y1) / 2.0"
-        }
-      ]
     }
   ],
 
@@ -89,7 +71,6 @@
   "marks": [
     {
       "type": "group",
-      "name": "group",
       "from": {
         "facet": {
           "name": "series",
@@ -101,6 +82,7 @@
         {
           "type": "area",
           "from": { "data": "series" },
+          "name": "baseArea",
           "encode": {
             "enter": {
               "interpolate": { "value": "monotone" },
@@ -116,27 +98,22 @@
               "fillOpacity": { "value": 0.5 }
             }
           }
-        }
-      ]
-    },
-    {
-      "type": "text",
-      "from": { "data": "label" },
-      "encode": {
-        "enter": {
-          "x": { "scale": "x", "field": "max.x" },
-          "y": { "scale": "y", "field": "yc" },
-          "text": { "field": "max.y" }
-        }
-      },
-      "transform": [
+        },
         {
-          "type": "label",
-          "offsets": [3],
-          "size": [500, 200],
-          "anchors": ["right", "top-right", "bottom-right"],
-          "marks": ["group"],
-          "allowOutside": true
+          "type": "text",
+          "from": { "data": "baseArea" },
+          "encode": {
+            "enter": {
+              "text": { "value": "text label" },
+              "fontSize": { "value": 14 }
+            }
+          },
+          "transform": [
+            {
+              "type": "label",
+              "size": [500, 200]
+            }
+          ]
         }
       ]
     }

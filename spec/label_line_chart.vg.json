@@ -102,6 +102,7 @@
         {
           "type": "label",
           "offsets": [3],
+          "size": [500, 500],
           "marks": ["group"]
         }
       ]

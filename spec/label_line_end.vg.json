@@ -102,6 +102,7 @@
           "offsets": [2],
           "anchors": ["top-right", "right", "bottom-right"],
           "marks": ["layer_0_pathgroup"],
+          "size": [800, 500],
           "allowOutside": true
         }
       ]
