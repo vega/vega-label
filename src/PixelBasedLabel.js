@@ -19,10 +19,6 @@ export default function placeLabels(data, anchors, marktype, marks, offsets, all
 
   if (!n) return data;
 
-  if (marktype === 'area') {
-    offsets = [0];
-    anchors = [0x5];
-  }
   width = size[0];
   height = size[1];
   console.time("set-bitmap");
@@ -199,53 +195,38 @@ function checkCollision(x1, y1, x2, y2, bitMap) {
 }
 
 function getMarkBitMap(data, width, height, marktype, marks, anchors, offsets) {
-  var n = data.length, m = marks.length;
+  var n = data.length;
 
   if (!n) return null;
   var i, hasInner = false;
 
   for (i = 0; i < anchors.length; i++) {
-    if (anchors[i] === 0x5) {
+    if (anchors[i] === 0x5 || offsets[i] < 0) {
       hasInner = true;
       break;
     }
   }
 
-  for (i = 0; i < offsets.length; i++) {
-    if (offsets[i] < 0) {
-      hasInner = true;
-      break;
+  if (marktype) {
+    originalItems = new Array(n);
+    for (i = 0; i < n; i++) {
+      originalItems[i] = data[i].datum.datum;
     }
+    marks.push(originalItems);
   }
 
-  var c, context, items,
-      writeOnCanvas = m || (marktype && marktype !== 'line'),
+  var m = marks.length,
       layer1 = new BitMap(width, height),
-      layer2 = hasInner ? new BitMap(width, height) : null;
+      layer2 = hasInner ? new BitMap(width, height) : undefined;
 
-  if (writeOnCanvas) {
+  if (m) {
+    var c, context;
     c = document.getElementById('canvas-render');
     // c = document.createElement('canvas');
     context = c.getContext('2d');
     c.setAttribute("width", width);
     c.setAttribute("height", height);
-  }
 
-  if (marktype && marktype !== 'line') {
-    items = new Array(n);
-    if (hasInner) {
-      for (i = 0; i < n; i++) {
-        items[i] = prepareMarkItem(data[i].datum.datum);
-      }
-    } else {
-      for (i = 0; i < n; i++) {
-        items[i] = data[i].datum.datum;
-      }
-    }
-    Marks[items[0].mark.marktype].draw(context, {items: items}, null);
-  }
-
-  if (m) {
     var originalItems;
 
     for (i = 0; i < m; i++) {
@@ -256,20 +237,15 @@ function getMarkBitMap(data, width, height, marktype, marks, anchors, offsets) {
       if (originalItems[0].mark.marktype !== 'group') {
         drawMark(context, originalItems, hasInner);
       } else {
-        var j;
-        for (j = 0; j < itemsLen; j++) {
-          drawGroup(context, originalItems[j].items, hasInner);
-        }
+        drawGroup(context, originalItems, hasInner);
       }
     }
-  }
 
-  if (writeOnCanvas) {
     var imageData = context.getImageData(0, 0, width, height),
         canvasBuffer = new Uint32Array(imageData.data.buffer),
         alpha, x, y;
     
-    for (y = 0; y < height; y++) { // make it faster by not checking every pixel.
+    for (y = 0; y < height; y++) {
       for (x = 0; x < width; x++) {
         alpha = canvasBuffer[(y * width) + x] & 0xff000000;
         if (alpha) {
@@ -307,17 +283,14 @@ function drawMark(context, originalItems, hasInner) {
   Marks[items[0].mark.marktype].draw(context, {items: items}, null);
 }
 
-function drawGroup(context, group, hasInner) {
-  var n = group.length, i, g;
+function drawGroup(context, groups, hasInner) {
+  var n = groups.length, i, g;
   for (i = 0; i < n; i++) {
-    g = group[i];
+    g = groups[i].items[0];
     if (g.marktype !== 'group') {
       drawMark(context, g.items, hasInner);
     } else {
-      var j;
-      for (j = 0; j < g.items.length; j++) {
-        drawGroup(context, g.items[j].items, hasInner); // nested group might not work.
-      }
+      drawGroup(context, g.items, hasInner); // nested group might not work.
     }
   }
 }

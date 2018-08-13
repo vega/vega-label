@@ -47,11 +47,14 @@ export default function() {
     for (i = 0; i < n; i++) {
       d = texts[i];
 
-      if (marktype && marktype !== 'line') {
+      if (!marktype) {
+        markBound = [d.x, d.x, d.x, d.y, d.y, d.y];
+      } else if (marktype === 'line' || marktype === 'area') {
+        var datum = d.datum;
+        markBound = [datum.x, datum.x, datum.x, datum.y, datum.y, datum.y];
+      } else {
         var b = d.datum.bounds;
         markBound = [b.x1, (b.x1 + b.x2) / 2.0, b.x2, b.y1, (b.y1 + b.y2) / 2.0, b.y2];
-      } else {
-        markBound = [d.x, d.x, d.x, d.y, d.y, d.y];
       }
 
       data[i] = {
