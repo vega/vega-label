@@ -4,7 +4,7 @@ var jsonText;
 var rawFile = new XMLHttpRequest();
 var specName
 // ---------area---------
-= 'area_job_voyager';
+// = 'area_job_voyager';
 // = 'area';
 
 // ---------line---------
@@ -17,7 +17,7 @@ var specName
 // = 'rect';
 
 // -------scatter--------
-// = 'scatter_asteroids';
+= 'scatter_asteroids';
 // = 'scatter_big_symbol';
 // = 'scatter_car';
 // = 'scatter_test';
