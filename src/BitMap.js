@@ -20,6 +20,10 @@ export default function BitMap(_width, _height) {
 
   this.array = new Uint32Array(~~(((this.width * this.height) + SIZE) / SIZE));
 
+  this.pixelSize = function() {
+    return pixelSize;
+  }
+
   this.applyMark = function (index, mask) {
     this.array[index] |= mask;
   }

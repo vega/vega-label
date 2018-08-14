@@ -32,7 +32,8 @@ export default function placeLabels(data, anchors, marktype, marks, offsets, all
     var group, items, lastItem, m, j;
     var x1, x2, y1, y2, x, y, lo, hi, mid;
     var textWidth, textHeight, maxSize;
-    var placingX, placingY;
+    var placingX, placingY, labelPlaced;
+    var pixelSize = layer1.pixelSize();
     for (i = 0; i < n; i++) {
       d = data[i];
       group = d.datum.datum.items[0];
@@ -42,35 +43,59 @@ export default function placeLabels(data, anchors, marktype, marks, offsets, all
       if (group.marktype === 'area') {
         textHeight = d.textHeight;
         textWidth = labelWidth(d.text, textHeight, d.font, context);
-        maxSize = -1;
+        maxSize = textHeight;
+        labelPlaced = false;
         for (j = 0; j < m; j++) {
           x1 = items[j].x;
           y1 = items[j].y;
           x2 = typeof items[j].x2 === 'number' ? items[j].x2 : x1;
           y2 = typeof items[j].y2 === 'number' ? items[j].y2 : y1;
           
-          x = (x1 + x2) / 2.0;
-          y = (y1 + y2) / 2.0;
-
-          lo = textHeight;
-          hi = height;
-          if (!checkCollisionFromPositionAndHeight(textWidth, textHeight, x, y, lo, layer2)) {
-            while (hi - lo > 1) {
-              mid = (lo + hi) / 2.0;
-              if (checkCollisionFromPositionAndHeight(textWidth, textHeight, x, y, mid, layer2)) {
-                hi = mid;
-              } else {
-                lo = mid;
+          // x = (x1 + x2) / 2.0;
+          // y = (y1 + y2) / 2.0;
+          var tmp;
+          if (x1 > x2) {
+            tmp = x1;
+            x1 = x2;
+            x2 = tmp;
+          }
+          if (y1 > y2) {
+            tmp = y1;
+            y1 = y2;
+            y2 = tmp;
+          }
+          if (x1 === x2) {
+            x1 -= (textWidth * maxSize / textHeight) * 0.5;
+            x2 += (textWidth * maxSize / textHeight) * 0.5;
+          }
+          if (y1 === y2) {
+            y1 -= maxSize * 0.5;
+            y2 += maxSize * 0.5;
+          }
+          for (x = x1; x <= x2; x += pixelSize) {
+            for (y = y1; y <= y2; y += pixelSize) {
+              lo = maxSize;
+              hi = height;
+              if (!checkCollisionFromPositionAndHeight(textWidth, textHeight, x, y, lo, layer2)) {
+                while (hi - lo > 1) {
+                  mid = (lo + hi) / 2.0;
+                  if (checkCollisionFromPositionAndHeight(textWidth, textHeight, x, y, mid, layer2)) {
+                    hi = mid;
+                  } else {
+                    lo = mid;
+                  }
+                }
+                if (lo > maxSize) {
+                  placingX = x;
+                  placingY = y;
+                  maxSize = lo;
+                  labelPlaced = true;
+                }
               }
-            }
-            if (lo > maxSize) {
-              placingX = x;
-              placingY = y;
-              maxSize = lo;
             }
           }
         }
-        if (maxSize > 0) {
+        if (labelPlaced) {
           d.fontSize = maxSize;
           d.x = placingX;
           d.y = placingY;
@@ -116,13 +141,14 @@ export default function placeLabels(data, anchors, marktype, marks, offsets, all
 
 function checkCollisionFromPositionAndHeight(textWidth, textHeight, x, y, h, bitMap) {
   var w = h * textWidth / textHeight;
-  return checkCollision(
-    bitMap.bin(x - (w / 2.0)),
-    bitMap.bin(y - (h / 2.0)),
-    bitMap.bin(x + (w / 2.0)),
-    bitMap.bin(y + (h / 2.0)),
-    bitMap
-  );
+  var x1 = bitMap.bin(x - (w / 2.0)),
+      y1 = bitMap.bin(y - (h / 2.0)),
+      x2 = bitMap.bin(x + (w / 2.0)),
+      y2 = bitMap.bin(y + (h / 2.0));
+  
+  if (bitMap.searchOutOfBound(x1, y1, x2, y2)) return true;
+
+  return checkCollision(x1, y1, x2, y2, bitMap);
 }
 
 function placeLabel(datum, layer1, layer2, anchors, offsets, allowOutside, context) {
