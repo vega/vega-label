@@ -289,7 +289,7 @@
           "type": "label",
           "offsets": [3],
           "fill": "#000",
-          "marks": [ "basePoint"],
+          "avoidMarks": [ "basePoint"],
           "allowOutside": true,
           "size": [600, 400]
         }
