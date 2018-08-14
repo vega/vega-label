@@ -160,15 +160,14 @@
         "update": {
           "fill": {"value": "#000"},
           "fillOpacity": {"scale": "opacity", "field": "datum.argmax.perc"},
-          "fontSize": {"value": 0.1},
+          "fontSize": {"scale": "font", "field": "datum.argmax.perc", "offset": 5},
           "text": {"field": "datum.job"}
         }
       },
       "transform": [
         {
           "type": "label",
-          "size": [800, 500],
-          "anchor": ["middle"]
+          "size": [800, 500]
         }
       ]
     }

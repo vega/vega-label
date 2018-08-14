@@ -30,92 +30,30 @@ export default function placeLabels(data, anchors, marktype, avoidMarks, offsets
   console.time("layout");
   if (marktype === 'group') {
     var group, items, lastItem, m, j;
-    var x1, x2, y1, y2, x, y, lo, hi, mid;
-    var textWidth, textHeight, maxSize;
-    var placingX, placingY, labelPlaced;
-    var pixelSize = layer1.pixelSize();
     for (i = 0; i < n; i++) {
       d = data[i];
       group = d.datum.datum.items[0];
       items = group.items;
-      m = items.length;
-      if (!m) continue;
+
       if (group.marktype === 'area') {
-        textHeight = d.textHeight;
-        textWidth = labelWidth(d.text, textHeight, d.font, context);
-        maxSize = textHeight;
-        labelPlaced = false;
-        for (j = 0; j < m; j++) {
-          x1 = items[j].x;
-          y1 = items[j].y;
-          x2 = typeof items[j].x2 === 'number' ? items[j].x2 : x1;
-          y2 = typeof items[j].y2 === 'number' ? items[j].y2 : y1;
-          
-          // x = (x1 + x2) / 2.0;
-          // y = (y1 + y2) / 2.0;
-          var tmp;
-          if (x1 > x2) {
-            tmp = x1;
-            x1 = x2;
-            x2 = tmp;
-          }
-          if (y1 > y2) {
-            tmp = y1;
-            y1 = y2;
-            y2 = tmp;
-          }
-          if (x1 === x2) {
-            x1 -= (textWidth * maxSize / textHeight) * 0.5;
-            x2 += (textWidth * maxSize / textHeight) * 0.5;
-          }
-          if (y1 === y2) {
-            y1 -= maxSize * 0.5;
-            y2 += maxSize * 0.5;
-          }
-          for (x = x1; x <= x2; x += pixelSize) {
-            for (y = y1; y <= y2; y += pixelSize) {
-              lo = maxSize;
-              hi = height;
-              if (!checkCollisionFromPositionAndHeight(textWidth, textHeight, x, y, lo, layer2)) {
-                while (hi - lo > 1) {
-                  mid = (lo + hi) / 2.0;
-                  if (checkCollisionFromPositionAndHeight(textWidth, textHeight, x, y, mid, layer2)) {
-                    hi = mid;
-                  } else {
-                    lo = mid;
-                  }
-                }
-                if (lo > maxSize) {
-                  placingX = x;
-                  placingY = y;
-                  maxSize = lo;
-                  labelPlaced = true;
-                }
-              }
-            }
-          }
-        }
-        if (labelPlaced) {
-          d.fontSize = maxSize;
-          d.x = placingX;
-          d.y = placingY;
-          d.align = 'center';
-          d.baseline = 'middle';
+        if (placeLabelInArea(d, items, layer2, height, context)) {
           d.opacity = d.originalOpacity;
         }
       } else if (group.marktype === 'line') {
+        m = items.length;
+        if (!m) continue;
+
         lastItem = items[0];
         for (j = 1; j < m; j++) {
-          if (items[j].x > lastItem.x) {
-            lastItem = items[j];
-          }
+          lastItem = (items[j].x > lastItem.x) ? items[j] : lastItem;
         }
+
         d.markBound = [lastItem.x, lastItem.x, lastItem.x, lastItem.y, lastItem.y, lastItem.y];
         if (placeLabel(d, layer1, layer2, anchors, offsets, allowOutside, context)) {
           d.opacity = d.originalOpacity;
         }
       } else {
-        console.log('vega-label only support line and area group mark');
+        console.log('vega-label only supports line and area in group mark');
       }
     }
   } else {
@@ -133,10 +71,73 @@ export default function placeLabels(data, anchors, marktype, avoidMarks, offsets
     }
   }
   console.timeEnd("layout");
-  layer1.print('bit-map-1');
-  if (layer2) layer2.print('bit-map-2');
+  // layer1.print('bit-map-1');
+  // if (layer2) layer2.print('bit-map-2');
   console.timeEnd("pixel-based");
   return data;
+}
+
+function placeLabelInArea(datum, items, bitMap, height, context) {
+  var x1, x2, y1, y2, x, y, lo, hi, mid,
+      textHeight = datum.textHeight,
+      textWidth = labelWidth(datum.text, textHeight, datum.font, context),
+      maxSize = textHeight,
+      labelPlaced = false,
+      pixelSize = bitMap.pixelSize(),
+      n = items.length, i;
+  for (i = 0; i < n; i++) {
+    x1 = items[i].x;
+    y1 = items[i].y;
+    x2 = typeof items[i].x2 === 'number' ? items[i].x2 : x1;
+    y2 = typeof items[i].y2 === 'number' ? items[i].y2 : y1;
+    
+    // x = (x1 + x2) / 2.0;
+    // y = (y1 + y2) / 2.0;
+    var tmp;
+    if (x1 > x2) {
+      tmp = x1;
+      x1 = x2;
+      x2 = tmp;
+    }
+    if (y1 > y2) {
+      tmp = y1;
+      y1 = y2;
+      y2 = tmp;
+    }
+    if (x1 === x2) {
+      x1 -= (textWidth * maxSize / textHeight) * 0.5;
+      x2 += (textWidth * maxSize / textHeight) * 0.5;
+    }
+    if (y1 === y2) {
+      y1 -= maxSize * 0.5;
+      y2 += maxSize * 0.5;
+    }
+    for (x = x1; x <= x2; x += pixelSize) {
+      for (y = y1; y <= y2; y += pixelSize) {
+        lo = maxSize;
+        hi = height;
+        if (!checkCollisionFromPositionAndHeight(textWidth, textHeight, x, y, lo, bitMap)) {
+          while (hi - lo > 1) {
+            mid = (lo + hi) / 2.0;
+            if (checkCollisionFromPositionAndHeight(textWidth, textHeight, x, y, mid, bitMap)) {
+              hi = mid;
+            } else {
+              lo = mid;
+            }
+          }
+          if (lo > maxSize) {
+            datum.x = x;
+            datum.y = y;
+            maxSize = lo;
+            labelPlaced = true;
+          }
+        }
+      }
+    }
+  }
+  datum.align = 'center';
+  datum.baseline = 'middle';
+  return labelPlaced;
 }
 
 function checkCollisionFromPositionAndHeight(textWidth, textHeight, x, y, h, bitMap) {
@@ -233,9 +234,9 @@ function placeLabel(datum, layer1, layer2, anchors, offsets, allowOutside, conte
   return false;
 }
 
-function isInMarkBound(x1, y1, x2, y2, mb) {
-  return mb[0] <= x1 && x2 <= mb[2] &&
-         mb[3] <= y1 && y2 <= mb[5];
+function isInMarkBound(x1, y1, x2, y2, markBound) {
+  return markBound[0] <= x1 && x2 <= markBound[2] &&
+         markBound[3] <= y1 && y2 <= markBound[5];
 }
 
 function checkCollision(x1, y1, x2, y2, bitMap) {
