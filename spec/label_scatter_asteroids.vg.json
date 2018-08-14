@@ -73,7 +73,7 @@
       "title": "Right Ascension (degrees)",
       "offset": 20,
       "tickExtra": true,
-      "values": {"signal": "sequence(0, 361, 30)"}
+      "values": { "signal": "sequence(0, 361, 30)" }
     },
     {
       "scale": "y",
@@ -83,7 +83,7 @@
       "titlePadding": 5,
       "title": "Declination (degrees)",
       "offset": 20,
-      "values": {"signal": "sequence(-90, 91, 30)"}
+      "values": { "signal": "sequence(-90, 91, 30)" }
     }
   ],
 

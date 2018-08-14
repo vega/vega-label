@@ -1,18 +1,28 @@
 /*eslint no-console: "warn"*/
 /*eslint no-unused-vars: "warn"*/
-import labelLayout from './LabelLayout';
-import {Transform} from 'vega-dataflow';
-import {inherits, isFunction} from 'vega-util';
+import labelLayout from "./LabelLayout";
+import { Transform } from "vega-dataflow";
+import { inherits, isFunction } from "vega-util";
 
-var Output = ['x', 'y', 'opacity', 'align', 'baseline', 'originalOpacity', 'transformed', 'fontSize'];
+var Output = [
+  "x",
+  "y",
+  "opacity",
+  "align",
+  "baseline",
+  "originalOpacity",
+  "transformed",
+  "fontSize"
+];
 
-var Params = ['offset'];
+var Params = ["offset"];
 
 var defaultAnchors = [
   "top-left",
   "left",
   "bottom-left",
-  "top", "bottom",
+  "top",
+  "bottom",
   "top-right",
   "right",
   "bottom-right"
@@ -23,16 +33,22 @@ export default function Label(params) {
 }
 
 Label.Definition = {
-  "type": "Label",
-  "metadata": {"modifies": true},
-  "params": [
-    { "name": "allowOutside", "type": "boolean", "defalut": false },
-    { "name": "size", "type": "number", "array": true, "length": [2] },
-    { "name": "offsets", "type": "number", "array": true, "default": [1]},
-    { "name": "sort", "type": "field" },
-    { "name": "anchors", "type": "string", "array": true, "default": defaultAnchors },
-    { "name": "avoidMarks", "type": "data", "array": true },
-    { "name": "as", "type": "string", "array": true, "length": Output.length, "default": Output }
+  type: "Label",
+  metadata: { modifies: true },
+  params: [
+    { name: "allowOutside", type: "boolean", defalut: false },
+    { name: "size", type: "number", array: true, length: [2] },
+    { name: "offsets", type: "number", array: true, default: [1] },
+    { name: "sort", type: "field" },
+    { name: "anchors", type: "string", array: true, default: defaultAnchors },
+    { name: "avoidMarks", type: "data", array: true },
+    {
+      name: "as",
+      type: "string",
+      array: true,
+      length: Output.length,
+      default: Output
+    }
   ]
 };
 
@@ -49,11 +65,12 @@ prototype.transform = function(_, pulse) {
   if (!(mod || pulse.changed(pulse.ADD_REM) || Params.some(modp))) return;
 
   var data = pulse.materialize(pulse.SOURCE).source,
-      labelLayout = this.value,
-      as = _.as ? _.as : Output,
-      offsets = _.offsets ? _.offsets : [1],
-      anchors = _.anchors ? _.anchors : defaultAnchors,
-      numberPositions = offsets.length > anchors.length ? offsets.length : anchors.length;
+    labelLayout = this.value,
+    as = _.as ? _.as : Output,
+    offsets = _.offsets ? _.offsets : [1],
+    anchors = _.anchors ? _.anchors : defaultAnchors,
+    numberPositions =
+      offsets.length > anchors.length ? offsets.length : anchors.length;
 
   // configure layout
   var labels = labelLayout
@@ -65,12 +82,12 @@ prototype.transform = function(_, pulse) {
       .allowOutside(_.allowOutside ? _.allowOutside : false)
       .size(_.size)
       .layout(),
-      n = data.length;
+    n = data.length;
 
   for (var i = 0; i < n; i++) {
     var l = labels[i],
-        t = l.datum;
-    
+      t = l.datum;
+
     t[as[0]] = l.x;
     t[as[1]] = l.y;
     t[as[2]] = l.opacity;

@@ -6,16 +6,22 @@
 
   "signals": [
     {
-      "name": "sex", "value": "all",
-      "bind": {"input": "radio", "options": ["men", "women", "all"]}
+      "name": "sex",
+      "value": "all",
+      "bind": { "input": "radio", "options": ["men", "women", "all"] }
     },
     {
-      "name": "query", "value": "",
+      "name": "query",
+      "value": "",
       "on": [
-        {"events": "area:click!", "update": "datum.job"},
-        {"events": "dblclick!", "update": "''"}
+        { "events": "area:click!", "update": "datum.job" },
+        { "events": "dblclick!", "update": "''" }
       ],
-      "bind": {"input": "text", "placeholder": "search", "autocomplete": "off"}
+      "bind": {
+        "input": "text",
+        "placeholder": "search",
+        "autocomplete": "off"
+      }
     }
   ],
 
@@ -59,14 +65,17 @@
       "name": "x",
       "type": "linear",
       "range": "width",
-      "zero": false, "round": true,
-      "domain": {"data": "jobs", "field": "year"}
+      "zero": false,
+      "round": true,
+      "domain": { "data": "jobs", "field": "year" }
     },
     {
       "name": "y",
       "type": "linear",
-      "range": "height", "round": true, "zero": true,
-      "domain": {"data": "jobs", "field": "y1"}
+      "range": "height",
+      "round": true,
+      "zero": true,
+      "domain": { "data": "jobs", "field": "y1" }
     },
     {
       "name": "color",
@@ -76,46 +85,58 @@
     },
     {
       "name": "alpha",
-      "type": "linear", "zero": true,
-      "domain": {"data": "series", "field": "sum"},
+      "type": "linear",
+      "zero": true,
+      "domain": { "data": "series", "field": "sum" },
       "range": [0.4, 0.8]
     },
     {
       "name": "font",
       "type": "sqrt",
-      "range": [0, 20], "round": true, "zero": true,
-      "domain": {"data": "series", "field": "argmax.perc"}
+      "range": [0, 20],
+      "round": true,
+      "zero": true,
+      "domain": { "data": "series", "field": "argmax.perc" }
     },
     {
       "name": "opacity",
       "type": "quantile",
       "range": [0, 0, 0, 0, 0, 0.1, 0.2, 0.4, 0.7, 1.0],
-      "domain": {"data": "series", "field": "argmax.perc"}
+      "domain": { "data": "series", "field": "argmax.perc" }
     },
     {
       "name": "align",
       "type": "quantize",
-      "range": ["left", "center", "right"], "zero": false,
+      "range": ["left", "center", "right"],
+      "zero": false,
       "domain": [1730, 2130]
     },
     {
       "name": "offset",
       "type": "quantize",
-      "range": [6, 0, -6], "zero": false,
+      "range": [6, 0, -6],
+      "zero": false,
       "domain": [1730, 2130]
     }
   ],
 
   "axes": [
     {
-      "orient": "bottom", "scale": "x", "format": "d", "tickCount": 15
+      "orient": "bottom",
+      "scale": "x",
+      "format": "d",
+      "tickCount": 15
     },
     {
-      "orient": "right", "scale": "y", "format": "%",
-      "grid": true, "domain": false, "tickSize": 12,
+      "orient": "right",
+      "scale": "y",
+      "format": "%",
+      "grid": true,
+      "domain": false,
+      "tickSize": 12,
       "encode": {
-        "grid": {"enter": {"stroke": {"value": "#ccc"}}},
-        "ticks": {"enter": {"stroke": {"value": "#ccc"}}}
+        "grid": { "enter": { "stroke": { "value": "#ccc" } } },
+        "ticks": { "enter": { "stroke": { "value": "#ccc" } } }
       }
     }
   ],
@@ -136,17 +157,17 @@
       "marks": [
         {
           "type": "area",
-          "from": {"data": "facet"},
+          "from": { "data": "facet" },
           "encode": {
             "update": {
-              "x": {"scale": "x", "field": "year"},
-              "y": {"scale": "y", "field": "y0"},
-              "y2": {"scale": "y", "field": "y1"},
-              "fill": {"scale": "color", "field": "sex"},
-              "fillOpacity": {"scale": "alpha", "field": {"parent": "sum"}}
+              "x": { "scale": "x", "field": "year" },
+              "y": { "scale": "y", "field": "y0" },
+              "y2": { "scale": "y", "field": "y1" },
+              "fill": { "scale": "color", "field": "sex" },
+              "fillOpacity": { "scale": "alpha", "field": { "parent": "sum" } }
             },
             "hover": {
-              "fillOpacity": {"value": 0.2}
+              "fillOpacity": { "value": 0.2 }
             }
           }
         }
@@ -154,14 +175,18 @@
     },
     {
       "type": "text",
-      "from": {"data": "group"},
+      "from": { "data": "group" },
       "interactive": false,
       "encode": {
         "update": {
-          "fill": {"value": "#000"},
-          "fillOpacity": {"scale": "opacity", "field": "datum.argmax.perc"},
-          "fontSize": {"scale": "font", "field": "datum.argmax.perc", "offset": 5},
-          "text": {"field": "datum.job"}
+          "fill": { "value": "#000" },
+          "fillOpacity": { "scale": "opacity", "field": "datum.argmax.perc" },
+          "fontSize": {
+            "scale": "font",
+            "field": "datum.argmax.perc",
+            "offset": 5
+          },
+          "text": { "field": "datum.job" }
         }
       },
       "transform": [

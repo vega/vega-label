@@ -170,13 +170,11 @@
       "on": [
         {
           "events": { "signal": "delta" },
-          "update":
-            "[xcur[0] + span(xcur) * delta[0] / width, xcur[1] + span(xcur) * delta[0] / width]"
+          "update": "[xcur[0] + span(xcur) * delta[0] / width, xcur[1] + span(xcur) * delta[0] / width]"
         },
         {
           "events": { "signal": "zoom" },
-          "update":
-            "[anchor[0] + (xdom[0] - anchor[0]) * zoom, anchor[0] + (xdom[1] - anchor[0]) * zoom]"
+          "update": "[anchor[0] + (xdom[0] - anchor[0]) * zoom, anchor[0] + (xdom[1] - anchor[0]) * zoom]"
         }
       ]
     },
@@ -187,13 +185,11 @@
       "on": [
         {
           "events": { "signal": "delta" },
-          "update":
-            "[ycur[0] + span(ycur) * delta[1] / height, ycur[1] + span(ycur) * delta[1] / height]"
+          "update": "[ycur[0] + span(ycur) * delta[1] / height, ycur[1] + span(ycur) * delta[1] / height]"
         },
         {
           "events": { "signal": "zoom" },
-          "update":
-            "[anchor[1] + (ydom[0] - anchor[1]) * zoom, anchor[1] + (ydom[1] - anchor[1]) * zoom]"
+          "update": "[anchor[1] + (ydom[0] - anchor[1]) * zoom, anchor[1] + (ydom[1] - anchor[1]) * zoom]"
         }
       ]
     },
@@ -289,7 +285,7 @@
           "type": "label",
           "offsets": [3],
           "fill": "#000",
-          "avoidMarks": [ "basePoint"],
+          "avoidMarks": ["basePoint"],
           "allowOutside": true,
           "size": [600, 400]
         }

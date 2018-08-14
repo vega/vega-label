@@ -1,10 +1,8 @@
-# vega-label
+# Vega-Label
 
-Labeling algorithm for Vega.
+Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega).
 
-This module provides the following Vega post encoding transform:
-
-- **Label**
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 ## Syntax for label transform
 
@@ -27,22 +25,24 @@ This module provides the following Vega post encoding transform:
 - `size`: size of the chart in format `[width, height]`. **This size have to match with the chart size**
 
 - `anchors`: list of anchor points of labels to its mark's bounding box
+
   - From the example above, for each label, vega-label will try to place it at the `top` first, relative to its mark.
   - If it collide with some other mark or label, vega-label will try to place it at the `right`, relative to its mark.
 
 - `offsets`: list of offset values from the bounding box of the **base mark**.
+
   - From the example above, vega-label will try to place label with offset value 1 first.
   - If it cannot place the label, vega-label will try to place label with offset value 2.
   - If it cannot place the label, vega-label will try to place label with offset value 1 inside its mark.
     - **Note**: label will be placed inside its mark if offset is negative.
 
 - `avoidMarks`: list of data of mark; labels will not collide with these marks
+
   - Right now, vega-label works with `symbol`, `line`, `area`, `rect`, and `group`.
 
 - `allowOutside`: a flag if labels are allow to be placed outside the area of chart.
 
 - label transform has to be used with reactive geometry to use it as base mark to calculate positions of label
-
 
 # Examples of vega-label
 
@@ -57,7 +57,6 @@ Here is the [Vega Specification](./spec/label_area_job_voyager.vg.json)
 
 This example is from Vega [Job Voyager Example](https://vega.github.io/vega/examples/job-voyager/)
 
-
 ## With line
 
 ### In connected scatter plot - Connected Scatter Plot Example
@@ -68,7 +67,6 @@ Symbol is used as the base mark to label, and line is the mark to avoid when lab
 Here is the [Vega Specification](./spec/label_line_connected_scatter.vg.json)
 
 This example is from Vega [Connected Scatter Plot Example](https://vega.github.io/vega/examples/connected-scatter-plot/)
-
 
 ### In groupped lines plot - Carbon Dioxide in the Atmosphere
 
@@ -89,7 +87,6 @@ Rect is used as the base mark to label, and label positions is set to the top of
 Here is the [Vega Specification](./spec/label_rect_stack.vg.json)
 
 This example is inspired by Vega [Stacked Bar Chart Example](https://vega.github.io/vega/examples/stacked-bar-chart/)
-
 
 ## With symbol
 

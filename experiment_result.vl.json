@@ -15,7 +15,7 @@
     "height": 600,
     "layer": [
       {
-        "mark": {"type": "line", "interpolate": "monotone", "point": true},
+        "mark": { "type": "line", "interpolate": "monotone", "point": true },
         "encoding": {
           "x": {
             "field": "input_size",
@@ -28,8 +28,8 @@
             "type": "quantitative",
             "title": "Time (ms)"
           },
-          "color": {"field": "method", "type": "nominal"},
-          "detail": {"field": "input_shape", "type": "nominal"},
+          "color": { "field": "method", "type": "nominal" },
+          "detail": { "field": "input_shape", "type": "nominal" },
           "opacity": {
             "condition": {
               "test": "datum.input_shape==='clustered'",

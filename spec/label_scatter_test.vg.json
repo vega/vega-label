@@ -16,8 +16,8 @@
       "name": "active",
       "value": {},
       "on": [
-        {"events": "@label:mouseover", "update": "datum"},
-        {"events": "@label:mouseout", "update": "{}"}
+        { "events": "@label:mouseover", "update": "datum" },
+        { "events": "@label:mouseout", "update": "{}" }
       ]
     }
   ],
@@ -26,7 +26,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "drive", "field": "miles"},
+      "domain": { "data": "drive", "field": "miles" },
       "range": "width",
       "nice": true,
       "zero": false,
@@ -35,7 +35,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "drive", "field": "gas"},
+      "domain": { "data": "drive", "field": "gas" },
       "range": "height",
       "nice": true,
       "zero": false,
@@ -53,22 +53,25 @@
       "domain": false,
       "encode": {
         "domain": {
-          "enter": { "stroke": {"value": "transparent"} }
+          "enter": { "stroke": { "value": "transparent" } }
         },
         "labels": {
           "enter": {
-            "align": {"value": "left"},
-            "baseline": {"value": "top"},
-            "fontSize": {"value": 12},
-            "fontWeight": {"value": "bold"}
+            "align": { "value": "left" },
+            "baseline": { "value": "top" },
+            "fontSize": { "value": 12 },
+            "fontWeight": { "value": "bold" }
           }
         }
       }
     },
     {
       "title": "Miles driven per capita each year",
-      "orient": "bottom", "scale": "x",
-      "domain": false, "ticks": false, "labels": false
+      "orient": "bottom",
+      "scale": "x",
+      "domain": false,
+      "ticks": false,
+      "labels": false
     },
     {
       "orient": "left",
@@ -80,38 +83,41 @@
       "format": "$0.2f",
       "encode": {
         "domain": {
-          "enter": {"stroke": {"value": "transparent"}}
+          "enter": { "stroke": { "value": "transparent" } }
         },
         "labels": {
           "enter": {
-            "align": {"value": "left"},
-            "baseline": {"value": "bottom"},
-            "fontSize": {"value": 12},
-            "fontWeight": {"value": "bold"}
+            "align": { "value": "left" },
+            "baseline": { "value": "bottom" },
+            "fontSize": { "value": 12 },
+            "fontWeight": { "value": "bold" }
           }
         }
       }
     },
     {
       "title": "Price of a gallon of gasoline (adjusted for inflation)",
-      "orient": "right", "scale": "y",
-      "domain": false, "ticks": false, "labels": false
+      "orient": "right",
+      "scale": "y",
+      "domain": false,
+      "ticks": false,
+      "labels": false
     }
   ],
 
   "marks": [
     {
       "type": "symbol",
-      "from": {"data": "drive"},
+      "from": { "data": "drive" },
       "name": "baseMark",
       "encode": {
         "enter": {
-          "x": {"scale": "x", "field": "miles"},
-          "y": {"scale": "y", "field": "gas"},
-          "fill": {"value": "#fff"},
-          "stroke": {"value": "#000"},
-          "strokeWidth": {"value": 1},
-          "size": {"value": 2}
+          "x": { "scale": "x", "field": "miles" },
+          "y": { "scale": "y", "field": "gas" },
+          "fill": { "value": "#fff" },
+          "stroke": { "value": "#000" },
+          "strokeWidth": { "value": 1 },
+          "size": { "value": 2 }
         },
         "update": {
           "strokeWidth": [
@@ -119,7 +125,7 @@
               "test": "active == datum",
               "value": 5
             },
-            {"value": 1}
+            { "value": 1 }
           ]
         }
       }
@@ -127,21 +133,23 @@
     {
       "type": "text",
       "name": "label",
-      "from": {"data": "drive"},
+      "from": { "data": "drive" },
       "encode": {
         "enter": {
-          "x": {"scale": "x", "field": "miles"},
-          "y": {"scale": "y", "field": "gas"},
-          "fill": {"value": "#000"},
-          "text": {"field": "year"},
-          "fontSize": {"value": 14}
+          "x": { "scale": "x", "field": "miles" },
+          "y": { "scale": "y", "field": "gas" },
+          "fill": { "value": "#000" },
+          "text": { "field": "year" },
+          "fontSize": { "value": 14 }
         }
       },
-      "transform": [{
-        "type": "label",
-        "offsets": [2],
-        "size": [800, 500]
-      }]
+      "transform": [
+        {
+          "type": "label",
+          "offsets": [2],
+          "size": [800, 500]
+        }
+      ]
     }
   ]
 }

@@ -36,6 +36,7 @@
   "devDependencies": {
     "canvas": "^1.6.10",
     "eslint": "4",
+    "prettier": "1.14.2",
     "rollup": "^0.63.2",
     "tape": "4",
     "uglify-js": "3",

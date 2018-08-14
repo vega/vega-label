@@ -141,7 +141,7 @@
           "offsets": [2.5],
           "size": [800, 500],
           "sort": { "field": "datum.year" },
-          "avoidMarks": [ "baseLine" ],
+          "avoidMarks": ["baseLine"],
           "allowOutside": true
         }
       ]
