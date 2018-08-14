@@ -9,7 +9,7 @@ var SIZE_FACTOR = 0.707106781186548;
 var ALIGN = ['right', 'center', 'left'];
 var BASELINE = ['bottom', 'middle', 'top'];
 
-export default function placeLabels(data, anchors, marktype, marks, offsets, allowOutside, size) {
+export default function placeLabels(data, anchors, marktype, avoidMarks, offsets, allowOutside, size) {
   var context = canvas().getContext("2d"),
       width, height,
       n = data.length,
@@ -22,7 +22,7 @@ export default function placeLabels(data, anchors, marktype, marks, offsets, all
   width = size[0];
   height = size[1];
   console.time("set-bitmap");
-  bitMaps = getMarkBitMap(data, width, height, marktype, marks, anchors, offsets);
+  bitMaps = getMarkBitMap(data, width, height, marktype, avoidMarks, anchors, offsets);
   layer1 = bitMaps[0];
   layer2 = bitMaps[1]
   console.timeEnd("set-bitmap");
@@ -243,7 +243,7 @@ function checkCollision(x1, y1, x2, y2, bitMap) {
   return bitMap.getInBoundBinned(x1, y1 + 1, x2, y2 - 1);
 }
 
-function getMarkBitMap(data, width, height, marktype, marks, anchors, offsets) {
+function getMarkBitMap(data, width, height, marktype, avoidMarks, anchors, offsets) {
   var n = data.length;
 
   if (!n) return null;
@@ -263,10 +263,10 @@ function getMarkBitMap(data, width, height, marktype, marks, anchors, offsets) {
     for (i = 0; i < n; i++) {
       originalItems[i] = data[i].datum.datum;
     }
-    marks.push(originalItems);
+    avoidMarks.push(originalItems);
   }
 
-  var m = marks.length,
+  var m = avoidMarks.length,
       layer1 = new BitMap(width, height),
       layer2 = hasInner ? new BitMap(width, height) : undefined;
 
@@ -281,7 +281,7 @@ function getMarkBitMap(data, width, height, marktype, marks, anchors, offsets) {
     var originalItems;
 
     for (i = 0; i < m; i++) {
-      originalItems = marks[i];
+      originalItems = avoidMarks[i];
       var itemsLen = originalItems.length;
       if (!itemsLen) continue;
 

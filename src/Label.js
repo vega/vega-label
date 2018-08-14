@@ -31,7 +31,7 @@ Label.Definition = {
     { "name": "offsets", "type": "number", "array": true, "default": [1]},
     { "name": "sort", "type": "field" },
     { "name": "anchors", "type": "string", "array": true, "default": defaultAnchors },
-    { "name": "marks", "type": "data", "array": true },
+    { "name": "avoidMarks", "type": "data", "array": true },
     { "name": "as", "type": "string", "array": true, "length": Output.length, "default": Output }
   ]
 };
@@ -61,7 +61,7 @@ prototype.transform = function(_, pulse) {
       .sort(_.sort)
       .offsets(offsets, numberPositions)
       .anchors(anchors, numberPositions)
-      .marks(_.marks ? _.marks : [])
+      .avoidMarks(_.avoidMarks ? _.avoidMarks : [])
       .allowOutside(_.allowOutside ? _.allowOutside : false)
       .size(_.size)
       .layout(),

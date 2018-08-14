@@ -27,7 +27,7 @@ export default function() {
       offsets,
       sort,
       anchors,
-      marks,
+      avoidMarks,
       allowOutside,
       size,
       label = {};
@@ -74,7 +74,7 @@ export default function() {
     if (sort) data.sort(function(a, b) { return a.sort - b.sort; });
     
     console.timeEnd("layout");
-    return placeLabelsPixel(data, anchors, marktype, marks, offsets, allowOutside, size);
+    return placeLabelsPixel(data, anchors, marktype, avoidMarks, offsets, allowOutside, size);
   };
 
   label.texts = function(_) {
@@ -127,9 +127,9 @@ export default function() {
     }
   }
 
-  label.marks = function(_) {
+  label.avoidMarks = function(_) {
     if (arguments.length) {
-      marks = _;
+      avoidMarks = _;
       return label;
     } else {
       return sort;
