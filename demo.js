@@ -2,19 +2,29 @@ vega.transforms.label = vegaLabel.label;
 
 var jsonText;
 var rawFile = new XMLHttpRequest();
-// rawFile.open('GET', '../spec/label_big_symbol.vg.json', false);
-// rawFile.open('GET', '../spec/label_line_chart.vg.json', false);
-// rawFile.open('GET', '../spec/label_line_end.vg.json', false);
-// rawFile.open('GET', '../spec/label_area_end.vg.json', false);
-// rawFile.open('GET', '../spec/label_area_inside.vg.json', false);
-// rawFile.open('GET', '../spec/job_voyager.vg.json', false);
-rawFile.open('GET', '../spec/label_connected_scatter.vg.json', false);
-// rawFile.open('GET', '../spec/label_rect.vg.json', false);
-// rawFile.open('GET', '../spec/label_test.vg.json', false);
-// rawFile.open('GET', '../spec/label_car.vg.json', false);
-// rawFile.open('GET', '../spec/label_scatter_zoom.vg.json', false);
-// rawFile.open('GET', '../spec/label_asteroids.vg.json', false);
-// rawFile.open('GET', '../spec/label_fast_asteroids.vg.json', false);
+var specName
+// ---------area---------
+// = 'area_job_voyager';
+// = 'area';
+
+// ---------line---------
+// = 'line_connected_scatter';
+// = 'line_end';
+// = 'line';
+
+// ---------rect---------
+// = 'rect_stack';
+// = 'rect';
+
+// -------scatter--------
+// = 'scatter_asteroids';
+// = 'scatter_big_symbol';
+// = 'scatter_car';
+// = 'scatter_test_time';
+// = 'scatter_test';
+// = 'scatter_zoom';
+
+rawFile.open('GET', '../spec/label_' + specName + '.vg.json', false);
 rawFile.onreadystatechange = () => {
   if(rawFile.readyState === 4)
     if(rawFile.status === 200 || rawFile.status === 0)

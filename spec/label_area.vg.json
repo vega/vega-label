@@ -96,9 +96,7 @@
       "from": {"data": "group"},
       "encode": {
         "enter": {
-          "x": {"field": "items[0].items[0].x"},
-          "y": {"field": "items[0].items[0].y"},
-          "text": {"field": "datum.c"}
+          "text": {"value": "hello"}
         }
       },
       "transform": [
