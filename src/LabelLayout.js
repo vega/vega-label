@@ -23,39 +23,31 @@ var anchorsMap = {
 };
 
 export default function() {
-  var texts = [],
-    offsets,
-    sort,
-    anchors,
-    avoidMarks,
-    allowOutside,
-    size,
-    label = {};
+  var offsets, sort, anchors, avoidMarks, allowOutside, size;
+  var label = {},
+    texts = [];
 
   label.layout = function() {
     var n = texts.length,
-      d,
       data = Array(n),
       marktype =
         n && texts[0].datum && texts[0].datum.mark ? texts[0].datum.mark.marktype : undefined,
       transformed = n ? texts[0].transformed : false;
 
-    if (!size || size.length !== 2) {
-      return texts;
-    }
+    if (!size || size.length !== 2) return texts;
 
     console.time('layout');
-    var i, markBound, originalOpacity;
+    var i, d, markBound, originalOpacity, datum, b;
     for (i = 0; i < n; i++) {
       d = texts[i];
 
       if (!marktype) {
         markBound = [d.x, d.x, d.x, d.y, d.y, d.y];
       } else if (marktype === 'line' || marktype === 'area') {
-        var datum = d.datum;
+        datum = d.datum;
         markBound = [datum.x, datum.x, datum.x, datum.y, datum.y, datum.y];
       } else {
-        var b = d.datum.bounds;
+        b = d.datum.bounds;
         markBound = [b.x1, (b.x1 + b.x2) / 2.0, b.x2, b.y1, (b.y1 + b.y2) / 2.0, b.y2];
       }
 
@@ -93,10 +85,9 @@ export default function() {
 
   label.offsets = function(_, len) {
     if (arguments.length) {
-      var n = _.length,
-        i;
+      var n = _.length;
       offsets = new Float64Array(len);
-      for (i = 0; i < n; i++) {
+      for (var i = 0; i < n; i++) {
         offsets[i] = _[i];
       }
       for (i = n; i < len; i++) {
@@ -119,10 +110,9 @@ export default function() {
 
   label.anchors = function(_, len) {
     if (arguments.length) {
-      var n = _.length,
-        i;
+      var n = _.length;
       anchors = new Int8Array(len);
-      for (i = 0; i < n; i++) {
+      for (var i = 0; i < n; i++) {
         anchors[i] |= anchorsMap[_[i]];
       }
       for (i = n; i < len; i++) {
