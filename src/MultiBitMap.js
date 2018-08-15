@@ -1,11 +1,9 @@
 /*eslint no-unused-vars: "warn"*/
-import { default as BitMap, SIZE, MOD, DIV, right0, right1 } from "./BitMap";
+import { default as BitMap, SIZE, MOD, DIV, right0, right1 } from './BitMap';
 
 export default function MultiBitMap(_width, _height) {
   BitMap.call(this, _width, _height);
-  this.arrayMulti = new Uint32Array(
-    ~~((this.width * this.height + SIZE) / SIZE)
-  );
+  this.arrayMulti = new Uint32Array(~~((this.width * this.height + SIZE) / SIZE));
 
   this.applyMark = function(index, mask) {
     this.arrayMulti[index] |= mask & this.array[index];
@@ -25,11 +23,7 @@ export default function MultiBitMap(_width, _height) {
       indexStart = start >>> DIV;
       indexEnd = end >>> DIV;
       if (indexStart === indexEnd) {
-        if (
-          this.arrayMulti[indexStart] &
-          right0[start & MOD] &
-          right1[(end & MOD) + 1]
-        )
+        if (this.arrayMulti[indexStart] & right0[start & MOD] & right1[(end & MOD) + 1])
           return true;
       } else {
         if (this.arrayMulti[indexStart] & right0[start & MOD]) return true;
@@ -44,21 +38,21 @@ export default function MultiBitMap(_width, _height) {
   };
 
   this.print = function(id) {
-    if (!arguments.length) id = "bitmap";
+    if (!arguments.length) id = 'bitmap';
     var x, y;
     var canvas = document.getElementById(id);
     if (!canvas) return;
-    canvas.setAttribute("width", this.width);
-    canvas.setAttribute("height", this.height);
-    var ctx = canvas.getContext("2d");
+    canvas.setAttribute('width', this.width);
+    canvas.setAttribute('height', this.height);
+    var ctx = canvas.getContext('2d');
     for (y = 0; y < this.height; y++) {
       for (x = 0; x < this.width; x++) {
         if (this.getBinned(x, y)) {
-          ctx.fillStyle = "rgba(200, 200, 200, 1)";
+          ctx.fillStyle = 'rgba(200, 200, 200, 1)';
           ctx.fillRect(x, y, 1, 1);
         }
         if (this.getInBoundMultiBinned(x, y, x, y)) {
-          ctx.fillStyle = "rgba(0, 0, 0, 1)";
+          ctx.fillStyle = 'rgba(0, 0, 0, 1)';
           ctx.fillRect(x, y, 1, 1);
         }
       }

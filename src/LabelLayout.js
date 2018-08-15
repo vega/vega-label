@@ -1,7 +1,7 @@
 /*eslint no-unused-vars: "warn"*/
 /*eslint no-console: "warn"*/
 /*eslint no-empty: "warn"*/
-import placeLabelsPixel from "./PixelBasedLabel";
+import placeLabelsPixel from './PixelBasedLabel';
 
 var TOP = 0x0,
   MIDDLE = 0x1 << 0x2,
@@ -11,15 +11,15 @@ var TOP = 0x0,
   RIGHT = 0x2;
 
 var anchorsMap = {
-  "top-left": TOP + LEFT,
+  'top-left': TOP + LEFT,
   top: TOP + CENTER,
-  "top-right": TOP + RIGHT,
+  'top-right': TOP + RIGHT,
   left: MIDDLE + LEFT,
   middle: MIDDLE + CENTER,
   right: MIDDLE + RIGHT,
-  "bottom-left": BOTTOM + LEFT,
+  'bottom-left': BOTTOM + LEFT,
   bottom: BOTTOM + CENTER,
-  "bottom-right": BOTTOM + RIGHT
+  'bottom-right': BOTTOM + RIGHT,
 };
 
 export default function() {
@@ -37,35 +37,26 @@ export default function() {
       d,
       data = Array(n),
       marktype =
-        n && texts[0].datum && texts[0].datum.mark
-          ? texts[0].datum.mark.marktype
-          : undefined,
+        n && texts[0].datum && texts[0].datum.mark ? texts[0].datum.mark.marktype : undefined,
       transformed = n ? texts[0].transformed : false;
 
     if (!size || size.length !== 2) {
       return texts;
     }
 
-    console.time("layout");
+    console.time('layout');
     var i, markBound, originalOpacity;
     for (i = 0; i < n; i++) {
       d = texts[i];
 
       if (!marktype) {
         markBound = [d.x, d.x, d.x, d.y, d.y, d.y];
-      } else if (marktype === "line" || marktype === "area") {
+      } else if (marktype === 'line' || marktype === 'area') {
         var datum = d.datum;
         markBound = [datum.x, datum.x, datum.x, datum.y, datum.y, datum.y];
       } else {
         var b = d.datum.bounds;
-        markBound = [
-          b.x1,
-          (b.x1 + b.x2) / 2.0,
-          b.x2,
-          b.y1,
-          (b.y1 + b.y2) / 2.0,
-          b.y2
-        ];
+        markBound = [b.x1, (b.x1 + b.x2) / 2.0, b.x2, b.y1, (b.y1 + b.y2) / 2.0, b.y2];
       }
 
       data[i] = {
@@ -78,7 +69,7 @@ export default function() {
         markBound: markBound,
         originalOpacity: transformed ? originalOpacity : d.opacity,
         opacity: 0,
-        datum: d
+        datum: d,
       };
     }
 
@@ -87,16 +78,8 @@ export default function() {
         return a.sort - b.sort;
       });
 
-    console.timeEnd("layout");
-    return placeLabelsPixel(
-      data,
-      anchors,
-      marktype,
-      avoidMarks,
-      offsets,
-      allowOutside,
-      size
-    );
+    console.timeEnd('layout');
+    return placeLabelsPixel(data, anchors, marktype, avoidMarks, offsets, allowOutside, size);
   };
 
   label.texts = function(_) {

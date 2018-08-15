@@ -68,12 +68,7 @@ export default function FastBitMap(_width, _height) {
   };
 
   this.markInBound = function(x, y, x2, y2) {
-    return this.markInBoundBinned(
-      this.bin(x),
-      this.bin(y),
-      this.bin(x2),
-      this.bin(y2)
-    );
+    return this.markInBoundBinned(this.bin(x), this.bin(y), this.bin(x2), this.bin(y2));
   };
 
   this.unmarkInBoundBinned = function(x, y, x2, y2) {
@@ -97,12 +92,7 @@ export default function FastBitMap(_width, _height) {
   };
 
   this.unmarkInBound = function(x, y, x2, y2) {
-    return this.unmarkInBoundBinned(
-      this.bin(x),
-      this.bin(y),
-      this.bin(x2),
-      this.bin(y2)
-    );
+    return this.unmarkInBoundBinned(this.bin(x), this.bin(y), this.bin(x2), this.bin(y2));
   };
 
   this.getInBoundBinned = function(x, y, x2, y2) {
@@ -113,12 +103,7 @@ export default function FastBitMap(_width, _height) {
       indexStart = start >>> DIV;
       indexEnd = end >>> DIV;
       if (indexStart === indexEnd) {
-        if (
-          this.array[indexStart] &
-          right0[start & MOD] &
-          right1[(end & MOD) + 1]
-        )
-          return true;
+        if (this.array[indexStart] & right0[start & MOD] & right1[(end & MOD) + 1]) return true;
       } else {
         if (this.array[indexStart] & right0[start & MOD]) return true;
         if (this.array[indexEnd] & right1[(end & MOD) + 1]) return true;
@@ -132,12 +117,7 @@ export default function FastBitMap(_width, _height) {
   };
 
   this.getInBound = function(x, y, x2, y2) {
-    return this.getInBoundBinned(
-      this.bin(x),
-      this.bin(y),
-      this.bin(x2),
-      this.bin(y2)
-    );
+    return this.getInBoundBinned(this.bin(x), this.bin(y), this.bin(x2), this.bin(y2));
   };
 
   this.bin = function(coordinate) {
@@ -149,17 +129,17 @@ export default function FastBitMap(_width, _height) {
   };
 
   this.print = function(id) {
-    if (!arguments.length) id = "bitmap";
+    if (!arguments.length) id = 'bitmap';
     var x, y;
     var canvas = document.getElementById(id);
     if (!canvas) return;
-    canvas.setAttribute("width", this.width);
-    canvas.setAttribute("height", this.height);
-    var ctx = canvas.getContext("2d");
+    canvas.setAttribute('width', this.width);
+    canvas.setAttribute('height', this.height);
+    var ctx = canvas.getContext('2d');
     for (y = 0; y < this.height; y++) {
       for (x = 0; x < this.width; x++) {
         if (this.getBinned(x, y)) {
-          ctx.fillStyle = "rgba(0, 0, 0, 1)";
+          ctx.fillStyle = 'rgba(0, 0, 0, 1)';
           ctx.fillRect(x, y, 1, 1);
         }
       }
@@ -171,7 +151,7 @@ export default function FastBitMap(_width, _height) {
     for (y = 0; y < this.height; y++) {
       for (x = 0; x < this.width; x++) {
         if (this.getBinned(x, y)) {
-          ctx.fillStyle = "rgba(0, 0, 0, 1)";
+          ctx.fillStyle = 'rgba(0, 0, 0, 1)';
           ctx.fillRect(x, y, 1, 1);
         }
       }

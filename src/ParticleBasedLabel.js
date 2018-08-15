@@ -1,5 +1,5 @@
 /*eslint no-unused-vars: "warn"*/
-import ArrayMap from "./ArrayMap";
+import ArrayMap from './ArrayMap';
 
 export default function placeLabels(data, size, padding) {
   var width = 0,
@@ -58,17 +58,9 @@ export default function placeLabels(data, size, padding) {
     if (d.labelPlaced) {
       findAvailablePosition(d, bins, padding, function() {
         d.extendedBound = getExtendedBound(d);
-        d.extendedSearchBound = getExtendedSearchBound(
-          d.extendedBound,
-          bins.mark
-        );
+        d.extendedSearchBound = getExtendedSearchBound(d.extendedBound, bins.mark);
         if (
-          !checkCollision(
-            d,
-            d.extendedBound,
-            d.extendedSearchBound,
-            bins.mark
-          ) &&
+          !checkCollision(d, d.extendedBound, d.extendedSearchBound, bins.mark) &&
           !checkCollision(d, d.bound, d.searchBound, bins.label)
         ) {
           d.labelPlaced = true;
@@ -126,7 +118,7 @@ function getExtendedBound(d) {
     x: bound.x + (w < 0 ? w : 0),
     y: bound.y + (h < 0 ? h : 0),
     x2: bound.x2 + (w > 0 ? w : 0),
-    y2: bound.y2 + (h > 0 ? h : 0)
+    y2: bound.y2 + (h > 0 ? h : 0),
   };
 }
 
@@ -135,7 +127,7 @@ function getExtendedSearchBound(b, bm) {
     x: bm.binWidth(b.x),
     y: bm.binHeight(b.y),
     x2: bm.binWidth(b.x2),
-    y2: bm.binHeight(b.y2)
+    y2: bm.binHeight(b.y2),
   };
 }
 
@@ -144,7 +136,7 @@ function getSearchBound(bound, bm) {
     x: bm.binWidth(bound.x),
     y: bm.binHeight(bound.y),
     x2: bm.binWidth(bound.x2),
-    y2: bm.binHeight(bound.y2)
+    y2: bm.binHeight(bound.y2),
   };
 }
 
@@ -196,9 +188,7 @@ function checkCollision(d, b, searchBound, bin) {
 
 function isIn(bound, point) {
   return (
-    bound.x <= point[0] &&
-    point[0] <= bound.x2 &&
-    (bound.y <= point[1] && point[1] <= bound.y2)
+    bound.x <= point[0] && point[0] <= bound.x2 && (bound.y <= point[1] && point[1] <= bound.y2)
   );
 }
 

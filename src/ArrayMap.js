@@ -12,8 +12,7 @@ export default function ArrayMap(_width, _height, _binWidth, _binHeight) {
   };
 
   this.addBinned = function(x, y, val) {
-    if (!this.array[this.getPosition(x, y)])
-      this.array[this.getPosition(x, y)] = [];
+    if (!this.array[this.getPosition(x, y)]) this.array[this.getPosition(x, y)] = [];
     this.array[this.getPosition(x, y)].push(val);
   };
 

@@ -1,31 +1,31 @@
 /*eslint no-console: "warn"*/
 /*eslint no-unused-vars: "warn"*/
-import labelLayout from "./LabelLayout";
-import { Transform } from "vega-dataflow";
-import { inherits, isFunction } from "vega-util";
+import labelLayout from './LabelLayout';
+import { Transform } from 'vega-dataflow';
+import { inherits, isFunction } from 'vega-util';
 
 var Output = [
-  "x",
-  "y",
-  "opacity",
-  "align",
-  "baseline",
-  "originalOpacity",
-  "transformed",
-  "fontSize"
+  'x',
+  'y',
+  'opacity',
+  'align',
+  'baseline',
+  'originalOpacity',
+  'transformed',
+  'fontSize',
 ];
 
-var Params = ["offset"];
+var Params = ['offset'];
 
 var defaultAnchors = [
-  "top-left",
-  "left",
-  "bottom-left",
-  "top",
-  "bottom",
-  "top-right",
-  "right",
-  "bottom-right"
+  'top-left',
+  'left',
+  'bottom-left',
+  'top',
+  'bottom',
+  'top-right',
+  'right',
+  'bottom-right',
 ];
 
 export default function Label(params) {
@@ -33,29 +33,29 @@ export default function Label(params) {
 }
 
 Label.Definition = {
-  type: "Label",
+  type: 'Label',
   metadata: { modifies: true },
   params: [
-    { name: "allowOutside", type: "boolean", defalut: false },
-    { name: "size", type: "number", array: true, length: [2] },
-    { name: "offsets", type: "number", array: true, default: [1] },
-    { name: "sort", type: "field" },
-    { name: "anchors", type: "string", array: true, default: defaultAnchors },
-    { name: "avoidMarks", type: "data", array: true },
+    { name: 'allowOutside', type: 'boolean', defalut: false },
+    { name: 'size', type: 'number', array: true, length: [2] },
+    { name: 'offsets', type: 'number', array: true, default: [1] },
+    { name: 'sort', type: 'field' },
+    { name: 'anchors', type: 'string', array: true, default: defaultAnchors },
+    { name: 'avoidMarks', type: 'data', array: true },
     {
-      name: "as",
-      type: "string",
+      name: 'as',
+      type: 'string',
       array: true,
       length: Output.length,
-      default: Output
-    }
-  ]
+      default: Output,
+    },
+  ],
 };
 
 var prototype = inherits(Label, Transform);
 
 prototype.transform = function(_, pulse) {
-  console.time("label");
+  console.time('label');
   function modp(param) {
     var p = _[param];
     return isFunction(p) && pulse.modified(p.fields);
@@ -69,8 +69,7 @@ prototype.transform = function(_, pulse) {
     as = _.as ? _.as : Output,
     offsets = _.offsets ? _.offsets : [1],
     anchors = _.anchors ? _.anchors : defaultAnchors,
-    numberPositions =
-      offsets.length > anchors.length ? offsets.length : anchors.length;
+    numberPositions = offsets.length > anchors.length ? offsets.length : anchors.length;
 
   // configure layout
   var labels = labelLayout
@@ -98,7 +97,7 @@ prototype.transform = function(_, pulse) {
     t[as[7]] = l.fontSize;
   }
 
-  console.timeEnd("label");
+  console.timeEnd('label');
 
   return pulse.reflow(mod).modifies(as);
 };
