@@ -37,12 +37,12 @@ Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega)
     - **Note**: label will be placed inside its mark if offset is negative.
 
 - `avoidMarks`: list of data of mark; labels will not collide with these marks
-
-  - Right now, vega-label works with `symbol`, `line`, `area`, `rect`, and `group`.
+  - Right now, `avoidMarks` works with `symbol`, `line`, `rect`, and `group`.
 
 - `allowOutside`: a flag if labels are allow to be placed outside the area of chart.
 
 - label transform has to be used with reactive geometry to use it as base mark to calculate positions of label
+  - Right now, reactive geometry works with `symbol`, `line`, `rect`, and `group` of `line` and `area`
 
 # Examples of vega-label
 

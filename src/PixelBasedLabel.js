@@ -19,7 +19,8 @@ export default function placeLabels(
   avoidMarks,
   offsets,
   allowOutside,
-  size
+  size,
+  dynamicFontSize
 ) {
   console.time('pixel-based');
   var n = data.length;
@@ -46,7 +47,7 @@ export default function placeLabels(
       items = group.items;
 
       if (group.marktype === 'area') {
-        if (placeLabelInArea(d, items, layer2, height, context)) {
+        if (placeLabelInArea(d, items, layer2, height, context, dynamicFontSize)) {
           d.opacity = d.originalOpacity;
         }
       } else if (group.marktype === 'line') {
@@ -86,7 +87,7 @@ export default function placeLabels(
   return data;
 }
 
-function placeLabelInArea(datum, items, bitMap, height, context) {
+function placeLabelInArea(datum, items, bitMap, height, context, dynamicFontSize) {
   var x1, x2, y1, y2, x, y;
   var lo, hi, mid, tmp;
   var textHeight = datum.textHeight,
@@ -137,6 +138,7 @@ function placeLabelInArea(datum, items, bitMap, height, context) {
             }
           }
           if (lo > maxSize) {
+            if (dynamicFontSize) datum.fontSize = lo;
             datum.x = x;
             datum.y = y;
             maxSize = lo;
@@ -213,6 +215,7 @@ function placeLabel(datum, layer1, layer2, anchors, offsets, allowOutside, conte
         continue;
       } else {
         textWidth = labelWidth(text, textHeight, font, context);
+        datum.textWidth = textWidth;
       }
     }
 

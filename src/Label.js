@@ -36,6 +36,7 @@ Label.Definition = {
   type: 'Label',
   metadata: { modifies: true },
   params: [
+    { name: 'dynamicFontSize', type: 'boolean', default: false },
     { name: 'allowOutside', type: 'boolean', defalut: false },
     { name: 'size', type: 'number', array: true, length: [2] },
     { name: 'offsets', type: 'number', array: true, default: [1] },
@@ -78,14 +79,15 @@ prototype.transform = function(_, pulse) {
       .offsets(offsets, numberPositions)
       .anchors(anchors, numberPositions)
       .avoidMarks(_.avoidMarks ? _.avoidMarks : [])
-      .allowOutside(_.allowOutside ? _.allowOutside : false)
+      .allowOutside(_.allowOutside)
       .size(_.size)
+      .dynamicFontSize(_.dynamicFontSize)
       .layout(),
     n = data.length;
 
+  var l, t;
   for (var i = 0; i < n; i++) {
-    var l = labels[i],
-      t = l.datum;
+    (l = labels[i]), (t = l.datum);
 
     t[as[0]] = l.x;
     t[as[1]] = l.y;

@@ -5,11 +5,11 @@ var rawFile = new XMLHttpRequest();
 // prettier-ignore
 var specName
 // ---------area---------
-// = "area_job_voyager";
+= "area_job_voyager";
 // = 'area';
 
 // ---------line---------
-= 'line_connected_scatter';
+// = 'line_connected_scatter';
 // = 'line_end';
 // = 'line';
 
