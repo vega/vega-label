@@ -19,8 +19,7 @@ export default function placeLabels(
   avoidMarks,
   offsets,
   allowOutside,
-  size,
-  dynamicFontSize
+  size
 ) {
   console.time('pixel-based');
   var n = data.length;
@@ -47,7 +46,7 @@ export default function placeLabels(
       items = group.items;
 
       if (group.marktype === 'area') {
-        if (placeLabelInArea(d, items, layer2, height, context, dynamicFontSize)) {
+        if (placeLabelInArea(d, items, layer2, height, context)) {
           d.opacity = d.originalOpacity;
         }
       } else if (group.marktype === 'line') {
@@ -87,7 +86,7 @@ export default function placeLabels(
   return data;
 }
 
-function placeLabelInArea(datum, items, bitMap, height, context, dynamicFontSize) {
+function placeLabelInArea(datum, items, bitMap, height, context) {
   var x1, x2, y1, y2, x, y;
   var lo, hi, mid, tmp;
   var textHeight = datum.textHeight,
@@ -138,7 +137,8 @@ function placeLabelInArea(datum, items, bitMap, height, context, dynamicFontSize
             }
           }
           if (lo > maxSize) {
-            if (dynamicFontSize) datum.fontSize = lo;
+            // If we support dynamic font size
+            // datum.fontSize = lo;
             datum.x = x;
             datum.y = y;
             maxSize = lo;
@@ -163,7 +163,7 @@ function checkCollisionFromPositionAndHeight(textWidth, textHeight, x, y, h, bit
 
   if (bitMap.searchOutOfBound(x1, y1, x2, y2)) return true;
 
-  return checkCollision(x1, y1, x2, y2, bitMap);
+  return checkCollisionInBound(x1, y1, x2, y2, bitMap);
 }
 
 function placeLabel(datum, layer1, layer2, anchors, offsets, allowOutside, context) {
@@ -175,16 +175,25 @@ function placeLabel(datum, layer1, layer2, anchors, offsets, allowOutside, conte
     font = datum.font,
     w = layer1.width,
     h = layer1.height;
-  var dx, dy, isMiddle, sizeFactor, insideFactor;
+  var dx, dy, isInside, sizeFactor, insideFactor;
   var x, x1, xc, x2, y1, yc, y2;
   var _x1, _x2, _y1, _y2;
   var bin = layer1.bin;
+
+  // var lo = textHeight / 2.0,
+  //   hi = textHeight,
+  //   mid;
+
+  // while (hi - lo > 1) {
+  //   _textHeight = (hi + lo) / 2.0;
+  //   _textWidth = (_textHeight * textWidth) / textHeight;
+  // }
 
   for (var i = 0; i < n; i++) {
     dx = (anchors[i] & 0x3) - 1;
     dy = ((anchors[i] >>> 0x2) & 0x3) - 1;
 
-    isMiddle = dx === 0 && dy === 0;
+    isInside = (dx === 0 && dy === 0) || offsets[i] < 0;
     sizeFactor = dx && dy ? SIZE_FACTOR : 1;
     insideFactor = offsets[i] < 0 ? -1 : 1;
 
@@ -206,16 +215,10 @@ function placeLabel(datum, layer1, layer2, anchors, offsets, allowOutside, conte
 
     if (!textWidth) {
       // var end = _x1 + (_y2 - _y1) * (~~(text.length / 3));
-      if (layer1.searchOutOfBound(_x1, _y1, _x1, _y2)) continue;
-      if (
-        isMiddle || offsets[i] < 0
-          ? checkCollision(_x1, _y1, _x1, _y2, layer2) || !isInMarkBound(x, y1, x, y2, markBound)
-          : checkCollision(_x1, _y1, _x1, _y2, layer1)
-      ) {
+      if (labelPlacable(_x1, _x1, _y1, _y2, layer1, layer2, x, x, y1, y2, markBound, isInside)) {
         continue;
       } else {
         textWidth = labelWidth(text, textHeight, font, context);
-        datum.textWidth = textWidth;
       }
     }
 
@@ -231,13 +234,7 @@ function placeLabel(datum, layer1, layer2, anchors, offsets, allowOutside, conte
       _x2 = _x2 < 0 ? 0 : _x2 > w - 1 ? w - 1 : _x2;
     }
 
-    if (layer1.searchOutOfBound(_x1, _y1, _x2, _y2)) continue;
-
-    if (
-      isMiddle || offsets[i] < 0
-        ? !checkCollision(_x1, _y1, _x2, _y2, layer2) && isInMarkBound(x1, y1, x2, y2, markBound)
-        : !checkCollision(_x1, _y1, _x2, _y2, layer1)
-    ) {
+    if (!labelPlacable(_x1, _x2, _y1, _y2, layer1, layer2, x1, x2, y1, y2, markBound, isInside)) {
       datum.x = !dx ? xc : dx * insideFactor < 0 ? x2 : x1;
       datum.y = !dy ? yc : dy * insideFactor < 0 ? y2 : y1;
 
@@ -255,7 +252,17 @@ function isInMarkBound(x1, y1, x2, y2, markBound) {
   return markBound[0] <= x1 && x2 <= markBound[2] && markBound[3] <= y1 && y2 <= markBound[5];
 }
 
-function checkCollision(x1, y1, x2, y2, bitMap) {
+function labelPlacable(_x1, _x2, _y1, _y2, layer1, layer2, x1, x2, y1, y2, markBound, isInside) {
+  return (
+    layer1.searchOutOfBound(_x1, _y1, _x2, _y2) ||
+    (isInside
+      ? checkCollisionInBound(_x1, _y1, _x2, _y2, layer2) ||
+        !isInMarkBound(x1, y1, x2, y2, markBound)
+      : checkCollisionInBound(_x1, _y1, _x2, _y2, layer1))
+  );
+}
+
+function checkCollisionInBound(x1, y1, x2, y2, bitMap) {
   if (bitMap.getInBoundBinned(x1, y1, x2, y1) || bitMap.getInBoundBinned(x1, y2, x2, y2))
     return true;
   return bitMap.getInBoundBinned(x1, y1 + 1, x2, y2 - 1);

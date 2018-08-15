@@ -23,7 +23,7 @@ var anchorsMap = {
 };
 
 export default function() {
-  var offsets, sort, anchors, avoidMarks, allowOutside, size, dynamicFontSize;
+  var offsets, sort, anchors, avoidMarks, allowOutside, size;
   var label = {},
     texts = [];
 
@@ -71,16 +71,7 @@ export default function() {
       });
 
     console.timeEnd('layout');
-    return placeLabelsPixel(
-      data,
-      anchors,
-      marktype,
-      avoidMarks,
-      offsets,
-      allowOutside,
-      size,
-      dynamicFontSize
-    );
+    return placeLabelsPixel(data, anchors, marktype, avoidMarks, offsets, allowOutside, size);
   };
 
   label.texts = function(_) {
@@ -157,15 +148,6 @@ export default function() {
       return label;
     } else {
       return size;
-    }
-  };
-
-  label.dynamicFontSize = function(_) {
-    if (arguments.length) {
-      dynamicFontSize = _;
-      return label;
-    } else {
-      return dynamicFontSize;
     }
   };
 

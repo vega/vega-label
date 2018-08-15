@@ -2,7 +2,7 @@
 
 Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega).
 
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=popout)](https://github.com/prettier/prettier)
 
 ## Syntax for label transform
 
@@ -48,7 +48,7 @@ Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega)
 
 ## With area
 
-### In groupped area plot - Job Voyager Example
+### In grouped area plot - Job Voyager Example
 
 ![area_job_voyager](pics/label_area_job_voyager.png)
 
@@ -68,7 +68,7 @@ Here is the [Vega Specification](./spec/label_line_connected_scatter.vg.json)
 
 This example is from Vega [Connected Scatter Plot Example](https://vega.github.io/vega/examples/connected-scatter-plot/)
 
-### In groupped lines plot - Carbon Dioxide in the Atmosphere
+### In grouped lines plot - Carbon Dioxide in the Atmosphere
 
 ![line_end](pics/label_line_end.png)
 

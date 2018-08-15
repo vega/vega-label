@@ -36,7 +36,6 @@ Label.Definition = {
   type: 'Label',
   metadata: { modifies: true },
   params: [
-    { name: 'dynamicFontSize', type: 'boolean', default: false },
     { name: 'allowOutside', type: 'boolean', defalut: false },
     { name: 'size', type: 'number', array: true, length: [2] },
     { name: 'offsets', type: 'number', array: true, default: [1] },
@@ -81,7 +80,6 @@ prototype.transform = function(_, pulse) {
       .avoidMarks(_.avoidMarks ? _.avoidMarks : [])
       .allowOutside(_.allowOutside)
       .size(_.size)
-      .dynamicFontSize(_.dynamicFontSize)
       .layout(),
     n = data.length;
 

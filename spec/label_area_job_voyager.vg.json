@@ -192,8 +192,7 @@
       "transform": [
         {
           "type": "label",
-          "size": [800, 500],
-          "dynamicFontSize": true
+          "size": [800, 500]
         }
       ]
     }
