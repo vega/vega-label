@@ -16,7 +16,8 @@ Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega)
     "anchors": [ "top", "right" ]
     "avoidMarks": [ "basePoint", "baseLine" ],
     "allowOutside": true,
-    "avoidBaseMark": false
+    "avoidBaseMark": false,
+    "lineAnchor": 'end'
   }
 ]
 ```
@@ -27,27 +28,31 @@ Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega)
 
 - `anchors`: list of anchor points of labels to its mark's bounding box
 
-  - From the example above, for each label, vega-label will try to place it at the `top` first, relative to its mark.
-  - If it collide with some other mark or label, vega-label will try to place it at the `right`, relative to its mark.
+  - From the example above, for each label, Vega-Label will try to place it at the `top` first, relative to its mark.
+  - If it collide with some other mark or label, Vega-Label will try to place it at the `right`, relative to its mark.
 
 - `offsets`: list of offset values from the bounding box of the **base mark**.
 
-  - From the example above, vega-label will try to place label with offset value 1 first.
-  - If it cannot place the label, vega-label will try to place label with offset value 2.
-  - If it cannot place the label, vega-label will try to place label with offset value 1 inside its mark.
+  - From the example above, Vega-Label will try to place label with offset value 1 first.
+  - If it cannot place the label, Vega-Label will try to place label with offset value 2.
+  - If it cannot place the label, Vega-Label will try to place label with offset value 1 inside its mark.
     - **Note**: label will be placed inside its mark if offset is negative.
 
 - `avoidMarks`: list of data of mark; labels will not collide with these marks
-  - Right now, `avoidMarks` works with `symbol`, `line`, `rect`, and `group`.
 
 - `allowOutside`: a flag specifying if labels are allow to be placed outside the area of chart.
 
-- `avoidBaseMark`: a flag specifying if labels are avoiding their base mark or not.
+- `avoidBaseMark`: a flag specifying if labels are avoiding base mark (from reactive geometry) or not.
+  - If this flag is `false`, Vega-Label only uses base mark to calculate anchor points for label but not mark to be avoided.
+
+- `lineAnchor`: an anchor point for group line mark can be `begin` or `end`
+  - If `lineAnchor` is `begin`, label is at the beginning of the line. Otherwise, label is at the end of the line.
+  - **Note**: thie flag only work with group line mark as a base mark using reactive geometry.
 
 - label transform has to be used with reactive geometry to use it as base mark to calculate positions of label
   - Right now, reactive geometry works with `symbol`, `line`, `rect`, and `group` of `line` and `area`
 
-# Examples of vega-label
+# Examples of Vega-Label
 
 ## With area
 

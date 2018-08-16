@@ -29,7 +29,7 @@ def main():
         out.write('    "run": ' + infos[5][1:] + ',\n')
         out.write('    "time": ' + time + '\n')
         out.write('  }')
-    
+
     out.write("\n]\n")
 
 

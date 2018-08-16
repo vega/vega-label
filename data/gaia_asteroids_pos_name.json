@@ -990,6 +990,12 @@
     "density": 0.8181034482758621
   },
   {
+    "denomination": "1981 ep13",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1981 et15",
     "ra": 151.27149806623186,
     "dec": -4.285216179322393,
@@ -1306,6 +1312,12 @@
     "ra": 184.19581501084926,
     "dec": 41.392804515449846,
     "density": 0.006896551724137931
+  },
+  {
+    "denomination": "1982 qd",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1982 rk1",
@@ -2088,6 +2100,12 @@
     "density": 0.5482758620689655
   },
   {
+    "denomination": "1986 qe2",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1986 qh2",
     "ra": 57.60074553036104,
     "dec": 0.40625332187746993,
@@ -2110,6 +2128,12 @@
     "ra": 64.45172056824823,
     "dec": 16.20624804562344,
     "density": 0.4086206896551724
+  },
+  {
+    "denomination": "1986 qn3",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1986 qq",
@@ -2296,6 +2320,12 @@
     "ra": 97.40738713814237,
     "dec": 16.951989119241826,
     "density": 0.718103448275862
+  },
+  {
+    "denomination": "1986 vw",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1986 wd",
@@ -2524,6 +2554,12 @@
     "ra": 241.4897719969301,
     "dec": -21.5115622482188,
     "density": 0.7922413793103448
+  },
+  {
+    "denomination": "1987 ta",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1987 ug",
@@ -4158,6 +4194,12 @@
     "density": 0.6706896551724137
   },
   {
+    "denomination": "1989 wg4",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1989 wj1",
     "ra": 300.3419814315108,
     "dec": -14.62190882063721,
@@ -4260,6 +4302,12 @@
     "density": 0.6715517241379311
   },
   {
+    "denomination": "1989 yc",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1989 yh1",
     "ra": 140.9454039784854,
     "dec": 1.6502382888715499,
@@ -4354,6 +4402,12 @@
     "ra": 101.95390340588493,
     "dec": -3.16047008015543,
     "density": 0.23189655172413792
+  },
+  {
+    "denomination": "1990 cd",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1990 cf",
@@ -6372,6 +6426,12 @@
     "density": 0.4689655172413793
   },
   {
+    "denomination": "1991 pu11",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1991 pv11",
     "ra": 107.34519247455539,
     "dec": 9.361409078297381,
@@ -6652,6 +6712,12 @@
     "ra": 48.624782406634026,
     "dec": 22.303246348504192,
     "density": 0.1543103448275862
+  },
+  {
+    "denomination": "1991 rm29",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1991 rn10",
@@ -7186,6 +7252,12 @@
     "ra": 38.85629781113646,
     "dec": 22.55099140766838,
     "density": 0.11379310344827587
+  },
+  {
+    "denomination": "1991 vh",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1991 vh2",
@@ -8220,6 +8292,12 @@
     "density": 0.18879310344827585
   },
   {
+    "denomination": "1992 sk",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1992 sn",
     "ra": 137.57910926889065,
     "dec": 10.7853378091116,
@@ -8988,6 +9066,12 @@
     "density": 0.35258620689655173
   },
   {
+    "denomination": "1993 fr23",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1993 fr44",
     "ra": 198.69091437136345,
     "dec": -8.898457609187819,
@@ -9016,6 +9100,12 @@
     "ra": 240.50669203046027,
     "dec": -44.31428923328223,
     "density": 0.04224137931034483
+  },
+  {
+    "denomination": "1993 fu17",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1993 fu41",
@@ -9244,6 +9334,12 @@
     "ra": 206.01675375763878,
     "dec": -7.312773759462141,
     "density": 0.8629310344827587
+  },
+  {
+    "denomination": "1993 ls1",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1993 lu1",
@@ -10440,6 +10536,12 @@
     "density": 0.21293103448275863
   },
   {
+    "denomination": "1994 tm2",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1994 to",
     "ra": 167.23590463507904,
     "dec": -15.928605351331171,
@@ -10468,6 +10570,12 @@
     "ra": 190.1211992052396,
     "dec": -11.63701654833804,
     "density": 0.646551724137931
+  },
+  {
+    "denomination": "1994 tv3",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1994 ua2",
@@ -10728,6 +10836,12 @@
     "density": 0.7189655172413794
   },
   {
+    "denomination": "1994 xy4",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1994 ya2",
     "ra": 127.66941540659833,
     "dec": -3.055384195059969,
@@ -10750,6 +10864,12 @@
     "ra": 112.71536535558845,
     "dec": 20.611314727035765,
     "density": 0.5706896551724138
+  },
+  {
+    "denomination": "1994 ym2",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1994 yn2",
@@ -11062,6 +11182,12 @@
     "ra": 244.55556637519882,
     "dec": -20.042735448015765,
     "density": 0.7801724137931034
+  },
+  {
+    "denomination": "1995 fk4",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1995 ft",
@@ -11430,6 +11556,12 @@
     "density": 0.3793103448275862
   },
   {
+    "denomination": "1995 ur",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1995 us",
     "ra": 334.64163419240407,
     "dec": -0.2190155370793666,
@@ -11730,6 +11862,12 @@
     "density": 0.6974137931034483
   },
   {
+    "denomination": "1995 yg",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1995 yh",
     "ra": 96.91919895875405,
     "dec": 16.420604966467714,
@@ -11994,10 +12132,22 @@
     "density": 0.5543103448275862
   },
   {
+    "denomination": "1996 eh",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1996 ej",
     "ra": 41.410575867926745,
     "dec": -5.768326378498523,
     "density": 0.10086206896551723
+  },
+  {
+    "denomination": "1996 ek",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1996 ek1",
@@ -13452,6 +13602,12 @@
     "density": 0.2
   },
   {
+    "denomination": "1997 pe",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1997 pe2",
     "ra": 135.74228035815796,
     "dec": 7.960380010043398,
@@ -14442,6 +14598,12 @@
     "density": 0.15344827586206897
   },
   {
+    "denomination": "1998 ax4",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1998 ba12",
     "ra": 132.88674032573556,
     "dec": 13.043424593318326,
@@ -15010,6 +15172,12 @@
     "ra": 238.0695399165495,
     "dec": -5.994703047263436,
     "density": 0.5577586206896552
+  },
+  {
+    "denomination": "1998 ed13",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1998 ed6",
@@ -16182,6 +16350,12 @@
     "density": 0.7732758620689655
   },
   {
+    "denomination": "1998 hq27",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1998 hr115",
     "ra": 13.638683598317801,
     "dec": -4.7212512587147115,
@@ -16830,6 +17004,12 @@
     "density": 0.1310344827586207
   },
   {
+    "denomination": "1998 mp22",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1998 mq11",
     "ra": 75.50729421343819,
     "dec": -6.78612380765185,
@@ -16846,6 +17026,12 @@
     "ra": 157.46563938278686,
     "dec": -4.631559587081215,
     "density": 0.4189655172413793
+  },
+  {
+    "denomination": "1998 mv42",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1998 mx15",
@@ -18348,6 +18534,12 @@
     "density": 0.6336206896551724
   },
   {
+    "denomination": "1998 tu3",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1998 tv1",
     "ra": 221.7777684092423,
     "dec": -9.014833201470497,
@@ -19092,6 +19284,12 @@
     "density": 0.0706896551724138
   },
   {
+    "denomination": "1998 wx5",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1998 wy23",
     "ra": 117.3040318684561,
     "dec": 7.031228550696048,
@@ -19144,6 +19342,12 @@
     "ra": 123.74075488176157,
     "dec": -0.8303492781305768,
     "density": 0.3922413793103448
+  },
+  {
+    "denomination": "1998 xb",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1998 xb4",
@@ -19554,6 +19758,12 @@
     "density": 0.21120689655172414
   },
   {
+    "denomination": "1998 xw15",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1998 xw49",
     "ra": 286.4217522698277,
     "dec": -23.165337081899295,
@@ -19606,6 +19816,12 @@
     "ra": 242.70551830670425,
     "dec": -22.617780224752227,
     "density": 0.756896551724138
+  },
+  {
+    "denomination": "1998 xy45",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1998 xy77",
@@ -20040,6 +20256,12 @@
     "density": 0.9689655172413794
   },
   {
+    "denomination": "1999 as3",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1999 au",
     "ra": 81.97963303440282,
     "dec": 16.91256607868544,
@@ -20116,6 +20338,12 @@
     "ra": 90.02000343768768,
     "dec": 18.467145073092336,
     "density": 0.625
+  },
+  {
+    "denomination": "1999 bc2",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1999 bc4",
@@ -20926,6 +21154,12 @@
     "ra": 241.52706005105946,
     "dec": -12.612000883011603,
     "density": 0.8163793103448276
+  },
+  {
+    "denomination": "1999 cu9",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1999 cv10",
@@ -22224,6 +22458,12 @@
     "density": 0.20517241379310344
   },
   {
+    "denomination": "1999 jd6",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1999 jd82",
     "ra": 247.6203216148075,
     "dec": -11.41798395063194,
@@ -23026,6 +23266,12 @@
     "ra": 235.0320556225831,
     "dec": -21.977401332374914,
     "density": 0.7508620689655172
+  },
+  {
+    "denomination": "1999 jv58",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1999 jv77",
@@ -24984,6 +25230,12 @@
     "density": 0.3232758620689655
   },
   {
+    "denomination": "1999 sw27",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1999 sx5",
     "ra": 203.98937630146148,
     "dec": 16.936415376308354,
@@ -25884,6 +26136,12 @@
     "density": 0.2439655172413793
   },
   {
+    "denomination": "1999 vv",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1999 vv10",
     "ra": 62.80581313489705,
     "dec": 20.29317489602067,
@@ -26230,6 +26488,12 @@
     "ra": 340.06671997091354,
     "dec": 5.415900957814277,
     "density": 0.03793103448275862
+  },
+  {
+    "denomination": "1999 xa84",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "1999 xa86",
@@ -27618,6 +27882,12 @@
     "density": 0.19482758620689655
   },
   {
+    "denomination": "1999 yk5",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "1999 yn",
     "ra": 211.08686773364354,
     "dec": 15.330499896913773,
@@ -28122,6 +28392,12 @@
     "density": 0.6689655172413793
   },
   {
+    "denomination": "2000 aj17",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "2000 aj2",
     "ra": 95.46735225390862,
     "dec": 19.40848555512032,
@@ -28560,6 +28836,12 @@
     "density": 0.010344827586206896
   },
   {
+    "denomination": "2000 aq89",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "2000 ar120",
     "ra": 132.733609582949,
     "dec": 8.89901425007726,
@@ -28990,6 +29272,12 @@
     "ra": 86.85154127198841,
     "dec": 30.253794092334665,
     "density": 0.24741379310344827
+  },
+  {
+    "denomination": "2000 az97",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "2000 ba19",
@@ -29886,6 +30174,12 @@
     "density": 0.781896551724138
   },
   {
+    "denomination": "2000 et70",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "2000 eu113",
     "ra": 207.71951256438837,
     "dec": -3.195221921238677,
@@ -30094,6 +30388,12 @@
     "ra": 106.29344362416853,
     "dec": 15.323972241253056,
     "density": 0.7155172413793104
+  },
+  {
+    "denomination": "2000 fo10",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "2000 fo25",
@@ -32178,6 +32478,12 @@
     "density": 0.925
   },
   {
+    "denomination": "2000 qj22",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "2000 qk132",
     "ra": 238.9124942565269,
     "dec": -36.0383856759256,
@@ -32350,6 +32656,12 @@
     "ra": 247.37133706622606,
     "dec": -20.719853991994743,
     "density": 0.7258620689655172
+  },
+  {
+    "denomination": "2000 qw182",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "2000 qx116",
@@ -32724,6 +33036,12 @@
     "density": 0.3112068965517241
   },
   {
+    "denomination": "2000 ry76",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "2000 rz38",
     "ra": 192.35522725374167,
     "dec": -12.360366416568475,
@@ -33060,6 +33378,12 @@
     "density": 0.4482758620689655
   },
   {
+    "denomination": "2000 sq4",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "2000 sr19",
     "ra": 148.80863271321718,
     "dec": 1.2805305051251277,
@@ -33178,6 +33502,12 @@
     "ra": 215.87265272346235,
     "dec": -5.576408540912606,
     "density": 0.8
+  },
+  {
+    "denomination": "2000 sx293",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "2000 sx362",
@@ -33346,6 +33676,12 @@
     "ra": 272.2452210476219,
     "dec": -25.0907470974699,
     "density": 0.18189655172413793
+  },
+  {
+    "denomination": "2000 un16",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "2000 uo97",
@@ -34200,6 +34536,12 @@
     "density": 0.01206896551724138
   },
   {
+    "denomination": "2001 cv26",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "2001 cz1",
     "ra": 177.89717949133455,
     "dec": -0.9768986312727881,
@@ -34570,6 +34912,12 @@
     "ra": 157.73897488940477,
     "dec": -5.392332856429986,
     "density": 0.3810344827586207
+  },
+  {
+    "denomination": "2001 mz7",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "2001 nb",
@@ -35292,6 +35640,12 @@
     "density": 0.6560344827586206
   },
   {
+    "denomination": "2001 sl9",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "2001 sr161",
     "ra": 218.67343368726074,
     "dec": -22.04130856983085,
@@ -35308,6 +35662,12 @@
     "ra": 187.71745280047793,
     "dec": 18.955064242233014,
     "density": 0.17672413793103448
+  },
+  {
+    "denomination": "2001 sx316",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "2001 sy70",
@@ -35646,6 +36006,12 @@
     "density": 0.01810344827586207
   },
   {
+    "denomination": "2002 ez16",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "2002 ja101",
     "ra": 247.50779147442347,
     "dec": -25.041030639596013,
@@ -35680,6 +36046,12 @@
     "ra": 145.01307720272257,
     "dec": -1.3586189120536063,
     "density": 0.42586206896551726
+  },
+  {
+    "denomination": "2002 qf15",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "2002 ta295",
@@ -35724,6 +36096,12 @@
     "density": 0.4836206896551724
   },
   {
+    "denomination": "2003 ha",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "2003 je17",
     "ra": 216.60368239376697,
     "dec": -24.032806901788028,
@@ -35742,6 +36120,12 @@
     "density": 0.007758620689655172
   },
   {
+    "denomination": "2003 sd220",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "2003 sf148",
     "ra": 188.94981495946683,
     "dec": 3.1909520534351707,
@@ -35752,6 +36136,12 @@
     "ra": 249.6440991371056,
     "dec": 17.624934534663428,
     "density": 0.0353448275862069
+  },
+  {
+    "denomination": "2003 yt1",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "2039 t-2",
@@ -35884,6 +36274,12 @@
     "ra": 153.1629234121645,
     "dec": -0.02304331373690699,
     "density": 0.5379310344827586
+  },
+  {
+    "denomination": "3417 t-3",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "3541 p-l",
@@ -37662,6 +38058,12 @@
     "density": 0.8206896551724138
   },
   {
+    "denomination": "amun",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "amundsenia",
     "ra": 163.32167359619146,
     "dec": 2.679259667029423,
@@ -38106,6 +38508,12 @@
     "density": 0.718103448275862
   },
   {
+    "denomination": "anteros",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "antigone",
     "ra": 274.53156154695665,
     "dec": -16.592752763012275,
@@ -38176,6 +38584,12 @@
     "ra": 221.5558353252593,
     "dec": -8.864375074164355,
     "density": 0.7603448275862069
+  },
+  {
+    "denomination": "aparicio",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "apatheia",
@@ -38970,6 +39384,12 @@
     "density": 0.8525862068965517
   },
   {
+    "denomination": "aten",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "aterui",
     "ra": 12.279183559650347,
     "dec": -1.9293824296506952,
@@ -39010,6 +39430,12 @@
     "ra": 200.71859380104706,
     "dec": 0.8448069614709944,
     "density": 0.85
+  },
+  {
+    "denomination": "atira",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "atlantis",
@@ -39322,6 +39748,12 @@
     "ra": 237.45626387445006,
     "dec": -15.861679962631005,
     "density": 0.8517241379310345
+  },
+  {
+    "denomination": "bacchus",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "bach",
@@ -40060,6 +40492,12 @@
     "ra": 198.62461853400455,
     "dec": -1.689190064655885,
     "density": 0.9318965517241379
+  },
+  {
+    "denomination": "bede",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "beegees",
@@ -41994,6 +42432,12 @@
     "density": 0.07672413793103448
   },
   {
+    "denomination": "brucemurray",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "bruch",
     "ra": 144.502858229858,
     "dec": 0.7427860708231762,
@@ -42426,6 +42870,12 @@
     "density": 0.0853448275862069
   },
   {
+    "denomination": "cacus",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "caecilia",
     "ra": 146.08306163607634,
     "dec": 8.300331787840232,
@@ -42808,6 +43258,12 @@
     "ra": 248.35333468444435,
     "dec": -14.436826311400338,
     "density": 0.7129310344827586
+  },
+  {
+    "denomination": "carodulaney",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "carol",
@@ -44196,6 +44652,12 @@
     "density": 0.5922413793103448
   },
   {
+    "denomination": "cofer",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "coggie",
     "ra": 219.56403818381557,
     "dec": -7.024158271523199,
@@ -44766,6 +45228,12 @@
     "density": 0.8698275862068966
   },
   {
+    "denomination": "cruithne",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "cslewis",
     "ra": 221.81288343869355,
     "dec": -12.808370024667592,
@@ -45100,6 +45568,12 @@
     "ra": 246.02320657803247,
     "dec": -21.385347823373323,
     "density": 0.7318965517241379
+  },
+  {
+    "denomination": "danco",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "dangoldin",
@@ -47112,6 +47586,12 @@
     "density": 0.4043103448275862
   },
   {
+    "denomination": "eger",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "egorov",
     "ra": 105.55749219603733,
     "dec": 16.578274323647708,
@@ -47448,6 +47928,12 @@
     "density": 0.7241379310344828
   },
   {
+    "denomination": "emelyanenko",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "emiko",
     "ra": 304.79572799336376,
     "dec": -31.031337525584405,
@@ -47674,6 +48160,12 @@
     "ra": 216.4977534240866,
     "dec": -15.15464023542123,
     "density": 0.6956896551724138
+  },
+  {
+    "denomination": "eri",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "eric",
@@ -48052,6 +48544,12 @@
     "ra": 202.614689997911,
     "dec": -11.011010671766137,
     "density": 0.75
+  },
+  {
+    "denomination": "eureka",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "euripides",
@@ -49356,6 +49854,12 @@
     "density": 0.7241379310344828
   },
   {
+    "denomination": "fuuren",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "fyodorov",
     "ra": 28.4265040800951,
     "dec": 7.457252008162026,
@@ -50280,6 +50784,12 @@
     "density": 0.6741379310344827
   },
   {
+    "denomination": "gleason",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "glebov",
     "ra": 185.35365187184158,
     "dec": -7.712031212863131,
@@ -50584,6 +51094,12 @@
     "ra": 134.0415674485696,
     "dec": -1.3925219200066534,
     "density": 0.3922413793103448
+  },
+  {
+    "denomination": "goodman",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "gooley",
@@ -52848,6 +53364,12 @@
     "density": 0.8129310344827586
   },
   {
+    "denomination": "himawari",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "himeji",
     "ra": 169.89611851979515,
     "dec": 6.15932127639076,
@@ -54906,6 +55428,12 @@
     "density": 0.7577586206896552
   },
   {
+    "denomination": "izhdubar",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "izsak",
     "ra": 130.98752673868762,
     "dec": 3.6679681327945897,
@@ -54916,6 +55444,12 @@
     "ra": 105.7603849772437,
     "dec": 26.55630189252453,
     "density": 0.41379310344827586
+  },
+  {
+    "denomination": "izumi",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "izvekov",
@@ -56964,6 +57498,12 @@
     "density": 0.30603448275862066
   },
   {
+    "denomination": "kavasch",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "kaverznev",
     "ra": 214.5420690877521,
     "dec": -9.230917334879463,
@@ -57108,6 +57648,12 @@
     "density": 0.31551724137931036
   },
   {
+    "denomination": "kazuyuki",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "keaton",
     "ra": 211.38469678237496,
     "dec": -16.457364421802836,
@@ -57208,6 +57754,12 @@
     "ra": 231.81099845444993,
     "dec": 3.0582299627752176,
     "density": 0.2482758620689655
+  },
+  {
+    "denomination": "kellyryan",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "kelsey",
@@ -57424,6 +57976,12 @@
     "ra": 202.6592521109032,
     "dec": -3.984003302845547,
     "density": 0.878448275862069
+  },
+  {
+    "denomination": "kharlamov",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "kholshevnikov",
@@ -59074,6 +59632,12 @@
     "ra": 215.0572218656596,
     "dec": -8.38520180775966,
     "density": 0.8172413793103448
+  },
+  {
+    "denomination": "kunqu",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "kunz-hallstein",
@@ -61894,6 +62458,12 @@
     "ra": 189.7378631070187,
     "dec": -1.3296865108999407,
     "density": 0.996551724137931
+  },
+  {
+    "denomination": "mamiya",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "mamontov",
@@ -67008,6 +67578,12 @@
     "density": 0.9336206896551724
   },
   {
+    "denomination": "okunev",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "okunohosomichi",
     "ra": 37.546203448387665,
     "dec": -7.41524576735127,
@@ -67024,6 +67600,12 @@
     "ra": 143.73899536410352,
     "dec": 3.340516878726235,
     "density": 0.6232758620689656
+  },
+  {
+    "denomination": "olaus magnus",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "olbersia",
@@ -67206,6 +67788,12 @@
     "density": 0.5974137931034482
   },
   {
+    "denomination": "oomine",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "oort",
     "ra": 169.80727635900925,
     "dec": 3.7734848609988796,
@@ -67252,6 +67840,12 @@
     "ra": 109.67342183746253,
     "dec": 10.307812807514521,
     "density": 0.6836206896551724
+  },
+  {
+    "denomination": "orangia",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "orchis",
@@ -67992,6 +68586,12 @@
     "density": 0.38362068965517243
   },
   {
+    "denomination": "papacosmas",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "papadopoulos",
     "ra": 242.1106577949801,
     "dec": -15.487577459641072,
@@ -68430,6 +69030,12 @@
     "density": 0.16379310344827586
   },
   {
+    "denomination": "peggythomson",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "peilisheng",
     "ra": 315.84504823095244,
     "dec": -23.83372087648111,
@@ -68592,6 +69198,12 @@
     "density": 0.2956896551724138
   },
   {
+    "denomination": "perry",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "persephone",
     "ra": 61.13225042224642,
     "dec": 3.0253808872681107,
@@ -68620,6 +69232,12 @@
     "ra": 192.03288090407304,
     "dec": -1.9741845544203633,
     "density": 0.9603448275862069
+  },
+  {
+    "denomination": "pesch",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "pest",
@@ -69678,6 +70296,12 @@
     "density": 0.4163793103448276
   },
   {
+    "denomination": "potemkin",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "potsdam",
     "ra": 108.55530579059321,
     "dec": 18.924531848669346,
@@ -70212,6 +70836,12 @@
     "density": 0.4413793103448276
   },
   {
+    "denomination": "ra-shalom",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "raab",
     "ra": 90.12957136817974,
     "dec": 20.60658541216362,
@@ -70228,6 +70858,12 @@
     "ra": 285.37895876752935,
     "dec": -16.249918134066867,
     "density": 0.24310344827586206
+  },
+  {
+    "denomination": "rabeaton",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "rabelais",
@@ -71400,6 +72036,12 @@
     "density": 0.6896551724137931
   },
   {
+    "denomination": "robwhiteley",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "robyn",
     "ra": 164.1573381268724,
     "dec": 19.066319648739434,
@@ -72370,6 +73012,12 @@
     "ra": 229.85513105894324,
     "dec": -15.972179208809166,
     "density": 0.7956896551724137
+  },
+  {
+    "denomination": "sagan",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "sahade",
@@ -73956,6 +74604,12 @@
     "density": 0.6689655172413793
   },
   {
+    "denomination": "setouchi",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "setsuko",
     "ra": 264.497746622856,
     "dec": -3.79105381982505,
@@ -74308,6 +74962,12 @@
     "ra": 331.75111710032184,
     "dec": -15.051119448154978,
     "density": 0.15086206896551724
+  },
+  {
+    "denomination": "shigeru",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "shijimi",
@@ -74830,6 +75490,12 @@
     "ra": 314.65212668746165,
     "dec": -24.268493504027727,
     "density": 0.3146551724137931
+  },
+  {
+    "denomination": "silentium",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "silesia",
@@ -75358,6 +76024,12 @@
     "ra": 88.64789660389708,
     "dec": 13.095857196430082,
     "density": 0.6551724137931034
+  },
+  {
+    "denomination": "solnhofen",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "solokhin",
@@ -76956,6 +77628,12 @@
     "density": 0.16379310344827586
   },
   {
+    "denomination": "takaishuji",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "takaji",
     "ra": 140.5460273319191,
     "dec": 2.3230832575299716,
@@ -77362,6 +78040,12 @@
     "ra": 216.98060063119487,
     "dec": -12.168696740413118,
     "density": 0.7724137931034483
+  },
+  {
+    "denomination": "tantalus",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "tanya",
@@ -79140,6 +79824,12 @@
     "density": 0.8120689655172414
   },
   {
+    "denomination": "tsuchiyama",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
+  },
+  {
     "denomination": "tsujitsuka",
     "ra": 268.58988826833735,
     "dec": -2.820670733767789,
@@ -79282,6 +79972,12 @@
     "ra": 234.87162330961618,
     "dec": -33.124863221603675,
     "density": 0.20517241379310344
+  },
+  {
+    "denomination": "tukmit",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "tula",
@@ -80482,6 +81178,12 @@
     "ra": 236.46486663049942,
     "dec": -15.471006036210314,
     "density": 0.8413793103448276
+  },
+  {
+    "denomination": "venkatachalam",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "ventura",
@@ -83632,6 +84334,12 @@
     "ra": 185.10645789546047,
     "dec": 5.4315650915895,
     "density": 0.8689655172413793
+  },
+  {
+    "denomination": "zhiganov",
+    "ra": null,
+    "dec": null,
+    "density": 0.0
   },
   {
     "denomination": "zhongguo",
