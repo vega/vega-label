@@ -36,6 +36,7 @@ Label.Definition = {
   type: 'Label',
   metadata: { modifies: true },
   params: [
+    { name: 'avoidBaseMark', type: 'boolean', default: true },
     { name: 'allowOutside', type: 'boolean', defalut: false },
     { name: 'size', type: 'number', array: true, length: [2] },
     { name: 'offsets', type: 'number', array: true, default: [1] },
@@ -80,6 +81,7 @@ prototype.transform = function(_, pulse) {
       .avoidMarks(_.avoidMarks ? _.avoidMarks : [])
       .allowOutside(_.allowOutside)
       .size(_.size)
+      .avoidBaseMark(_.avoidBaseMark !== undefined ? _.avoidBaseMark : true)
       .layout(),
     n = data.length;
 

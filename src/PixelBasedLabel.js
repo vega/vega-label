@@ -19,7 +19,8 @@ export default function placeLabels(
   avoidMarks,
   offsets,
   allowOutside,
-  size
+  size,
+  avoidBaseMark
 ) {
   console.time('pixel-based');
   var n = data.length;
@@ -29,7 +30,16 @@ export default function placeLabels(
     height = size[1];
 
   console.time('set-bitmap');
-  var bitMaps = getMarkBitMap(data, width, height, marktype, avoidMarks, anchors, offsets),
+  var bitMaps = getMarkBitMap(
+      data,
+      width,
+      height,
+      marktype,
+      avoidMarks,
+      anchors,
+      offsets,
+      avoidBaseMark
+    ),
     layer1 = bitMaps[0],
     layer2 = bitMaps[1];
   console.timeEnd('set-bitmap');
@@ -46,9 +56,8 @@ export default function placeLabels(
       items = group.items;
 
       if (group.marktype === 'area') {
-        if (placeLabelInArea(d, items, layer2, height, context)) {
+        if (placeLabelInArea(d, items, layer2, height, context, avoidBaseMark))
           d.opacity = d.originalOpacity;
-        }
       } else if (group.marktype === 'line') {
         m = items.length;
         if (!m) continue;
@@ -86,71 +95,119 @@ export default function placeLabels(
   return data;
 }
 
-function placeLabelInArea(datum, items, bitMap, height, context) {
-  var x1, x2, y1, y2, x, y;
-  var lo, hi, mid, tmp;
-  var textHeight = datum.textHeight,
-    textWidth = labelWidth(datum.text, textHeight, datum.font, context),
-    maxSize = textHeight,
-    labelPlaced = false,
-    pixelSize = bitMap.pixelSize(),
-    n = items.length;
-  for (var i = 0; i < n; i++) {
-    x1 = items[i].x;
-    y1 = items[i].y;
-    x2 = items[i].x2 !== undefined ? items[i].x2 : x1;
-    y2 = items[i].y2 !== undefined ? items[i].y2 : y1;
+function placeLabelInArea(datum, items, bitMap, height, context, avoidBaseMark) {
+  var x1, x2, y1, y2, x, y, tmp;
+  var n = items.length,
+    textHeight = datum.textHeight,
+    textWidth = labelWidth(datum.text, textHeight, datum.font, context);
 
-    // x = (x1 + x2) / 2.0;
-    // y = (y1 + y2) / 2.0;
-    if (x1 > x2) {
-      tmp = x1;
-      x1 = x2;
-      x2 = tmp;
-    }
-    if (y1 > y2) {
-      tmp = y1;
-      y1 = y2;
-      y2 = tmp;
+  datum.align = 'center';
+  datum.baseline = 'middle';
+
+  if (!avoidBaseMark) {
+    var newItems = new Array(n),
+      bin = bitMap.bin;
+    var sort, item, _x1, _x2, _y1, _y2;
+    for (var i = 0; i < n; i++) {
+      item = items[i];
+      sort = item.x2 !== undefined ? item.x2 - item.x : item.y2 - item.y;
+      sort = sort < 0 ? -sort : sort;
+      newItems[i] = {
+        item: items[i],
+        sort: sort,
+      };
     }
 
-    if (x1 === x2) {
-      x1 -= ((textWidth * maxSize) / textHeight) * 0.5;
-      x2 += ((textWidth * maxSize) / textHeight) * 0.5;
-    }
-    if (y1 === y2) {
-      y1 -= maxSize * 0.5;
-      y2 += maxSize * 0.5;
-    }
+    newItems.sort(function(a, b) {
+      return b.sort - a.sort;
+    });
 
-    for (x = x1; x <= x2; x += pixelSize) {
-      for (y = y1; y <= y2; y += pixelSize) {
-        lo = maxSize;
-        hi = height;
-        if (!checkCollisionFromPositionAndHeight(textWidth, textHeight, x, y, lo, bitMap)) {
-          while (hi - lo > 1) {
-            mid = (lo + hi) / 2.0;
-            if (checkCollisionFromPositionAndHeight(textWidth, textHeight, x, y, mid, bitMap)) {
-              hi = mid;
-            } else {
-              lo = mid;
+    for (i = 0; i < n; i++) {
+      item = newItems[i].item;
+      x1 = item.x;
+      y1 = item.y;
+      x2 = item.x2 !== undefined ? item.x2 : x1;
+      y2 = item.y2 !== undefined ? item.y2 : y1;
+
+      x = (x1 + x2) / 2.0;
+      y = (y1 + y2) / 2.0;
+
+      _x1 = bin(x - textWidth / 2.0);
+      _x2 = bin(x + textWidth / 2.0);
+      _y1 = bin(y - textHeight / 2.0);
+      _y2 = bin(y + textHeight / 2.0);
+
+      if (
+        !bitMap.searchOutOfBound(_x1, _y1, _x2, _y2) &&
+        !checkCollisionInBound(_x1, _y1, _x2, _y2, bitMap)
+      ) {
+        datum.x = x;
+        datum.y = y;
+        bitMap.markInBoundBinned(_x1, _y1, _x2, _y2);
+        return true;
+      }
+    }
+    return false;
+  } else {
+    var lo, hi, mid;
+    var maxSize = textHeight,
+      labelPlaced = false,
+      pixelSize = bitMap.pixelSize();
+    for (i = 0; i < n; i++) {
+      x1 = items[i].x;
+      y1 = items[i].y;
+      x2 = items[i].x2 !== undefined ? items[i].x2 : x1;
+      y2 = items[i].y2 !== undefined ? items[i].y2 : y1;
+
+      // x = (x1 + x2) / 2.0;
+      // y = (y1 + y2) / 2.0;
+      if (x1 > x2) {
+        tmp = x1;
+        x1 = x2;
+        x2 = tmp;
+      }
+      if (y1 > y2) {
+        tmp = y1;
+        y1 = y2;
+        y2 = tmp;
+      }
+
+      if (x1 === x2) {
+        x1 -= ((textWidth * maxSize) / textHeight) * 0.5;
+        x2 += ((textWidth * maxSize) / textHeight) * 0.5;
+      }
+      if (y1 === y2) {
+        y1 -= maxSize * 0.5;
+        y2 += maxSize * 0.5;
+      }
+
+      for (x = x1; x <= x2; x += pixelSize) {
+        for (y = y1; y <= y2; y += pixelSize) {
+          lo = maxSize;
+          hi = height;
+          if (!checkCollisionFromPositionAndHeight(textWidth, textHeight, x, y, lo, bitMap)) {
+            while (hi - lo > 1) {
+              mid = (lo + hi) / 2.0;
+              if (checkCollisionFromPositionAndHeight(textWidth, textHeight, x, y, mid, bitMap)) {
+                hi = mid;
+              } else {
+                lo = mid;
+              }
             }
-          }
-          if (lo > maxSize) {
-            // If we support dynamic font size
-            // datum.fontSize = lo;
-            datum.x = x;
-            datum.y = y;
-            maxSize = lo;
-            labelPlaced = true;
+            if (lo > maxSize) {
+              // If we support dynamic font size
+              // datum.fontSize = lo;
+              datum.x = x;
+              datum.y = y;
+              maxSize = lo;
+              labelPlaced = true;
+            }
           }
         }
       }
     }
+    return labelPlaced;
   }
-  datum.align = 'center';
-  datum.baseline = 'middle';
-  return labelPlaced;
 }
 
 function checkCollisionFromPositionAndHeight(textWidth, textHeight, x, y, h, bitMap) {
@@ -179,15 +236,6 @@ function placeLabel(datum, layer1, layer2, anchors, offsets, allowOutside, conte
   var x, x1, xc, x2, y1, yc, y2;
   var _x1, _x2, _y1, _y2;
   var bin = layer1.bin;
-
-  // var lo = textHeight / 2.0,
-  //   hi = textHeight,
-  //   mid;
-
-  // while (hi - lo > 1) {
-  //   _textHeight = (hi + lo) / 2.0;
-  //   _textWidth = (_textHeight * textWidth) / textHeight;
-  // }
 
   for (var i = 0; i < n; i++) {
     dx = (anchors[i] & 0x3) - 1;
@@ -268,7 +316,7 @@ function checkCollisionInBound(x1, y1, x2, y2, bitMap) {
   return bitMap.getInBoundBinned(x1, y1 + 1, x2, y2 - 1);
 }
 
-function getMarkBitMap(data, width, height, marktype, avoidMarks, anchors, offsets) {
+function getMarkBitMap(data, width, height, marktype, avoidMarks, anchors, offsets, avoidBaseMark) {
   var n = data.length,
     hasInner = false;
 
@@ -283,7 +331,7 @@ function getMarkBitMap(data, width, height, marktype, avoidMarks, anchors, offse
 
   if (marktype === 'group') hasInner = true;
 
-  if (marktype) {
+  if (marktype && avoidBaseMark) {
     originalItems = new Array(n);
     for (i = 0; i < n; i++) {
       originalItems[i] = data[i].datum.datum;

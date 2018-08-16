@@ -1,7 +1,7 @@
 /*eslint no-unused-vars: "warn"*/
 /*eslint no-console: "warn"*/
 /*eslint no-empty: "warn"*/
-import placeLabelsPixel from './PixelBasedLabel';
+import placeLabels from './PixelBasedLabel';
 
 var TOP = 0x0,
   MIDDLE = 0x1 << 0x2,
@@ -23,7 +23,7 @@ var anchorsMap = {
 };
 
 export default function() {
-  var offsets, sort, anchors, avoidMarks, allowOutside, size;
+  var offsets, sort, anchors, avoidMarks, allowOutside, size, avoidBaseMark;
   var label = {},
     texts = [];
 
@@ -71,7 +71,16 @@ export default function() {
       });
 
     console.timeEnd('layout');
-    return placeLabelsPixel(data, anchors, marktype, avoidMarks, offsets, allowOutside, size);
+    return placeLabels(
+      data,
+      anchors,
+      marktype,
+      avoidMarks,
+      offsets,
+      allowOutside,
+      size,
+      avoidBaseMark
+    );
   };
 
   label.texts = function(_) {
@@ -148,6 +157,15 @@ export default function() {
       return label;
     } else {
       return size;
+    }
+  };
+
+  label.avoidBaseMark = function(_) {
+    if (arguments.length) {
+      avoidBaseMark = _;
+      return label;
+    } else {
+      return avoidBaseMark;
     }
   };
 

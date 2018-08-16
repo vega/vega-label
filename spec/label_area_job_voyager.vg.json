@@ -192,7 +192,8 @@
       "transform": [
         {
           "type": "label",
-          "size": [800, 500]
+          "size": [800, 500],
+          "avoidBaseMark": false
         }
       ]
     }
