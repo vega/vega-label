@@ -36,6 +36,7 @@ Label.Definition = {
   type: 'Label',
   metadata: { modifies: true },
   params: [
+    { name: 'lineAnchor', type: 'string', values: ['begin', 'end'], default: 'end' },
     { name: 'avoidBaseMark', type: 'boolean', default: true },
     { name: 'allowOutside', type: 'boolean', defalut: false },
     { name: 'size', type: 'number', array: true, length: [2] },
@@ -82,6 +83,7 @@ prototype.transform = function(_, pulse) {
       .allowOutside(_.allowOutside)
       .size(_.size)
       .avoidBaseMark(_.avoidBaseMark !== undefined ? _.avoidBaseMark : true)
+      .lineAnchor(_.lineAnchor ? _.lineAnchor : 'end')
       .layout(),
     n = data.length;
 

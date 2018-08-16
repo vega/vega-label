@@ -95,7 +95,7 @@
         {
           "type": "label",
           "offsets": [2],
-          "anchors": ["top-right", "right", "bottom-right"],
+          "anchors": ["right", "top-right", "bottom-right"],
           "size": [800, 500],
           "allowOutside": true
         }

@@ -20,7 +20,8 @@ export default function placeLabels(
   offsets,
   allowOutside,
   size,
-  avoidBaseMark
+  avoidBaseMark,
+  lineAnchor
 ) {
   console.time('pixel-based');
   var n = data.length;
@@ -49,7 +50,7 @@ export default function placeLabels(
 
   console.time('layout');
   if (marktype === 'group') {
-    var group, items, lastItem, m, j;
+    var group, items, endItem, m;
     for (i = 0; i < n; i++) {
       d = data[i];
       group = d.datum.datum.items[0];
@@ -62,17 +63,11 @@ export default function placeLabels(
         m = items.length;
         if (!m) continue;
 
-        lastItem = items[0];
-        for (j = 1; j < m; j++) {
-          lastItem = items[j].x > lastItem.x ? items[j] : lastItem;
-        }
-
-        d.markBound = [lastItem.x, lastItem.x, lastItem.x, lastItem.y, lastItem.y, lastItem.y];
+        endItem = items[lineAnchor === 'begin' ? m - 1 : 0];
+        d.markBound = [endItem.x, endItem.x, endItem.x, endItem.y, endItem.y, endItem.y];
         if (placeLabel(d, layer1, layer2, anchors, offsets, allowOutside, context)) {
           d.opacity = d.originalOpacity;
         }
-      } else {
-        console.log('Vega-Label right now only supports line and area in group mark');
       }
     }
   } else {

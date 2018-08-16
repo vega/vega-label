@@ -23,7 +23,7 @@ var anchorsMap = {
 };
 
 export default function() {
-  var offsets, sort, anchors, avoidMarks, allowOutside, size, avoidBaseMark;
+  var offsets, sort, anchors, avoidMarks, allowOutside, size, avoidBaseMark, lineAnchor;
   var label = {},
     texts = [];
 
@@ -79,7 +79,8 @@ export default function() {
       offsets,
       allowOutside,
       size,
-      avoidBaseMark
+      avoidBaseMark,
+      lineAnchor
     );
   };
 
@@ -166,6 +167,15 @@ export default function() {
       return label;
     } else {
       return avoidBaseMark;
+    }
+  };
+
+  label.lineAnchor = function(_) {
+    if (arguments.length) {
+      lineAnchor = _;
+      return label;
+    } else {
+      return lineAnchor;
     }
   };
 

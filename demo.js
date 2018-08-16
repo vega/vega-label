@@ -10,7 +10,7 @@ var specName
 
 // ---------line---------
 // = 'line_connected_scatter';
-// = 'line_end';
+= 'line_end';
 // = 'line';
 
 // ---------rect---------
@@ -18,7 +18,7 @@ var specName
 // = 'rect';
 
 // -------scatter--------
-= 'scatter_asteroids';
+// = 'scatter_asteroids';
 // = 'scatter_big_symbol';
 // = 'scatter_car';
 // = 'scatter_test';
