@@ -15,7 +15,8 @@ Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega)
     "sort": { "field": "datum.year" },
     "anchors": [ "top", "right" ]
     "avoidMarks": [ "basePoint", "baseLine" ],
-    "allowOutside": true
+    "allowOutside": true,
+    "avoidBaseMark": false
   }
 ]
 ```
@@ -39,7 +40,9 @@ Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega)
 - `avoidMarks`: list of data of mark; labels will not collide with these marks
   - Right now, `avoidMarks` works with `symbol`, `line`, `rect`, and `group`.
 
-- `allowOutside`: a flag if labels are allow to be placed outside the area of chart.
+- `allowOutside`: a flag specifying if labels are allow to be placed outside the area of chart.
+
+- `avoidBaseMark`: a flag specifying if labels are avoiding their base mark or not.
 
 - label transform has to be used with reactive geometry to use it as base mark to calculate positions of label
   - Right now, reactive geometry works with `symbol`, `line`, `rect`, and `group` of `line` and `area`
@@ -52,7 +55,7 @@ Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega)
 
 ![area_job_voyager](pics/label_area_job_voyager.png)
 
-Groups of area are used as the base mark, so one label is placed inside each area.
+Groups of area are used as the base mark, but `avoidBaseMark` flag is `false`, so labels can collide with their marks.
 Here is the [Vega Specification](./spec/label_area_job_voyager.vg.json)
 
 This example is from Vega [Job Voyager Example](https://vega.github.io/vega/examples/job-voyager/)

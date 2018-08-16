@@ -378,7 +378,7 @@ function getMarkBitMap(data, width, height, marktype, avoidMarks, anchors, offse
         }
       }
     }
-  } else {
+  } else if (avoidBaseMark) {
     var d;
     for (i = 0; i < n; i++) {
       d = data[i];
