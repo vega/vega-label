@@ -114,7 +114,7 @@
         {
           "type": "label",
           "size": [500, 200],
-          "anchors": ["middle"]
+          "anchor": ["middle"]
         }
       ]
     }

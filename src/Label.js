@@ -40,9 +40,9 @@ Label.Definition = {
     { name: 'avoidBaseMark', type: 'boolean', default: true },
     { name: 'allowOutside', type: 'boolean', defalut: false },
     { name: 'size', type: 'number', array: true, length: [2] },
-    { name: 'offsets', type: 'number', array: true, default: [1] },
+    { name: 'offset', type: 'number', array: true, default: [1] },
     { name: 'sort', type: 'field' },
-    { name: 'anchors', type: 'string', array: true, default: defaultAnchors },
+    { name: 'anchor', type: 'string', array: true, default: defaultAnchors },
     { name: 'avoidMarks', type: 'data', array: true },
     {
       name: 'as',
@@ -69,8 +69,8 @@ prototype.transform = function(_, pulse) {
   var data = pulse.materialize(pulse.SOURCE).source,
     labelLayout = this.value,
     as = _.as ? _.as : Output,
-    offsets = _.offsets ? _.offsets : [1],
-    anchors = _.anchors ? _.anchors : defaultAnchors,
+    offsets = _.offset ? _.offset : [1],
+    anchors = _.anchor ? _.anchor : defaultAnchors,
     numberPositions = offsets.length > anchors.length ? offsets.length : anchors.length;
 
   // configure layout

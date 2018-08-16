@@ -6,18 +6,18 @@ Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega)
 
 ## Syntax for label transform
 
-```
+```json
 "transform": [
   {
     "type": "label",
-    "size": [800, 500]
-    "offsets": [ 1, 2, -1 ],
+    "size": [800, 500],
+    "anchor": [ "middle", "right" ],
+    "offset": [ null, 2, -1 ],
     "sort": { "field": "datum.year" },
-    "anchors": [ "top", "right" ]
     "avoidMarks": [ "basePoint", "baseLine" ],
     "allowOutside": true,
     "avoidBaseMark": false,
-    "lineAnchor": 'end'
+    "lineAnchor": "end"
   }
 ]
 ```
@@ -26,17 +26,17 @@ Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega)
 
 - `size`: size of the chart in format `[width, height]`. **This size have to match with the chart size**
 
-- `anchors`: list of anchor points of labels to its mark's bounding box
+- `anchor` and `offset` a parallel array of anchor points and offset values.
+  - `anchor`: list of anchor points of labels to its mark's bounding box
+    - From the example above, for each label, Vega-Label will try to place it at the `middle` first, relative to its mark.
+    - If it collide with some other mark or label, Vega-Label will try to place it at the `right`, relative to its mark.
 
-  - From the example above, for each label, Vega-Label will try to place it at the `top` first, relative to its mark.
-  - If it collide with some other mark or label, Vega-Label will try to place it at the `right`, relative to its mark.
-
-- `offsets`: list of offset values from the bounding box of the **base mark**.
-
-  - From the example above, Vega-Label will try to place label with offset value 1 first.
-  - If it cannot place the label, Vega-Label will try to place label with offset value 2.
-  - If it cannot place the label, Vega-Label will try to place label with offset value 1 inside its mark.
-    - **Note**: label will be placed inside its mark if offset is negative.
+  - `offset`: list of offset values from the bounding box of the **base mark**.
+    - From the example above, Vega-Label will try to place label with no offset.
+      - **Note**: if the parallel anchor is `middle`, the offset value should be `null`. Otherwise, the value is ignored.
+    - If it cannot place the label, Vega-Label will try to place label with offset value 2.
+    - If it cannot place the label, Vega-Label will try to place label with offset value 1 inside its mark.
+      - **Note**: label will be placed inside its mark if offset is negative.
 
 - `avoidMarks`: list of data of mark; labels will not collide with these marks
 
@@ -91,10 +91,19 @@ This example is inspired by Vega-Lite [Carbon Dioxide in the Atmosphere](https:/
 
 ![rect_stack](pics/label_rect_stack.png)
 
-Rect is used as the base mark to label, and label positions is set to the top of each bar (inside then outside)
+Rect is used as the base mark to label. There is 2 sets of labels in this chart.
+The first label is the overall height of each combined bars, and label positions is set to the outer top of each bar.
+The second label is the height of each bar, and label position is set to the inner top of each bar
 Here is the [Vega Specification](./spec/label_rect_stack.vg.json)
 
 This example is inspired by Vega [Stacked Bar Chart Example](https://vega.github.io/vega/examples/stacked-bar-chart/)
+
+### In bar chart - Bar Chart Example
+
+![rect](pics/label_rect.png)
+
+Rect is used as the base mark to label. The label position is set to inner right of each bar as default, and outer right if bar is too small.
+Here is the [Vega Specification](./spec/label_rect.vg.json)
 
 ## With symbol
 

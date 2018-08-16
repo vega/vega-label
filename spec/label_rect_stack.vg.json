@@ -53,7 +53,7 @@
       "range": "height",
       "nice": true,
       "zero": true,
-      "domain": { "data": "table", "field": "y1" }
+      "domain": [0, 180]
     },
     {
       "name": "color",
@@ -96,7 +96,7 @@
         "enter": {
           "x": { "field": "x" },
           "y": { "field": "y" },
-          "text": { "field": "datum.y" },
+          "text": { "field": "datum.y1" },
           "fontSize": { "value": 20 }
         }
       },
@@ -104,8 +104,29 @@
         {
           "type": "label",
           "size": [500, 200],
-          "anchors": ["top"],
-          "offsets": [-10, 10]
+          "anchor": ["top"],
+          "offset": [10]
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "from": { "data": "baseRect" },
+      "encode": {
+        "enter": {
+          "x": { "field": "x" },
+          "y": { "field": "y" },
+          "text": { "field": "datum.y" },
+          "fontSize": { "value": 15 },
+          "fill": {"value": "#fff"}
+        }
+      },
+      "transform": [
+        {
+          "type": "label",
+          "size": [500, 200],
+          "anchor": ["top"],
+          "offset": [-8]
         }
       ]
     }

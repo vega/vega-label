@@ -10,11 +10,11 @@ var specName
 
 // ---------line---------
 // = 'line_connected_scatter';
-= 'line_end';
+// = 'line_end';
 // = 'line';
 
 // ---------rect---------
-// = 'rect_stack';
+= 'rect_stack';
 // = 'rect';
 
 // -------scatter--------

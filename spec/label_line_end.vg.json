@@ -94,8 +94,8 @@
       "transform": [
         {
           "type": "label",
-          "offsets": [2],
-          "anchors": ["right", "top-right", "bottom-right"],
+          "offset": [2],
+          "anchor": ["right", "top-right", "bottom-right"],
           "size": [800, 500],
           "allowOutside": true
         }

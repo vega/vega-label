@@ -283,7 +283,7 @@
       "transform": [
         {
           "type": "label",
-          "offsets": [3],
+          "offset": [3],
           "fill": "#000",
           "avoidMarks": ["basePoint"],
           "allowOutside": true,

@@ -98,10 +98,10 @@ export default function() {
       var n = _.length;
       offsets = new Float64Array(len);
       for (var i = 0; i < n; i++) {
-        offsets[i] = _[i];
+        offsets[i] = _[i] ? _[i] : 0;
       }
       for (i = n; i < len; i++) {
-        offsets[i] = offsets[n - 1];
+        offsets[i] = offsets[n - 1] ? offsets[n - 1] : 0;
       }
       return label;
     } else {

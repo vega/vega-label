@@ -138,7 +138,7 @@
       "transform": [
         {
           "type": "label",
-          "offsets": [2.5],
+          "offset": [2.5],
           "size": [800, 500],
           "sort": { "field": "datum.year" },
           "avoidMarks": ["baseLine"],

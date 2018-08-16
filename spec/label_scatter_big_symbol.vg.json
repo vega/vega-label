@@ -124,10 +124,10 @@
       "transform": [
         {
           "type": "label",
-          "offsets": [2],
+          "offset": [2],
           "sort": { "field": "datum.year" },
           "size": [800, 500],
-          "anchors": [
+          "anchor": [
             "middle",
             "top-left",
             "left",
