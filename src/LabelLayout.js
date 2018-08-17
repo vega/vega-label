@@ -65,10 +65,11 @@ export default function() {
       };
     }
 
-    if (sort)
+    if (sort) {
       data.sort(function(a, b) {
         return a.sort - b.sort;
       });
+    }
 
     console.timeEnd('layout');
     return placeLabels(
@@ -88,95 +89,69 @@ export default function() {
     if (arguments.length) {
       texts = _;
       return label;
-    } else {
-      return texts;
-    }
+    } else return texts;
   };
 
   label.offsets = function(_, len) {
     if (arguments.length) {
       var n = _.length;
       offsets = new Float64Array(len);
-      for (var i = 0; i < n; i++) {
-        offsets[i] = _[i] ? _[i] : 0;
-      }
-      for (i = n; i < len; i++) {
-        offsets[i] = offsets[n - 1] ? offsets[n - 1] : 0;
-      }
+      for (var i = 0; i < n; i++) offsets[i] = _[i] ? _[i] : 0;
+      for (i = n; i < len; i++) offsets[i] = offsets[n - 1] ? offsets[n - 1] : 0;
       return label;
-    } else {
-      return offsets;
-    }
+    } else return offsets;
   };
 
   label.sort = function(_) {
     if (arguments.length) {
       sort = _;
       return label;
-    } else {
-      return sort;
-    }
+    } else return sort;
   };
 
   label.anchors = function(_, len) {
     if (arguments.length) {
       var n = _.length;
       anchors = new Int8Array(len);
-      for (var i = 0; i < n; i++) {
-        anchors[i] |= anchorsMap[_[i]];
-      }
-      for (i = n; i < len; i++) {
-        anchors[i] = anchors[n - 1];
-      }
+      for (var i = 0; i < n; i++) anchors[i] |= anchorsMap[_[i]];
+      for (i = n; i < len; i++) anchors[i] = anchors[n - 1];
       return label;
-    } else {
-      return anchors;
-    }
+    } else return anchors;
   };
 
   label.avoidMarks = function(_) {
     if (arguments.length) {
       avoidMarks = _;
       return label;
-    } else {
-      return sort;
-    }
+    } else return sort;
   };
 
   label.allowOutside = function(_) {
     if (arguments.length) {
       allowOutside = _;
       return label;
-    } else {
-      return allowOutside;
-    }
+    } else return allowOutside;
   };
 
   label.size = function(_) {
     if (arguments.length) {
       size = _;
       return label;
-    } else {
-      return size;
-    }
+    } else return size;
   };
 
   label.avoidBaseMark = function(_) {
     if (arguments.length) {
       avoidBaseMark = _;
       return label;
-    } else {
-      return avoidBaseMark;
-    }
+    } else return avoidBaseMark;
   };
 
   label.lineAnchor = function(_) {
     if (arguments.length) {
       lineAnchor = _;
       return label;
-    } else {
-      return lineAnchor;
-    }
+    } else return lineAnchor;
   };
 
   return label;

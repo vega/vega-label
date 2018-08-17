@@ -89,7 +89,8 @@ prototype.transform = function(_, pulse) {
 
   var l, t;
   for (var i = 0; i < n; i++) {
-    (l = labels[i]), (t = l.datum);
+    l = labels[i];
+    t = l.datum;
 
     t[as[0]] = l.x;
     t[as[1]] = l.y;

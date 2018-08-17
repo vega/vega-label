@@ -26,7 +26,7 @@ Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega)
 
 - `size`: size of the chart in format `[width, height]`. **This size have to match with the chart size**
 
-- `anchor` and `offset` a parallel array of anchor points and offset values.
+- `anchor` and `offset`: parallel arrays of anchor points and offset values.
   - `anchor`: list of anchor points of labels to its mark's bounding box
     - From the example above, for each label, Vega-Label will try to place it at the `middle` first, relative to its mark.
     - If it collide with some other mark or label, Vega-Label will try to place it at the `right`, relative to its mark.
