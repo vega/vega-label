@@ -15,9 +15,9 @@ var INSIDE_OPACITY = 0.0625;
 export default function placeLabels(
   data,
   anchors,
+  offsets,
   marktype,
   avoidMarks,
-  offsets,
   allowOutside,
   size,
   avoidBaseMark,
@@ -30,23 +30,19 @@ export default function placeLabels(
   var width = size[0],
     height = size[1];
 
+  var labelInside = marktype === 'group';
+  for (var i = 0; i < anchors.length && !labelInside; i++) {
+    labelInside = anchors[i] === 0x5 || offsets[i] < 0;
+  }
+
   console.time('set-bitmap');
-  var bitMaps = getMarkBitMap(
-      data,
-      width,
-      height,
-      marktype,
-      avoidMarks,
-      anchors,
-      offsets,
-      avoidBaseMark
-    ),
-    layer1 = bitMaps[0],
-    layer2 = bitMaps[1];
+  var layer1 = new BitMap(width, height),
+    layer2 = labelInside ? new BitMap(width, height) : undefined;
+  markBitMap(data, layer1, layer2, width, height, marktype, avoidBaseMark, avoidMarks, labelInside);
   console.timeEnd('set-bitmap');
 
   var context = canvas().getContext('2d');
-  var d, i, markBound;
+  var d, markBound;
 
   console.time('layout');
   if (marktype === 'group') {
@@ -87,6 +83,29 @@ export default function placeLabels(
   return data;
 }
 
+function markBitMap(data, l1, l2, w, h, marktype, avoidBaseMark, avoidMarks, labelInside) {
+  var n = data.length;
+  if (!n) return null;
+
+  if (marktype && avoidBaseMark) {
+    var items = new Array(n);
+    for (var i = 0; i < n; i++) {
+      items[i] = data[i].datum.datum;
+    }
+    avoidMarks.push(items);
+  }
+
+  if (avoidMarks.length) {
+    var context = writeToCanvas(avoidMarks, w, h, labelInside);
+    writeToBitMaps(context, l1, l2, w, h, labelInside);
+  } else if (avoidBaseMark) {
+    for (i = 0; i < n; i++) {
+      var d = data[i];
+      l1.mark(d.markBound[0], d.markBound[3]);
+    }
+  }
+}
+
 function placeLabelInAreaIgnoreMark(datum, items, bitMap, context, _height) {
   var x1, x2, y1, y2, x, y;
   var n = items.length,
@@ -94,7 +113,7 @@ function placeLabelInAreaIgnoreMark(datum, items, bitMap, context, _height) {
     textWidth = labelWidth(datum.text, textHeight, datum.font, context);
 
   var bin = bitMap.bin,
-    sortedItems = deriveSortFieldAndSort(items);
+    sortedItems = sortAreaItems(items);
   var item, _x1, _x2, _y1, _y2;
 
   for (var i = 0; i < n; i++) {
@@ -123,24 +142,6 @@ function placeLabelInAreaIgnoreMark(datum, items, bitMap, context, _height) {
     }
   }
   return false;
-}
-
-function deriveSortFieldAndSort(items) {
-  var n = items.length,
-    sortedItems = new Array();
-  var sort, item;
-  for (var i = 0; i < n; i++) {
-    item = items[i];
-    sort = item.x2 !== undefined ? item.x - item.x2 : item.y - item.y2;
-    sort = sort < 0 ? -sort : sort;
-    sortedItems[i] = { item: items[i], sort: sort };
-  }
-
-  sortedItems.sort(function(a, b) {
-    return b.sort - a.sort;
-  });
-
-  return sortedItems;
 }
 
 function placeLabelInAreaAvoidMark(datum, items, bitMap, context, height) {
@@ -204,18 +205,6 @@ function placeLabelInAreaAvoidMark(datum, items, bitMap, context, height) {
     }
   }
   return labelPlaced;
-}
-
-function collisionFromPositionAndHeight(textWidth, textHeight, x, y, h, bitMap) {
-  var w = (h * textWidth) / textHeight,
-    bin = bitMap.bin,
-    x1 = bin(x - w / 2.0),
-    y1 = bin(y - h / 2.0),
-    x2 = bin(x + w / 2.0),
-    y2 = bin(y + h / 2.0);
-
-  if (bitMap.searchOutOfBound(x1, y1, x2, y2)) return true;
-  return checkCollision(x1, y1, x2, y2, bitMap);
 }
 
 function placeLabel(datum, layer1, layer2, anchors, offsets, allowOutside, context) {
@@ -289,6 +278,34 @@ function placeLabel(datum, layer1, layer2, anchors, offsets, allowOutside, conte
   return false;
 }
 
+function sortAreaItems(items) {
+  var n = items.length,
+    sortedItems = new Array();
+  var sort, item;
+  for (var i = 0; i < n; i++) {
+    item = items[i];
+    sort = item.x2 !== undefined ? item.x - item.x2 : item.y - item.y2;
+    sort = sort < 0 ? -sort : sort;
+    sortedItems[i] = { item: items[i], sort: sort };
+  }
+
+  sortedItems.sort(function(a, b) {
+    return b.sort - a.sort;
+  });
+
+  return sortedItems;
+}
+
+function collisionFromPositionAndHeight(textWidth, textHeight, x, y, h, bitMap) {
+  var w = (h * textWidth) / textHeight,
+    bin = bitMap.bin,
+    x1 = bin(x - w / 2.0),
+    y1 = bin(y - h / 2.0),
+    x2 = bin(x + w / 2.0),
+    y2 = bin(y + h / 2.0);
+  return bitMap.searchOutOfBound(x1, y1, x2, y2) || checkCollision(x1, y1, x2, y2, bitMap);
+}
+
 function isInMarkBound(x1, y1, x2, y2, markBound) {
   return markBound[0] <= x1 && x2 <= markBound[2] && markBound[3] <= y1 && y2 <= markBound[5];
 }
@@ -303,44 +320,14 @@ function isLabelPlacable(_x1, _x2, _y1, _y2, layer1, layer2, x1, x2, y1, y2, mar
 }
 
 function checkCollision(x1, y1, x2, y2, bitMap) {
-  if (bitMap.getInBoundBinned(x1, y1, x2, y1) || bitMap.getInBoundBinned(x1, y2, x2, y2))
-    return true;
-  return bitMap.getInBoundBinned(x1, y1 + 1, x2, y2 - 1);
+  return (
+    bitMap.getInBoundBinned(x1, y1, x2, y1) ||
+    bitMap.getInBoundBinned(x1, y2, x2, y2) ||
+    bitMap.getInBoundBinned(x1, y1 + 1, x2, y2 - 1)
+  );
 }
 
-function getMarkBitMap(data, width, height, marktype, avoidMarks, anchors, offsets, avoidBaseMark) {
-  var n = data.length;
-  if (!n) return null;
-
-  var hasLabelInsideMark = marktype === 'group';
-  for (var i = 0; i < anchors.length && !hasLabelInsideMark; i++) {
-    hasLabelInsideMark = anchors[i] === 0x5 || offsets[i] < 0;
-  }
-
-  if (marktype && avoidBaseMark) {
-    var items = new Array(n);
-    for (i = 0; i < n; i++) {
-      items[i] = data[i].datum.datum;
-    }
-    avoidMarks.push(items);
-  }
-
-  if (avoidMarks.length) {
-    var context = writeToCanvas(avoidMarks, width, height, hasLabelInsideMark);
-    return readFromCanvas(context, width, height, hasLabelInsideMark);
-  } else {
-    var layer1 = new BitMap(width, height);
-    if (avoidBaseMark) {
-      for (i = 0; i < n; i++) {
-        var d = data[i];
-        layer1.mark(d.markBound[0], d.markBound[3]);
-      }
-    }
-    return [layer1, undefined];
-  }
-}
-
-function writeToCanvas(avoidMarks, width, height, hasLabelInsideMark) {
+function writeToCanvas(avoidMarks, width, height, labelInside) {
   var m = avoidMarks.length,
     // c = document.getElementById('canvas-render'),
     c = document.createElement('canvas'),
@@ -354,35 +341,32 @@ function writeToCanvas(avoidMarks, width, height, hasLabelInsideMark) {
     itemsLen = originalItems.length;
     if (!itemsLen) continue;
 
-    if (originalItems[0].mark.marktype !== 'group')
-      drawMark(context, originalItems, hasLabelInsideMark);
-    else drawGroup(context, originalItems, hasLabelInsideMark);
+    if (originalItems[0].mark.marktype !== 'group') drawMark(context, originalItems, labelInside);
+    else drawGroup(context, originalItems, labelInside);
   }
 
   return context;
 }
 
-function readFromCanvas(context, width, height, hasLabelInsideMark) {
+function writeToBitMaps(context, layer1, layer2, width, height, labelInside) {
   var imageData = context.getImageData(0, 0, width, height),
-    canvasBuffer = new Uint32Array(imageData.data.buffer),
-    layer1 = new BitMap(width, height),
-    layer2 = hasLabelInsideMark ? new BitMap(width, height) : undefined;
+    canvasBuffer = new Uint32Array(imageData.data.buffer);
 
   for (var y = 0; y < height; y++) {
     for (var x = 0; x < width; x++) {
       var alpha = canvasBuffer[y * width + x] & ALPHA_MASK;
       if (alpha) {
         layer1.mark(x, y);
-        if (hasLabelInsideMark && alpha !== INSIDE_OPACITY_IN_ALPHA) layer2.mark(x, y);
+        if (labelInside && alpha ^ INSIDE_OPACITY_IN_ALPHA) layer2.mark(x, y);
       }
     }
   }
   return [layer1, layer2];
 }
 
-function drawMark(context, originalItems, hasLabelInsideMark) {
+function drawMark(context, originalItems, labelInside) {
   var n = originalItems.length;
-  if (hasLabelInsideMark) {
+  if (labelInside) {
     var items = new Array(n);
     for (var i = 0; i < n; i++) {
       items[i] = prepareMarkItem(originalItems[i]);
@@ -392,12 +376,12 @@ function drawMark(context, originalItems, hasLabelInsideMark) {
   Marks[items[0].mark.marktype].draw(context, { items: items }, null);
 }
 
-function drawGroup(context, groups, hasLabelInsideMark) {
+function drawGroup(context, groups, labelInside) {
   var n = groups.length;
   for (var i = 0; i < n; i++) {
     var g = groups[i].items[0];
-    if (g.marktype !== 'group') drawMark(context, g.items, hasLabelInsideMark);
-    else drawGroup(context, g.items, hasLabelInsideMark); // nested group might not work.
+    if (g.marktype !== 'group') drawMark(context, g.items, labelInside);
+    else drawGroup(context, g.items, labelInside); // nested group might not work.
   }
 }
 

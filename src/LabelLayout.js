@@ -75,9 +75,9 @@ export default function() {
     return placeLabels(
       data,
       anchors,
+      offsets,
       marktype,
       avoidMarks,
-      offsets,
       allowOutside,
       size,
       avoidBaseMark,
