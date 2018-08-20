@@ -102,7 +102,8 @@
           "fill": { "scale": "color", "field": "density" },
           "_fill": { "value": "#000" }
         }
-      }
+      },
+      "zindex": 1
     },
     {
       "name": "label",
@@ -132,12 +133,14 @@
         "enter": {
           "x": { "field": "x" },
           "y": { "field": "y" },
-          "x2": { "scale": "x", "field": "datum.datum.ra" },
-          "y2": { "scale": "y", "field": "datum.datum.dec" },
+          "x2": { "field": "datum.x" },
+          "y2": { "field": "datum.y" },
           "opacity": { "field": "opacity" },
+          "strokeOpacity": { "value": 0.3 },
           "strokeWidth": { "value": 1 }
         }
-      }
+      },
+      "zindex": -1
     }
   ]
 }

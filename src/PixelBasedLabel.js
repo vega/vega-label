@@ -36,9 +36,10 @@ export default function placeLabels(
   }
 
   console.time('set-bitmap');
-  var layer1 = new BitMap(width, height),
-    layer2 = labelInside ? new BitMap(width, height) : undefined;
-  markBitMap(data, layer1, layer2, width, height, marktype, avoidBaseMark, avoidMarks, labelInside);
+  var bitMaps, layer1, layer2;
+  bitMaps = initializeBitMap(data, width, height, marktype, avoidBaseMark, avoidMarks, labelInside);
+  layer1 = bitMaps[0];
+  layer2 = bitMaps[1];
   console.timeEnd('set-bitmap');
 
   var context = canvas().getContext('2d');
@@ -70,20 +71,20 @@ export default function placeLabels(
     for (i = 0; i < n; i++) {
       d = data[i];
       markBound = d.markBound;
-      if (markBound[0] < 0 || markBound[3] < 0 || markBound[2] > width || markBound[5] > height)
+      if (markBound[2] < 0 || markBound[5] < 0 || markBound[0] > width || markBound[3] > height)
         continue;
       if (placeLabel(d, layer1, layer2, anchors, offsets, allowOutside, context))
         d.opacity = d.originalOpacity;
     }
   }
   console.timeEnd('layout');
-  // layer1.print('bit-map-1');
-  // if (layer2) layer2.print('bit-map-2');
+  layer1.print('bit-map-1');
+  if (layer2) layer2.print('bit-map-2');
   console.timeEnd('pixel-based');
   return data;
 }
 
-function markBitMap(data, l1, l2, w, h, marktype, avoidBaseMark, avoidMarks, labelInside) {
+function initializeBitMap(data, width, height, marktype, avoidBaseMark, avoidMarks, labelInside) {
   var n = data.length;
   if (!n) return null;
 
@@ -96,13 +97,17 @@ function markBitMap(data, l1, l2, w, h, marktype, avoidBaseMark, avoidMarks, lab
   }
 
   if (avoidMarks.length) {
-    var context = writeToCanvas(avoidMarks, w, h, labelInside);
-    writeToBitMaps(context, l1, l2, w, h, labelInside);
-  } else if (avoidBaseMark) {
-    for (i = 0; i < n; i++) {
-      var d = data[i];
-      l1.mark(d.markBound[0], d.markBound[3]);
+    var context = writeToCanvas(avoidMarks, width, height, labelInside);
+    return writeToBitMaps(context, width, height, labelInside);
+  } else {
+    var bitMap = new BitMap(width, height);
+    if (avoidBaseMark) {
+      for (i = 0; i < n; i++) {
+        var d = data[i];
+        bitMap.mark(d.markBound[0], d.markBound[3]);
+      }
     }
+    return [bitMap, undefined];
   }
 }
 
@@ -348,7 +353,9 @@ function writeToCanvas(avoidMarks, width, height, labelInside) {
   return context;
 }
 
-function writeToBitMaps(context, layer1, layer2, width, height, labelInside) {
+function writeToBitMaps(context, width, height, labelInside) {
+  var layer1 = new BitMap(width, height),
+    layer2 = labelInside ? new BitMap(width, height) : undefined;
   var imageData = context.getImageData(0, 0, width, height),
     canvasBuffer = new Uint32Array(imageData.data.buffer);
 

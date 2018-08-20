@@ -3,7 +3,6 @@
   "width": 800,
   "height": 500,
   "padding": 5,
-
   "config": {
     "axis": {
       "domain": false,
@@ -12,19 +11,20 @@
       "tickSize": 0
     }
   },
-
   "data": [
     {
       "name": "drive",
       "url": "../data/driving.json"
     }
   ],
-
   "scales": [
     {
       "name": "x",
       "type": "linear",
-      "domain": { "data": "drive", "field": "miles" },
+      "domain": {
+        "data": "drive",
+        "field": "miles"
+      },
       "range": "width",
       "nice": true,
       "zero": false,
@@ -33,7 +33,10 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": { "data": "drive", "field": "gas" },
+      "domain": {
+        "data": "drive",
+        "field": "gas"
+      },
       "range": "height",
       "nice": true,
       "zero": false,
@@ -42,29 +45,68 @@
     {
       "name": "align",
       "type": "ordinal",
-      "domain": ["left", "right", "top", "bottom"],
-      "range": ["right", "left", "center", "center"]
+      "domain": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ],
+      "range": [
+        "right",
+        "left",
+        "center",
+        "center"
+      ]
     },
     {
       "name": "base",
       "type": "ordinal",
-      "domain": ["left", "right", "top", "bottom"],
-      "range": ["middle", "middle", "bottom", "top"]
+      "domain": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ],
+      "range": [
+        "middle",
+        "middle",
+        "bottom",
+        "top"
+      ]
     },
     {
       "name": "dx",
       "type": "ordinal",
-      "domain": ["left", "right", "top", "bottom"],
-      "range": [-7, 6, 0, 0]
+      "domain": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ],
+      "range": [
+        -7,
+        6,
+        0,
+        0
+      ]
     },
     {
       "name": "dy",
       "type": "ordinal",
-      "domain": ["left", "right", "top", "bottom"],
-      "range": [1, 1, -5, 6]
+      "domain": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ],
+      "range": [
+        1,
+        1,
+        -5,
+        6
+      ]
     }
   ],
-
   "axes": [
     {
       "orient": "top",
@@ -94,41 +136,93 @@
       "labels": false
     }
   ],
-
   "marks": [
     {
       "type": "symbol",
       "name": "basePoint",
-      "from": { "data": "drive" },
+      "from": {
+        "data": "drive"
+      },
       "encode": {
         "enter": {
-          "x": { "scale": "x", "field": "miles" },
-          "y": { "scale": "y", "field": "gas" },
-          "fill": { "value": "#fff" },
-          "stroke": { "value": "#000" },
-          "strokeWidth": { "value": 1 },
-          "size": { "value": 1500 }
+          "x": {
+            "scale": "x",
+            "field": "miles"
+          },
+          "y": {
+            "scale": "y",
+            "field": "gas"
+          },
+          "fill": {
+            "value": "#fff"
+          },
+          "stroke": {
+            "value": "#000"
+          },
+          "strokeWidth": {
+            "value": 1
+          },
+          "size": {
+            "value": 1500
+          }
         }
-      }
+      },
+      "zindex": 1
     },
     {
       "type": "text",
-      "from": { "data": "basePoint" },
+      "from": {
+        "data": "basePoint"
+      },
       "name": "label",
       "encode": {
         "enter": {
-          "fill": { "value": "#000" },
-          "text": { "field": "datum.year" }
+          "fill": {
+            "value": "#000"
+          },
+          "text": {
+            "field": "datum.year"
+          },
+          "fontSize": {
+            "value": 8
+          }
         }
       },
       "transform": [
         {
           "type": "label",
-          "offset": [2],
-          "sort": { "field": "datum.year" },
-          "size": [800, 500],
+          "offset": [
+            2
+          ],
+          "sort": {
+            "field": "datum.year"
+          },
+          "size": [
+            800,
+            500
+          ],
+          "offset": [
+            null,
+            -5,
+            -5,
+            -5,
+            -5,
+            -5,
+            -5,
+            -5,
+            -5,
+            5
+          ],
           "anchor": [
             "middle",
+            "top-left",
+            "left",
+            "bottom-left",
+            "top",
+            "bottom",
+            "top-right",
+            "right",
+            "bottom-right",
             "top-left",
             "left",
             "bottom-left",
@@ -139,22 +233,40 @@
             "bottom-right"
           ]
         }
-      ]
+      ],
+      "zindex": 2
     },
     {
       "type": "rule",
-      "from": { "data": "label" },
+      "from": {
+        "data": "label"
+      },
       "encode": {
         "enter": {
-          "x": { "field": "datum.x" },
-          "y": { "field": "datum.y" },
-          "x2": { "field": "x" },
-          "y2": { "field": "y" },
-          "stroke": { "field": "fill" },
-          "strokeWidth": { "value": 1 },
-          "strokeOpacity": { "value": 0.25 }
+          "x": {
+            "field": "datum.x"
+          },
+          "y": {
+            "field": "datum.y"
+          },
+          "x2": {
+            "field": "x"
+          },
+          "y2": {
+            "field": "y"
+          },
+          "stroke": {
+            "field": "fill"
+          },
+          "strokeWidth": {
+            "value": 1
+          },
+          "strokeOpacity": {
+            "value": 0.25
+          }
         }
-      }
+      },
+      "zindex": -1
     }
   ]
 }
