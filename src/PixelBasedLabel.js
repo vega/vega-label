@@ -20,8 +20,7 @@ export default function placeLabels(
   avoidMarks,
   allowOutside,
   size,
-  avoidBaseMark,
-  lineAnchor
+  avoidBaseMark
 ) {
   console.time('pixel-based');
   var n = data.length;
@@ -47,7 +46,7 @@ export default function placeLabels(
 
   console.time('layout');
   if (marktype === 'group') {
-    var group, items, endItem, m;
+    var group, items, m;
     var placeLabelInArea, bitMap;
     if (avoidBaseMark) {
       placeLabelInArea = placeLabelInAreaAvoidMark;
@@ -68,8 +67,6 @@ export default function placeLabels(
         d.baseline = 'middle';
         if (placeLabelInArea(d, items, bitMap, context, height)) d.opacity = d.originalOpacity;
       } else if (group.marktype === 'line') {
-        endItem = items[lineAnchor === 'begin' ? m - 1 : 0];
-        d.markBound = [endItem.x, endItem.x, endItem.x, endItem.y, endItem.y, endItem.y];
         if (placeLabel(d, layer1, layer2, anchors, offsets, allowOutside, context))
           d.opacity = d.originalOpacity;
       }
@@ -393,7 +390,7 @@ function drawMark(context, originalItems, labelInside) {
 function drawGroup(context, groups, labelInside) {
   var n = groups.length;
   for (var i = 0; i < n; i++) {
-    var g = groups[i].items[0];
+    var g = groups[i].items[0]; // can have more than 1 items in group?
     if (g.marktype !== 'group') drawMark(context, g.items, labelInside);
     else drawGroup(context, g.items, labelInside); // nested group might not work.
   }

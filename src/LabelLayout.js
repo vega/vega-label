@@ -37,19 +37,10 @@ export default function() {
     if (!size || size.length !== 2) return texts;
 
     console.time('layout');
-    var i, d, markBound, originalOpacity, datum, b;
+    var i, d, originalOpacity;
+    var getMarkBound = getMarkBoundFactory(marktype, lineAnchor);
     for (i = 0; i < n; i++) {
       d = texts[i];
-
-      if (!marktype) {
-        markBound = [d.x, d.x, d.x, d.y, d.y, d.y];
-      } else if (marktype === 'line' || marktype === 'area') {
-        datum = d.datum;
-        markBound = [datum.x, datum.x, datum.x, datum.y, datum.y, datum.y];
-      } else {
-        b = d.datum.bounds;
-        markBound = [b.x1, (b.x1 + b.x2) / 2.0, b.x2, b.y1, (b.y1 + b.y2) / 2.0, b.y2];
-      }
 
       data[i] = {
         textWidth: undefined,
@@ -58,7 +49,7 @@ export default function() {
         font: d.font,
         text: d.text,
         sort: sort ? sort(d.datum) : undefined,
-        markBound: markBound,
+        markBound: getMarkBound(d),
         originalOpacity: transformed ? originalOpacity : d.opacity,
         opacity: 0,
         datum: d,
@@ -80,8 +71,7 @@ export default function() {
       avoidMarks,
       allowOutside,
       size,
-      avoidBaseMark,
-      lineAnchor
+      avoidBaseMark
     );
   };
 
@@ -155,4 +145,44 @@ export default function() {
   };
 
   return label;
+}
+
+function getMarkBoundFactory(marktype, lineAnchor) {
+  if (!marktype) {
+    return function(d) {
+      return [d.x, d.x, d.x, d.y, d.y, d.y];
+    };
+  } else if (marktype === 'line' || marktype === 'area') {
+    return function(d) {
+      var datum = d.datum;
+      return [datum.x, datum.x, datum.x, datum.y, datum.y, datum.y];
+    };
+  } else if (marktype === 'group') {
+    var endItemIndex = endItemIndexFactory(lineAnchor);
+    return function(d) {
+      var items = d.datum.items[0].items;
+      var m = items.length;
+      if (m) {
+        var endItem = items[endItemIndex(m)];
+        return [endItem.x, endItem.x, endItem.x, endItem.y, endItem.y, endItem.y];
+      } else return [-1, -1, -1, -1, -1, -1];
+    };
+  } else {
+    return function(d) {
+      var b = d.datum.bounds;
+      return [b.x1, (b.x1 + b.x2) / 2.0, b.x2, b.y1, (b.y1 + b.y2) / 2.0, b.y2];
+    };
+  }
+}
+
+function endItemIndexFactory(lineAnchor) {
+  if (lineAnchor === 'begin') {
+    return function(m) {
+      return m - 1;
+    };
+  }
+
+  return function() {
+    return 0;
+  };
 }
