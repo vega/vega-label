@@ -48,7 +48,14 @@ export default function placeLabels(
   console.time('layout');
   if (marktype === 'group') {
     var group, items, endItem, m;
-    var placeLabelInArea = avoidBaseMark ? placeLabelInAreaAvoidMark : placeLabelInAreaIgnoreMark;
+    var placeLabelInArea, bitMap;
+    if (avoidBaseMark) {
+      placeLabelInArea = placeLabelInAreaAvoidMark;
+      bitMap = layer2;
+    } else {
+      placeLabelInArea = placeLabelInAreaIgnoreMark;
+      bitMap = layer1;
+    }
     for (i = 0; i < n; i++) {
       d = data[i];
       group = d.datum.datum.items[0];
@@ -59,7 +66,7 @@ export default function placeLabels(
       if (group.marktype === 'area') {
         d.align = 'center';
         d.baseline = 'middle';
-        if (placeLabelInArea(d, items, layer2, context, height)) d.opacity = d.originalOpacity;
+        if (placeLabelInArea(d, items, bitMap, context, height)) d.opacity = d.originalOpacity;
       } else if (group.marktype === 'line') {
         endItem = items[lineAnchor === 'begin' ? m - 1 : 0];
         d.markBound = [endItem.x, endItem.x, endItem.x, endItem.y, endItem.y, endItem.y];

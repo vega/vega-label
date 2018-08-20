@@ -5,7 +5,7 @@ var rawFile = new XMLHttpRequest();
 // prettier-ignore
 var specName
 // ---------area---------
-// = "area_job_voyager";
+= "area_job_voyager";
 // = 'area';
 
 // ---------line---------
@@ -14,7 +14,7 @@ var specName
 // = 'line';
 
 // ---------rect---------
-= 'rect_stack';
+// = 'rect_stack';
 // = 'rect';
 
 // -------scatter--------
@@ -24,7 +24,7 @@ var specName
 // = 'scatter_test';
 // = 'scatter_zoom';
 
-rawFile.open('GET', '../spec/label_' + specName + '.vg.json', false);
+rawFile.open('GET', '../specs/label_' + specName + '.vg.json', false);
 rawFile.onreadystatechange = () => {
   if (rawFile.readyState === 4)
     if (rawFile.status === 200 || rawFile.status === 0) jsonText = rawFile.responseText;

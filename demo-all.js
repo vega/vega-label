@@ -24,7 +24,7 @@ for (var i = 0; i < specNames.length; i++) {
   var node = document.createElement('DIV');
   node.setAttribute('id', name);
   vis.appendChild(node);
-  rawFile.open('GET', '../spec/label_' + specNames[i] + '.vg.json', false);
+  rawFile.open('GET', '../specs/label_' + specNames[i] + '.vg.json', false);
   rawFile.onreadystatechange = () => {
     if (rawFile.readyState === 4)
       if (rawFile.status === 200 || rawFile.status === 0) jsonText = rawFile.responseText;
