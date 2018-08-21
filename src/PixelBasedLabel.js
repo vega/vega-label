@@ -20,7 +20,8 @@ export default function placeLabels(
   avoidMarks,
   allowOutside,
   size,
-  avoidBaseMark
+  avoidBaseMark,
+  primaryMarkInGroup
 ) {
   console.time('pixel-based');
   var n = data.length;
@@ -43,10 +44,10 @@ export default function placeLabels(
 
   var context = canvas().getContext('2d');
   var d, mb;
-  var grouptype = marktype === 'group' ? data[0].datum.datum.items[0].marktype : undefined;
+  var isGroupArea = marktype === 'group' && data[0].datum.datum.items[primaryMarkInGroup].marktype;
 
   console.time('layout');
-  if (grouptype === 'area') {
+  if (isGroupArea === 'area') {
     var items;
     // placeLabelInArea = placeLabelInAreaFactory(avoidBaseMark, layer1, layer2, context);
     for (i = 0; i < n; i++) {
@@ -378,11 +379,15 @@ function drawMark(context, originalItems, labelInside) {
 }
 
 function drawGroup(context, groups, labelInside) {
-  var n = groups.length;
+  var n = groups.length,
+    marks;
   for (var i = 0; i < n; i++) {
-    var g = groups[i].items[0]; // can have more than 1 items in group?
-    if (g.marktype !== 'group') drawMark(context, g.items, labelInside);
-    else drawGroup(context, g.items, labelInside); // nested group might not work.
+    marks = groups[i].items;
+    for (var j = 0; j < marks.length; j++) {
+      var g = marks[j];
+      if (g.marktype !== 'group') drawMark(context, g.items, labelInside);
+      else drawGroup(context, g.items, labelInside); // nested group might not work.
+    }
   }
 }
 

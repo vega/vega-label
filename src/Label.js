@@ -4,16 +4,7 @@ import labelLayout from './LabelLayout';
 import { Transform } from 'vega-dataflow';
 import { inherits, isFunction } from 'vega-util';
 
-var Output = [
-  'x',
-  'y',
-  'opacity',
-  'align',
-  'baseline',
-  'originalOpacity',
-  'transformed',
-  'fontSize',
-];
+var Output = ['x', 'y', 'opacity', 'align', 'baseline', 'originalOpacity', 'transformed'];
 
 var Params = ['offset'];
 
@@ -36,6 +27,7 @@ Label.Definition = {
   type: 'Label',
   metadata: { modifies: true },
   params: [
+    { name: 'primaryMarkInGroup', type: 'number', default: 0 },
     { name: 'lineAnchor', type: 'string', values: ['begin', 'end'], default: 'end' },
     { name: 'avoidBaseMark', type: 'boolean', default: true },
     { name: 'allowOutside', type: 'boolean', defalut: false },
@@ -84,6 +76,7 @@ prototype.transform = function(_, pulse) {
       .size(_.size)
       .avoidBaseMark(_.avoidBaseMark !== undefined ? _.avoidBaseMark : true)
       .lineAnchor(_.lineAnchor ? _.lineAnchor : 'end')
+      .primaryMarkInGroup(_.primaryMarkInGroup ? _.primaryMarkInGroup : 0)
       .layout(),
     n = data.length;
 
@@ -99,7 +92,6 @@ prototype.transform = function(_, pulse) {
     t[as[4]] = l.baseline;
     t[as[5]] = l.originalOpacity;
     t[as[6]] = true;
-    t[as[7]] = l.fontSize;
   }
 
   console.timeEnd('label');

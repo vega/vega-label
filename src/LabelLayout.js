@@ -23,7 +23,8 @@ var anchorsMap = {
 };
 
 export default function() {
-  var offsets, sort, anchors, avoidMarks, allowOutside, size, avoidBaseMark, lineAnchor;
+  var offsets, sort, anchors, avoidMarks, allowOutside;
+  var size, avoidBaseMark, lineAnchor, primaryMarkInGroup;
   var label = {},
     texts = [];
 
@@ -32,13 +33,15 @@ export default function() {
       data = Array(n),
       marktype =
         n && texts[0].datum && texts[0].datum.mark ? texts[0].datum.mark.marktype : undefined,
-      transformed = n ? texts[0].transformed : false;
+      transformed = n ? texts[0].transformed : false,
+      isGroupLine =
+        marktype === 'group' && texts[0].datum.items[primaryMarkInGroup].marktype === 'line';
 
     if (!size || size.length !== 2) return texts;
 
     console.time('layout');
     var i, d, originalOpacity;
-    var getMarkBound = getMarkBoundFactory(marktype, lineAnchor);
+    var getMarkBound = getMarkBoundFactory(marktype, isGroupLine, lineAnchor, primaryMarkInGroup);
     for (i = 0; i < n; i++) {
       d = texts[i];
 
@@ -71,7 +74,8 @@ export default function() {
       avoidMarks,
       allowOutside,
       size,
-      avoidBaseMark
+      avoidBaseMark,
+      primaryMarkInGroup
     );
   };
 
@@ -144,10 +148,17 @@ export default function() {
     } else return lineAnchor;
   };
 
+  label.primaryMarkInGroup = function(_) {
+    if (arguments.length) {
+      primaryMarkInGroup = _;
+      return label;
+    } else return primaryMarkInGroup;
+  };
+
   return label;
 }
 
-function getMarkBoundFactory(marktype, lineAnchor) {
+function getMarkBoundFactory(marktype, isGroupLine, lineAnchor, primaryMarkInGroup) {
   if (!marktype) {
     return function(d) {
       return [d.x, d.x, d.x, d.y, d.y, d.y];
@@ -157,10 +168,10 @@ function getMarkBoundFactory(marktype, lineAnchor) {
       var datum = d.datum;
       return [datum.x, datum.x, datum.x, datum.y, datum.y, datum.y];
     };
-  } else if (marktype === 'group') {
+  } else if (isGroupLine) {
     var endItemIndex = endItemIndexFactory(lineAnchor);
     return function(d) {
-      var items = d.datum.items[0].items;
+      var items = d.datum.items[primaryMarkInGroup].items;
       var m = items.length;
       if (m) {
         var endItem = items[endItemIndex(m)];
