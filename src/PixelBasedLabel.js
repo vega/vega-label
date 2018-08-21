@@ -29,7 +29,7 @@ export default function placeLabels(
   var width = size[0],
     height = size[1];
 
-  var labelInside = marktype === 'group';
+  var labelInside = false;
   for (var i = 0; i < anchors.length && !labelInside; i++) {
     labelInside = anchors[i] === 0x5 || offsets[i] < 0;
   }
@@ -42,45 +42,31 @@ export default function placeLabels(
   console.timeEnd('set-bitmap');
 
   var context = canvas().getContext('2d');
-  var d, markBound;
+  var d, mb;
+  var grouptype = marktype === 'group' ? data[0].datum.datum.items[0].marktype : undefined;
 
   console.time('layout');
-  if (marktype === 'group') {
-    var group, items, m;
-    var placeLabelInArea, bitMap;
-    if (avoidBaseMark) {
-      placeLabelInArea = placeLabelInAreaAvoidMark;
-      bitMap = layer2;
-    } else {
-      placeLabelInArea = placeLabelInAreaIgnoreMark;
-      bitMap = layer1;
-    }
+  if (grouptype === 'area') {
+    var items;
+    // placeLabelInArea = placeLabelInAreaFactory(avoidBaseMark, layer1, layer2, context);
     for (i = 0; i < n; i++) {
       d = data[i];
-      group = d.datum.datum.items[0];
-      items = group.items;
-      m = items.length;
-      if (!m) continue;
-
-      if (group.marktype === 'area') {
-        d.align = 'center';
-        d.baseline = 'middle';
-        if (placeLabelInArea(d, items, bitMap, context, height)) d.opacity = d.originalOpacity;
-      } else if (group.marktype === 'line') {
-        if (placeLabel(d, layer1, layer2, anchors, offsets, allowOutside, context))
-          d.opacity = d.originalOpacity;
-      }
+      d.align = 'center';
+      d.baseline = 'middle';
+      items = d.datum.datum.items[0].items;
+      if (placeLabelInArea(d, items, height, avoidBaseMark, layer1, layer2, context))
+        d.opacity = d.originalOpacity;
     }
   } else {
     for (i = 0; i < n; i++) {
       d = data[i];
-      markBound = d.markBound;
-      if (markBound[2] < 0 || markBound[5] < 0 || markBound[0] > width || markBound[3] > height)
-        continue;
+      mb = d.markBound;
+      if (mb[2] < 0 || mb[5] < 0 || mb[0] > width || mb[3] > height) continue;
       if (placeLabel(d, layer1, layer2, anchors, offsets, allowOutside, context))
         d.opacity = d.originalOpacity;
     }
   }
+
   console.timeEnd('layout');
   layer1.print('bit-map-1');
   if (layer2) layer2.print('bit-map-2');
@@ -92,7 +78,8 @@ function initializeBitMap(data, width, height, marktype, avoidBaseMark, avoidMar
   var n = data.length;
   if (!n) return null;
 
-  if (marktype && avoidBaseMark) {
+  var isGroupArea = marktype === 'group' && data[0].datum.datum.items[0].marktype === 'area';
+  if (marktype && (avoidBaseMark || isGroupArea)) {
     var items = new Array(n);
     for (var i = 0; i < n; i++) {
       items[i] = data[i].datum.datum;
@@ -101,8 +88,8 @@ function initializeBitMap(data, width, height, marktype, avoidBaseMark, avoidMar
   }
 
   if (avoidMarks.length) {
-    var context = writeToCanvas(avoidMarks, width, height, labelInside);
-    return writeToBitMaps(context, width, height, labelInside);
+    var context = writeToCanvas(avoidMarks, width, height, labelInside || isGroupArea);
+    return writeToBitMaps(context, width, height, labelInside, isGroupArea);
   } else {
     var bitMap = new BitMap(width, height);
     if (avoidBaseMark) {
@@ -115,54 +102,18 @@ function initializeBitMap(data, width, height, marktype, avoidBaseMark, avoidMar
   }
 }
 
-function placeLabelInAreaIgnoreMark(datum, items, bitMap, context, _height) {
+function placeLabelInArea(datum, items, height, avoidBaseMark, layer1, layer2, context) {
   var x1, x2, y1, y2, x, y;
+  var pixelSize = layer2.pixelSize();
   var n = items.length,
     textHeight = datum.textHeight,
-    textWidth = labelWidth(datum.text, textHeight, datum.font, context);
+    textWidth = labelWidth(datum.text, textHeight, datum.font, context),
+    maxSize = textHeight,
+    maxSize2 = 0,
+    maxSize3 = 0,
+    labelPlaced = false;
 
-  var bin = bitMap.bin,
-    sortedItems = sortAreaItems(items);
-  var item, _x1, _x2, _y1, _y2;
-
-  for (var i = 0; i < n; i++) {
-    item = sortedItems[i].item;
-    x1 = item.x;
-    y1 = item.y;
-    x2 = item.x2 !== undefined ? item.x2 : x1;
-    y2 = item.y2 !== undefined ? item.y2 : y1;
-
-    x = (x1 + x2) / 2.0;
-    y = (y1 + y2) / 2.0;
-
-    _x1 = bin(x - textWidth / 2.0);
-    _x2 = bin(x + textWidth / 2.0);
-    _y1 = bin(y - textHeight / 2.0);
-    _y2 = bin(y + textHeight / 2.0);
-
-    if (
-      !bitMap.searchOutOfBound(_x1, _y1, _x2, _y2) &&
-      !checkCollision(_x1, _y1, _x2, _y2, bitMap)
-    ) {
-      datum.x = x;
-      datum.y = y;
-      bitMap.markInBoundBinned(_x1, _y1, _x2, _y2);
-      return true;
-    }
-  }
-  return false;
-}
-
-function placeLabelInAreaAvoidMark(datum, items, bitMap, context, height) {
-  var x1, x2, y1, y2, x, y, tmp;
-  var n = items.length,
-    textHeight = datum.textHeight,
-    textWidth = labelWidth(datum.text, textHeight, datum.font, context);
-
-  var lo, hi, mid;
-  var maxSize = textHeight,
-    labelPlaced = false,
-    pixelSize = bitMap.pixelSize();
+  var lo, hi, mid, tmp;
   for (var i = 0; i < n; i++) {
     x1 = items[i].x;
     y1 = items[i].y;
@@ -182,6 +133,41 @@ function placeLabelInAreaAvoidMark(datum, items, bitMap, context, height) {
       y2 = tmp;
     }
 
+    if (!avoidBaseMark && !labelPlaced) {
+      for (x = x1; x <= x2; x += pixelSize) {
+        for (y = y1; y <= y2; y += pixelSize) {
+          lo = maxSize2;
+          hi = textHeight + 1;
+          while (hi - lo > 1) {
+            mid = (lo + hi) / 2.0;
+            if (collisionFromPositionAndHeight(textWidth, textHeight, x, y, mid, layer2)) hi = mid;
+            else lo = mid;
+          }
+          if (
+            lo > maxSize2 &&
+            !collisionFromPositionAndHeight(textWidth, textHeight, x, y, textHeight, layer1)
+          ) {
+            datum.x = x;
+            datum.y = y;
+            maxSize2 = lo;
+          }
+        }
+      }
+      if (maxSize2 === 0) {
+        var size = x2 - x1 + y2 - y1;
+        x = (x1 + x2) / 2.0;
+        y = (y1 + y2) / 2.0;
+        if (
+          maxSize3 < size &&
+          !collisionFromPositionAndHeight(textWidth, textHeight, x, y, textHeight, layer1)
+        ) {
+          maxSize3 = size;
+          datum.x = x;
+          datum.y = y;
+        }
+      }
+    }
+
     if (x1 === x2) {
       x1 -= ((textWidth * maxSize) / textHeight) * 0.5;
       x2 += ((textWidth * maxSize) / textHeight) * 0.5;
@@ -193,15 +179,18 @@ function placeLabelInAreaAvoidMark(datum, items, bitMap, context, height) {
 
     for (x = x1; x <= x2; x += pixelSize) {
       for (y = y1; y <= y2; y += pixelSize) {
-        lo = maxSize;
-        hi = height;
-        if (!collisionFromPositionAndHeight(textWidth, textHeight, x, y, lo, bitMap)) {
+        if (!collisionFromPositionAndHeight(textWidth, textHeight, x, y, lo, layer2)) {
+          lo = maxSize;
+          hi = height;
           while (hi - lo > 1) {
             mid = (lo + hi) / 2.0;
-            if (collisionFromPositionAndHeight(textWidth, textHeight, x, y, mid, bitMap)) hi = mid;
+            if (collisionFromPositionAndHeight(textWidth, textHeight, x, y, mid, layer2)) hi = mid;
             else lo = mid;
           }
-          if (lo > maxSize) {
+          if (
+            lo > maxSize &&
+            !collisionFromPositionAndHeight(textWidth, textHeight, x, y, textHeight, layer2)
+          ) {
             // If we support dynamic font size
             // datum.fontSize = lo;
             datum.x = x;
@@ -213,7 +202,16 @@ function placeLabelInAreaAvoidMark(datum, items, bitMap, context, height) {
       }
     }
   }
-  return labelPlaced;
+  if (labelPlaced || maxSize2 || maxSize3) {
+    var bin = layer1.bin;
+    x1 = bin(datum.x - textWidth / 2.0);
+    y1 = bin(datum.y - textHeight / 2.0);
+    x2 = bin(datum.x + textWidth / 2.0);
+    y2 = bin(datum.y + textHeight / 2.0);
+    layer1.markInBoundBinned(x1, y1, x2, y2);
+    return true;
+  }
+  return false;
 }
 
 function placeLabel(datum, layer1, layer2, anchors, offsets, allowOutside, context) {
@@ -287,24 +285,6 @@ function placeLabel(datum, layer1, layer2, anchors, offsets, allowOutside, conte
   return false;
 }
 
-function sortAreaItems(items) {
-  var n = items.length,
-    sortedItems = new Array();
-  var sort, item;
-  for (var i = 0; i < n; i++) {
-    item = items[i];
-    sort = item.x2 !== undefined ? item.x - item.x2 : item.y - item.y2;
-    sort = sort < 0 ? -sort : sort;
-    sortedItems[i] = { item: items[i], sort: sort };
-  }
-
-  sortedItems.sort(function(a, b) {
-    return b.sort - a.sort;
-  });
-
-  return sortedItems;
-}
-
 function collisionFromPositionAndHeight(textWidth, textHeight, x, y, h, bitMap) {
   var w = (h * textWidth) / textHeight,
     bin = bitMap.bin,
@@ -357,18 +337,28 @@ function writeToCanvas(avoidMarks, width, height, labelInside) {
   return context;
 }
 
-function writeToBitMaps(context, width, height, labelInside) {
+function writeToBitMaps(context, width, height, labelInside, isGroupArea) {
   var layer1 = new BitMap(width, height),
-    layer2 = labelInside ? new BitMap(width, height) : undefined;
-  var imageData = context.getImageData(0, 0, width, height),
+    layer2 = labelInside || isGroupArea ? new BitMap(width, height) : undefined,
+    imageData = context.getImageData(0, 0, width, height),
     canvasBuffer = new Uint32Array(imageData.data.buffer);
+  var x, y, alpha;
 
-  for (var y = 0; y < height; y++) {
-    for (var x = 0; x < width; x++) {
-      var alpha = canvasBuffer[y * width + x] & ALPHA_MASK;
-      if (alpha) {
-        layer1.mark(x, y);
-        if (labelInside && alpha ^ INSIDE_OPACITY_IN_ALPHA) layer2.mark(x, y);
+  if (isGroupArea) {
+    for (y = 0; y < height; y++) {
+      for (x = 0; x < width; x++) {
+        alpha = canvasBuffer[y * width + x] & ALPHA_MASK;
+        if (alpha && alpha ^ INSIDE_OPACITY_IN_ALPHA) layer2.mark(x, y);
+      }
+    }
+  } else {
+    for (y = 0; y < height; y++) {
+      for (x = 0; x < width; x++) {
+        alpha = canvasBuffer[y * width + x] & ALPHA_MASK;
+        if (alpha) {
+          layer1.mark(x, y);
+          if (labelInside && alpha ^ INSIDE_OPACITY_IN_ALPHA) layer2.mark(x, y);
+        }
       }
     }
   }
