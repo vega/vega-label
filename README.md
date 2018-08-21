@@ -17,7 +17,8 @@ Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega)
     "avoidMarks": [ "basePoint", "baseLine" ],
     "allowOutside": true,
     "avoidBaseMark": false,
-    "lineAnchor": "end"
+    "lineAnchor": "end",
+    "primaryMarkInGroup": 0
   }
 ]
 ```
@@ -48,6 +49,9 @@ Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega)
 - `lineAnchor`: an anchor point for group line mark can be `begin` or `end`
   - If `lineAnchor` is `begin`, label is at the beginning of the line. Otherwise, label is at the end of the line.
   - **Note**: thie flag only work with group line mark as a base mark using reactive geometry.
+
+- `primaryMarkInGroup`: use when the reactive geometry's mark type is `'group'`
+  - To specify which mark in the group is to used to calculate anchor points for labels.
 
 - label transform has to be used with reactive geometry to use it as base mark to calculate positions of label
   - Right now, reactive geometry works with `symbol`, `line`, `rect`, and `group` of `line` and `area`
