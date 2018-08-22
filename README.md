@@ -15,10 +15,10 @@ Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega)
     "offset": [ null, 2, -1 ],
     "sort": { "field": "datum.year" },
     "avoidMarks": [ "basePoint", "baseLine" ],
-    "allowOutside": true,
     "avoidBaseMark": false,
     "lineAnchor": "end",
-    "primaryMarkInGroup": 0
+    "primaryMarkInGroup": 0,
+    "padding": 10,
   }
 ]
 ```
@@ -41,7 +41,7 @@ Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega)
 
 - `avoidMarks`: list of data of mark; labels will not collide with these marks
 
-- `allowOutside`: a flag specifying if labels are allow to be placed outside the area of chart.
+- `padding`: the amount of pixels label can extend pass chart bounding box.
 
 - `avoidBaseMark`: a flag specifying if labels are avoiding base mark (from reactive geometry) or not.
   - If this flag is `false`, Vega-Label only uses base mark to calculate anchor points for label but not mark to be avoided.
