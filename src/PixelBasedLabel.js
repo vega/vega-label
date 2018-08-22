@@ -61,6 +61,7 @@ export default function placeLabels(
     // placeLabelInArea = placeLabelInAreaFactory(avoidBaseMark, layer1, layer2, context);
     for (i = 0; i < n; i++) {
       d = data[i];
+      if (d.originalOpacity === 0) continue;
       d.align = 'center';
       d.baseline = 'middle';
       items = d.datum.datum.items[0].items;
@@ -71,7 +72,8 @@ export default function placeLabels(
     for (i = 0; i < n; i++) {
       d = data[i];
       mb = d.markBound;
-      if (mb[2] < 0 || mb[5] < 0 || mb[0] > width || mb[3] > height) continue;
+      if (mb[2] < 0 || mb[5] < 0 || mb[0] > width || mb[3] > height || d.originalOpacity === 0)
+        continue;
       if (placeLabel(d, layer1, layer2, anchors, offsets, context)) d.opacity = d.originalOpacity;
     }
   }

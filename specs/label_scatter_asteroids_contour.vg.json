@@ -21,6 +21,19 @@
           "expr": "datum['denomination'] != null && datum['ra'] != null && datum['dec'] != null"
         }
       ]
+    },
+    {
+      "name": "contours",
+      "source": "asteroids",
+      "transform": [
+        {
+          "type": "contour",
+          "x": { "expr": "scale('x', datum.ra)" },
+          "y": { "expr": "scale('y', datum.dec)" },
+          "size": [{ "signal": "width" }, { "signal": "height" }],
+          "count": { "signal": "count" }
+        }
+      ]
     }
   ],
 
@@ -48,6 +61,14 @@
       "type": "sequential",
       "domain": [0, 1],
       "range": { "scheme": "plasma" }
+    },
+    {
+      "name": "color2",
+      "type": "sequential",
+      "zero": true,
+      "domain": {"data": "contours", "field": "value"},
+      "range": {"scheme": "redpurple"},
+      "reverse": false
     }
   ],
 
@@ -86,10 +107,25 @@
           "size": { "value": 30 },
           "shape": { "value": "circle" },
           "_fill": { "scale": "color", "field": "density" },
-          "fillOpacity": {"value": 0.5}
+          "fillOpacity": {"value": 0},
+          "stroke": {"value": "#000"},
+          "strokeOpacity": {"value": 0.1}
         }
       },
       "zindex": 1
+    },
+    {
+      "type": "path",
+      "from": {"data": "contours"},
+      "encode": {
+        "enter": {
+          "fill": {"scale": "color2", "field": "value"},
+          "fillOpacity": {"value": 0.35}
+        }
+      },
+      "transform": [
+        { "type": "geopath", "field": "datum" }
+      ]
     },
     {
       "name": "label",
@@ -97,6 +133,8 @@
       "from": { "data": "basePoint" },
       "encode": {
         "enter": {
+          "x": { "field": "x" },
+          "y": { "field": "y" },
           "fill": { "value": "#000" },
           "text": { "field": "datum.denomination" }
         }

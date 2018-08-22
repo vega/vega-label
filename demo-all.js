@@ -10,7 +10,7 @@ var specNames = [
   'line',
   'rect_stack',
   'rect',
-  'scatter_asteroids',
+  'scatter_asteroids_contour',
   'scatter_big_symbol',
   'scatter_car',
   'scatter_test',

@@ -5,7 +5,7 @@ var rawFile = new XMLHttpRequest();
 // prettier-ignore
 var specName
 // ---------area---------
-= "area_job_voyager";
+// = "area_job_voyager";
 // = 'area';
 
 // ---------line---------
@@ -18,6 +18,7 @@ var specName
 // = 'rect';
 
 // -------scatter--------
+= 'scatter_asteroids_contour';
 // = 'scatter_asteroids';
 // = 'scatter_big_symbol';
 // = 'scatter_car';
