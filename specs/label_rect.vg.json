@@ -59,7 +59,8 @@
       "encode": {
         "enter": {
           "fontSize": { "value": 25 },
-          "text": { "field": "datum.amount" }
+          "text": { "field": "datum.amount" },
+          "fill": {"value": "#294E65"}
         }
       },
       "transform": [

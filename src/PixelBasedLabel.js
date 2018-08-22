@@ -18,10 +18,10 @@ export default function placeLabels(
   offsets,
   marktype,
   avoidMarks,
-  allowOutside,
   size,
   avoidBaseMark,
-  primaryMarkInGroup
+  primaryMarkInGroup,
+  padding
 ) {
   console.time('pixel-based');
   var n = data.length;
@@ -37,7 +37,16 @@ export default function placeLabels(
 
   console.time('set-bitmap');
   var bitMaps, layer1, layer2;
-  bitMaps = initializeBitMap(data, width, height, marktype, avoidBaseMark, avoidMarks, labelInside);
+  bitMaps = initializeBitMap(
+    data,
+    width,
+    height,
+    marktype,
+    avoidBaseMark,
+    avoidMarks,
+    labelInside,
+    padding
+  );
   layer1 = bitMaps[0];
   layer2 = bitMaps[1];
   console.timeEnd('set-bitmap');
@@ -63,8 +72,7 @@ export default function placeLabels(
       d = data[i];
       mb = d.markBound;
       if (mb[2] < 0 || mb[5] < 0 || mb[0] > width || mb[3] > height) continue;
-      if (placeLabel(d, layer1, layer2, anchors, offsets, allowOutside, context))
-        d.opacity = d.originalOpacity;
+      if (placeLabel(d, layer1, layer2, anchors, offsets, context)) d.opacity = d.originalOpacity;
     }
   }
 
@@ -75,7 +83,16 @@ export default function placeLabels(
   return data;
 }
 
-function initializeBitMap(data, width, height, marktype, avoidBaseMark, avoidMarks, labelInside) {
+function initializeBitMap(
+  data,
+  width,
+  height,
+  marktype,
+  avoidBaseMark,
+  avoidMarks,
+  labelInside,
+  padding
+) {
   var n = data.length;
   if (!n) return null;
 
@@ -90,9 +107,9 @@ function initializeBitMap(data, width, height, marktype, avoidBaseMark, avoidMar
 
   if (avoidMarks.length) {
     var context = writeToCanvas(avoidMarks, width, height, labelInside || isGroupArea);
-    return writeToBitMaps(context, width, height, labelInside, isGroupArea);
+    return writeToBitMaps(context, width, height, labelInside, isGroupArea, padding);
   } else {
-    var bitMap = new BitMap(width, height);
+    var bitMap = new BitMap(width, height, padding);
     if (avoidBaseMark) {
       for (i = 0; i < n; i++) {
         var d = data[i];
@@ -215,15 +232,13 @@ function placeLabelInArea(datum, items, height, avoidBaseMark, layer1, layer2, c
   return false;
 }
 
-function placeLabel(datum, layer1, layer2, anchors, offsets, allowOutside, context) {
+function placeLabel(datum, layer1, layer2, anchors, offsets, context) {
   var n = offsets.length,
     textWidth = datum.textWidth,
     textHeight = datum.textHeight,
     markBound = datum.markBound,
     text = datum.text,
-    font = datum.font,
-    w = layer1.width,
-    h = layer1.height;
+    font = datum.font;
   var dx, dy, isInside, sizeFactor, insideFactor;
   var x, x1, xc, x2, y1, yc, y2;
   var _x1, _x2, _y1, _y2;
@@ -247,12 +262,6 @@ function placeLabel(datum, layer1, layer2, anchors, offsets, allowOutside, conte
     x = markBound[1 + dx] + offsets[i] * dx * sizeFactor;
     _x1 = bin(x);
 
-    if (allowOutside) {
-      _x1 = _x1 < 0 ? 0 : _x1 > w - 1 ? w - 1 : _x1;
-      _y1 = _y1 < 0 ? 0 : _y1 > h - 1 ? h - 1 : _y1;
-      _y2 = _y2 < 0 ? 0 : _y2 > h - 1 ? h - 1 : _y2;
-    }
-
     if (!textWidth) {
       // var end = _x1 + (_y2 - _y1) * (~~(text.length / 3));
       if (isLabelPlacable(_x1, _x1, _y1, _y2, layer1, layer2, x, x, y1, y2, markBound, isInside))
@@ -266,11 +275,6 @@ function placeLabel(datum, layer1, layer2, anchors, offsets, allowOutside, conte
 
     _x1 = bin(x1);
     _x2 = bin(x2);
-
-    if (allowOutside) {
-      _x1 = _x1 < 0 ? 0 : _x1 > w - 1 ? w - 1 : _x1;
-      _x2 = _x2 < 0 ? 0 : _x2 > w - 1 ? w - 1 : _x2;
-    }
 
     if (!isLabelPlacable(_x1, _x2, _y1, _y2, layer1, layer2, x1, x2, y1, y2, markBound, isInside)) {
       datum.x = !dx ? xc : dx * insideFactor < 0 ? x2 : x1;
@@ -338,9 +342,9 @@ function writeToCanvas(avoidMarks, width, height, labelInside) {
   return context;
 }
 
-function writeToBitMaps(context, width, height, labelInside, isGroupArea) {
-  var layer1 = new BitMap(width, height),
-    layer2 = labelInside || isGroupArea ? new BitMap(width, height) : undefined,
+function writeToBitMaps(context, width, height, labelInside, isGroupArea, padding) {
+  var layer1 = new BitMap(width, height, padding),
+    layer2 = labelInside || isGroupArea ? new BitMap(width, height, padding) : undefined,
     imageData = context.getImageData(0, 0, width, height),
     canvasBuffer = new Uint32Array(imageData.data.buffer);
   var x, y, alpha;

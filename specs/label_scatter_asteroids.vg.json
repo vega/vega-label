@@ -98,9 +98,8 @@
           "y": { "scale": "y", "field": "dec" },
           "size": { "value": 30 },
           "shape": { "value": "circle" },
-          "opacity": { "value": 0.5 },
-          "fill": { "scale": "color", "field": "density" },
-          "_fill": { "value": "#000" }
+          "_fill": { "scale": "color", "field": "density" },
+          "fillOpacity": {"value": 0.5}
         }
       },
       "zindex": 1
@@ -122,7 +121,8 @@
           "type": "label",
           "offset": [2],
           "size": [800, 500],
-          "sort": { "field": "datum.ra" }
+          "sort": { "field": "datum.ra" },
+          "padding": 15
         }
       ]
     },

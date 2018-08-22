@@ -11,12 +11,14 @@ for (var i = 1; i <= SIZE; i++) {
   right0[i] = ~right1[i];
 }
 
-export default function BitMap(_width, _height) {
+export default function BitMap(_width, _height, _padding) {
   var pixelSize = Math.sqrt((_width * _height) / 1000000.0);
   pixelSize = pixelSize >= 1 ? pixelSize : 1;
 
-  this.width = ~~((_width + pixelSize) / pixelSize);
-  this.height = ~~((_height + pixelSize) / pixelSize);
+  var padding = _padding;
+
+  this.width = ~~((_width + 2 * padding + pixelSize) / pixelSize);
+  this.height = ~~((_height + 2 * padding + pixelSize) / pixelSize);
 
   this.array = new Uint32Array(~~((this.width * this.height + SIZE) / SIZE));
 
@@ -133,7 +135,7 @@ export default function BitMap(_width, _height) {
   };
 
   this.bin = function(coordinate) {
-    return ~~(coordinate / pixelSize);
+    return ~~((coordinate + padding) / pixelSize);
   };
 
   this.searchOutOfBound = function(x, y, x2, y2) {

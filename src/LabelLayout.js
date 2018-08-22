@@ -23,8 +23,8 @@ var anchorsMap = {
 };
 
 export default function() {
-  var offsets, sort, anchors, avoidMarks, allowOutside;
-  var size, avoidBaseMark, lineAnchor, primaryMarkInGroup;
+  var offsets, sort, anchors, avoidMarks, size;
+  var avoidBaseMark, lineAnchor, primaryMarkInGroup, padding;
   var label = {},
     texts = [];
 
@@ -72,10 +72,10 @@ export default function() {
       offsets,
       marktype,
       avoidMarks,
-      allowOutside,
       size,
       avoidBaseMark,
-      primaryMarkInGroup
+      primaryMarkInGroup,
+      padding
     );
   };
 
@@ -120,13 +120,6 @@ export default function() {
     } else return sort;
   };
 
-  label.allowOutside = function(_) {
-    if (arguments.length) {
-      allowOutside = _;
-      return label;
-    } else return allowOutside;
-  };
-
   label.size = function(_) {
     if (arguments.length) {
       size = _;
@@ -153,6 +146,13 @@ export default function() {
       primaryMarkInGroup = _;
       return label;
     } else return primaryMarkInGroup;
+  };
+
+  label.padding = function(_) {
+    if (arguments.length) {
+      padding = _;
+      return label;
+    } else return padding;
   };
 
   return label;

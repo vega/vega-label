@@ -97,7 +97,7 @@
           "offset": [2],
           "anchor": ["right", "top-right", "bottom-right"],
           "size": [800, 500],
-          "allowOutside": true
+          "padding": 20
         }
       ]
     }

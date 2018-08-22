@@ -27,10 +27,10 @@ Label.Definition = {
   type: 'Label',
   metadata: { modifies: true },
   params: [
+    { name: 'padding', type: 'number', default: 0 },
     { name: 'primaryMarkInGroup', type: 'number', default: 0 },
     { name: 'lineAnchor', type: 'string', values: ['begin', 'end'], default: 'end' },
     { name: 'avoidBaseMark', type: 'boolean', default: true },
-    { name: 'allowOutside', type: 'boolean', defalut: false },
     { name: 'size', type: 'number', array: true, length: [2] },
     { name: 'offset', type: 'number', array: true, default: [1] },
     { name: 'sort', type: 'field' },
@@ -72,11 +72,11 @@ prototype.transform = function(_, pulse) {
       .offsets(offsets, numberPositions)
       .anchors(anchors, numberPositions)
       .avoidMarks(_.avoidMarks ? _.avoidMarks : [])
-      .allowOutside(_.allowOutside)
       .size(_.size)
       .avoidBaseMark(_.avoidBaseMark !== undefined ? _.avoidBaseMark : true)
       .lineAnchor(_.lineAnchor ? _.lineAnchor : 'end')
       .primaryMarkInGroup(_.primaryMarkInGroup ? _.primaryMarkInGroup : 0)
+      .padding(_.padding ? _.padding : 0)
       .layout(),
     n = data.length;
 
