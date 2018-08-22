@@ -20,7 +20,7 @@ export default function placeLabels(
   avoidMarks,
   size,
   avoidBaseMark,
-  primaryMarkInGroup,
+  markIdx,
   padding
 ) {
   console.time('pixel-based');
@@ -53,7 +53,7 @@ export default function placeLabels(
 
   var context = canvas().getContext('2d');
   var d, mb;
-  var isGroupArea = marktype === 'group' && data[0].datum.datum.items[primaryMarkInGroup].marktype;
+  var isGroupArea = marktype === 'group' && data[0].datum.datum.items[markIdx].marktype;
 
   console.time('layout');
   if (isGroupArea === 'area') {

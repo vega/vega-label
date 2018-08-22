@@ -28,7 +28,7 @@ Label.Definition = {
   metadata: { modifies: true },
   params: [
     { name: 'padding', type: 'number', default: 0 },
-    { name: 'primaryMarkInGroup', type: 'number', default: 0 },
+    { name: 'markIdx', type: 'number', default: 0 },
     { name: 'lineAnchor', type: 'string', values: ['begin', 'end'], default: 'end' },
     { name: 'avoidBaseMark', type: 'boolean', default: true },
     { name: 'size', type: 'number', array: true, length: [2] },
@@ -75,7 +75,7 @@ prototype.transform = function(_, pulse) {
       .size(_.size)
       .avoidBaseMark(_.avoidBaseMark !== undefined ? _.avoidBaseMark : true)
       .lineAnchor(_.lineAnchor ? _.lineAnchor : 'end')
-      .primaryMarkInGroup(_.primaryMarkInGroup ? _.primaryMarkInGroup : 0)
+      .markIdx(_.markIdx ? _.markIdx : 0)
       .padding(_.padding ? _.padding : 0)
       .layout(),
     n = data.length;

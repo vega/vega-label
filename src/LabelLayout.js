@@ -24,7 +24,7 @@ var anchorsMap = {
 
 export default function() {
   var offsets, sort, anchors, avoidMarks, size;
-  var avoidBaseMark, lineAnchor, primaryMarkInGroup, padding;
+  var avoidBaseMark, lineAnchor, markIdx, padding;
   var label = {},
     texts = [];
 
@@ -34,14 +34,13 @@ export default function() {
       marktype =
         n && texts[0].datum && texts[0].datum.mark ? texts[0].datum.mark.marktype : undefined,
       transformed = n ? texts[0].transformed : false,
-      isGroupLine =
-        marktype === 'group' && texts[0].datum.items[primaryMarkInGroup].marktype === 'line';
+      isGroupLine = marktype === 'group' && texts[0].datum.items[markIdx].marktype === 'line';
 
     if (!size || size.length !== 2) return texts;
 
     console.time('layout');
     var i, d, originalOpacity;
-    var getMarkBound = getMarkBoundFactory(marktype, isGroupLine, lineAnchor, primaryMarkInGroup);
+    var getMarkBound = getMarkBoundFactory(marktype, isGroupLine, lineAnchor, markIdx);
     for (i = 0; i < n; i++) {
       d = texts[i];
 
@@ -74,7 +73,7 @@ export default function() {
       avoidMarks,
       size,
       avoidBaseMark,
-      primaryMarkInGroup,
+      markIdx,
       padding
     );
   };
@@ -141,11 +140,11 @@ export default function() {
     } else return lineAnchor;
   };
 
-  label.primaryMarkInGroup = function(_) {
+  label.markIdx = function(_) {
     if (arguments.length) {
-      primaryMarkInGroup = _;
+      markIdx = _;
       return label;
-    } else return primaryMarkInGroup;
+    } else return markIdx;
   };
 
   label.padding = function(_) {
@@ -158,7 +157,7 @@ export default function() {
   return label;
 }
 
-function getMarkBoundFactory(marktype, isGroupLine, lineAnchor, primaryMarkInGroup) {
+function getMarkBoundFactory(marktype, isGroupLine, lineAnchor, markIdx) {
   if (!marktype) {
     return function(d) {
       return [d.x, d.x, d.x, d.y, d.y, d.y];
@@ -171,7 +170,7 @@ function getMarkBoundFactory(marktype, isGroupLine, lineAnchor, primaryMarkInGro
   } else if (isGroupLine) {
     var endItemIndex = endItemIndexFactory(lineAnchor);
     return function(d) {
-      var items = d.datum.items[primaryMarkInGroup].items;
+      var items = d.datum.items[markIdx].items;
       var m = items.length;
       if (m) {
         var endItem = items[endItemIndex(m)];
