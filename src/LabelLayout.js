@@ -29,18 +29,16 @@ export default function() {
     texts = [];
 
   label.layout = function() {
-    var n = texts.length,
-      data = Array(n),
-      marktype =
-        n && texts[0].datum && texts[0].datum.mark ? texts[0].datum.mark.marktype : undefined,
-      transformed = n ? texts[0].transformed : false,
-      isGroupLine = marktype === 'group' && texts[0].datum.items[markIdx].marktype === 'line';
+    var n = texts.length;
+    if (!size || size.length !== 2 || !n) return texts;
 
-    if (!size || size.length !== 2) return texts;
+    var data = Array(n),
+      marktype = texts[0].datum && texts[0].datum.mark ? texts[0].datum.mark.marktype : undefined,
+      transformed = texts[0].transformed,
+      isGroupLine = marktype === 'group' && texts[0].datum.items[markIdx].marktype === 'line',
+      getMarkBound = getMarkBoundFactory(marktype, isGroupLine, lineAnchor, markIdx);
 
-    console.time('layout');
     var i, d, originalOpacity;
-    var getMarkBound = getMarkBoundFactory(marktype, isGroupLine, lineAnchor, markIdx);
     for (i = 0; i < n; i++) {
       d = texts[i];
 
@@ -58,13 +56,8 @@ export default function() {
       };
     }
 
-    if (sort) {
-      data.sort(function(a, b) {
-        return a.sort - b.sort;
-      });
-    }
+    if (sort) data.sort((a, b) => a.sort - b.sort); // sort have to be number
 
-    console.timeEnd('layout');
     return placeLabels(
       data,
       anchors,
@@ -159,23 +152,21 @@ export default function() {
 
 function getMarkBoundFactory(marktype, isGroupLine, lineAnchor, markIdx) {
   if (!marktype) {
-    return function(d) {
-      return [d.x, d.x, d.x, d.y, d.y, d.y];
-    };
+    return d => [d.x, d.x, d.x, d.y, d.y, d.y];
   } else if (marktype === 'line' || marktype === 'area') {
     return function(d) {
       var datum = d.datum;
       return [datum.x, datum.x, datum.x, datum.y, datum.y, datum.y];
     };
   } else if (isGroupLine) {
-    var endItemIndex = endItemIndexFactory(lineAnchor);
+    var endItemIndex = lineAnchor === 'begin' ? m => m - 1 : () => 0;
     return function(d) {
       var items = d.datum.items[markIdx].items;
       var m = items.length;
       if (m) {
         var endItem = items[endItemIndex(m)];
         return [endItem.x, endItem.x, endItem.x, endItem.y, endItem.y, endItem.y];
-      } else return [-1, -1, -1, -1, -1, -1];
+      } else return [-1, -1, -1, -1, -1, -1]; // change to min int
     };
   } else {
     return function(d) {
@@ -183,16 +174,4 @@ function getMarkBoundFactory(marktype, isGroupLine, lineAnchor, markIdx) {
       return [b.x1, (b.x1 + b.x2) / 2.0, b.x2, b.y1, (b.y1 + b.y2) / 2.0, b.y2];
     };
   }
-}
-
-function endItemIndexFactory(lineAnchor) {
-  if (lineAnchor === 'begin') {
-    return function(m) {
-      return m - 1;
-    };
-  }
-
-  return function() {
-    return 0;
-  };
 }

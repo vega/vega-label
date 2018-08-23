@@ -49,7 +49,6 @@ Label.Definition = {
 var prototype = inherits(Label, Transform);
 
 prototype.transform = function(_, pulse) {
-  console.time('label');
   function modp(param) {
     var p = _[param];
     return isFunction(p) && pulse.modified(p.fields);
@@ -93,8 +92,6 @@ prototype.transform = function(_, pulse) {
     t[as[5]] = l.originalOpacity;
     t[as[6]] = true;
   }
-
-  console.timeEnd('label');
 
   return pulse.reflow(mod).modifies(as);
 };
