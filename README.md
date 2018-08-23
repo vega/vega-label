@@ -1,6 +1,6 @@
 # Vega-Label
 
-Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega).
+Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega), which transform text mark into readable label based on mark type.
 
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=popout)](https://github.com/prettier/prettier)
 
