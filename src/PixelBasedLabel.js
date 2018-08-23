@@ -11,6 +11,7 @@ var BASELINE = ['bottom', 'middle', 'top'];
 var ALPHA_MASK = 0xff000000;
 var INSIDE_OPACITY_IN_ALPHA = 0x10000000; // opacity at 0.0625 in alpha
 var INSIDE_OPACITY = 0.0625;
+var CONTEXT = canvas().getContext('2d');
 
 export default function placeLabels(
   data,
@@ -23,84 +24,51 @@ export default function placeLabels(
   markIdx,
   padding
 ) {
-  console.time('pixel-based');
-  var n = data.length;
-  if (!n) return data;
-
-  var width = size[0],
-    height = size[1];
-
-  var labelInside = false;
+  var n = data.length,
+    labelInside = false;
   for (var i = 0; i < anchors.length && !labelInside; i++) {
     labelInside = anchors[i] === 0x5 || offsets[i] < 0;
   }
 
-  console.time('set-bitmap');
   var bitMaps, layer1, layer2;
-  bitMaps = initializeBitMap(
-    data,
-    width,
-    height,
-    marktype,
-    avoidBaseMark,
-    avoidMarks,
-    labelInside,
-    padding
-  );
+  bitMaps = initializeBitMap(data, size, marktype, avoidBaseMark, avoidMarks, labelInside, padding);
   layer1 = bitMaps[0];
   layer2 = bitMaps[1];
-  console.timeEnd('set-bitmap');
 
-  var context = canvas().getContext('2d');
-  var d, mb;
-  var isGroupArea = marktype === 'group' && data[0].datum.datum.items[markIdx].marktype;
+  var grouptype = marktype === 'group' && data[0].datum.datum.items[markIdx].marktype,
+    height = size[1],
+    width = size[0];
+  var d, mb, hidden;
 
-  console.time('layout');
-  if (isGroupArea === 'area') {
-    var items;
-    // placeLabelInArea = placeLabelInAreaFactory(avoidBaseMark, layer1, layer2, context);
+  if (grouptype === 'area') {
     for (i = 0; i < n; i++) {
       d = data[i];
-      if (d.originalOpacity === 0) continue;
-      d.align = 'center';
-      d.baseline = 'middle';
-      items = d.datum.datum.items[0].items;
-      if (placeLabelInArea(d, items, height, avoidBaseMark, layer1, layer2, context))
+      hidden = d.originalOpacity === 0;
+      if (!hidden && placeLabelInArea(d, height, avoidBaseMark, layer1, layer2))
         d.opacity = d.originalOpacity;
     }
   } else {
     for (i = 0; i < n; i++) {
       d = data[i];
       mb = d.markBound;
-      if (mb[2] < 0 || mb[5] < 0 || mb[0] > width || mb[3] > height || d.originalOpacity === 0)
-        continue;
-      if (placeLabel(d, layer1, layer2, anchors, offsets, context)) d.opacity = d.originalOpacity;
+      hidden = d.originalOpacity === 0;
+      if (mb[2] < 0 || mb[5] < 0 || mb[0] > width || mb[3] > height || hidden) continue;
+      if (placeLabel(d, layer1, layer2, anchors, offsets)) d.opacity = d.originalOpacity;
     }
   }
 
-  console.timeEnd('layout');
   layer1.print('bit-map-1');
   if (layer2) layer2.print('bit-map-2');
-  console.timeEnd('pixel-based');
   return data;
 }
 
-function initializeBitMap(
-  data,
-  width,
-  height,
-  marktype,
-  avoidBaseMark,
-  avoidMarks,
-  labelInside,
-  padding
-) {
-  var n = data.length;
-  if (!n) return null;
-
-  var isGroupArea = marktype === 'group' && data[0].datum.datum.items[0].marktype === 'area';
+function initializeBitMap(data, size, marktype, avoidBaseMark, avoidMarks, labelInside, padding) {
+  var isGroupArea = marktype === 'group' && data[0].datum.datum.items[0].marktype === 'area',
+    width = size[0],
+    height = size[1];
   if (marktype && (avoidBaseMark || isGroupArea)) {
-    var items = new Array(n);
+    var n = data.length,
+      items = new Array(n);
     for (var i = 0; i < n; i++) {
       items[i] = data[i].datum.datum;
     }
@@ -122,18 +90,18 @@ function initializeBitMap(
   }
 }
 
-function placeLabelInArea(datum, items, height, avoidBaseMark, layer1, layer2, context) {
-  var x1, x2, y1, y2, x, y;
-  var pixelSize = layer2.pixelSize();
-  var n = items.length,
-    textHeight = datum.textHeight,
-    textWidth = labelWidth(datum.text, textHeight, datum.font, context),
+function placeLabelInArea(d, height, avoidBaseMark, layer1, layer2) {
+  var x1, x2, y1, y2, x, y, lo, hi, mid, tmp;
+  var pixelSize = layer2.pixelSize(),
+    items = d.datum.datum.items[0].items,
+    n = items.length,
+    textHeight = d.textHeight,
+    textWidth = labelWidth(d.text, textHeight, d.font),
     maxSize = textHeight,
     maxSize2 = 0,
     maxSize3 = 0,
     labelPlaced = false;
 
-  var lo, hi, mid, tmp;
   for (var i = 0; i < n; i++) {
     x1 = items[i].x;
     y1 = items[i].y;
@@ -167,8 +135,8 @@ function placeLabelInArea(datum, items, height, avoidBaseMark, layer1, layer2, c
             lo > maxSize2 &&
             !collisionFromPositionAndHeight(textWidth, textHeight, x, y, textHeight, layer1)
           ) {
-            datum.x = x;
-            datum.y = y;
+            d.x = x;
+            d.y = y;
             maxSize2 = lo;
           }
         }
@@ -182,8 +150,8 @@ function placeLabelInArea(datum, items, height, avoidBaseMark, layer1, layer2, c
           !collisionFromPositionAndHeight(textWidth, textHeight, x, y, textHeight, layer1)
         ) {
           maxSize3 = size;
-          datum.x = x;
-          datum.y = y;
+          d.x = x;
+          d.y = y;
         }
       }
     }
@@ -199,8 +167,8 @@ function placeLabelInArea(datum, items, height, avoidBaseMark, layer1, layer2, c
 
     for (x = x1; x <= x2; x += pixelSize) {
       for (y = y1; y <= y2; y += pixelSize) {
+        lo = maxSize;
         if (!collisionFromPositionAndHeight(textWidth, textHeight, x, y, lo, layer2)) {
-          lo = maxSize;
           hi = height;
           while (hi - lo > 1) {
             mid = (lo + hi) / 2.0;
@@ -213,8 +181,8 @@ function placeLabelInArea(datum, items, height, avoidBaseMark, layer1, layer2, c
           ) {
             // If we support dynamic font size
             // datum.fontSize = lo;
-            datum.x = x;
-            datum.y = y;
+            d.x = x;
+            d.y = y;
             maxSize = lo;
             labelPlaced = true;
           }
@@ -224,23 +192,25 @@ function placeLabelInArea(datum, items, height, avoidBaseMark, layer1, layer2, c
   }
   if (labelPlaced || maxSize2 || maxSize3) {
     var bin = layer1.bin;
-    x1 = bin(datum.x - textWidth / 2.0);
-    y1 = bin(datum.y - textHeight / 2.0);
-    x2 = bin(datum.x + textWidth / 2.0);
-    y2 = bin(datum.y + textHeight / 2.0);
+    x1 = bin(d.x - textWidth / 2.0);
+    y1 = bin(d.y - textHeight / 2.0);
+    x2 = bin(d.x + textWidth / 2.0);
+    y2 = bin(d.y + textHeight / 2.0);
     layer1.markInBoundBinned(x1, y1, x2, y2);
+    d.align = 'center';
+    d.baseline = 'middle';
     return true;
   }
   return false;
 }
 
-function placeLabel(datum, layer1, layer2, anchors, offsets, context) {
+function placeLabel(d, layer1, layer2, anchors, offsets) {
   var n = offsets.length,
-    textWidth = datum.textWidth,
-    textHeight = datum.textHeight,
-    markBound = datum.markBound,
-    text = datum.text,
-    font = datum.font;
+    textWidth = d.textWidth,
+    textHeight = d.textHeight,
+    markBound = d.markBound,
+    text = d.text,
+    font = d.font;
   var dx, dy, isInside, sizeFactor, insideFactor;
   var x, x1, xc, x2, y1, yc, y2;
   var _x1, _x2, _y1, _y2;
@@ -255,20 +225,20 @@ function placeLabel(datum, layer1, layer2, anchors, offsets, context) {
     insideFactor = offsets[i] < 0 ? -1 : 1;
 
     yc = markBound[4 + dy] + (insideFactor * textHeight * dy) / 2.0 + offsets[i] * dy * sizeFactor;
+    x = markBound[1 + dx] + offsets[i] * dx * sizeFactor;
+
     y1 = yc - textHeight / 2.0;
     y2 = yc + textHeight / 2.0;
 
     _y1 = bin(y1);
     _y2 = bin(y2);
-
-    x = markBound[1 + dx] + offsets[i] * dx * sizeFactor;
     _x1 = bin(x);
 
     if (!textWidth) {
       // var end = _x1 + (_y2 - _y1) * (~~(text.length / 3));
       if (isLabelPlacable(_x1, _x1, _y1, _y2, layer1, layer2, x, x, y1, y2, markBound, isInside))
         continue;
-      else textWidth = labelWidth(text, textHeight, font, context);
+      else textWidth = labelWidth(text, textHeight, font);
     }
 
     xc = x + (insideFactor * textWidth * dx) / 2.0;
@@ -279,11 +249,11 @@ function placeLabel(datum, layer1, layer2, anchors, offsets, context) {
     _x2 = bin(x2);
 
     if (!isLabelPlacable(_x1, _x2, _y1, _y2, layer1, layer2, x1, x2, y1, y2, markBound, isInside)) {
-      datum.x = !dx ? xc : dx * insideFactor < 0 ? x2 : x1;
-      datum.y = !dy ? yc : dy * insideFactor < 0 ? y2 : y1;
+      d.x = !dx ? xc : dx * insideFactor < 0 ? x2 : x1;
+      d.y = !dy ? yc : dy * insideFactor < 0 ? y2 : y1;
 
-      datum.align = ALIGN[dx * insideFactor + 1];
-      datum.baseline = BASELINE[dy * insideFactor + 1];
+      d.align = ALIGN[dx * insideFactor + 1];
+      d.baseline = BASELINE[dy * insideFactor + 1];
 
       layer1.markInBoundBinned(_x1, _y1, _x2, _y2);
       return true;
@@ -302,10 +272,6 @@ function collisionFromPositionAndHeight(textWidth, textHeight, x, y, h, bitMap) 
   return bitMap.searchOutOfBound(x1, y1, x2, y2) || checkCollision(x1, y1, x2, y2, bitMap);
 }
 
-function isInMarkBound(x1, y1, x2, y2, markBound) {
-  return markBound[0] <= x1 && x2 <= markBound[2] && markBound[3] <= y1 && y2 <= markBound[5];
-}
-
 function isLabelPlacable(_x1, _x2, _y1, _y2, layer1, layer2, x1, x2, y1, y2, markBound, isInside) {
   return (
     layer1.searchOutOfBound(_x1, _y1, _x2, _y2) ||
@@ -315,17 +281,17 @@ function isLabelPlacable(_x1, _x2, _y1, _y2, layer1, layer2, x1, x2, y1, y2, mar
   );
 }
 
+function isInMarkBound(x1, y1, x2, y2, markBound) {
+  return markBound[0] <= x1 && x2 <= markBound[2] && markBound[3] <= y1 && y2 <= markBound[5];
+}
+
 function checkCollision(x1, y1, x2, y2, bitMap) {
-  return (
-    bitMap.getInBoundBinned(x1, y1, x2, y1) ||
-    bitMap.getInBoundBinned(x1, y2, x2, y2) ||
-    bitMap.getInBoundBinned(x1, y1 + 1, x2, y2 - 1)
-  );
+  return bitMap.getInBoundBinned(x1, y2, x2, y2) || bitMap.getInBoundBinned(x1, y1, x2, y2 - 1);
 }
 
 function writeToCanvas(avoidMarks, width, height, labelInside) {
   var m = avoidMarks.length,
-    // c = document.getElementById('canvas-render'),
+    // c = document.getElementById('canvas-render'), // debugging canvas
     c = document.createElement('canvas'),
     context = c.getContext('2d');
   var originalItems, itemsLen;
@@ -412,7 +378,7 @@ function prepareMarkItem(originalItem) {
   return item;
 }
 
-function labelWidth(text, fontSize, font, context) {
-  context.font = fontSize + 'px ' + font; // TODO: add other font properties
-  return context.measureText(text).width;
+function labelWidth(text, fontSize, font) {
+  CONTEXT.font = fontSize + 'px ' + font; // TODO: add other font properties
+  return CONTEXT.measureText(text).width;
 }
