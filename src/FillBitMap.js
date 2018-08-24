@@ -11,10 +11,10 @@ var INSIDE_OPACITY = 0.0625;
 export default function(data, size, marktype, avoidBaseMark, avoidMarks, labelInside, padding) {
   var isGroupArea = marktype === 'group' && data[0].datum.datum.items[0].marktype === 'area',
     width = size[0],
-    height = size[1];
+    height = size[1],
+    n = data.length;
   if (marktype && (avoidBaseMark || isGroupArea)) {
-    var n = data.length,
-      items = new Array(n);
+    var items = new Array(n);
     for (var i = 0; i < n; i++) {
       items[i] = data[i].datum.datum;
     }
