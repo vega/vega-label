@@ -44,7 +44,7 @@ export default function placeLabels(
     for (i = 0; i < n; i++) {
       d = data[i];
       hidden = d.originalOpacity === 0;
-      if (!hidden && placeLabelInArea(d, height, avoidBaseMark, layer1, layer2))
+      if (!hidden && placeLabelInArea(d, layer1, layer2, height, avoidBaseMark))
         d.opacity = d.originalOpacity;
     }
   } else {
@@ -90,7 +90,7 @@ function initializeBitMap(data, size, marktype, avoidBaseMark, avoidMarks, label
   }
 }
 
-function placeLabelInArea(d, height, avoidBaseMark, layer1, layer2) {
+function placeLabelInArea(d, layer1, layer2, height, avoidBaseMark) {
   var x1, x2, y1, y2, x, y, lo, hi, mid, tmp;
   var pixelSize = layer2.pixelSize(),
     items = d.datum.datum.items[0].items,
@@ -190,6 +190,7 @@ function placeLabelInArea(d, height, avoidBaseMark, layer1, layer2) {
       }
     }
   }
+
   if (labelPlaced || maxSize2 || maxSize3) {
     var bin = layer1.bin;
     x1 = bin(d.x - textWidth / 2.0);
@@ -200,8 +201,7 @@ function placeLabelInArea(d, height, avoidBaseMark, layer1, layer2) {
     d.align = 'center';
     d.baseline = 'middle';
     return true;
-  }
-  return false;
+  } else return false;
 }
 
 function placeLabel(d, layer1, layer2, anchors, offsets) {
