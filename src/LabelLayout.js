@@ -1,7 +1,10 @@
 /*eslint no-unused-vars: "warn"*/
 /*eslint no-console: "warn"*/
 /*eslint no-empty: "warn"*/
-import placeLabels from './PixelBasedLabel';
+
+import placeLabel from './PlaceLabel';
+import placeLabelInArea from './PlaceLabelInArea';
+import fillBitMap from './FillBitMap';
 
 var TOP = 0x0,
   MIDDLE = 0x1 << 0x2,
@@ -58,17 +61,41 @@ export default function() {
 
     if (sort) data.sort((a, b) => a.sort - b.sort); // sort have to be number
 
-    return placeLabels(
-      data,
-      anchors,
-      offsets,
-      marktype,
-      avoidMarks,
-      size,
-      avoidBaseMark,
-      markIdx,
-      padding
-    );
+    var labelInside = false;
+    for (i = 0; i < anchors.length && !labelInside; i++) {
+      labelInside = anchors[i] === 0x5 || offsets[i] < 0;
+    }
+
+    var bitMaps, layer1, layer2;
+    bitMaps = fillBitMap(data, size, marktype, avoidBaseMark, avoidMarks, labelInside, padding);
+    layer1 = bitMaps[0];
+    layer2 = bitMaps[1];
+
+    var grouptype = marktype === 'group' && data[0].datum.datum.items[markIdx].marktype,
+      height = size[1],
+      width = size[0];
+    var mb, hidden;
+
+    if (grouptype === 'area') {
+      for (i = 0; i < n; i++) {
+        d = data[i];
+        hidden = d.originalOpacity === 0;
+        if (!hidden && placeLabelInArea(d, layer1, layer2, height, avoidBaseMark))
+          d.opacity = d.originalOpacity;
+      }
+    } else {
+      for (i = 0; i < n; i++) {
+        d = data[i];
+        mb = d.markBound;
+        hidden = d.originalOpacity === 0;
+        if (mb[2] < 0 || mb[5] < 0 || mb[0] > width || mb[3] > height || hidden) continue;
+        if (placeLabel(d, layer1, layer2, anchors, offsets)) d.opacity = d.originalOpacity;
+      }
+    }
+
+    layer1.print('bit-map-1');
+    if (layer2) layer2.print('bit-map-2');
+    return data;
   };
 
   label.texts = function(_) {
