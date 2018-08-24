@@ -5,6 +5,7 @@
 import placeLabel from './PlaceLabel';
 import placeLabelInArea from './PlaceLabelInArea';
 import fillBitMap from './FillBitMap';
+import BitMap from './BitMap';
 
 var TOP = 0x0,
   MIDDLE = 0x1 << 0x2,
@@ -26,7 +27,7 @@ var anchorsMap = {
 };
 
 export default function() {
-  var offsets, sort, anchors, avoidMarks, size;
+  var offset, sort, anchor, avoidMarks, size;
   var avoidBaseMark, lineAnchor, markIdx, padding;
   var label = {},
     texts = [];
@@ -38,8 +39,8 @@ export default function() {
     var data = Array(n),
       marktype = texts[0].datum && texts[0].datum.mark ? texts[0].datum.mark.marktype : undefined,
       transformed = texts[0].transformed,
-      isGroupLine = marktype === 'group' && texts[0].datum.items[markIdx].marktype === 'line',
-      getMarkBound = getMarkBoundFactory(marktype, isGroupLine, lineAnchor, markIdx);
+      grouptype = marktype === 'group' ? texts[0].datum.items[markIdx].marktype : undefined,
+      getMarkBound = getMarkBoundFactory(marktype, grouptype, lineAnchor, markIdx);
 
     var i, d, originalOpacity;
     for (i = 0; i < n; i++) {
@@ -62,39 +63,24 @@ export default function() {
     if (sort) data.sort((a, b) => a.sort - b.sort); // sort have to be number
 
     var labelInside = false;
-    for (i = 0; i < anchors.length && !labelInside; i++) {
-      labelInside = anchors[i] === 0x5 || offsets[i] < 0;
+    for (i = 0; i < anchor.length && !labelInside; i++) {
+      labelInside = anchor[i] === 0x5 || offset[i] < 0;
     }
 
-    var bitMaps, layer1, layer2;
+    var bitMaps, bm1, bm2, bm3;
     bitMaps = fillBitMap(data, size, marktype, avoidBaseMark, avoidMarks, labelInside, padding);
-    layer1 = bitMaps[0];
-    layer2 = bitMaps[1];
+    bm1 = bitMaps[0];
+    bm2 = bitMaps[1];
+    bm3 = grouptype === 'area' ? new BitMap(size[0], size[1], padding) : undefined;
+    var place = placeFactory(grouptype, bm1, bm2, bm3, anchor, offset, size, avoidBaseMark);
 
-    var grouptype = marktype === 'group' && data[0].datum.datum.items[markIdx].marktype,
-      height = size[1],
-      width = size[0];
-    var mb, hidden;
-
-    if (grouptype === 'area') {
-      for (i = 0; i < n; i++) {
-        d = data[i];
-        hidden = d.originalOpacity === 0;
-        if (!hidden && placeLabelInArea(d, layer1, layer2, height, avoidBaseMark))
-          d.opacity = d.originalOpacity;
-      }
-    } else {
-      for (i = 0; i < n; i++) {
-        d = data[i];
-        mb = d.markBound;
-        hidden = d.originalOpacity === 0;
-        if (mb[2] < 0 || mb[5] < 0 || mb[0] > width || mb[3] > height || hidden) continue;
-        if (placeLabel(d, layer1, layer2, anchors, offsets)) d.opacity = d.originalOpacity;
-      }
+    for (i = 0; i < n; i++) {
+      d = data[i];
+      if (d.originalOpacity !== 0) place(d);
     }
 
-    layer1.print('bit-map-1');
-    if (layer2) layer2.print('bit-map-2');
+    bm1.print('bit-map-1');
+    if (bm2) bm2.print('bit-map-2');
     return data;
   };
 
@@ -105,14 +91,24 @@ export default function() {
     } else return texts;
   };
 
-  label.offsets = function(_, len) {
+  label.offset = function(_, len) {
     if (arguments.length) {
       var n = _.length;
-      offsets = new Float64Array(len);
-      for (var i = 0; i < n; i++) offsets[i] = _[i] ? _[i] : 0;
-      for (i = n; i < len; i++) offsets[i] = offsets[n - 1] ? offsets[n - 1] : 0;
+      offset = new Float64Array(len);
+      for (var i = 0; i < n; i++) offset[i] = _[i] ? _[i] : 0;
+      for (i = n; i < len; i++) offset[i] = offset[n - 1] ? offset[n - 1] : 0;
       return label;
-    } else return offsets;
+    } else return offset;
+  };
+
+  label.anchor = function(_, len) {
+    if (arguments.length) {
+      var n = _.length;
+      anchor = new Int8Array(len);
+      for (var i = 0; i < n; i++) anchor[i] |= anchorsMap[_[i]];
+      for (i = n; i < len; i++) anchor[i] = anchor[n - 1];
+      return label;
+    } else return anchor;
   };
 
   label.sort = function(_) {
@@ -120,16 +116,6 @@ export default function() {
       sort = _;
       return label;
     } else return sort;
-  };
-
-  label.anchors = function(_, len) {
-    if (arguments.length) {
-      var n = _.length;
-      anchors = new Int8Array(len);
-      for (var i = 0; i < n; i++) anchors[i] |= anchorsMap[_[i]];
-      for (i = n; i < len; i++) anchors[i] = anchors[n - 1];
-      return label;
-    } else return anchors;
   };
 
   label.avoidMarks = function(_) {
@@ -177,7 +163,7 @@ export default function() {
   return label;
 }
 
-function getMarkBoundFactory(marktype, isGroupLine, lineAnchor, markIdx) {
+function getMarkBoundFactory(marktype, grouptype, lineAnchor, markIdx) {
   if (!marktype) {
     return d => [d.x, d.x, d.x, d.y, d.y, d.y];
   } else if (marktype === 'line' || marktype === 'area') {
@@ -185,7 +171,7 @@ function getMarkBoundFactory(marktype, isGroupLine, lineAnchor, markIdx) {
       var datum = d.datum;
       return [datum.x, datum.x, datum.x, datum.y, datum.y, datum.y];
     };
-  } else if (isGroupLine) {
+  } else if (grouptype === 'line') {
     var endItemIndex = lineAnchor === 'begin' ? m => m - 1 : () => 0;
     return function(d) {
       var items = d.datum.items[markIdx].items;
@@ -201,6 +187,23 @@ function getMarkBoundFactory(marktype, isGroupLine, lineAnchor, markIdx) {
     return function(d) {
       var b = d.datum.bounds;
       return [b.x1, (b.x1 + b.x2) / 2.0, b.x2, b.y1, (b.y1 + b.y2) / 2.0, b.y2];
+    };
+  }
+}
+
+function placeFactory(gt, bm1, bm2, bm3, anchor, offset, size, avoidBaseMark) {
+  var mb;
+  var w = size[0],
+    h = size[1];
+  if (gt === 'area') {
+    return function(d) {
+      if (placeLabelInArea(d, bm1, bm2, h, avoidBaseMark)) d.opacity = d.originalOpacity;
+    };
+  } else {
+    return function(d) {
+      mb = d.markBound;
+      if (mb[2] >= 0 && mb[5] >= 0 && mb[0] <= w && mb[3] <= h)
+        if (placeLabel(d, bm1, bm2, anchor, offset)) d.opacity = d.originalOpacity;
     };
   }
 }

@@ -60,16 +60,16 @@ prototype.transform = function(_, pulse) {
   var data = pulse.materialize(pulse.SOURCE).source,
     labelLayout = this.value,
     as = _.as ? _.as : Output,
-    offsets = _.offset ? _.offset : [1],
-    anchors = _.anchor ? _.anchor : defaultAnchors,
-    numberPositions = offsets.length > anchors.length ? offsets.length : anchors.length;
+    offset = _.offset ? _.offset : [1],
+    anchor = _.anchor ? _.anchor : defaultAnchors,
+    numberPositions = offset.length > anchor.length ? offset.length : anchor.length;
 
   // configure layout
   var labels = labelLayout
       .texts(data)
       .sort(_.sort)
-      .offsets(offsets, numberPositions)
-      .anchors(anchors, numberPositions)
+      .offset(offset, numberPositions)
+      .anchor(anchor, numberPositions)
       .avoidMarks(_.avoidMarks ? _.avoidMarks : [])
       .size(_.size)
       .avoidBaseMark(_.avoidBaseMark !== undefined ? _.avoidBaseMark : true)

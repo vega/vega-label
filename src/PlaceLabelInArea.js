@@ -1,12 +1,12 @@
 /*eslint no-unused-vars: "warn"*/
 /*eslint no-console: "warn"*/
 /*eslint no-empty: "warn"*/
-import { labelWidth } from './common';
+import { labelWidth } from './Common';
 import { checkCollision } from './PlaceLabel';
 
-export default function(d, layer1, layer2, height, avoidBaseMark) {
+export default function(d, bm1, bm2, height, avoidBaseMark) {
   var x1, x2, y1, y2, x, y, lo, hi, mid, tmp;
-  var pixelSize = layer2.pixelSize(),
+  var pixelSize = bm2.pixelSize(),
     items = d.datum.datum.items[0].items,
     n = items.length,
     textHeight = d.textHeight,
@@ -42,12 +42,12 @@ export default function(d, layer1, layer2, height, avoidBaseMark) {
           hi = textHeight + 1;
           while (hi - lo > 1) {
             mid = (lo + hi) / 2.0;
-            if (collisionFromPositionAndHeight(textWidth, textHeight, x, y, mid, layer2)) hi = mid;
+            if (collisionFromPositionAndHeight(textWidth, textHeight, x, y, mid, bm2)) hi = mid;
             else lo = mid;
           }
           if (
             lo > maxSize2 &&
-            !collisionFromPositionAndHeight(textWidth, textHeight, x, y, textHeight, layer1)
+            !collisionFromPositionAndHeight(textWidth, textHeight, x, y, textHeight, bm1)
           ) {
             d.x = x;
             d.y = y;
@@ -61,7 +61,7 @@ export default function(d, layer1, layer2, height, avoidBaseMark) {
         y = (y1 + y2) / 2.0;
         if (
           maxSize3 < size &&
-          !collisionFromPositionAndHeight(textWidth, textHeight, x, y, textHeight, layer1)
+          !collisionFromPositionAndHeight(textWidth, textHeight, x, y, textHeight, bm1)
         ) {
           maxSize3 = size;
           d.x = x;
@@ -82,16 +82,16 @@ export default function(d, layer1, layer2, height, avoidBaseMark) {
     for (x = x1; x <= x2; x += pixelSize) {
       for (y = y1; y <= y2; y += pixelSize) {
         lo = maxSize;
-        if (!collisionFromPositionAndHeight(textWidth, textHeight, x, y, lo, layer2)) {
+        if (!collisionFromPositionAndHeight(textWidth, textHeight, x, y, lo, bm2)) {
           hi = height;
           while (hi - lo > 1) {
             mid = (lo + hi) / 2.0;
-            if (collisionFromPositionAndHeight(textWidth, textHeight, x, y, mid, layer2)) hi = mid;
+            if (collisionFromPositionAndHeight(textWidth, textHeight, x, y, mid, bm2)) hi = mid;
             else lo = mid;
           }
           if (
             lo > maxSize &&
-            !collisionFromPositionAndHeight(textWidth, textHeight, x, y, textHeight, layer2)
+            !collisionFromPositionAndHeight(textWidth, textHeight, x, y, textHeight, bm2)
           ) {
             // If we support dynamic font size
             // datum.fontSize = lo;
@@ -106,12 +106,12 @@ export default function(d, layer1, layer2, height, avoidBaseMark) {
   }
 
   if (labelPlaced || maxSize2 || maxSize3) {
-    var bin = layer1.bin;
+    var bin = bm1.bin;
     x1 = bin(d.x - textWidth / 2.0);
     y1 = bin(d.y - textHeight / 2.0);
     x2 = bin(d.x + textWidth / 2.0);
     y2 = bin(d.y + textHeight / 2.0);
-    layer1.markInBoundBinned(x1, y1, x2, y2);
+    bm1.markInBoundBinned(x1, y1, x2, y2);
     d.align = 'center';
     d.baseline = 'middle';
     return true;
