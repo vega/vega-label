@@ -5,7 +5,7 @@ var rawFile = new XMLHttpRequest();
 // prettier-ignore
 var specName
 // ---------area---------
-// = "area_job_voyager";
+= "area_job_voyager";
 // = 'area';
 
 // ---------line---------
@@ -22,7 +22,7 @@ var specName
 // = 'scatter_asteroids';
 // = 'scatter_big_symbol';
 // = 'scatter_car';
-= 'scatter_test';
+// = 'scatter_test';
 // = 'scatter_zoom';
 
 rawFile.open('GET', '../specs/label_' + specName + '.vg.json', false);

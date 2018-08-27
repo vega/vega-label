@@ -121,6 +121,7 @@ function prepareMarkItem(originalItem) {
     item.fillOpacity = INSIDE_OPACITY;
     item.stroke = '#000';
     item.strokeOpacity = 1;
+    item.strokeWidth = 2;
   }
   return item;
 }

@@ -2,5 +2,6 @@
 .DS_Store
 build/
 node_modules/
+cdn/
 npm-debug.log
 .vscode

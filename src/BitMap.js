@@ -11,11 +11,11 @@ for (var i = 1; i <= SIZE; i++) {
   right0[i] = ~right1[i];
 }
 
-export default function BitMap(_width, _height, _padding) {
+export default function BitMap(_width, _height, padding) {
   var pixelSize = Math.sqrt((_width * _height) / 1000000.0);
   pixelSize = pixelSize >= 1 ? pixelSize : 1;
 
-  var padding = _padding;
+  this.padding = padding;
 
   this.width = ~~((_width + 2 * padding + pixelSize) / pixelSize);
   this.height = ~~((_height + 2 * padding + pixelSize) / pixelSize);

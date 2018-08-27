@@ -181,6 +181,7 @@
         "update": {
           "fill": { "value": "#000" },
           "fillOpacity": { "scale": "opacity", "field": "datum.argmax.perc" },
+          "_fillOpacity": { "value": 1 },
           "fontSize": {
             "scale": "font",
             "field": "datum.argmax.perc",
