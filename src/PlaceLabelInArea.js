@@ -8,7 +8,7 @@ var X_DIR = [-1, -1, 1, 1];
 var Y_DIR = [-1, 1, -1, 1];
 
 export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
-  var x1, x2, y1, y2, x, y, lo, hi, mid;
+  var x1, x2, y1, y2, x, y, _x, _y, lo, hi, mid, areaWidth, coordinate, nextX, nextY;
   var pixelSize = bm2.pixelSize(),
     items = d.datum.datum.items[0].items,
     n = items.length,
@@ -29,25 +29,28 @@ export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
     y2 = items[i].y2 !== undefined ? items[i].y2 : y1;
     list.push(bin((x1 + x2) / 2.0), bin((y1 + y2) / 2.0));
     while (!list.isEmpty()) {
-      var coordinate = list.pop(),
-        _x = coordinate[0],
-        _y = coordinate[1];
-      if (!bm3.getBinned(_x, _y) && !bm2.getBinned(_x, _y) && !bm1.getBinned(_x, _y)) {
+      coordinate = list.pop();
+      _x = coordinate[0];
+      _y = coordinate[1];
+      if (!bm1.getBinned(_x, _y) && !bm2.getBinned(_x, _y) && !bm3.getBinned(_x, _y)) {
         bm3.markBinned(_x, _y);
         for (var j = 0; j < 4; j++) {
-          var nextX = _x + X_DIR[j],
-            nextY = _y + Y_DIR[j];
+          nextX = _x + X_DIR[j];
+          nextY = _y + Y_DIR[j];
           if (!bm3.searchOutOfBound(nextX, nextY, nextX, nextY)) list.push(nextX, nextY);
         }
 
         x = _x * pixelSize - bm1.padding;
         y = _y * pixelSize - bm1.padding;
         lo = maxSize;
-        hi = height; //Todo: make this bound smaller;
-        if (!collide(x, y, textHeight, textWidth, lo, bm1, bm2, width, height)) {
+        hi = height; // Todo: make this bound smaller;
+        if (
+          !checkLabelOutOfBound(x, y, textWidth, textHeight, width, height) &&
+          !collide(x, y, textHeight, textWidth, lo, bm1, bm2)
+        ) {
           while (hi - lo >= 1) {
             mid = (lo + hi) / 2;
-            if (collide(x, y, textHeight, textWidth, mid, bm1, bm2, width, height)) hi = mid;
+            if (collide(x, y, textHeight, textWidth, mid, bm1, bm2)) hi = mid;
             else lo = mid;
           }
           if (lo > maxSize) {
@@ -60,12 +63,13 @@ export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
       }
     }
     if (!labelPlaced && !avoidBaseMark) {
-      var areaWidth = Math.abs(x2 - x1 + y2 - y1);
+      areaWidth = Math.abs(x2 - x1 + y2 - y1);
       x = (x1 + x2) / 2.0;
       y = (y1 + y2) / 2.0;
       if (
         areaWidth >= maxAreaWidth &&
-        !collide(x, y, textHeight, textWidth, textHeight, bm1, null, width, height)
+        !checkLabelOutOfBound(x, y, textWidth, textHeight, width, height) &&
+        !collide(x, y, textHeight, textWidth, textHeight, bm1, null)
       ) {
         maxAreaWidth = areaWidth;
         d.x = x;
@@ -93,23 +97,23 @@ export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
   return false;
 }
 
-function collide(x, y, textHeight, textWidth, h, bm1, bm2, width, height) {
+function checkLabelOutOfBound(x, y, textWidth, textHeight, width, height) {
+  var x1 = x - textWidth / 2.0,
+    x2 = x + textWidth / 2.0,
+    y1 = y - textHeight / 2.0,
+    y2 = y + textHeight / 2.0;
+  return x1 < 0 || y1 < 0 || x2 > width || y2 > height;
+}
+
+function collide(x, y, textHeight, textWidth, h, bm1, bm2) {
   var w = (textWidth * h) / (textHeight * 2.0);
   h = h / 2.0;
   var bin = bm1.bin,
-    x1 = x - textWidth,
-    x2 = x + textWidth,
-    y1 = y - textHeight,
-    y2 = y + textHeight,
     _x1 = bin(x - w),
     _x2 = bin(x + w),
     _y1 = bin(y - h),
     _y2 = bin(y + h);
   return (
-    x1 < 0 ||
-    y1 < 0 ||
-    x2 > width ||
-    y2 > height ||
     bm1.searchOutOfBound(_x1, _y1, _x2, _y2) ||
     checkCollision(_x1, _y1, _x2, _y2, bm1) ||
     (bm2 ? checkCollision(_x1, _y1, _x2, _y2, bm2) : false)

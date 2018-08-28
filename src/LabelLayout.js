@@ -72,17 +72,12 @@ export default function() {
     bm1 = bitMaps[0];
     bm2 = bitMaps[1];
     bm3 = grouptype === 'area' ? new BitMap(size[0], size[1], padding) : undefined;
-    var c = { count: 0 };
-    var place = placeFactory(grouptype, bm1, bm2, bm3, anchor, offset, size, avoidBaseMark, c);
+    var place = placeFactory(grouptype, bm1, bm2, bm3, anchor, offset, size, avoidBaseMark);
 
-    console.log('================================================================================');
-    console.log('================================================================================');
     for (i = 0; i < n; i++) {
       d = data[i];
       if (d.originalOpacity !== 0) place(d);
     }
-
-    console.log(c.count);
 
     bm1.print('bit-map-1');
     if (bm2) bm2.print('bit-map-2');
@@ -197,21 +192,19 @@ function getMarkBoundFactory(marktype, grouptype, lineAnchor, markIdx) {
   }
 }
 
-function placeFactory(gt, bm1, bm2, bm3, anchor, offset, size, avoidBaseMark, c) {
+function placeFactory(gt, bm1, bm2, bm3, anchor, offset, size, avoidBaseMark) {
   var mb;
   var w = size[0],
     h = size[1];
   if (gt === 'area') {
     return function(d) {
       if (placeLabelInArea(d, bm1, bm2, bm3, w, h, avoidBaseMark)) d.opacity = d.originalOpacity;
-      else c.count++;
     };
   } else {
     return function(d) {
       mb = d.markBound;
       if (mb[2] >= 0 && mb[5] >= 0 && mb[0] <= w && mb[3] <= h)
         if (placeLabel(d, bm1, bm2, anchor, offset)) d.opacity = d.originalOpacity;
-        else c.count++;
     };
   }
 }
