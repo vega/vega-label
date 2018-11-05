@@ -192,11 +192,11 @@ function getMarkBoundFactory(marktype, grouptype, lineAnchor, markIdx) {
   }
 }
 
-function placeFactory(gt, bm1, bm2, bm3, anchor, offset, size, avoidBaseMark) {
+function placeFactory(grouptype, bm1, bm2, bm3, anchor, offset, size, avoidBaseMark) {
   var mb;
   var w = size[0],
     h = size[1];
-  if (gt === 'area') {
+  if (grouptype === 'area') {
     return function(d) {
       if (placeLabelInArea(d, bm1, bm2, bm3, w, h, avoidBaseMark)) d.opacity = d.originalOpacity;
     };

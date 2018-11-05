@@ -16,7 +16,7 @@
   "module": "index",
   "repository": {
     "type": "git",
-    "url": "https://github.com/chanwutk/vega-label.git"
+    "url": "https://github.com/vega/vega-label.git"
   },
   "scripts": {
     "build": "npm run test",
