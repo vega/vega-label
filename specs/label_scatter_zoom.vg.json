@@ -273,6 +273,7 @@
         "enter": {
           "x": { "field": "x" },
           "y": { "field": "y" },
+          "opacity": { "value": 0.7 },
           "fill": { "value": "#000" },
           "text": { "field": "datum.Name" },
           "fontSize": { "value": 8 }
