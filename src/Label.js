@@ -79,6 +79,7 @@ prototype.transform = function(_, pulse) {
       .layout(),
     n = data.length;
 
+  // fill the information of transformed labels back into data
   var l, t;
   for (var i = 0; i < n; i++) {
     l = labels[i];
