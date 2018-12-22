@@ -2,11 +2,7 @@
 /*eslint no-console: "warn"*/
 /*eslint no-empty: "warn"*/
 
-import { canvas } from 'vega-canvas';
-
-var CONTEXT = canvas().getContext('2d');
-
-export function labelWidth(text, fontSize, font) {
-  CONTEXT.font = fontSize + 'px ' + font; // TODO: add other font properties
-  return CONTEXT.measureText(text).width;
+export function labelWidth(context, text, fontSize, font) {
+  context.font = fontSize + 'px ' + font; // TODO: add other font properties
+  return context.measureText(text).width;
 }

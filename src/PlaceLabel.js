@@ -1,6 +1,7 @@
 /*eslint no-unused-vars: "warn"*/
 /*eslint no-console: "warn"*/
 /*eslint no-empty: "warn"*/
+import { canvas } from 'vega-canvas';
 import { labelWidth } from './Common';
 
 var SIZE_FACTOR = 0.707106781186548; // this is 1 over square root of 2
@@ -8,6 +9,7 @@ var ALIGN = ['right', 'center', 'left'];
 var BASELINE = ['bottom', 'middle', 'top'];
 
 export default function(d, bm1, bm2, anchors, offsets) {
+  var context = canvas().getContext('2d');
   var n = offsets.length,
     textWidth = d.textWidth,
     textHeight = d.textHeight,
@@ -41,7 +43,7 @@ export default function(d, bm1, bm2, anchors, offsets) {
       // var end = _x1 + (_y2 - _y1) * (~~(text.length / 3));
       if (isLabelPlacable(_x1, _x1, _y1, _y2, bm1, bm2, x, x, y1, y2, markBound, isInside))
         continue;
-      else textWidth = labelWidth(text, textHeight, font);
+      else textWidth = labelWidth(context, text, textHeight, font);
     }
 
     xc = x + (insideFactor * textWidth * dx) / 2.0;

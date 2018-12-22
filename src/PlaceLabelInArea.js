@@ -1,6 +1,7 @@
 /*eslint no-unused-vars: "warn"*/
 /*eslint no-console: "warn"*/
 /*eslint no-empty: "warn"*/
+import { canvas } from 'vega-canvas';
 import { labelWidth } from './Common';
 import { checkCollision } from './PlaceLabel';
 
@@ -8,12 +9,13 @@ var X_DIR = [-1, -1, 1, 1];
 var Y_DIR = [-1, 1, -1, 1];
 
 export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
+  var context = canvas().getContext('2d');
   var x1, x2, y1, y2, x, y, _x, _y, lo, hi, mid, areaWidth, coordinate, nextX, nextY;
   var pixelSize = bm2.pixelSize(),
     items = d.datum.datum.items[0].items,
     n = items.length,
     textHeight = d.textHeight,
-    textWidth = labelWidth(d.text, textHeight, d.font),
+    textWidth = labelWidth(context, d.text, textHeight, d.font),
     maxSize = avoidBaseMark ? textHeight : 0,
     labelPlaced = false,
     labelPlaced2 = false,
