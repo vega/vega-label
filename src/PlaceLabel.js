@@ -3,7 +3,7 @@
 /*eslint no-empty: "warn"*/
 import { labelWidth } from './Common';
 
-var SIZE_FACTOR = 0.707106781186548;
+var SIZE_FACTOR = 0.707106781186548; // this is 1 over square root of 2
 var ALIGN = ['right', 'center', 'left'];
 var BASELINE = ['bottom', 'middle', 'top'];
 

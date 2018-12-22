@@ -6,25 +6,7 @@ import placeLabel from './PlaceLabel';
 import placeLabelInArea from './PlaceLabelInArea';
 import fillBitMap from './FillBitMap';
 import BitMap from './BitMap';
-
-var TOP = 0x0,
-  MIDDLE = 0x1 << 0x2,
-  BOTTOM = 0x2 << 0x2,
-  LEFT = 0x0,
-  CENTER = 0x1,
-  RIGHT = 0x2;
-
-var anchorsMap = {
-  'top-left': TOP + LEFT,
-  top: TOP + CENTER,
-  'top-right': TOP + RIGHT,
-  left: MIDDLE + LEFT,
-  middle: MIDDLE + CENTER,
-  right: MIDDLE + RIGHT,
-  'bottom-left': BOTTOM + LEFT,
-  bottom: BOTTOM + CENTER,
-  'bottom-right': BOTTOM + RIGHT,
-};
+import anchorsOffsetDict from './AnchorsOffsetDict';
 
 export default function() {
   var offset, sort, anchor, avoidMarks, size;
@@ -34,7 +16,12 @@ export default function() {
 
   label.layout = function() {
     var n = texts.length;
-    if (!size || size.length !== 2 || !n) return texts;
+    if (!n) return texts; // return immediately when there is not label to be placed
+
+    if (!size || size.length !== 2) {
+      // TODO: give an error that size of the chart is needed as an array of width and height
+      return texts;
+    }
 
     var data = Array(n),
       marktype = texts[0].datum && texts[0].datum.mark ? texts[0].datum.mark.marktype : undefined,
@@ -42,7 +29,8 @@ export default function() {
       grouptype = marktype === 'group' ? texts[0].datum.items[markIdx].marktype : undefined,
       getMarkBound = getMarkBoundFactory(marktype, grouptype, lineAnchor, markIdx);
 
-    var i, d, originalOpacity;
+    // prepare text mark data for placing
+    var i, d;
     for (i = 0; i < n; i++) {
       d = texts[i];
 
@@ -54,14 +42,16 @@ export default function() {
         text: d.text,
         sort: sort ? sort(d.datum) : undefined,
         markBound: getMarkBound(d),
-        originalOpacity: transformed ? originalOpacity : d.opacity,
+        originalOpacity: transformed ? d.originalOpacity : d.opacity,
         opacity: 0,
         datum: d,
       };
     }
 
-    if (sort) data.sort((a, b) => a.sort - b.sort); // sort have to be number
+    // sort field has to be primitive variable type
+    if (sort) data.sort((a, b) => a.sort - b.sort);
 
+    // a flag for determining if it is possible for label to be placed inside its base mark
     var labelInside = false;
     for (i = 0; i < anchor.length && !labelInside; i++) {
       labelInside = anchor[i] === 0x5 || offset[i] < 0;
@@ -74,6 +64,7 @@ export default function() {
     bm3 = grouptype === 'area' ? new BitMap(size[0], size[1], padding) : undefined;
     var place = placeFactory(grouptype, bm1, bm2, bm3, anchor, offset, size, avoidBaseMark);
 
+    // place all label
     for (i = 0; i < n; i++) {
       d = data[i];
       if (d.originalOpacity !== 0) place(d);
@@ -106,7 +97,7 @@ export default function() {
     if (arguments.length) {
       var n = _.length;
       anchor = new Int8Array(len);
-      for (var i = 0; i < n; i++) anchor[i] |= anchorsMap[_[i]];
+      for (var i = 0; i < n; i++) anchor[i] |= anchorsOffsetDict[_[i]];
       for (i = n; i < len; i++) anchor[i] = anchor[n - 1];
       return label;
     } else return anchor;
@@ -164,6 +155,23 @@ export default function() {
   return label;
 }
 
+/**
+ * Factory function for function for getting base mark boundary, depending on mark and group type.
+ * When mark type is undefined, line or area: boundary is the coordinate of each data point.
+ * When base mark is grouped line, boundary is either at the beginning or end of the line depending
+ * on the value of lineAnchor.
+ * Otherwise, use boundary of base mark.
+ *
+ * @param {string} marktype mark type of base mark (marktype can be undefined if label does not use
+ *                          reactive geometry to any other mark)
+ * @param {string} grouptype group type of base mark if mark type is 'group' (grouptype can be
+ *                           undefined if the base mark is not in group)
+ * @param {string} lineAnchor anchor point of group line mark if group type is 'line' can be either
+ *                            'begin' or 'end'
+ * @param {number} markIdx index of base mark if base mark is in a group with multiple marks
+ *
+ * @returns function(d) for getting mark boundary from data point information d
+ */
 function getMarkBoundFactory(marktype, grouptype, lineAnchor, markIdx) {
   if (!marktype) {
     return d => [d.x, d.x, d.x, d.y, d.y, d.y];
@@ -192,6 +200,23 @@ function getMarkBoundFactory(marktype, grouptype, lineAnchor, markIdx) {
   }
 }
 
+/**
+ * Factory function for label-placing function, depending on the type of group base mark.
+ * Use placing label function from PlaceLabelInArea iff the grouptype is 'area'.
+ * Otherwise, use regular placing label function from PlaceLabel.
+ *
+ * @param {string} grouptype type of group base mark (grouptype can be undefined if the base mark
+ *                           is not in group)
+ * @param {BitMap} bm1
+ * @param {BitMap} bm2
+ * @param {BitMap} bm3
+ * @param {array} anchor array of anchos point (int8). this array is parallel with offset
+ * @param {array} offset array of offset (float64). this array is parallel with anchor
+ * @param {array} size array of chart size in format [width, height]
+ * @param {bool} avoidBaseMark a boolean flag if avoiding base mark when placing label
+ *
+ * @returns function(d) for placing label with data point information d
+ */
 function placeFactory(grouptype, bm1, bm2, bm3, anchor, offset, size, avoidBaseMark) {
   var mb;
   var w = size[0],
