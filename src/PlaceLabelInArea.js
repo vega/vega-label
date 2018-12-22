@@ -17,7 +17,7 @@ export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
     maxSize = avoidBaseMark ? textHeight : 0,
     labelPlaced = false,
     labelPlaced2 = false,
-    bin = bm1.bin,
+    scalePixel = bm1.scalePixel,
     list = new Stack(),
     // list = new Queue(),
     maxAreaWidth = 0;
@@ -27,7 +27,7 @@ export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
     y1 = items[i].y;
     x2 = items[i].x2 !== undefined ? items[i].x2 : x1;
     y2 = items[i].y2 !== undefined ? items[i].y2 : y1;
-    list.push(bin((x1 + x2) / 2.0), bin((y1 + y2) / 2.0));
+    list.push(scalePixel((x1 + x2) / 2.0), scalePixel((y1 + y2) / 2.0));
     while (!list.isEmpty()) {
       coordinate = list.pop();
       _x = coordinate[0];
@@ -82,10 +82,10 @@ export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
   // bm3.print('bit-map-before');
 
   if (labelPlaced || labelPlaced2) {
-    x1 = bin(d.x - textWidth / 2.0);
-    y1 = bin(d.y - textHeight / 2.0);
-    x2 = bin(d.x + textWidth / 2.0);
-    y2 = bin(d.y + textHeight / 2.0);
+    x1 = scalePixel(d.x - textWidth / 2.0);
+    y1 = scalePixel(d.y - textHeight / 2.0);
+    x2 = scalePixel(d.x + textWidth / 2.0);
+    y2 = scalePixel(d.y + textHeight / 2.0);
     bm1.markInBoundBinned(x1, y1, x2, y2);
     d.align = 'center';
     d.baseline = 'middle';

@@ -17,7 +17,7 @@ export default function(d, bm1, bm2, anchors, offsets) {
   var dx, dy, isInside, sizeFactor, insideFactor;
   var x, x1, xc, x2, y1, yc, y2;
   var _x1, _x2, _y1, _y2;
-  var bin = bm1.bin;
+  var scalePixel = bm1.scalePixel;
 
   for (var i = 0; i < n; i++) {
     dx = (anchors[i] & 0x3) - 1;
@@ -33,9 +33,9 @@ export default function(d, bm1, bm2, anchors, offsets) {
     y1 = yc - textHeight / 2.0;
     y2 = yc + textHeight / 2.0;
 
-    _y1 = bin(y1);
-    _y2 = bin(y2);
-    _x1 = bin(x);
+    _y1 = scalePixel(y1);
+    _y2 = scalePixel(y2);
+    _x1 = scalePixel(x);
 
     if (!textWidth) {
       // var end = _x1 + (_y2 - _y1) * (~~(text.length / 3));
@@ -48,8 +48,8 @@ export default function(d, bm1, bm2, anchors, offsets) {
     x1 = xc - textWidth / 2.0;
     x2 = xc + textWidth / 2.0;
 
-    _x1 = bin(x1);
-    _x2 = bin(x2);
+    _x1 = scalePixel(x1);
+    _x2 = scalePixel(x2);
 
     if (!isLabelPlacable(_x1, _x2, _y1, _y2, bm1, bm2, x1, x2, y1, y2, markBound, isInside)) {
       d.x = !dx ? xc : dx * insideFactor < 0 ? x2 : x1;
