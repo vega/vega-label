@@ -34,8 +34,8 @@ export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
       coordinate = list.pop();
       _x = coordinate[0];
       _y = coordinate[1];
-      if (!bm1.getBinned(_x, _y) && !bm2.getBinned(_x, _y) && !bm3.getBinned(_x, _y)) {
-        bm3.markBinned(_x, _y);
+      if (!bm1.getScaled(_x, _y) && !bm2.getScaled(_x, _y) && !bm3.getScaled(_x, _y)) {
+        bm3.markScaled(_x, _y);
         for (var j = 0; j < 4; j++) {
           nextX = _x + X_DIR[j];
           nextY = _y + Y_DIR[j];
@@ -88,7 +88,7 @@ export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
     y1 = scalePixel(d.y - textHeight / 2.0);
     x2 = scalePixel(d.x + textWidth / 2.0);
     y2 = scalePixel(d.y + textHeight / 2.0);
-    bm1.markInBoundBinned(x1, y1, x2, y2);
+    bm1.markInBoundScaled(x1, y1, x2, y2);
     d.align = 'center';
     d.baseline = 'middle';
     return true;
@@ -322,7 +322,7 @@ function Queue() {
 //     y1 = bin(d.y - textHeight / 2.0);
 //     x2 = bin(d.x + textWidth / 2.0);
 //     y2 = bin(d.y + textHeight / 2.0);
-//     bm1.markInBoundBinned(x1, y1, x2, y2);
+//     bm1.markInBoundScaled(x1, y1, x2, y2);
 //     d.align = 'center';
 //     d.baseline = 'middle';
 //     return true;

@@ -41,34 +41,34 @@ export default class BitMap {
     this.array[index] &= mask;
   }
 
-  markBinned(x, y) {
+  markScaled(x, y) {
     const mapIndex = y * this.width + x;
     this.applyMark(mapIndex >>> DIV, 1 << (mapIndex & MOD));
   }
 
   mark(x, y) {
-    this.markBinned(this.scalePixel(x), this.scalePixel(y));
+    this.markScaled(this.scalePixel(x), this.scalePixel(y));
   }
 
-  unmarkBinned(x, y) {
+  unmarkScaled(x, y) {
     const mapIndex = y * this.width + x;
     this.applyUnmark(mapIndex >>> DIV, ~(1 << (mapIndex & MOD)));
   }
 
   unmark(x, y) {
-    this.unmarkBinned(this.scalePixel(x), this.scalePixel(y));
+    this.unmarkScaled(this.scalePixel(x), this.scalePixel(y));
   }
 
-  getBinned(x, y) {
+  getScaled(x, y) {
     const mapIndex = y * this.width + x;
     return this.array[mapIndex >>> DIV] & (1 << (mapIndex & MOD));
   }
 
   get(x, y) {
-    return this.getBinned(this.scalePixel(x), this.scalePixel(y));
+    return this.getScaled(this.scalePixel(x), this.scalePixel(y));
   }
 
-  markInBoundBinned(x, y, x2, y2) {
+  markInBoundScaled(x, y, x2, y2) {
     let start, end, indexStart, indexEnd;
     for (; y <= y2; y++) {
       start = y * this.width + x;
@@ -89,7 +89,7 @@ export default class BitMap {
   }
 
   markInBound(x, y, x2, y2) {
-    return this.markInBoundBinned(
+    return this.markInBoundScaled(
       this.scalePixel(x),
       this.scalePixel(y),
       this.scalePixel(x2),
@@ -97,7 +97,7 @@ export default class BitMap {
     );
   }
 
-  unmarkInBoundBinned(x, y, x2, y2) {
+  unmarkInBoundScaled(x, y, x2, y2) {
     let start, end, indexStart, indexEnd;
     for (; y <= y2; y++) {
       start = y * this.width + x;
@@ -118,7 +118,7 @@ export default class BitMap {
   }
 
   unmarkInBound(x, y, x2, y2) {
-    return this.unmarkInBoundBinned(
+    return this.unmarkInBoundScaled(
       this.scalePixel(x),
       this.scalePixel(y),
       this.scalePixel(x2),
@@ -126,7 +126,7 @@ export default class BitMap {
     );
   }
 
-  getInBoundBinned(x, y, x2, y2) {
+  getInBoundScaled(x, y, x2, y2) {
     let start, end, indexStart, indexEnd;
     for (; y <= y2; y++) {
       start = y * this.width + x;
@@ -148,7 +148,7 @@ export default class BitMap {
   }
 
   getInBound(x, y, x2, y2) {
-    return this.getInBoundBinned(
+    return this.getInBoundScaled(
       this.scalePixel(x),
       this.scalePixel(y),
       this.scalePixel(x2),
@@ -170,7 +170,7 @@ export default class BitMap {
     const ctx = canvas.getContext('2d');
     for (y = 0; y < this.height; y++) {
       for (x = 0; x < this.width; x++) {
-        if (this.getBinned(x, y)) {
+        if (this.getScaled(x, y)) {
           ctx.fillStyle = 'rgba(0, 0, 0, 1)';
           ctx.fillRect(x, y, 1, 1);
         }
@@ -182,7 +182,7 @@ export default class BitMap {
     let x, y;
     for (y = 0; y < this.height; y++) {
       for (x = 0; x < this.width; x++) {
-        if (this.getBinned(x, y)) {
+        if (this.getScaled(x, y)) {
           ctx.fillStyle = 'rgba(0, 0, 0, 1)';
           ctx.fillRect(x, y, 1, 1);
         }
