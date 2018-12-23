@@ -60,7 +60,7 @@ export default function(d, bm1, bm2, anchors, offsets) {
       d.align = ALIGN[dx * insideFactor + 1];
       d.baseline = BASELINE[dy * insideFactor + 1];
 
-      bm1.markInBoundScaled(_x1, _y1, _x2, _y2);
+      bm1.markInRangedScaled(_x1, _y1, _x2, _y2);
       return true;
     }
   }
@@ -81,5 +81,5 @@ function isInMarkBound(x1, y1, x2, y2, markBound) {
 }
 
 export function checkCollision(x1, y1, x2, y2, bitMap) {
-  return bitMap.getInBoundScaled(x1, y2, x2, y2) || bitMap.getInBoundScaled(x1, y1, x2, y2 - 1);
+  return bitMap.getInRangedScaled(x1, y2, x2, y2) || bitMap.getInRangedScaled(x1, y1, x2, y2 - 1);
 }

@@ -12,7 +12,7 @@ var Y_DIR = [-1, 1, -1, 1];
 export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
   var context = canvas().getContext('2d');
   var x1, x2, y1, y2, x, y, _x, _y, lo, hi, mid, areaWidth, coordinate, nextX, nextY;
-  var pixelSize = bm2.pixelSize(),
+  var pixelRatio = bm2.pixelRatio(),
     items = d.datum.datum.items[0].items,
     n = items.length,
     textHeight = d.textHeight,
@@ -43,8 +43,8 @@ export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
           if (!bm3.searchOutOfBound(nextX, nextY, nextX, nextY)) list.push(nextX, nextY);
         }
 
-        x = _x * pixelSize - bm1.padding;
-        y = _y * pixelSize - bm1.padding;
+        x = _x * pixelRatio - bm1.padding;
+        y = _y * pixelRatio - bm1.padding;
         lo = maxSize;
         hi = height; // Todo: make this bound smaller;
         if (
@@ -89,7 +89,7 @@ export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
     y1 = scalePixel(d.y - textHeight / 2.0);
     x2 = scalePixel(d.x + textWidth / 2.0);
     y2 = scalePixel(d.y + textHeight / 2.0);
-    bm1.markInBoundScaled(x1, y1, x2, y2);
+    bm1.markInRangedScaled(x1, y1, x2, y2);
     d.align = 'center';
     d.baseline = 'middle';
     return true;
@@ -218,7 +218,7 @@ function Queue() {
 
 // export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
 //   var x1, x2, y1, y2, x, y, lo, hi, mid, tmp;
-//   var pixelSize = bm2.pixelSize(),
+//   var pixelRatio = bm2.pixelRatio(),
 //     items = d.datum.datum.items[0].items,
 //     n = items.length,
 //     textHeight = d.textHeight,
@@ -248,8 +248,8 @@ function Queue() {
 //     }
 
 //     if (!avoidBaseMark && !labelPlaced) {
-//       for (x = x1; x <= x2; x += pixelSize) {
-//         for (y = y1; y <= y2; y += pixelSize) {
+//       for (x = x1; x <= x2; x += pixelRatio) {
+//         for (y = y1; y <= y2; y += pixelRatio) {
 //           lo = maxSize2;
 //           hi = textHeight + 1;
 //           while (hi - lo > 1) {
@@ -291,8 +291,8 @@ function Queue() {
 //       y2 += maxSize * 0.5;
 //     }
 
-//     for (x = x1; x <= x2; x += pixelSize) {
-//       for (y = y1; y <= y2; y += pixelSize) {
+//     for (x = x1; x <= x2; x += pixelRatio) {
+//       for (y = y1; y <= y2; y += pixelRatio) {
 //         lo = maxSize;
 //         if (!collisionFromPositionAndHeight(textWidth, textHeight, x, y, lo, bm2)) {
 //           hi = height;
@@ -323,7 +323,7 @@ function Queue() {
 //     y1 = scalePixel(d.y - textHeight / 2.0);
 //     x2 = scalePixel(d.x + textWidth / 2.0);
 //     y2 = scalePixel(d.y + textHeight / 2.0);
-//     bm1.markInBoundScaled(x1, y1, x2, y2);
+//     bm1.markInRangedScaled(x1, y1, x2, y2);
 //     d.align = 'center';
 //     d.baseline = 'middle';
 //     return true;

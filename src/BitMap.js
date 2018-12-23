@@ -21,15 +21,23 @@ function applyUnmark(array, index, mask) {
 
 export default class BitMap {
   constructor(width, height, padding) {
-    let pixelFactor = Math.sqrt((width * height) / 1000000.0);
-    pixelFactor = pixelFactor >= 1 ? pixelFactor : 1;
+    let pixelRatio = Math.sqrt((width * height) / 1000000.0);
+    pixelRatio = pixelRatio >= 1 ? pixelRatio : 1;
 
     this.padding = padding;
 
-    this.width = ~~((width + 2 * padding + pixelFactor) / pixelFactor);
-    this.height = ~~((height + 2 * padding + pixelFactor) / pixelFactor);
+    this.width = ~~((width + 2 * padding + pixelRatio) / pixelRatio);
+    this.height = ~~((height + 2 * padding + pixelRatio) / pixelRatio);
 
     this.array = new Uint32Array(~~((this.width * this.height + SIZE) / SIZE));
+
+    /**
+     * Get pixel ratio between real size and bitmap size
+     * @returns pixel ratio between real size and bitmap size
+     */
+    this.pixelRatio = function() {
+      return pixelRatio;
+    };
 
     /**
      * Scale real pixel in the chart into bitmap pixel
@@ -37,7 +45,7 @@ export default class BitMap {
      * @returns scaled pixel
      */
     this.scalePixel = function(realPixel) {
-      return ~~((realPixel + padding) / pixelFactor);
+      return ~~((realPixel + padding) / pixelRatio);
     };
   }
 
@@ -68,7 +76,7 @@ export default class BitMap {
     return this.getScaled(this.scalePixel(x), this.scalePixel(y));
   }
 
-  markInBoundScaled(x, y, x2, y2) {
+  markInRangedScaled(x, y, x2, y2) {
     let start, end, indexStart, indexEnd;
     for (; y <= y2; y++) {
       start = y * this.width + x;
@@ -88,8 +96,8 @@ export default class BitMap {
     }
   }
 
-  markInBound(x, y, x2, y2) {
-    return this.markInBoundScaled(
+  markInRanged(x, y, x2, y2) {
+    return this.markInRangedScaled(
       this.scalePixel(x),
       this.scalePixel(y),
       this.scalePixel(x2),
@@ -97,7 +105,7 @@ export default class BitMap {
     );
   }
 
-  unmarkInBoundScaled(x, y, x2, y2) {
+  unmarkInRangedScaled(x, y, x2, y2) {
     let start, end, indexStart, indexEnd;
     for (; y <= y2; y++) {
       start = y * this.width + x;
@@ -117,8 +125,8 @@ export default class BitMap {
     }
   }
 
-  unmarkInBound(x, y, x2, y2) {
-    return this.unmarkInBoundScaled(
+  unmarkInRanged(x, y, x2, y2) {
+    return this.unmarkInRangedScaled(
       this.scalePixel(x),
       this.scalePixel(y),
       this.scalePixel(x2),
@@ -126,7 +134,7 @@ export default class BitMap {
     );
   }
 
-  getInBoundScaled(x, y, x2, y2) {
+  getInRangedScaled(x, y, x2, y2) {
     let start, end, indexStart, indexEnd;
     for (; y <= y2; y++) {
       start = y * this.width + x;
@@ -147,8 +155,8 @@ export default class BitMap {
     return false;
   }
 
-  getInBound(x, y, x2, y2) {
-    return this.getInBoundScaled(
+  getInRanged(x, y, x2, y2) {
+    return this.getInRangedScaled(
       this.scalePixel(x),
       this.scalePixel(y),
       this.scalePixel(x2),
