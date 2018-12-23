@@ -76,7 +76,7 @@ export default class BitMap {
     return this.getScaled(this.scalePixel(x), this.scalePixel(y));
   }
 
-  markInRangedScaled(x, y, x2, y2) {
+  markInRangeScaled(x, y, x2, y2) {
     let start, end, indexStart, indexEnd;
     for (; y <= y2; y++) {
       start = y * this.width + x;
@@ -96,8 +96,8 @@ export default class BitMap {
     }
   }
 
-  markInRanged(x, y, x2, y2) {
-    return this.markInRangedScaled(
+  markInRange(x, y, x2, y2) {
+    return this.markInRangeScaled(
       this.scalePixel(x),
       this.scalePixel(y),
       this.scalePixel(x2),
@@ -105,7 +105,7 @@ export default class BitMap {
     );
   }
 
-  unmarkInRangedScaled(x, y, x2, y2) {
+  unmarkInRangeScaled(x, y, x2, y2) {
     let start, end, indexStart, indexEnd;
     for (; y <= y2; y++) {
       start = y * this.width + x;
@@ -125,8 +125,8 @@ export default class BitMap {
     }
   }
 
-  unmarkInRanged(x, y, x2, y2) {
-    return this.unmarkInRangedScaled(
+  unmarkInRange(x, y, x2, y2) {
+    return this.unmarkInRangeScaled(
       this.scalePixel(x),
       this.scalePixel(y),
       this.scalePixel(x2),
@@ -134,7 +134,7 @@ export default class BitMap {
     );
   }
 
-  getInRangedScaled(x, y, x2, y2) {
+  getInRangeScaled(x, y, x2, y2) {
     let start, end, indexStart, indexEnd;
     for (; y <= y2; y++) {
       start = y * this.width + x;
@@ -155,8 +155,8 @@ export default class BitMap {
     return false;
   }
 
-  getInRanged(x, y, x2, y2) {
-    return this.getInRangedScaled(
+  getInRange(x, y, x2, y2) {
+    return this.getInRangeScaled(
       this.scalePixel(x),
       this.scalePixel(y),
       this.scalePixel(x2),

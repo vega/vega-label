@@ -3,6 +3,7 @@
 /*eslint no-empty: "warn"*/
 
 export function labelWidth(context, text, fontSize, font) {
-  context.font = fontSize + 'px ' + font; // TODO: add other font properties
+  // TODO: support other font properties
+  context.font = fontSize + 'px ' + font;
   return context.measureText(text).width;
 }

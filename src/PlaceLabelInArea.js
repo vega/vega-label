@@ -89,7 +89,7 @@ export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
     y1 = scalePixel(d.y - textHeight / 2.0);
     x2 = scalePixel(d.x + textWidth / 2.0);
     y2 = scalePixel(d.y + textHeight / 2.0);
-    bm1.markInRangedScaled(x1, y1, x2, y2);
+    bm1.markInRangeScaled(x1, y1, x2, y2);
     d.align = 'center';
     d.baseline = 'middle';
     return true;
@@ -161,60 +161,60 @@ function Stack() {
   this.isEmpty = () => idx <= 0;
 }
 
-function Queue() {
-  var size = 1000;
-  var xQueue = new Int32Array(size);
-  var yQueue = new Int32Array(size);
-  var start = 0;
-  var end = 0;
+// function Queue() {
+//   var size = 1000;
+//   var xQueue = new Int32Array(size);
+//   var yQueue = new Int32Array(size);
+//   var start = 0;
+//   var end = 0;
 
-  function resize() {
-    var newXQueue = new Int32Array(size * 2),
-      newYQueue = new Int32Array(size * 2);
+//   function resize() {
+//     var newXQueue = new Int32Array(size * 2),
+//       newYQueue = new Int32Array(size * 2);
 
-    if (start <= end) {
-      for (var i = 0; i + start < end; i++) {
-        newXQueue[i] = xQueue[i + start];
-        newYQueue[i] = yQueue[i + start];
-      }
-      end -= start;
-    } else {
-      for (i = 0; i + start < size; i++) {
-        newXQueue[i] = xQueue[i + start];
-        newYQueue[i] = yQueue[i + start];
-      }
-      for (i = 0; i < end; i++) {
-        newXQueue[i + size - start] = xQueue[i];
-        newYQueue[i + size - start] = yQueue[i];
-      }
-      end += size - start;
-    }
-    start = 0;
-    size *= 2;
-    xQueue = newXQueue;
-    yQueue = newYQueue;
-  }
+//     if (start <= end) {
+//       for (var i = 0; i + start < end; i++) {
+//         newXQueue[i] = xQueue[i + start];
+//         newYQueue[i] = yQueue[i + start];
+//       }
+//       end -= start;
+//     } else {
+//       for (i = 0; i + start < size; i++) {
+//         newXQueue[i] = xQueue[i + start];
+//         newYQueue[i] = yQueue[i + start];
+//       }
+//       for (i = 0; i < end; i++) {
+//         newXQueue[i + size - start] = xQueue[i];
+//         newYQueue[i + size - start] = yQueue[i];
+//       }
+//       end += size - start;
+//     }
+//     start = 0;
+//     size *= 2;
+//     xQueue = newXQueue;
+//     yQueue = newYQueue;
+//   }
 
-  this.push = function(x, y) {
-    if (end === start - 1) resize();
-    xQueue[end] = x;
-    yQueue[end] = y;
-    end = (end + 1) % size;
-  };
+//   this.push = function(x, y) {
+//     if (end === start - 1) resize();
+//     xQueue[end] = x;
+//     yQueue[end] = y;
+//     end = (end + 1) % size;
+//   };
 
-  this.pop = function() {
-    if (start !== end) {
-      var idx = start;
-      start++;
-      start %= size;
-      return [xQueue[idx], yQueue[idx]];
-    } else null;
-  };
+//   this.pop = function() {
+//     if (start !== end) {
+//       var idx = start;
+//       start++;
+//       start %= size;
+//       return [xQueue[idx], yQueue[idx]];
+//     } else null;
+//   };
 
-  this.peak = () => (start !== end ? [xQueue[start], yQueue[start]] : null);
+//   this.peak = () => (start !== end ? [xQueue[start], yQueue[start]] : null);
 
-  this.isEmpty = () => start !== end;
-}
+//   this.isEmpty = () => start !== end;
+// }
 
 // export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
 //   var x1, x2, y1, y2, x, y, lo, hi, mid, tmp;
@@ -323,7 +323,7 @@ function Queue() {
 //     y1 = scalePixel(d.y - textHeight / 2.0);
 //     x2 = scalePixel(d.x + textWidth / 2.0);
 //     y2 = scalePixel(d.y + textHeight / 2.0);
-//     bm1.markInRangedScaled(x1, y1, x2, y2);
+//     bm1.markInRangeScaled(x1, y1, x2, y2);
 //     d.align = 'center';
 //     d.baseline = 'middle';
 //     return true;
