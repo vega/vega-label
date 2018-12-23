@@ -5,7 +5,7 @@
 import placeLabel from './PlaceLabel';
 import placeLabelInArea from './PlaceLabelInArea';
 import fillBitMap from './FillBitMap';
-import BitMap from './BitMap';
+import { default as BitMap, printBitMap } from './BitMap';
 import anchorsOffsetDict from './AnchorsOffsetDict';
 
 export default function() {
@@ -70,9 +70,9 @@ export default function() {
       if (d.originalOpacity !== 0) place(d);
     }
 
-    bm1.print('bit-map-1');
-    if (bm2) bm2.print('bit-map-2');
-    if (bm3) bm3.print('bit-map-before');
+    printBitMap(bm1, 'bit-map-1');
+    if (bm2) printBitMap(bm2, 'bit-map-2');
+    if (bm3) printBitMap(bm3, 'bit-map-before');
     return data;
   };
 

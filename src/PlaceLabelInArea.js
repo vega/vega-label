@@ -3,6 +3,7 @@
 /*eslint no-empty: "warn"*/
 import { canvas } from 'vega-canvas';
 import { labelWidth } from './Common';
+import { printBitMap } from './BitMap';
 import { checkCollision } from './PlaceLabel';
 
 var X_DIR = [-1, -1, 1, 1];
@@ -81,7 +82,7 @@ export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
     }
   }
 
-  // bm3.print('bit-map-before');
+  printBitMap(bm2, 'bit-map-before');
 
   if (labelPlaced || labelPlaced2) {
     x1 = scalePixel(d.x - textWidth / 2.0);
@@ -110,11 +111,11 @@ function checkLabelOutOfBound(x, y, textWidth, textHeight, width, height) {
 function collide(x, y, textHeight, textWidth, h, bm1, bm2) {
   var w = (textWidth * h) / (textHeight * 2.0);
   h = h / 2.0;
-  var bin = bm1.bin,
-    _x1 = bin(x - w),
-    _x2 = bin(x + w),
-    _y1 = bin(y - h),
-    _y2 = bin(y + h);
+  var scalePixel = bm1.scalePixel,
+    _x1 = scalePixel(x - w),
+    _x2 = scalePixel(x + w),
+    _y1 = scalePixel(y - h),
+    _y2 = scalePixel(y + h);
   return (
     bm1.searchOutOfBound(_x1, _y1, _x2, _y2) ||
     checkCollision(_x1, _y1, _x2, _y2, bm1) ||
@@ -317,11 +318,11 @@ function Queue() {
 //   }
 
 //   if (labelPlaced || maxSize2 || maxSize3) {
-//     var bin = bm1.bin;
-//     x1 = bin(d.x - textWidth / 2.0);
-//     y1 = bin(d.y - textHeight / 2.0);
-//     x2 = bin(d.x + textWidth / 2.0);
-//     y2 = bin(d.y + textHeight / 2.0);
+//     var scalePixel = bm1.scalePixel;
+//     x1 = scalePixel(d.x - textWidth / 2.0);
+//     y1 = scalePixel(d.y - textHeight / 2.0);
+//     x2 = scalePixel(d.x + textWidth / 2.0);
+//     y2 = scalePixel(d.y + textHeight / 2.0);
 //     bm1.markInBoundScaled(x1, y1, x2, y2);
 //     d.align = 'center';
 //     d.baseline = 'middle';
@@ -334,10 +335,10 @@ function Queue() {
 
 // function collisionFromPositionAndHeight(textWidth, textHeight, x, y, h, bitMap) {
 //   var w = (h * textWidth) / textHeight,
-//     bin = bitMap.bin,
-//     x1 = bin(x - w / 2.0),
-//     y1 = bin(y - h / 2.0),
-//     x2 = bin(x + w / 2.0),
-//     y2 = bin(y + h / 2.0);
+//     scalePixel = bitMap.scalePixel,
+//     x1 = scalePixel(x - w / 2.0),
+//     y1 = scalePixel(y - h / 2.0),
+//     x2 = scalePixel(x + w / 2.0),
+//     y2 = scalePixel(y + h / 2.0);
 //   return bitMap.searchOutOfBound(x1, y1, x2, y2) || checkCollision(x1, y1, x2, y2, bitMap);
 // }

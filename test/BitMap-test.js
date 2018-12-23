@@ -1,6 +1,13 @@
 const tape = require('tape');
 const BitMap = require('../').BitMap;
-// const label = require('../').label;
+
+function createUnscaledBitMap() {
+  return new BitMap(100, 100, 0);
+}
+
+function createScaledBitMap() {
+  return new BitMap(1234, 1234, 0);
+}
 
 tape('BitMap scale pixel to the correct position in bit map', test => {
   const bm1 = new BitMap(200, 200, 0);
@@ -19,52 +26,46 @@ tape('BitMap scale pixel to the correct position in bit map', test => {
   test.equals(bm4.scalePixel(30), 10);
   test.equals(bm4.scalePixel(50), 17);
 
-  test.equals(0, 0);
+  const bm5 = new BitMap(2345, 3456, 7);
+  test.equals(bm5.scalePixel(30), 12);
+  test.equals(bm5.scalePixel(50), 20);
+
   test.end();
 });
 
-// tape('Wordcloud generates wordcloud layout', function(test) {
-//   const bm = new BitMap(200, 200, 0);
+tape('BitMap get, mark, and unmark single pixel correctly', test => {
+  const bms = createUnscaledBitMap();
+  bms.mark(13, 14);
+  bms.markScaled(17, 18);
+  test.ok(bms.get(13, 14));
+  test.ok(bms.getScaled(13, 14));
+  test.ok(bms.get(17, 18));
+  test.ok(bms.getScaled(17, 18));
 
-//   var data = [
-//     { text: 'foo', size: 49, index: 0 },
-//     { text: 'bar', size: 36, index: 1 },
-//     { text: 'baz', size: 25, index: 2 },
-//     { text: 'abc', size: 1, index: 3 },
-//   ];
+  test.notOk(bms.get(14, 14));
+  test.notOk(bms.getScaled(14, 14));
+  test.notOk(bms.get(13, 15));
+  test.notOk(bms.getScaled(13, 15));
 
-//   var text = util.field('text'),
-//     size = util.field('size'),
-//     df = new vega.Dataflow(),
-//     rot = df.add(null),
-//     c0 = df.add(Collect),
-//     wc = df.add(Wordcloud, {
-//       size: [500, 500],
-//       text: text,
-//       fontSize: size,
-//       fontSizeRange: [1, 7],
-//       rotate: rot,
-//       pulse: c0,
-//     });
+  bms.unmark(13, 14);
+  bms.unmarkScaled(17, 18);
+  test.notOk(bms.get(13, 14));
+  test.notOk(bms.get(17, 18));
 
-//   var angles = [0, 30, 60, 90];
-//   rot.set(function(t) {
-//     return angles[t.index];
-//   });
+  const bml = createScaledBitMap();
+  bml.mark(13, 14);
+  bml.markScaled(27, 28);
+  test.ok(bml.get(13, 14));
+  test.ok(bml.getScaled(bml.scalePixel(13), bml.scalePixel(14)));
+  test.ok(bml.getScaled(27, 28));
 
-//   df.pulse(c0, vega.changeset().insert(data)).run();
-//   test.equal(c0.value.length, data.length);
-//   test.equal(wc.stamp, df.stamp());
+  test.notOk(bml.get(14, 14));
+  test.notOk(bml.getScaled(bml.scalePixel(14), bml.scalePixel(14)));
+  test.notOk(bml.getScaled(26, 28));
 
-//   for (var i = 0, n = data.length; i < n; ++i) {
-//     test.ok(data[i].x != null && !isNaN(data[i].x));
-//     test.ok(data[i].y != null && !isNaN(data[i].y));
-//     test.equal(data[i].font, 'sans-serif');
-//     test.equal(data[i].fontSize, Math.sqrt(data[i].size));
-//     test.equal(data[i].fontStyle, 'normal');
-//     test.equal(data[i].fontWeight, 'normal');
-//     test.equal(data[i].angle, angles[i]);
-//   }
-
-//   test.end();
-// });
+  bml.unmark(13, 14);
+  bml.unmarkScaled(27, 28);
+  test.notOk(bms.get(13, 14));
+  test.notOk(bms.getScaled(27, 28));
+  test.end();
+});

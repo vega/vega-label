@@ -11,6 +11,14 @@ for (let i = 1; i <= SIZE; i++) {
   right0[i] = ~right1[i];
 }
 
+function applyMark(array, index, mask) {
+  array[index] |= mask;
+}
+
+function applyUnmark(array, index, mask) {
+  array[index] &= mask;
+}
+
 export default class BitMap {
   constructor(width, height, padding) {
     let pixelFactor = Math.sqrt((width * height) / 1000000.0);
@@ -33,17 +41,9 @@ export default class BitMap {
     };
   }
 
-  applyMark(index, mask) {
-    this.array[index] |= mask;
-  }
-
-  applyUnmark(index, mask) {
-    this.array[index] &= mask;
-  }
-
   markScaled(x, y) {
     const mapIndex = y * this.width + x;
-    this.applyMark(mapIndex >>> DIV, 1 << (mapIndex & MOD));
+    applyMark(this.array, mapIndex >>> DIV, 1 << (mapIndex & MOD));
   }
 
   mark(x, y) {
@@ -52,7 +52,7 @@ export default class BitMap {
 
   unmarkScaled(x, y) {
     const mapIndex = y * this.width + x;
-    this.applyUnmark(mapIndex >>> DIV, ~(1 << (mapIndex & MOD)));
+    applyUnmark(this.array, mapIndex >>> DIV, ~(1 << (mapIndex & MOD)));
   }
 
   unmark(x, y) {
@@ -76,13 +76,13 @@ export default class BitMap {
       indexStart = start >>> DIV;
       indexEnd = end >>> DIV;
       if (indexStart === indexEnd) {
-        this.applyMark(indexStart, right0[start & MOD] & right1[(end & MOD) + 1]);
+        applyMark(this.array, indexStart, right0[start & MOD] & right1[(end & MOD) + 1]);
       } else {
-        this.applyMark(indexStart, right0[start & MOD]);
-        this.applyMark(indexEnd, right1[(end & MOD) + 1]);
+        applyMark(this.array, indexStart, right0[start & MOD]);
+        applyMark(this.array, indexEnd, right1[(end & MOD) + 1]);
 
         for (let i = indexStart + 1; i < indexEnd; i++) {
-          this.applyMark(i, 0xffffffff);
+          applyMark(this.array, i, 0xffffffff);
         }
       }
     }
@@ -105,13 +105,13 @@ export default class BitMap {
       indexStart = start >>> DIV;
       indexEnd = end >>> DIV;
       if (indexStart === indexEnd) {
-        this.applyUnmark(indexStart, right1[start & MOD] | right0[(end & MOD) + 1]);
+        applyUnmark(this.array, indexStart, right1[start & MOD] | right0[(end & MOD) + 1]);
       } else {
-        this.applyUnmark(indexStart, right1[start & MOD]);
-        this.applyUnmark(indexEnd, right0[(end & MOD) + 1]);
+        applyUnmark(this.array, indexStart, right1[start & MOD]);
+        applyUnmark(this.array, indexEnd, right0[(end & MOD) + 1]);
 
         for (let i = indexStart + 1; i < indexEnd; i++) {
-          this.applyUnmark(i, 0x0);
+          applyUnmark(this.array, i, 0x0);
         }
       }
     }
@@ -159,33 +159,35 @@ export default class BitMap {
   searchOutOfBound(x, y, x2, y2) {
     return x < 0 || y < 0 || y2 >= this.height || x2 >= this.width;
   }
+}
 
-  print(id) {
-    if (!arguments.length) id = 'bitmap';
-    let x, y;
-    const canvas = document.getElementById(id);
-    if (!canvas) return;
-    canvas.setAttribute('width', this.width);
-    canvas.setAttribute('height', this.height);
-    const ctx = canvas.getContext('2d');
-    for (y = 0; y < this.height; y++) {
-      for (x = 0; x < this.width; x++) {
-        if (this.getScaled(x, y)) {
-          ctx.fillStyle = 'rgba(0, 0, 0, 1)';
-          ctx.fillRect(x, y, 1, 1);
-        }
+// debugging tools
+
+export function printBitMap(bitmap, id) {
+  if (!arguments.length) id = 'bitmap';
+  let x, y;
+  const canvas = document.getElementById(id);
+  if (!canvas) return;
+  canvas.setAttribute('width', bitmap.width);
+  canvas.setAttribute('height', bitmap.height);
+  const ctx = canvas.getContext('2d');
+  for (y = 0; y < bitmap.height; y++) {
+    for (x = 0; x < bitmap.width; x++) {
+      if (bitmap.getScaled(x, y)) {
+        ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+        ctx.fillRect(x, y, 1, 1);
       }
     }
   }
+}
 
-  printContext(ctx) {
-    let x, y;
-    for (y = 0; y < this.height; y++) {
-      for (x = 0; x < this.width; x++) {
-        if (this.getScaled(x, y)) {
-          ctx.fillStyle = 'rgba(0, 0, 0, 1)';
-          ctx.fillRect(x, y, 1, 1);
-        }
+export function printBitMapContext(bitmap, ctx) {
+  let x, y;
+  for (y = 0; y < bitmap.height; y++) {
+    for (x = 0; x < bitmap.width; x++) {
+      if (bitmap.getScaled(x, y)) {
+        ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+        ctx.fillRect(x, y, 1, 1);
       }
     }
   }
