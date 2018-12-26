@@ -5,11 +5,11 @@ import BitMap from './BitMap';
 import { Marks } from 'vega-scenegraph';
 
 // bit mask for getting first 2 bytes of alpha value
-var ALPHA_MASK = 0xff000000;
+const ALPHA_MASK = 0xff000000;
 
 // alpha value equivalent to opacity 0.0625
-var INSIDE_OPACITY_IN_ALPHA = 0x10000000;
-var INSIDE_OPACITY = 0.0625;
+const INSIDE_OPACITY_IN_ALPHA = 0x10000000;
+const INSIDE_OPACITY = 0.0625;
 
 /**
  * Get bitmaps and fill the with mark information from data
@@ -27,7 +27,7 @@ var INSIDE_OPACITY = 0.0625;
  *            undefined if checking border of base mark is not needed when not avoiding any mark)
  */
 export default function(data, size, marktype, avoidBaseMark, avoidMarks, labelInside, padding) {
-  var isGroupArea = marktype === 'group' && data[0].datum.datum.items[0].marktype === 'area',
+  const isGroupArea = marktype === 'group' && data[0].datum.datum.items[0].marktype === 'area',
     width = size[0],
     height = size[1],
     n = data.length;
@@ -35,8 +35,8 @@ export default function(data, size, marktype, avoidBaseMark, avoidMarks, labelIn
   // extract data information from base mark when base mark is to be avoid
   // or base mark is implicitly avoid when base mark is group area
   if (marktype && (avoidBaseMark || isGroupArea)) {
-    var items = new Array(n);
-    for (var i = 0; i < n; i++) {
+    const items = new Array(n);
+    for (let i = 0; i < n; i++) {
       items[i] = data[i].datum.datum;
     }
     avoidMarks.push(items);
@@ -44,14 +44,14 @@ export default function(data, size, marktype, avoidBaseMark, avoidMarks, labelIn
 
   if (avoidMarks.length) {
     // when there is at least one mark to be avoided
-    var context = writeToCanvas(avoidMarks, width, height, labelInside || isGroupArea);
+    const context = writeToCanvas(avoidMarks, width, height, labelInside || isGroupArea);
     return writeToBitMaps(context, width, height, labelInside, isGroupArea, padding);
   } else {
-    var bitMap = new BitMap(width, height, padding);
+    const bitMap = new BitMap(width, height, padding);
     if (avoidBaseMark) {
       // when there is no base mark but data points are to be avoided
-      for (i = 0; i < n; i++) {
-        var d = data[i];
+      for (let i = 0; i < n; i++) {
+        const d = data[i];
         bitMap.mark(d.markBound[0], d.markBound[3]);
       }
     }
@@ -69,16 +69,16 @@ export default function(data, size, marktype, avoidBaseMark, avoidMarks, labelIn
  * @returns canvas context, to which all avoiding marks are drawn
  */
 function writeToCanvas(avoidMarks, width, height, labelInside) {
-  var m = avoidMarks.length,
+  const m = avoidMarks.length,
     // c = document.getElementById('canvas-render'), // debugging canvas
     c = document.createElement('canvas'),
     context = c.getContext('2d');
-  var originalItems, itemsLen;
+  let originalItems, itemsLen;
   c.setAttribute('width', width);
   c.setAttribute('height', height);
 
   // draw every avoiding marks into canvas
-  for (var i = 0; i < m; i++) {
+  for (let i = 0; i < m; i++) {
     originalItems = avoidMarks[i];
     itemsLen = originalItems.length;
     if (!itemsLen) continue;
@@ -104,11 +104,11 @@ function writeToCanvas(avoidMarks, width, height, labelInside) {
  *          - second bitmap is filled with borders of all the avoiding marks
  */
 function writeToBitMaps(context, width, height, labelInside, isGroupArea, padding) {
-  var layer1 = new BitMap(width, height, padding),
+  const layer1 = new BitMap(width, height, padding),
     layer2 = labelInside || isGroupArea ? new BitMap(width, height, padding) : undefined,
     imageData = context.getImageData(0, 0, width, height),
     canvasBuffer = new Uint32Array(imageData.data.buffer);
-  var x, y, alpha;
+  let x, y, alpha;
 
   if (isGroupArea) {
     for (y = 0; y < height; y++) {
@@ -144,10 +144,11 @@ function writeToBitMaps(context, width, height, labelInside, isGroupArea, paddin
  * @param {bool} labelInside a flag if label to be placed inside mark or not
  */
 function drawMark(context, originalItems, labelInside) {
-  var n = originalItems.length;
+  const n = originalItems.length;
+  let items;
   if (labelInside) {
-    var items = new Array(n);
-    for (var i = 0; i < n; i++) {
+    items = new Array(n);
+    for (let i = 0; i < n; i++) {
       items[i] = prepareMarkItem(originalItems[i]);
     }
   } else items = originalItems;
@@ -163,12 +164,12 @@ function drawMark(context, originalItems, labelInside) {
  * @param {bool} labelInside a flag if label to be placed inside mark or not
  */
 function drawGroup(context, groups, labelInside) {
-  var n = groups.length,
-    marks;
-  for (var i = 0; i < n; i++) {
+  const n = groups.length;
+  let marks;
+  for (let i = 0; i < n; i++) {
     marks = groups[i].items;
-    for (var j = 0; j < marks.length; j++) {
-      var g = marks[j];
+    for (let j = 0; j < marks.length; j++) {
+      const g = marks[j];
       if (g.marktype !== 'group') drawMark(context, g.items, labelInside);
       else drawGroup(context, g.items, labelInside); // recursivly draw group of marks
     }
@@ -182,8 +183,8 @@ function drawGroup(context, groups, labelInside) {
  * @returns prepared item
  */
 function prepareMarkItem(originalItem) {
-  var item = {};
-  for (var key in originalItem) {
+  const item = {};
+  for (const key in originalItem) {
     item[key] = originalItem[key];
   }
   if (item.stroke) item.strokeOpacity = 1;

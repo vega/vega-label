@@ -4,24 +4,24 @@
 import { canvas } from 'vega-canvas';
 import { labelWidth } from './Common';
 
-var SIZE_FACTOR = 0.707106781186548; // this is 1 over square root of 2
-var ALIGN = ['right', 'center', 'left'];
-var BASELINE = ['bottom', 'middle', 'top'];
+const SIZE_FACTOR = 0.707106781186548; // this is 1 over square root of 2
+const ALIGN = ['right', 'center', 'left'];
+const BASELINE = ['bottom', 'middle', 'top'];
 
 export default function(d, bm1, bm2, anchors, offsets) {
-  var context = canvas().getContext('2d');
-  var n = offsets.length,
-    textWidth = d.textWidth,
+  const context = canvas().getContext('2d');
+  const n = offsets.length,
     textHeight = d.textHeight,
     markBound = d.markBound,
     text = d.text,
-    font = d.font;
-  var dx, dy, isInside, sizeFactor, insideFactor;
-  var x, x1, xc, x2, y1, yc, y2;
-  var _x1, _x2, _y1, _y2;
-  var scalePixel = bm1.scalePixel;
+    font = d.font,
+    scalePixel = bm1.scalePixel;
+  let textWidth = d.textWidth;
+  let dx, dy, isInside, sizeFactor, insideFactor;
+  let x, x1, xc, x2, y1, yc, y2;
+  let _x1, _x2, _y1, _y2;
 
-  for (var i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     dx = (anchors[i] & 0x3) - 1;
     dy = ((anchors[i] >>> 0x2) & 0x3) - 1;
 
@@ -40,7 +40,7 @@ export default function(d, bm1, bm2, anchors, offsets) {
     _x1 = scalePixel(x);
 
     if (!textWidth) {
-      // var end = _x1 + (_y2 - _y1) * (~~(text.length / 3));
+      // const end = _x1 + (_y2 - _y1) * (~~(text.length / 3));
       if (isLabelPlacable(_x1, _x1, _y1, _y2, bm1, bm2, x, x, y1, y2, markBound, isInside))
         continue;
       else textWidth = labelWidth(context, text, textHeight, font);

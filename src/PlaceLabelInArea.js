@@ -6,26 +6,25 @@ import { labelWidth } from './Common';
 import { printBitMap } from './BitMap';
 import { checkCollision } from './PlaceLabel';
 
-var X_DIR = [-1, -1, 1, 1];
-var Y_DIR = [-1, 1, -1, 1];
+const X_DIR = [-1, -1, 1, 1];
+const Y_DIR = [-1, 1, -1, 1];
 
 export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
-  var context = canvas().getContext('2d');
-  var x1, x2, y1, y2, x, y, _x, _y, lo, hi, mid, areaWidth, coordinate, nextX, nextY;
-  var pixelRatio = bm2.pixelRatio(),
+  const context = canvas().getContext('2d'),
+    pixelRatio = bm2.pixelRatio(),
     items = d.datum.datum.items[0].items,
     n = items.length,
     textHeight = d.textHeight,
     textWidth = labelWidth(context, d.text, textHeight, d.font),
-    maxSize = avoidBaseMark ? textHeight : 0,
+    scalePixel = bm1.scalePixel,
+    list = new Stack();
+  let maxSize = avoidBaseMark ? textHeight : 0,
     labelPlaced = false,
     labelPlaced2 = false,
-    scalePixel = bm1.scalePixel,
-    list = new Stack(),
-    // list = new Queue(),
     maxAreaWidth = 0;
+  let x1, x2, y1, y2, x, y, _x, _y, lo, hi, mid, areaWidth, coordinate, nextX, nextY;
 
-  for (var i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     x1 = items[i].x;
     y1 = items[i].y;
     x2 = items[i].x2 !== undefined ? items[i].x2 : x1;
@@ -37,7 +36,7 @@ export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
       _y = coordinate[1];
       if (!bm1.getScaled(_x, _y) && !bm2.getScaled(_x, _y) && !bm3.getScaled(_x, _y)) {
         bm3.markScaled(_x, _y);
-        for (var j = 0; j < 4; j++) {
+        for (let j = 0; j < 4; j++) {
           nextX = _x + X_DIR[j];
           nextY = _y + Y_DIR[j];
           if (!bm3.searchOutOfBound(nextX, nextY, nextX, nextY)) list.push(nextX, nextY);
@@ -101,7 +100,7 @@ export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
 }
 
 function checkLabelOutOfBound(x, y, textWidth, textHeight, width, height) {
-  var x1 = x - textWidth / 2.0,
+  const x1 = x - textWidth / 2.0,
     x2 = x + textWidth / 2.0,
     y1 = y - textHeight / 2.0,
     y2 = y + textHeight / 2.0;
@@ -109,9 +108,9 @@ function checkLabelOutOfBound(x, y, textWidth, textHeight, width, height) {
 }
 
 function collide(x, y, textHeight, textWidth, h, bm1, bm2) {
-  var w = (textWidth * h) / (textHeight * 2.0);
+  const w = (textWidth * h) / (textHeight * 2.0);
   h = h / 2.0;
-  var scalePixel = bm1.scalePixel,
+  const scalePixel = bm1.scalePixel,
     _x1 = scalePixel(x - w),
     _x2 = scalePixel(x + w),
     _y1 = scalePixel(y - h),
@@ -124,16 +123,16 @@ function collide(x, y, textHeight, textWidth, h, bm1, bm2) {
 }
 
 function Stack() {
-  var size = 100;
-  var xStack = new Int32Array(size);
-  var yStack = new Int32Array(size);
-  var idx = 0;
+  let size = 100;
+  let xStack = new Int32Array(size);
+  let yStack = new Int32Array(size);
+  let idx = 0;
 
   function resize() {
-    var newXStack = new Int32Array(size * 2),
+    const newXStack = new Int32Array(size * 2),
       newYStack = new Int32Array(size * 2);
 
-    for (var i = 0; i < idx; i++) {
+    for (let i = 0; i < idx; i++) {
       newXStack[i] = xStack[i];
       newYStack[i] = yStack[i];
     }
@@ -160,61 +159,6 @@ function Stack() {
 
   this.isEmpty = () => idx <= 0;
 }
-
-// function Queue() {
-//   var size = 1000;
-//   var xQueue = new Int32Array(size);
-//   var yQueue = new Int32Array(size);
-//   var start = 0;
-//   var end = 0;
-
-//   function resize() {
-//     var newXQueue = new Int32Array(size * 2),
-//       newYQueue = new Int32Array(size * 2);
-
-//     if (start <= end) {
-//       for (var i = 0; i + start < end; i++) {
-//         newXQueue[i] = xQueue[i + start];
-//         newYQueue[i] = yQueue[i + start];
-//       }
-//       end -= start;
-//     } else {
-//       for (i = 0; i + start < size; i++) {
-//         newXQueue[i] = xQueue[i + start];
-//         newYQueue[i] = yQueue[i + start];
-//       }
-//       for (i = 0; i < end; i++) {
-//         newXQueue[i + size - start] = xQueue[i];
-//         newYQueue[i + size - start] = yQueue[i];
-//       }
-//       end += size - start;
-//     }
-//     start = 0;
-//     size *= 2;
-//     xQueue = newXQueue;
-//     yQueue = newYQueue;
-//   }
-
-//   this.push = function(x, y) {
-//     if (end === start - 1) resize();
-//     xQueue[end] = x;
-//     yQueue[end] = y;
-//     end = (end + 1) % size;
-//   };
-
-//   this.pop = function() {
-//     if (start !== end) {
-//       var idx = start;
-//       start++;
-//       start %= size;
-//       return [xQueue[idx], yQueue[idx]];
-//     } else null;
-//   };
-
-//   this.peak = () => (start !== end ? [xQueue[start], yQueue[start]] : null);
-
-//   this.isEmpty = () => start !== end;
-// }
 
 // export default function(d, bm1, bm2, bm3, width, height, avoidBaseMark) {
 //   var x1, x2, y1, y2, x, y, lo, hi, mid, tmp;

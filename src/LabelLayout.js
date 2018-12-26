@@ -19,15 +19,14 @@ export default function() {
     if (!n) return texts; // return immediately when there is not label to be placed
 
     if (!size || size.length !== 2) {
-      // TODO: give an error that size of the chart is needed as an array of width and height
-      return texts;
+      throw Error('Size of chart should be specified as an array of width and height');
     }
 
-    var data = Array(n),
+    var data = new Array(n),
       marktype = texts[0].datum && texts[0].datum.mark ? texts[0].datum.mark.marktype : undefined,
       transformed = texts[0].transformed,
       grouptype = marktype === 'group' ? texts[0].datum.items[markIdx].marktype : undefined,
-      getMarkBound = getMarkBoundFactory(marktype, grouptype, lineAnchor, markIdx);
+      getMarkBoundary = getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIdx);
 
     // prepare text mark data for placing
     var i, d;
@@ -41,7 +40,7 @@ export default function() {
         font: d.font,
         text: d.text,
         sort: sort ? sort(d.datum) : undefined,
-        markBound: getMarkBound(d),
+        markBound: getMarkBoundary(d),
         originalOpacity: transformed ? d.originalOpacity : d.opacity,
         opacity: 0,
         datum: d,
@@ -172,7 +171,7 @@ export default function() {
  *
  * @returns function(d) for getting mark boundary from data point information d
  */
-function getMarkBoundFactory(marktype, grouptype, lineAnchor, markIdx) {
+function getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIdx) {
   if (!marktype) {
     return d => [d.x, d.x, d.x, d.y, d.y, d.y];
   } else if (marktype === 'line' || marktype === 'area') {
