@@ -74,7 +74,7 @@ Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega)
 ![area_job_voyager](pics/label_area_job_voyager.png)
 
 Groups of area are used as the base mark, but `avoidBaseMark` flag is `false`, so labels can collide with their marks.
-Here is the [Vega Specification](./spec/label_area_job_voyager.vg.json)
+Here is the [Vega Specification](./specs/label_area_job_voyager.vg.json)
 
 This example is from Vega [Job Voyager Example](https://vega.github.io/vega/examples/job-voyager/)
 
@@ -85,7 +85,7 @@ This example is from Vega [Job Voyager Example](https://vega.github.io/vega/exam
 ![line_connected_scatter](pics/label_line_connected_scatter.png)
 
 Symbol is used as the base mark to label, and line is the mark to avoid when labeling.
-Here is the [Vega Specification](./spec/label_line_connected_scatter.vg.json)
+Here is the [Vega Specification](./specs/label_line_connected_scatter.vg.json)
 
 This example is from Vega [Connected Scatter Plot Example](https://vega.github.io/vega/examples/connected-scatter-plot/)
 
@@ -94,7 +94,7 @@ This example is from Vega [Connected Scatter Plot Example](https://vega.github.i
 ![line_end](pics/label_line_end.png)
 
 Groups of line are used as the base mark to label, so one label is placed at the end of each line.
-Here is the [Vega Specification](./spec/label_line_end.vg.json)
+Here is the [Vega Specification](./specs/label_line_end.vg.json)
 
 This example is inspired by Vega-Lite [Carbon Dioxide in the Atmosphere](https://vega.github.io/vega-lite/examples/layer_line_co2_concentration.html)
 
@@ -107,7 +107,7 @@ This example is inspired by Vega-Lite [Carbon Dioxide in the Atmosphere](https:/
 Rect is used as the base mark to label. There is 2 sets of labels in this chart.
 The first label is the overall height of each combined bars, and label positions is set to the outer top of each bar.
 The second label is the height of each bar, and label position is set to the inner top of each bar
-Here is the [Vega Specification](./spec/label_rect_stack.vg.json)
+Here is the [Vega Specification](./specs/label_rect_stack.vg.json)
 
 This example is inspired by Vega [Stacked Bar Chart Example](https://vega.github.io/vega/examples/stacked-bar-chart/)
 
@@ -116,7 +116,7 @@ This example is inspired by Vega [Stacked Bar Chart Example](https://vega.github
 ![rect](pics/label_rect.png)
 
 Rect is used as the base mark to label. The label position is set to inner right of each bar as default, and outer right if bar is too small.
-Here is the [Vega Specification](./spec/label_rect.vg.json)
+Here is the [Vega Specification](./specs/label_rect.vg.json)
 
 ## With symbol
 
@@ -125,6 +125,6 @@ Here is the [Vega Specification](./spec/label_rect.vg.json)
 ![scatter_asteroids](pics/label_scatter_asteroids.png)
 
 Symbol is used as the base mark to label.
-Here is the [Vega Specification](./spec/label_scatter_asteroids.vg.json)
+Here is the [Vega Specification](./specs/label_scatter_asteroids.vg.json)
 
 The data is from The Data Intensive Research in Astrophysics and Cosmology at the University of Washington
