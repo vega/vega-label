@@ -9,29 +9,28 @@ import { default as BitMap, printBitMap } from './BitMap';
 import anchorsOffsetDict from './AnchorsOffsetDict';
 
 export default function() {
-  var offset, sort, anchor, avoidMarks, size;
-  var avoidBaseMark, lineAnchor, markIdx, padding;
-  var label = {},
+  let offset, sort, anchor, avoidMarks, size;
+  let avoidBaseMark, lineAnchor, markIdx, padding;
+  let label = {},
     texts = [];
 
   label.layout = function() {
-    var n = texts.length;
+    const n = texts.length;
     if (!n) return texts; // return immediately when there is not label to be placed
 
     if (!size || size.length !== 2) {
       throw Error('Size of chart should be specified as an array of width and height');
     }
 
-    var data = new Array(n),
+    const data = new Array(n),
       marktype = texts[0].datum && texts[0].datum.mark ? texts[0].datum.mark.marktype : undefined,
       transformed = texts[0].transformed,
       grouptype = marktype === 'group' ? texts[0].datum.items[markIdx].marktype : undefined,
       getMarkBoundary = getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIdx);
 
     // prepare text mark data for placing
-    var i, d;
-    for (i = 0; i < n; i++) {
-      d = texts[i];
+    for (let i = 0; i < n; i++) {
+      const d = texts[i];
 
       data[i] = {
         textWidth: undefined,
@@ -51,21 +50,21 @@ export default function() {
     if (sort) data.sort((a, b) => a.sort - b.sort);
 
     // a flag for determining if it is possible for label to be placed inside its base mark
-    var labelInside = false;
-    for (i = 0; i < anchor.length && !labelInside; i++) {
+    let labelInside = false;
+    for (let i = 0; i < anchor.length && !labelInside; i++) {
       labelInside = anchor[i] === 0x5 || offset[i] < 0;
     }
 
-    var bitMaps, bm1, bm2, bm3;
+    let bitMaps, bm1, bm2, bm3;
     bitMaps = fillBitMap(data, size, marktype, avoidBaseMark, avoidMarks, labelInside, padding);
     bm1 = bitMaps[0];
     bm2 = bitMaps[1];
     bm3 = grouptype === 'area' ? new BitMap(size[0], size[1], padding) : undefined;
-    var place = placeFactory(grouptype, bm1, bm2, bm3, anchor, offset, size, avoidBaseMark);
+    const place = placeFactory(grouptype, bm1, bm2, bm3, anchor, offset, size, avoidBaseMark);
 
     // place all label
-    for (i = 0; i < n; i++) {
-      d = data[i];
+    for (let i = 0; i < n; i++) {
+      const d = data[i];
       if (d.originalOpacity !== 0) place(d);
     }
 
@@ -84,20 +83,20 @@ export default function() {
 
   label.offset = function(_, len) {
     if (arguments.length) {
-      var n = _.length;
+      const n = _.length;
       offset = new Float64Array(len);
-      for (var i = 0; i < n; i++) offset[i] = _[i] ? _[i] : 0;
-      for (i = n; i < len; i++) offset[i] = offset[n - 1] ? offset[n - 1] : 0;
+      for (let i = 0; i < n; i++) offset[i] = _[i] ? _[i] : 0;
+      for (let i = n; i < len; i++) offset[i] = offset[n - 1] ? offset[n - 1] : 0;
       return label;
     } else return offset;
   };
 
   label.anchor = function(_, len) {
     if (arguments.length) {
-      var n = _.length;
+      const n = _.length;
       anchor = new Int8Array(len);
-      for (var i = 0; i < n; i++) anchor[i] |= anchorsOffsetDict[_[i]];
-      for (i = n; i < len; i++) anchor[i] = anchor[n - 1];
+      for (let i = 0; i < n; i++) anchor[i] |= anchorsOffsetDict[_[i]];
+      for (let i = n; i < len; i++) anchor[i] = anchor[n - 1];
       return label;
     } else return anchor;
   };
@@ -176,24 +175,24 @@ function getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIdx) {
     return d => [d.x, d.x, d.x, d.y, d.y, d.y];
   } else if (marktype === 'line' || marktype === 'area') {
     return function(d) {
-      var datum = d.datum;
+      const datum = d.datum;
       return [datum.x, datum.x, datum.x, datum.y, datum.y, datum.y];
     };
   } else if (grouptype === 'line') {
-    var endItemIndex = lineAnchor === 'begin' ? m => m - 1 : () => 0;
+    const endItemIndex = lineAnchor === 'begin' ? m => m - 1 : () => 0;
     return function(d) {
-      var items = d.datum.items[markIdx].items;
-      var m = items.length;
+      const items = d.datum.items[markIdx].items;
+      const m = items.length;
       if (m) {
-        var endItem = items[endItemIndex(m)];
+        const endItem = items[endItemIndex(m)];
         return [endItem.x, endItem.x, endItem.x, endItem.y, endItem.y, endItem.y];
       }
-      var min = Number.MIN_SAFE_INTEGER;
+      const min = Number.MIN_SAFE_INTEGER;
       return [-min, -min, -min, -min, -min, -min];
     };
   } else {
     return function(d) {
-      var b = d.datum.bounds;
+      const b = d.datum.bounds;
       return [b.x1, (b.x1 + b.x2) / 2.0, b.x2, b.y1, (b.y1 + b.y2) / 2.0, b.y2];
     };
   }
@@ -217,8 +216,7 @@ function getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIdx) {
  * @returns function(d) for placing label with data point information d
  */
 function placeFactory(grouptype, bm1, bm2, bm3, anchor, offset, size, avoidBaseMark) {
-  var mb;
-  var w = size[0],
+  const w = size[0],
     h = size[1];
   if (grouptype === 'area') {
     return function(d) {
@@ -226,7 +224,7 @@ function placeFactory(grouptype, bm1, bm2, bm3, anchor, offset, size, avoidBaseM
     };
   } else {
     return function(d) {
-      mb = d.markBound;
+      const mb = d.markBound;
       if (mb[2] >= 0 && mb[5] >= 0 && mb[0] <= w && mb[3] <= h)
         if (placeLabel(d, bm1, bm2, anchor, offset)) d.opacity = d.originalOpacity;
     };
