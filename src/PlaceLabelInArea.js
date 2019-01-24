@@ -1,7 +1,7 @@
 /*eslint no-console: "warn"*/
 /*eslint no-empty: "warn"*/
 import { canvas } from 'vega-canvas';
-import { labelWidth } from './Commons';
+import { labelWidth } from './Common';
 import { printBitMap } from './BitMap';
 import { checkCollision } from './PlaceLabel';
 
