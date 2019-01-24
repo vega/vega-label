@@ -8,7 +8,7 @@ const SIZE_FACTOR = 0.707106781186548; // this is 1 over square root of 2
 const ALIGN = ['right', 'center', 'left'];
 const BASELINE = ['bottom', 'middle', 'top'];
 
-export default function(d, bitmaps, anchors, offsets) {
+export default function (d, bitmaps, anchors, offsets) {
   const context = canvas().getContext('2d');
   const n = offsets.length,
     textHeight = d.textHeight,
@@ -23,6 +23,7 @@ export default function(d, bitmaps, anchors, offsets) {
   let x, x1, xc, x2, y1, yc, y2;
   let _x1, _x2, _y1, _y2;
 
+  // for each anchor and offset
   for (let i = 0; i < n; i++) {
     dx = (anchors[i] & 0x3) - 1;
     dy = ((anchors[i] >>> 0x2) & 0x3) - 1;
@@ -42,9 +43,11 @@ export default function(d, bitmaps, anchors, offsets) {
     _x1 = scalePixel(x);
 
     if (!textWidth) {
-      // const end = _x1 + (_y2 - _y1) * (~~(text.length / 3));
+      // to avoid finding width of text label,
+      // skip this anchor/offset option if fail to place the label with 1px width
       if (!isLabelPlacable(_x1, _x1, _y1, _y2, bm0, bm1, x, x, y1, y2, markBound, isInside))
         continue;
+      // Otherwise, find the label width
       else textWidth = labelWidth(context, text, textHeight, font);
     }
 
@@ -56,6 +59,7 @@ export default function(d, bitmaps, anchors, offsets) {
     _x2 = scalePixel(x2);
 
     if (isLabelPlacable(_x1, _x2, _y1, _y2, bm0, bm1, x1, x2, y1, y2, markBound, isInside)) {
+      // place label if the position is placable
       d.x = !dx ? xc : dx * insideFactor < 0 ? x2 : x1;
       d.y = !dy ? yc : dy * insideFactor < 0 ? y2 : y1;
 

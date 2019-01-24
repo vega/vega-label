@@ -16,7 +16,7 @@ export default function() {
 
   label.layout = function() {
     const n = texts.length;
-    if (!n) return texts; // return immediately when there is not label to be placed
+    if (!n) return texts; // return immediately when there is not a label to be placed
 
     if (!size || size.length !== 2) {
       throw Error('Size of chart should be specified as an array of width and height');
@@ -59,6 +59,7 @@ export default function() {
 
     const bitmaps = fillBitMap(data, size, marktype, avoidBaseMark, avoidMarks, labelInside, padding);
     if (grouptype === 'area') {
+      // area chart need another bitmap to find the shape of each area
       bitmaps.push(new BitMap(size[0], size[1], padding));
     }
     const place = placeFactory(grouptype, bitmaps, anchor, offset, size, avoidBaseMark);
