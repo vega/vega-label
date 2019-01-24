@@ -4,7 +4,11 @@ import { canvas } from 'vega-canvas';
 import { labelWidth } from './Common';
 
 const SIZE_FACTOR = 0.707106781186548; // this is 1 over square root of 2
+
+// Options for align
 const ALIGN = ['right', 'center', 'left'];
+
+// Options for baseline
 const BASELINE = ['bottom', 'middle', 'top'];
 
 export default function (d, bitmaps, anchors, offsets) {

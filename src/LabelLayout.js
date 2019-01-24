@@ -5,7 +5,27 @@ import placeLabel from './PlaceLabel';
 import placeLabelInArea from './PlaceLabelInArea';
 import fillBitMap from './FillBitMap';
 import { default as BitMap, printBitMap } from './BitMap';
-import anchorsOffsetDict from './AnchorsOffsetDict';
+
+// 8-bit representation of anchors
+const TOP = 0x0,
+  MIDDLE = 0x1 << 0x2,
+  BOTTOM = 0x2 << 0x2,
+  LEFT = 0x0,
+  CENTER = 0x1,
+  RIGHT = 0x2;
+
+// Dictionary mapping from text anchor to its number representation
+const anchorTextToNumber = {
+  'top-left': TOP + LEFT,
+  top: TOP + CENTER,
+  'top-right': TOP + RIGHT,
+  left: MIDDLE + LEFT,
+  middle: MIDDLE + CENTER,
+  right: MIDDLE + RIGHT,
+  'bottom-left': BOTTOM + LEFT,
+  bottom: BOTTOM + CENTER,
+  'bottom-right': BOTTOM + RIGHT,
+};
 
 export default function () {
   let offset, sort, anchor, avoidMarks, size;
@@ -96,7 +116,7 @@ export default function () {
     if (arguments.length) {
       const n = _.length;
       anchor = new Int8Array(len);
-      for (let i = 0; i < n; i++) anchor[i] |= anchorsOffsetDict[_[i]];
+      for (let i = 0; i < n; i++) anchor[i] |= anchorTextToNumber[_[i]];
       for (let i = n; i < len; i++) anchor[i] = anchor[n - 1];
       return label;
     } else return anchor;
