@@ -55,12 +55,15 @@ export default function() {
       labelInside = anchor[i] === 0x5 || offset[i] < 0;
     }
 
-    let bitMaps, bm1, bm2, bm3;
-    bitMaps = fillBitMap(data, size, marktype, avoidBaseMark, avoidMarks, labelInside, padding);
-    bm1 = bitMaps[0];
-    bm2 = bitMaps[1];
-    bm3 = grouptype === 'area' ? new BitMap(size[0], size[1], padding) : undefined;
-    const place = placeFactory(grouptype, bm1, bm2, bm3, anchor, offset, size, avoidBaseMark);
+    let bitmaps, bm1, bm2, bm3;
+    bitmaps = fillBitMap(data, size, marktype, avoidBaseMark, avoidMarks, labelInside, padding);
+    // bm1 = bitMaps[0];
+    // bm2 = bitMaps[1];
+    // bm3 = grouptype === 'area' ? new BitMap(size[0], size[1], padding) : undefined;
+    if (grouptype === 'area') {
+      bitmaps.push(new BitMap(size[0], size[1], padding));
+    }
+    const place = placeFactory(grouptype, bitmaps, anchor, offset, size, avoidBaseMark);
 
     // place all label
     for (let i = 0; i < n; i++) {
@@ -209,9 +212,7 @@ function getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIdx) {
  *
  * @param {string} grouptype type of group base mark (grouptype can be undefined if the base mark
  *                           is not in group)
- * @param {BitMap} bm1
- * @param {BitMap} bm2
- * @param {BitMap} bm3
+ * @param {array} bitmaps pre-filled bitmaps with avoiding marks for finding label's placing position
  * @param {array} anchor array of anchos point (int8). this array is parallel with offset
  * @param {array} offset array of offset (float64). this array is parallel with anchor
  * @param {array} size array of chart size in format [width, height]
@@ -219,18 +220,18 @@ function getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIdx) {
  *
  * @returns function(d) for placing label with data point information d
  */
-function placeFactory(grouptype, bm1, bm2, bm3, anchor, offset, size, avoidBaseMark) {
+function placeFactory(grouptype, bitmaps, anchor, offset, size, avoidBaseMark) {
   const w = size[0],
     h = size[1];
   if (grouptype === 'area') {
     return function(d) {
-      if (placeLabelInArea(d, bm1, bm2, bm3, w, h, avoidBaseMark)) d.opacity = d.originalOpacity;
+      if (placeLabelInArea(d, bitmaps, w, h, avoidBaseMark)) d.opacity = d.originalOpacity;
     };
   } else {
     return function(d) {
       const mb = d.markBound;
       if (mb[2] >= 0 && mb[5] >= 0 && mb[0] <= w && mb[3] <= h)
-        if (placeLabel(d, bm1, bm2, anchor, offset)) d.opacity = d.originalOpacity;
+        if (placeLabel(d, bitmaps, anchor, offset)) d.opacity = d.originalOpacity;
     };
   }
 }

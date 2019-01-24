@@ -8,14 +8,16 @@ const SIZE_FACTOR = 0.707106781186548; // this is 1 over square root of 2
 const ALIGN = ['right', 'center', 'left'];
 const BASELINE = ['bottom', 'middle', 'top'];
 
-export default function(d, bm1, bm2, anchors, offsets) {
+export default function(d, bitmaps, anchors, offsets) {
   const context = canvas().getContext('2d');
   const n = offsets.length,
     textHeight = d.textHeight,
     markBound = d.markBound,
     text = d.text,
     font = d.font,
-    scalePixel = bm1.scalePixel;
+    bm0 = bitmaps[0],
+    bm1 = bitmaps[1],
+    scalePixel = bm0.scalePixel;
   let textWidth = d.textWidth;
   let dx, dy, isInside, sizeFactor, insideFactor;
   let x, x1, xc, x2, y1, yc, y2;
@@ -41,7 +43,7 @@ export default function(d, bm1, bm2, anchors, offsets) {
 
     if (!textWidth) {
       // const end = _x1 + (_y2 - _y1) * (~~(text.length / 3));
-      if (isLabelPlacable(_x1, _x1, _y1, _y2, bm1, bm2, x, x, y1, y2, markBound, isInside))
+      if (isLabelPlacable(_x1, _x1, _y1, _y2, bm0, bm1, x, x, y1, y2, markBound, isInside))
         continue;
       else textWidth = labelWidth(context, text, textHeight, font);
     }
@@ -53,26 +55,26 @@ export default function(d, bm1, bm2, anchors, offsets) {
     _x1 = scalePixel(x1);
     _x2 = scalePixel(x2);
 
-    if (!isLabelPlacable(_x1, _x2, _y1, _y2, bm1, bm2, x1, x2, y1, y2, markBound, isInside)) {
+    if (!isLabelPlacable(_x1, _x2, _y1, _y2, bm0, bm1, x1, x2, y1, y2, markBound, isInside)) {
       d.x = !dx ? xc : dx * insideFactor < 0 ? x2 : x1;
       d.y = !dy ? yc : dy * insideFactor < 0 ? y2 : y1;
 
       d.align = ALIGN[dx * insideFactor + 1];
       d.baseline = BASELINE[dy * insideFactor + 1];
 
-      bm1.markInRangeScaled(_x1, _y1, _x2, _y2);
+      bm0.markInRangeScaled(_x1, _y1, _x2, _y2);
       return true;
     }
   }
   return false;
 }
 
-function isLabelPlacable(_x1, _x2, _y1, _y2, bm1, bm2, x1, x2, y1, y2, markBound, isInside) {
+function isLabelPlacable(_x1, _x2, _y1, _y2, bm0, bm1, x1, x2, y1, y2, markBound, isInside) {
   return (
-    bm1.searchOutOfBound(_x1, _y1, _x2, _y2) ||
+    bm0.searchOutOfBound(_x1, _y1, _x2, _y2) ||
     (isInside
-      ? checkCollision(_x1, _y1, _x2, _y2, bm2) || !isInMarkBound(x1, y1, x2, y2, markBound)
-      : checkCollision(_x1, _y1, _x2, _y2, bm1))
+      ? checkCollision(_x1, _y1, _x2, _y2, bm1) || !isInMarkBound(x1, y1, x2, y2, markBound)
+      : checkCollision(_x1, _y1, _x2, _y2, bm0))
   );
 }
 
