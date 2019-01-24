@@ -1,7 +1,7 @@
 /*eslint no-console: "warn"*/
 /*eslint no-empty: "warn"*/
 import { canvas } from 'vega-canvas';
-import { labelWidth } from './Common';
+import { labelWidth } from './Commons';
 
 const SIZE_FACTOR = 0.707106781186548; // this is 1 over square root of 2
 const ALIGN = ['right', 'center', 'left'];

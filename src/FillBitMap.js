@@ -1,4 +1,3 @@
-/*eslint no-unused-vars: "warn"*/
 /*eslint no-fallthrough: "warn" */
 /*eslint no-console: "warn"*/
 import BitMap from './BitMap';
@@ -26,7 +25,7 @@ const INSIDE_OPACITY = 0.0625;
  *          - second bitmap is filled with borders of all the avoiding marks (second bit map can be
  *            undefined if checking border of base mark is not needed when not avoiding any mark)
  */
-export default function(data, size, marktype, avoidBaseMark, avoidMarks, labelInside, padding) {
+export default function (data, size, marktype, avoidBaseMark, avoidMarks, labelInside, padding) {
   const isGroupArea = marktype === 'group' && data[0].datum.datum.items[0].marktype === 'area',
     width = size[0],
     height = size[1],

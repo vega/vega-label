@@ -1,5 +1,4 @@
 /*eslint no-console: "warn"*/
-/*eslint no-unused-vars: "warn"*/
 import labelLayout from './LabelLayout';
 import { Transform } from 'vega-dataflow';
 import { inherits, isFunction } from 'vega-util';
@@ -48,7 +47,7 @@ Label.Definition = {
 
 var prototype = inherits(Label, Transform);
 
-prototype.transform = function(_, pulse) {
+prototype.transform = function (_, pulse) {
   function modp(param) {
     var p = _[param];
     return isFunction(p) && pulse.modified(p.fields);
@@ -66,17 +65,17 @@ prototype.transform = function(_, pulse) {
 
   // configure layout
   var labels = labelLayout
-      .texts(data)
-      .sort(_.sort)
-      .offset(offset, numberPositions)
-      .anchor(anchor, numberPositions)
-      .avoidMarks(_.avoidMarks ? _.avoidMarks : [])
-      .size(_.size)
-      .avoidBaseMark(_.avoidBaseMark !== undefined ? _.avoidBaseMark : true)
-      .lineAnchor(_.lineAnchor ? _.lineAnchor : 'end')
-      .markIdx(_.markIdx ? _.markIdx : 0)
-      .padding(_.padding ? _.padding : 0)
-      .layout(),
+    .texts(data)
+    .sort(_.sort)
+    .offset(offset, numberPositions)
+    .anchor(anchor, numberPositions)
+    .avoidMarks(_.avoidMarks ? _.avoidMarks : [])
+    .size(_.size)
+    .avoidBaseMark(_.avoidBaseMark !== undefined ? _.avoidBaseMark : true)
+    .lineAnchor(_.lineAnchor ? _.lineAnchor : 'end')
+    .markIdx(_.markIdx ? _.markIdx : 0)
+    .padding(_.padding ? _.padding : 0)
+    .layout(),
     n = data.length;
 
   // fill the information of transformed labels back into data

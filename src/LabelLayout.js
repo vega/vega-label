@@ -1,4 +1,3 @@
-/*eslint no-unused-vars: "warn"*/
 /*eslint no-console: "warn"*/
 /*eslint no-empty: "warn"*/
 
@@ -8,13 +7,13 @@ import fillBitMap from './FillBitMap';
 import { default as BitMap, printBitMap } from './BitMap';
 import anchorsOffsetDict from './AnchorsOffsetDict';
 
-export default function() {
+export default function () {
   let offset, sort, anchor, avoidMarks, size;
   let avoidBaseMark, lineAnchor, markIdx, padding;
   let label = {},
     texts = [];
 
-  label.layout = function() {
+  label.layout = function () {
     const n = texts.length;
     if (!n) return texts; // return immediately when there is not a label to be placed
 
@@ -76,14 +75,14 @@ export default function() {
     return data;
   };
 
-  label.texts = function(_) {
+  label.texts = function (_) {
     if (arguments.length) {
       texts = _;
       return label;
     } else return texts;
   };
 
-  label.offset = function(_, len) {
+  label.offset = function (_, len) {
     if (arguments.length) {
       const n = _.length;
       offset = new Float64Array(len);
@@ -93,7 +92,7 @@ export default function() {
     } else return offset;
   };
 
-  label.anchor = function(_, len) {
+  label.anchor = function (_, len) {
     if (arguments.length) {
       const n = _.length;
       anchor = new Int8Array(len);
@@ -103,49 +102,49 @@ export default function() {
     } else return anchor;
   };
 
-  label.sort = function(_) {
+  label.sort = function (_) {
     if (arguments.length) {
       sort = _;
       return label;
     } else return sort;
   };
 
-  label.avoidMarks = function(_) {
+  label.avoidMarks = function (_) {
     if (arguments.length) {
       avoidMarks = _;
       return label;
     } else return sort;
   };
 
-  label.size = function(_) {
+  label.size = function (_) {
     if (arguments.length) {
       size = _;
       return label;
     } else return size;
   };
 
-  label.avoidBaseMark = function(_) {
+  label.avoidBaseMark = function (_) {
     if (arguments.length) {
       avoidBaseMark = _;
       return label;
     } else return avoidBaseMark;
   };
 
-  label.lineAnchor = function(_) {
+  label.lineAnchor = function (_) {
     if (arguments.length) {
       lineAnchor = _;
       return label;
     } else return lineAnchor;
   };
 
-  label.markIdx = function(_) {
+  label.markIdx = function (_) {
     if (arguments.length) {
       markIdx = _;
       return label;
     } else return markIdx;
   };
 
-  label.padding = function(_) {
+  label.padding = function (_) {
     if (arguments.length) {
       padding = _;
       return label;
@@ -177,13 +176,13 @@ function getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIdx) {
     // no reactive geometry
     return d => [d.x, d.x, d.x, d.y, d.y, d.y];
   } else if (marktype === 'line' || marktype === 'area') {
-    return function(d) {
+    return function (d) {
       const datum = d.datum;
       return [datum.x, datum.x, datum.x, datum.y, datum.y, datum.y];
     };
   } else if (grouptype === 'line') {
     const endItemIndex = lineAnchor === 'begin' ? m => m - 1 : () => 0;
-    return function(d) {
+    return function (d) {
       const items = d.datum.items[markIdx].items;
       const m = items.length;
       if (m) {
@@ -197,7 +196,7 @@ function getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIdx) {
       }
     };
   } else {
-    return function(d) {
+    return function (d) {
       const b = d.datum.bounds;
       return [b.x1, (b.x1 + b.x2) / 2.0, b.x2, b.y1, (b.y1 + b.y2) / 2.0, b.y2];
     };
@@ -223,11 +222,11 @@ function placeFactory(grouptype, bitmaps, anchor, offset, size, avoidBaseMark) {
   const w = size[0],
     h = size[1];
   if (grouptype === 'area') {
-    return function(d) {
+    return function (d) {
       if (placeLabelInArea(d, bitmaps, w, h, avoidBaseMark)) d.opacity = d.originalOpacity;
     };
   } else {
-    return function(d) {
+    return function (d) {
       const mb = d.markBound;
       if (mb[2] >= 0 && mb[5] >= 0 && mb[0] <= w && mb[3] <= h)
         if (placeLabel(d, bitmaps, anchor, offset)) d.opacity = d.originalOpacity;
