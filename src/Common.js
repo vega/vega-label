@@ -13,3 +13,7 @@ export function labelWidth(context, text, fontSize, font) {
   context.font = fontSize + 'px ' + font;
   return context.measureText(text).width;
 }
+
+export function checkCollision(x1, y1, x2, y2, bitMap) {
+  return bitMap.getInRangeScaled(x1, y2, x2, y2) || bitMap.getInRangeScaled(x1, y1, x2, y2 - 1);
+}

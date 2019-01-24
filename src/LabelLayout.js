@@ -1,8 +1,8 @@
 /*eslint no-console: "warn"*/
 /*eslint no-empty: "warn"*/
 
-import placeLabel from './PlaceLabel';
-import placeLabelInArea from './PlaceLabelInArea';
+import PlaceLabel from './PlaceLabel';
+import PlaceLabelInArea from './PlaceLabelInArea';
 import fillBitMap from './FillBitMap';
 import { default as BitMap, printBitMap } from './BitMap';
 
@@ -28,7 +28,7 @@ const anchorTextToNumber = {
 };
 
 export default function () {
-  let offset, sort, anchor, avoidMarks, size;
+  let offsets, sort, anchors, avoidMarks, size;
   let avoidBaseMark, lineAnchor, markIdx, padding;
   let label = {},
     texts = [];
@@ -70,10 +70,10 @@ export default function () {
 
     // a flag for determining if it is possible for label to be placed inside its base mark
     let labelInside = false;
-    for (let i = 0; i < anchor.length && !labelInside; i++) {
+    for (let i = 0; i < anchors.length && !labelInside; i++) {
       // label inside if anchor is at center
       // label inside if offset to be inside the mark bound
-      labelInside |= (anchor[i] === 0x5 || offset[i] < 0);
+      labelInside |= (anchors[i] === 0x5 || offsets[i] < 0);
     }
 
     const bitmaps = fillBitMap(data, size, marktype, avoidBaseMark, avoidMarks, labelInside, padding);
@@ -81,17 +81,22 @@ export default function () {
       // area chart need another bitmap to find the shape of each area
       bitmaps.push(new BitMap(size[0], size[1], padding));
     }
-    const place = placeFactory(grouptype, bitmaps, anchor, offset, size, avoidBaseMark);
+    // const place = placeFactory(grouptype, bitmaps, anchors, offsets, size, avoidBaseMark);
+    const placer = (grouptype === 'area') ?
+      new PlaceLabelInArea(bitmaps, size, avoidBaseMark) :
+      new PlaceLabel(bitmaps, size, anchors, offsets);
 
     // place all label
     for (let i = 0; i < n; i++) {
       const d = data[i];
-      if (d.originalOpacity !== 0) place(d);
+      if (d.originalOpacity !== 0 && placer.place(d)) {
+        d.opacity = d.originalOpacity;
+      }
     }
 
-    printBitMap(bitmaps[0], 'bit-map-1');
-    if (bitmaps[1]) printBitMap(bitmaps[1], 'bit-map-2');
-    if (bitmaps.length >= 3 && bitmaps[2]) printBitMap(bitmaps[2], 'bit-map-before');
+    printBitMap(bitmaps[0], 'bit-map-0');
+    if (bitmaps[1]) printBitMap(bitmaps[1], 'bit-map-1');
+    if (bitmaps.length >= 3 && bitmaps[2]) printBitMap(bitmaps[2], 'bit-map-2');
     return data;
   };
 
@@ -105,21 +110,21 @@ export default function () {
   label.offset = function (_, len) {
     if (arguments.length) {
       const n = _.length;
-      offset = new Float64Array(len);
-      for (let i = 0; i < n; i++) offset[i] = _[i] ? _[i] : 0;
-      for (let i = n; i < len; i++) offset[i] = offset[n - 1] ? offset[n - 1] : 0;
+      offsets = new Float64Array(len);
+      for (let i = 0; i < n; i++) offsets[i] = _[i] ? _[i] : 0;
+      for (let i = n; i < len; i++) offsets[i] = offsets[n - 1] ? offsets[n - 1] : 0;
       return label;
-    } else return offset;
+    } else return offsets;
   };
 
   label.anchor = function (_, len) {
     if (arguments.length) {
       const n = _.length;
-      anchor = new Int8Array(len);
-      for (let i = 0; i < n; i++) anchor[i] |= anchorTextToNumber[_[i]];
-      for (let i = n; i < len; i++) anchor[i] = anchor[n - 1];
+      anchors = new Int8Array(len);
+      for (let i = 0; i < n; i++) anchors[i] |= anchorTextToNumber[_[i]];
+      for (let i = n; i < len; i++) anchors[i] = anchors[n - 1];
       return label;
-    } else return anchor;
+    } else return anchors;
   };
 
   label.sort = function (_) {
@@ -219,37 +224,6 @@ function getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIdx) {
     return function (d) {
       const b = d.datum.bounds;
       return [b.x1, (b.x1 + b.x2) / 2.0, b.x2, b.y1, (b.y1 + b.y2) / 2.0, b.y2];
-    };
-  }
-}
-
-/**
- * Factory function for label-placing function, depending on the type of group base mark.
- * Use placing label function from PlaceLabelInArea iff the grouptype is 'area'.
- * Otherwise, use regular placing label function from PlaceLabel.
- *
- * @param {string} grouptype type of group base mark (grouptype can be undefined if the base mark
- *                           is not in group)
- * @param {array} bitmaps pre-filled bitmaps with avoiding marks for finding label's placing position
- * @param {array} anchor array of anchos point (int8). this array is parallel with offset
- * @param {array} offset array of offset (float64). this array is parallel with anchor
- * @param {array} size array of chart size in format [width, height]
- * @param {bool} avoidBaseMark a boolean flag if avoiding base mark when placing label
- *
- * @returns function(d) for placing label with data point information d
- */
-function placeFactory(grouptype, bitmaps, anchor, offset, size, avoidBaseMark) {
-  const w = size[0],
-    h = size[1];
-  if (grouptype === 'area') {
-    return function (d) {
-      if (placeLabelInArea(d, bitmaps, w, h, avoidBaseMark)) d.opacity = d.originalOpacity;
-    };
-  } else {
-    return function (d) {
-      const mb = d.markBound;
-      if (mb[2] >= 0 && mb[5] >= 0 && mb[0] <= w && mb[3] <= h)
-        if (placeLabel(d, bitmaps, anchor, offset)) d.opacity = d.originalOpacity;
     };
   }
 }
