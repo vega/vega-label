@@ -9,7 +9,7 @@ import { checkCollision } from './PlaceLabel';
 const X_DIR = [-1, -1, 1, 1];
 const Y_DIR = [-1, 1, -1, 1];
 
-export default function(d, bitmaps, width, height, avoidBaseMark) {
+export default function (d, bitmaps, width, height, avoidBaseMark) {
   const context = canvas().getContext('2d'),
     bm0 = bitmaps[0],
     bm1 = bitmaps[1],
@@ -125,40 +125,46 @@ function collide(x, y, textHeight, textWidth, h, bm0, bm1) {
   );
 }
 
-function Stack() {
-  let size = 100;
-  let xStack = new Int32Array(size);
-  let yStack = new Int32Array(size);
-  let idx = 0;
-
-  function resize() {
-    const newXStack = new Int32Array(size * 2),
-      newYStack = new Int32Array(size * 2);
-
-    for (let i = 0; i < idx; i++) {
-      newXStack[i] = xStack[i];
-      newYStack[i] = yStack[i];
-    }
-    xStack = newXStack;
-    yStack = newYStack;
-    size *= 2;
+class Stack {
+  constructor() {
+    this.size = 100;
+    this.xStack = new Int32Array(this.size);
+    this.yStack = new Int32Array(this.size);
+    this.idx = 0;
   }
 
-  this.push = function(x, y) {
-    if (idx === size - 1) resize();
-    xStack[idx] = x;
-    yStack[idx] = y;
-    idx++;
-  };
+  push(x, y) {
+    if (this.idx === this.size - 1) resize(this);
+    this.xStack[this.idx] = x;
+    this.yStack[this.idx] = y;
+    this.idx++;
+  }
 
-  this.pop = function() {
-    if (idx > 0) {
-      idx--;
-      return [xStack[idx], yStack[idx]];
+  pop() {
+    if (this.idx > 0) {
+      this.idx--;
+      return [this.xStack[this.idx], this.yStack[this.idx]];
     } else return null;
-  };
+  }
 
-  this.peak = () => (idx > 0 ? [xStack[idx - 1], yStack[idx - 1]] : null);
+  peak() {
+    return this.idx > 0 ? [this.xStack[this.idx - 1], this.yStack[this.idx - 1]] : null;
+  }
 
-  this.isEmpty = () => idx <= 0;
+  isEmpty() {
+    return this.idx <= 0;
+  }
+}
+
+function resize(obj) {
+  const newXStack = new Int32Array(obj.size * 2),
+    newYStack = new Int32Array(obj.size * 2);
+
+  for (let i = 0; i < obj.idx; i++) {
+    newXStack[i] = obj.xStack[i];
+    newYStack[i] = obj.yStack[i];
+  }
+  obj.xStack = newXStack;
+  obj.yStack = newYStack;
+  obj.size *= 2;
 }
