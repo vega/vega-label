@@ -43,7 +43,7 @@ export default function(d, bitmaps, anchors, offsets) {
 
     if (!textWidth) {
       // const end = _x1 + (_y2 - _y1) * (~~(text.length / 3));
-      if (isLabelPlacable(_x1, _x1, _y1, _y2, bm0, bm1, x, x, y1, y2, markBound, isInside))
+      if (!isLabelPlacable(_x1, _x1, _y1, _y2, bm0, bm1, x, x, y1, y2, markBound, isInside))
         continue;
       else textWidth = labelWidth(context, text, textHeight, font);
     }
@@ -55,7 +55,7 @@ export default function(d, bitmaps, anchors, offsets) {
     _x1 = scalePixel(x1);
     _x2 = scalePixel(x2);
 
-    if (!isLabelPlacable(_x1, _x2, _y1, _y2, bm0, bm1, x1, x2, y1, y2, markBound, isInside)) {
+    if (isLabelPlacable(_x1, _x2, _y1, _y2, bm0, bm1, x1, x2, y1, y2, markBound, isInside)) {
       d.x = !dx ? xc : dx * insideFactor < 0 ? x2 : x1;
       d.y = !dy ? yc : dy * insideFactor < 0 ? y2 : y1;
 
@@ -70,7 +70,7 @@ export default function(d, bitmaps, anchors, offsets) {
 }
 
 function isLabelPlacable(_x1, _x2, _y1, _y2, bm0, bm1, x1, x2, y1, y2, markBound, isInside) {
-  return (
+  return !(
     bm0.searchOutOfBound(_x1, _y1, _x2, _y2) ||
     (isInside
       ? checkCollision(_x1, _y1, _x2, _y2, bm1) || !isInMarkBound(x1, y1, x2, y2, markBound)

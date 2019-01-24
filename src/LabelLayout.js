@@ -52,14 +52,12 @@ export default function() {
     // a flag for determining if it is possible for label to be placed inside its base mark
     let labelInside = false;
     for (let i = 0; i < anchor.length && !labelInside; i++) {
-      labelInside = anchor[i] === 0x5 || offset[i] < 0;
+      // label inside if anchor is at center
+      // label inside if offset to be inside the mark bound
+      labelInside |= (anchor[i] === 0x5 || offset[i] < 0);
     }
 
-    let bitmaps, bm1, bm2, bm3;
-    bitmaps = fillBitMap(data, size, marktype, avoidBaseMark, avoidMarks, labelInside, padding);
-    // bm1 = bitMaps[0];
-    // bm2 = bitMaps[1];
-    // bm3 = grouptype === 'area' ? new BitMap(size[0], size[1], padding) : undefined;
+    const bitmaps = fillBitMap(data, size, marktype, avoidBaseMark, avoidMarks, labelInside, padding);
     if (grouptype === 'area') {
       bitmaps.push(new BitMap(size[0], size[1], padding));
     }
@@ -71,9 +69,9 @@ export default function() {
       if (d.originalOpacity !== 0) place(d);
     }
 
-    printBitMap(bm1, 'bit-map-1');
-    if (bm2) printBitMap(bm2, 'bit-map-2');
-    if (bm3) printBitMap(bm3, 'bit-map-before');
+    printBitMap(bitmaps[0], 'bit-map-1');
+    if (bitmaps[1]) printBitMap(bitmaps[1], 'bit-map-2');
+    if (bitmaps.length >= 3 && bitmaps[2]) printBitMap(bitmaps[2], 'bit-map-before');
     return data;
   };
 
