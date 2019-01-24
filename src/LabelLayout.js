@@ -172,6 +172,7 @@ export default function() {
  */
 function getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIdx) {
   if (!marktype) {
+    // no reactive geometry
     return d => [d.x, d.x, d.x, d.y, d.y, d.y];
   } else if (marktype === 'line' || marktype === 'area') {
     return function(d) {
@@ -184,11 +185,14 @@ function getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIdx) {
       const items = d.datum.items[markIdx].items;
       const m = items.length;
       if (m) {
+        // this line has at least 1 item
         const endItem = items[endItemIndex(m)];
         return [endItem.x, endItem.x, endItem.x, endItem.y, endItem.y, endItem.y];
+      } else {
+        // empty line
+        const minInt = Number.MIN_SAFE_INTEGER;
+        return [minInt, minInt, minInt, minInt, minInt, minInt];
       }
-      const min = Number.MIN_SAFE_INTEGER;
-      return [-min, -min, -min, -min, -min, -min];
     };
   } else {
     return function(d) {
