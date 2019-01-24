@@ -6,7 +6,7 @@ import { labelWidth, checkCollision } from './Common';
 const X_DIR = [-1, -1, 1, 1];
 const Y_DIR = [-1, 1, -1, 1];
 
-export default class PlaceLabelInArea {
+export default class AreaLabelPlacer {
   constructor(bitmaps, size, avoidBaseMark) {
     this.bm0 = bitmaps[0];
     this.bm1 = bitmaps[1];

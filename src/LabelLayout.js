@@ -1,8 +1,8 @@
 /*eslint no-console: "warn"*/
 /*eslint no-empty: "warn"*/
 
-import PlaceLabel from './PlaceLabel';
-import PlaceLabelInArea from './PlaceLabelInArea';
+import LabelPlacer from './LabelPlacer';
+import AreaLabelPlacer from './AreaLabelPlacer';
 import fillBitMap from './FillBitMap';
 import { default as BitMap, printBitMap } from './BitMap';
 
@@ -81,15 +81,15 @@ export default function () {
       // area chart need another bitmap to find the shape of each area
       bitmaps.push(new BitMap(size[0], size[1], padding));
     }
-    // const place = placeFactory(grouptype, bitmaps, anchors, offsets, size, avoidBaseMark);
-    const placer = (grouptype === 'area') ?
-      new PlaceLabelInArea(bitmaps, size, avoidBaseMark) :
-      new PlaceLabel(bitmaps, size, anchors, offsets);
+
+    const labelPlacer = (grouptype === 'area') ?
+      new AreaLabelPlacer(bitmaps, size, avoidBaseMark) :
+      new LabelPlacer(bitmaps, size, anchors, offsets);
 
     // place all label
     for (let i = 0; i < n; i++) {
       const d = data[i];
-      if (d.originalOpacity !== 0 && placer.place(d)) {
+      if (d.originalOpacity !== 0 && labelPlacer.place(d)) {
         d.opacity = d.originalOpacity;
       }
     }

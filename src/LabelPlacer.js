@@ -11,7 +11,7 @@ const ALIGN = ['right', 'center', 'left'];
 // Options for baseline
 const BASELINE = ['bottom', 'middle', 'top'];
 
-export default class PlaceLabel {
+export default class LabelPlacer {
   constructor(bitmaps, size, anchors, offsets) {
     this.bm0 = bitmaps[0];
     this.bm1 = bitmaps[1];
