@@ -1,10 +1,9 @@
 /*eslint no-console: "warn"*/
 /*eslint no-empty: "warn"*/
-
-import LabelPlacer from './LabelPlacer';
-import AreaLabelPlacer from './AreaLabelPlacer';
-import fillBitMap from './FillBitMap';
-import { default as BitMap, printBitMap } from './BitMap';
+/*eslint no-unused-vars: "warn"*/
+import LabelPlacer from './LabelPlacers/LabelPlacer';
+import AreaLabelPlacer from './LabelPlacers/AreaLabelPlacer';
+import { default as BitMap, printBitMap, prepareBitmap } from './BitMap';
 
 // 8-bit representation of anchors
 const TOP = 0x0,
@@ -76,7 +75,7 @@ export default function () {
       labelInside |= (anchors[i] === 0x5 || offsets[i] < 0);
     }
 
-    const bitmaps = fillBitMap(data, size, marktype, avoidBaseMark, avoidMarks, labelInside, padding);
+    const bitmaps = prepareBitmap(data, size, marktype, avoidBaseMark, avoidMarks, labelInside, padding);
     if (grouptype === 'area') {
       // area chart need another bitmap to find the shape of each area
       bitmaps.push(new BitMap(size[0], size[1], padding));
@@ -94,9 +93,9 @@ export default function () {
       }
     }
 
-    printBitMap(bitmaps[0], 'bit-map-0');
-    if (bitmaps[1]) printBitMap(bitmaps[1], 'bit-map-1');
-    if (bitmaps.length >= 3 && bitmaps[2]) printBitMap(bitmaps[2], 'bit-map-2');
+    // printBitMap(bitmaps[0], 'bit-map-0');
+    // if (bitmaps[1]) printBitMap(bitmaps[1], 'bit-map-1');
+    // if (bitmaps.length >= 3 && bitmaps[2]) printBitMap(bitmaps[2], 'bit-map-2');
     return data;
   };
 

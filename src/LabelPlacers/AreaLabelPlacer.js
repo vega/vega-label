@@ -24,7 +24,7 @@ export default class AreaLabelPlacer {
       textWidth = labelWidth(context, d.text, textHeight, d.font),
       scalePixel = this.bm0.scalePixel,
       pixelRatio = this.bm1.pixelRatio(),
-      list = new Stack();
+      stack = new Stack();
     let maxSize = this.avoidBaseMark ? textHeight : 0,
       labelPlaced = false,
       labelPlaced2 = false,
@@ -36,9 +36,9 @@ export default class AreaLabelPlacer {
       y1 = items[i].y;
       x2 = items[i].x2 !== undefined ? items[i].x2 : x1;
       y2 = items[i].y2 !== undefined ? items[i].y2 : y1;
-      list.push(scalePixel((x1 + x2) / 2.0), scalePixel((y1 + y2) / 2.0));
-      while (!list.isEmpty()) {
-        coordinate = list.pop();
+      stack.push(scalePixel((x1 + x2) / 2.0), scalePixel((y1 + y2) / 2.0));
+      while (!stack.isEmpty()) {
+        coordinate = stack.pop();
         _x = coordinate[0];
         _y = coordinate[1];
         if (!this.bm0.getScaled(_x, _y) && !this.bm1.getScaled(_x, _y) && !this.bm2.getScaled(_x, _y)) {
@@ -46,7 +46,7 @@ export default class AreaLabelPlacer {
           for (let j = 0; j < 4; j++) {
             nextX = _x + X_DIR[j];
             nextY = _y + Y_DIR[j];
-            if (!this.bm2.searchOutOfBound(nextX, nextY, nextX, nextY)) list.push(nextX, nextY);
+            if (!this.bm2.searchOutOfBound(nextX, nextY, nextX, nextY)) stack.push(nextX, nextY);
           }
 
           x = _x * pixelRatio - this.bm0.padding;
