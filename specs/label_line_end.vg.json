@@ -11,11 +11,11 @@
       "url": "../data/co2-concentration.csv",
       "format": {
         "type": "csv",
-        "parse": { "Date": "utc:'%Y-%m-%d'" },
+        "parse": {"Date": "utc:'%Y-%m-%d'"},
         "delimiter": ","
       },
       "transform": [
-        { "type": "formula", "expr": "year(datum.Date)", "as": "year" },
+        {"type": "formula", "expr": "year(datum.Date)", "as": "year"},
         {
           "type": "formula",
           "expr": "floor(datum.year / 10) + 'x'",
@@ -60,8 +60,8 @@
       },
       "encode": {
         "update": {
-          "width": { "field": { "group": "width" } },
-          "height": { "field": { "group": "height" } }
+          "width": {"field": {"group": "width"}},
+          "height": {"field": {"group": "height"}}
         }
       },
       "marks": [
@@ -69,13 +69,13 @@
           "name": "layer_0_marks",
           "type": "line",
           "style": ["line"],
-          "sort": { "field": "datum.scaled_date", "order": "descending" },
-          "from": { "data": "faceted_path_layer_0_main" },
+          "sort": {"field": "datum.scaled_date", "order": "descending"},
+          "from": {"data": "faceted_path_layer_0_main"},
           "encode": {
             "update": {
-              "stroke": { "scale": "color", "field": "CO2" },
-              "x": { "scale": "x", "field": "scaled_date" },
-              "y": { "scale": "y", "field": "CO2" }
+              "stroke": {"scale": "color", "field": "CO2"},
+              "x": {"scale": "x", "field": "scaled_date"},
+              "y": {"scale": "y", "field": "CO2"}
             }
           }
         }
@@ -84,11 +84,11 @@
     {
       "name": "layer_1_marks",
       "type": "text",
-      "from": { "data": "layer_0_pathgroup" },
+      "from": {"data": "layer_0_pathgroup"},
       "encode": {
         "enter": {
-          "fill": { "value": "black" },
-          "text": { "field": "datum.decade" }
+          "fill": {"value": "black"},
+          "text": {"field": "datum.decade"}
         }
       },
       "transform": [
@@ -107,9 +107,9 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "fields": [{ "data": "source_0", "field": "scaled_date" }]
+        "fields": [{"data": "source_0", "field": "scaled_date"}]
       },
-      "range": [0, { "signal": "width" }],
+      "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": false
     },
@@ -117,17 +117,17 @@
       "name": "y",
       "type": "linear",
       "domain": {
-        "fields": [{ "data": "source_0", "field": "CO2" }]
+        "fields": [{"data": "source_0", "field": "CO2"}]
       },
-      "range": [{ "signal": "height" }, 0],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
     {
       "name": "color",
       "type": "sequential",
-      "domain": { "data": "source_0", "field": "CO2", "sort": true },
-      "range": { "scheme": "plasma" }
+      "domain": {"data": "source_0", "field": "CO2", "sort": true},
+      "range": {"scheme": "plasma"}
     }
   ],
   "axes": [
@@ -160,7 +160,7 @@
       "grid": false,
       "title": "CO2 concentration in ppm",
       "labelOverlap": true,
-      "tickCount": { "signal": "ceil(height/40)" },
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 1
     },
     {
@@ -168,7 +168,7 @@
       "orient": "left",
       "gridScale": "x",
       "grid": true,
-      "tickCount": { "signal": "ceil(height/40)" },
+      "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
       "maxExtent": 0,
@@ -178,7 +178,7 @@
     }
   ],
   "config": {
-    "axisY": { "minExtent": 30 },
-    "style": { "text": { "align": "left", "dx": 3, "dy": 1 } }
+    "axisY": {"minExtent": 30},
+    "style": {"text": {"align": "left", "dx": 3, "dy": 1}}
   }
 }

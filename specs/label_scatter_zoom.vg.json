@@ -27,10 +27,10 @@
     {
       "name": "hover",
       "on": [
-        { "events": "*:mouseover", "encode": "hover" },
-        { "events": "*:mouseout", "encode": "leave" },
-        { "events": "*:mousedown", "encode": "select" },
-        { "events": "*:mouseup", "encode": "release" }
+        {"events": "*:mouseover", "encode": "hover"},
+        {"events": "*:mouseout", "encode": "leave"},
+        {"events": "*:mousedown", "encode": "select"},
+        {"events": "*:mouseup", "encode": "release"}
       ]
     },
     {
@@ -41,16 +41,13 @@
       "name": "yoffset",
       "update": "-(width + padding.left)"
     },
-    { "name": "xrange", "update": "[0, width]" },
-    { "name": "yrange", "update": "[height, 0]" },
+    {"name": "xrange", "update": "[0, width]"},
+    {"name": "yrange", "update": "[height, 0]"},
 
     {
       "name": "down",
       "value": null,
-      "on": [
-        { "events": "touchend", "update": "null" },
-        { "events": "mousedown, touchstart", "update": "xy()" }
-      ]
+      "on": [{"events": "touchend", "update": "null"}, {"events": "mousedown, touchstart", "update": "xy()"}]
     },
     {
       "name": "xcur",
@@ -82,10 +79,7 @@
               "source": "window",
               "type": "mousemove",
               "consume": true,
-              "between": [
-                { "type": "mousedown" },
-                { "source": "window", "type": "mouseup" }
-              ]
+              "between": [{"type": "mousedown"}, {"source": "window", "type": "mouseup"}]
             },
             {
               "type": "touchmove",
@@ -125,7 +119,7 @@
           "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
         },
         {
-          "events": { "signal": "dist2" },
+          "events": {"signal": "dist2"},
           "force": true,
           "update": "dist1 / dist2"
         }
@@ -143,7 +137,7 @@
           "update": "pinchDistance(event)"
         },
         {
-          "events": { "signal": "dist2" },
+          "events": {"signal": "dist2"},
           "update": "dist2"
         }
       ]
@@ -169,11 +163,11 @@
       "react": false,
       "on": [
         {
-          "events": { "signal": "delta" },
+          "events": {"signal": "delta"},
           "update": "[xcur[0] + span(xcur) * delta[0] / width, xcur[1] + span(xcur) * delta[0] / width]"
         },
         {
-          "events": { "signal": "zoom" },
+          "events": {"signal": "zoom"},
           "update": "[anchor[0] + (xdom[0] - anchor[0]) * zoom, anchor[0] + (xdom[1] - anchor[0]) * zoom]"
         }
       ]
@@ -184,11 +178,11 @@
       "react": false,
       "on": [
         {
-          "events": { "signal": "delta" },
+          "events": {"signal": "delta"},
           "update": "[ycur[0] + span(ycur) * delta[1] / height, ycur[1] + span(ycur) * delta[1] / height]"
         },
         {
-          "events": { "signal": "zoom" },
+          "events": {"signal": "zoom"},
           "update": "[anchor[1] + (ydom[0] - anchor[1]) * zoom, anchor[1] + (ydom[1] - anchor[1]) * zoom]"
         }
       ]
@@ -208,8 +202,8 @@
           "type": "filter",
           "expr": "datum['Horsepower'] != null && datum['Miles_per_Gallon'] != null && datum['Acceleration'] != null"
         },
-        { "type": "extent", "field": "Horsepower", "signal": "xext" },
-        { "type": "extent", "field": "Miles_per_Gallon", "signal": "yext" }
+        {"type": "extent", "field": "Horsepower", "signal": "xext"},
+        {"type": "extent", "field": "Miles_per_Gallon", "signal": "yext"}
       ]
     }
   ],
@@ -218,14 +212,14 @@
     {
       "name": "xscale",
       "zero": false,
-      "domain": { "signal": "xdom" },
-      "range": { "signal": "xrange" }
+      "domain": {"signal": "xdom"},
+      "range": {"signal": "xrange"}
     },
     {
       "name": "yscale",
       "zero": false,
-      "domain": { "signal": "ydom" },
-      "range": { "signal": "yrange" }
+      "domain": {"signal": "ydom"},
+      "range": {"signal": "yrange"}
     }
   ],
 
@@ -233,53 +227,53 @@
     {
       "scale": "xscale",
       "orient": "top",
-      "offset": { "signal": "xoffset" }
+      "offset": {"signal": "xoffset"}
     },
     {
       "scale": "yscale",
       "orient": "right",
-      "offset": { "signal": "yoffset" }
+      "offset": {"signal": "yoffset"}
     }
   ],
 
   "marks": [
     {
       "type": "symbol",
-      "from": { "data": "points" },
+      "from": {"data": "points"},
       "name": "basePoint",
       "clip": true,
       "encode": {
         "enter": {
-          "fillOpacity": { "value": 0.6 },
-          "fill": { "value": "steelblue" }
+          "fillOpacity": {"value": 0.6},
+          "fill": {"value": "steelblue"}
         },
         "update": {
-          "x": { "scale": "xscale", "field": "Horsepower" },
-          "y": { "scale": "yscale", "field": "Miles_per_Gallon" },
-          "size": { "signal": "size" }
+          "x": {"scale": "xscale", "field": "Horsepower"},
+          "y": {"scale": "yscale", "field": "Miles_per_Gallon"},
+          "size": {"signal": "size"}
         },
-        "hover": { "fill": { "value": "firebrick" } },
-        "leave": { "fill": { "value": "steelblue" } },
-        "select": { "size": { "signal": "size", "mult": 5 } },
-        "release": { "size": { "signal": "size" } }
+        "hover": {"fill": {"value": "firebrick"}},
+        "leave": {"fill": {"value": "steelblue"}},
+        "select": {"size": {"signal": "size", "mult": 5}},
+        "release": {"size": {"signal": "size"}}
       }
     },
     {
       "name": "label",
       "type": "text",
-      "from": { "data": "basePoint" },
+      "from": {"data": "basePoint"},
       "clip": true,
       "encode": {
         "enter": {
-          "x": { "field": "x" },
-          "y": { "field": "y" },
-          "opacity": { "value": 0.7 },
-          "fill": { "value": "#000" },
-          "text": { "field": "datum.Name" },
-          "fontSize": { "value": 8 }
+          "x": {"field": "x"},
+          "y": {"field": "y"},
+          "opacity": {"value": 0.7},
+          "fill": {"value": "#000"},
+          "text": {"field": "datum.Name"},
+          "fontSize": {"value": 8}
         },
-        "select": { "size": { "signal": "size", "mult": 5 } },
-        "release": { "size": { "signal": "size" } }
+        "select": {"size": {"signal": "size", "mult": 5}},
+        "release": {"size": {"signal": "size"}}
       },
       "transform": [
         {
@@ -294,17 +288,17 @@
     },
     {
       "type": "rule",
-      "from": { "data": "label" },
+      "from": {"data": "label"},
       "encode": {
         "enter": {
-          "strokeWidth": { "value": 1 }
+          "strokeWidth": {"value": 1}
         },
         "update": {
-          "x": { "scale": "xscale", "field": "datum.datum.Horsepower" },
-          "y": { "scale": "yscale", "field": "datum.datum.Miles_per_Gallon" },
-          "x2": { "field": "x" },
-          "y2": { "field": "y" },
-          "opacity": { "field": "opacity" }
+          "x": {"scale": "xscale", "field": "datum.datum.Horsepower"},
+          "y": {"scale": "yscale", "field": "datum.datum.Miles_per_Gallon"},
+          "x2": {"field": "x"},
+          "y2": {"field": "y"},
+          "opacity": {"field": "opacity"}
         }
       }
     }

@@ -3,7 +3,7 @@
 /*eslint no-unused-vars: "warn"*/
 import LabelPlacer from './LabelPlacers/LabelPlacer';
 import AreaLabelPlacer from './LabelPlacers/AreaLabelPlacer';
-import { default as BitMap, printBitMap, prepareBitmap } from './BitMap';
+import {default as BitMap, printBitMap, prepareBitmap} from './BitMap';
 
 // 8-bit representation of anchors
 const TOP = 0x0,
@@ -23,16 +23,16 @@ const anchorTextToNumber = {
   right: MIDDLE + RIGHT,
   'bottom-left': BOTTOM + LEFT,
   bottom: BOTTOM + CENTER,
-  'bottom-right': BOTTOM + RIGHT,
+  'bottom-right': BOTTOM + RIGHT
 };
 
-export default function () {
+export default function() {
   let offsets, sort, anchors, avoidMarks, size;
   let avoidBaseMark, lineAnchor, markIdx, padding;
   let label = {},
     texts = [];
 
-  label.layout = function () {
+  label.layout = function() {
     const n = texts.length;
     if (!n) return texts; // return immediately when there is not a label to be placed
 
@@ -60,7 +60,7 @@ export default function () {
         markBound: getMarkBoundary(d),
         originalOpacity: transformed ? d.originalOpacity : d.opacity,
         opacity: 0,
-        datum: d,
+        datum: d
       };
     }
 
@@ -72,7 +72,7 @@ export default function () {
     for (let i = 0; i < anchors.length && !labelInside; i++) {
       // label inside if anchor is at center
       // label inside if offset to be inside the mark bound
-      labelInside |= (anchors[i] === 0x5 || offsets[i] < 0);
+      labelInside |= anchors[i] === 0x5 || offsets[i] < 0;
     }
 
     const bitmaps = prepareBitmap(data, size, marktype, avoidBaseMark, avoidMarks, labelInside, padding);
@@ -81,9 +81,10 @@ export default function () {
       bitmaps.push(new BitMap(size[0], size[1], padding));
     }
 
-    const labelPlacer = (grouptype === 'area') ?
-      new AreaLabelPlacer(bitmaps, size, avoidBaseMark) :
-      new LabelPlacer(bitmaps, size, anchors, offsets);
+    const labelPlacer =
+      grouptype === 'area'
+        ? new AreaLabelPlacer(bitmaps, size, avoidBaseMark)
+        : new LabelPlacer(bitmaps, size, anchors, offsets);
 
     // place all label
     for (let i = 0; i < n; i++) {
@@ -99,14 +100,14 @@ export default function () {
     return data;
   };
 
-  label.texts = function (_) {
+  label.texts = function(_) {
     if (arguments.length) {
       texts = _;
       return label;
     } else return texts;
   };
 
-  label.offset = function (_, len) {
+  label.offset = function(_, len) {
     if (arguments.length) {
       const n = _.length;
       offsets = new Float64Array(len);
@@ -116,7 +117,7 @@ export default function () {
     } else return offsets;
   };
 
-  label.anchor = function (_, len) {
+  label.anchor = function(_, len) {
     if (arguments.length) {
       const n = _.length;
       anchors = new Int8Array(len);
@@ -126,49 +127,49 @@ export default function () {
     } else return anchors;
   };
 
-  label.sort = function (_) {
+  label.sort = function(_) {
     if (arguments.length) {
       sort = _;
       return label;
     } else return sort;
   };
 
-  label.avoidMarks = function (_) {
+  label.avoidMarks = function(_) {
     if (arguments.length) {
       avoidMarks = _;
       return label;
     } else return sort;
   };
 
-  label.size = function (_) {
+  label.size = function(_) {
     if (arguments.length) {
       size = _;
       return label;
     } else return size;
   };
 
-  label.avoidBaseMark = function (_) {
+  label.avoidBaseMark = function(_) {
     if (arguments.length) {
       avoidBaseMark = _;
       return label;
     } else return avoidBaseMark;
   };
 
-  label.lineAnchor = function (_) {
+  label.lineAnchor = function(_) {
     if (arguments.length) {
       lineAnchor = _;
       return label;
     } else return lineAnchor;
   };
 
-  label.markIdx = function (_) {
+  label.markIdx = function(_) {
     if (arguments.length) {
       markIdx = _;
       return label;
     } else return markIdx;
   };
 
-  label.padding = function (_) {
+  label.padding = function(_) {
     if (arguments.length) {
       padding = _;
       return label;
@@ -200,13 +201,13 @@ function getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIdx) {
     // no reactive geometry
     return d => [d.x, d.x, d.x, d.y, d.y, d.y];
   } else if (marktype === 'line' || marktype === 'area') {
-    return function (d) {
+    return function(d) {
       const datum = d.datum;
       return [datum.x, datum.x, datum.x, datum.y, datum.y, datum.y];
     };
   } else if (grouptype === 'line') {
     const endItemIndex = lineAnchor === 'begin' ? m => m - 1 : () => 0;
-    return function (d) {
+    return function(d) {
       const items = d.datum.items[markIdx].items;
       const m = items.length;
       if (m) {
@@ -220,7 +221,7 @@ function getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIdx) {
       }
     };
   } else {
-    return function (d) {
+    return function(d) {
       const b = d.datum.bounds;
       return [b.x1, (b.x1 + b.x2) / 2.0, b.x2, b.y1, (b.y1 + b.y2) / 2.0, b.y2];
     };

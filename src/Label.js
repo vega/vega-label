@@ -1,22 +1,13 @@
 /*eslint no-console: "warn"*/
 import labelLayout from './LabelLayout';
-import { Transform } from 'vega-dataflow';
-import { inherits, isFunction } from 'vega-util';
+import {Transform} from 'vega-dataflow';
+import {inherits, isFunction} from 'vega-util';
 
 var Output = ['x', 'y', 'opacity', 'align', 'baseline', 'originalOpacity', 'transformed'];
 
 var Params = ['offset'];
 
-var defaultAnchors = [
-  'top-left',
-  'left',
-  'bottom-left',
-  'top',
-  'bottom',
-  'top-right',
-  'right',
-  'bottom-right',
-];
+var defaultAnchors = ['top-left', 'left', 'bottom-left', 'top', 'bottom', 'top-right', 'right', 'bottom-right'];
 
 export default function Label(params) {
   Transform.call(this, labelLayout(), params);
@@ -24,30 +15,30 @@ export default function Label(params) {
 
 Label.Definition = {
   type: 'Label',
-  metadata: { modifies: true },
+  metadata: {modifies: true},
   params: [
-    { name: 'padding', type: 'number', default: 0 },
-    { name: 'markIdx', type: 'number', default: 0 },
-    { name: 'lineAnchor', type: 'string', values: ['begin', 'end'], default: 'end' },
-    { name: 'avoidBaseMark', type: 'boolean', default: true },
-    { name: 'size', type: 'number', array: true, length: [2] },
-    { name: 'offset', type: 'number', array: true, default: [1] },
-    { name: 'sort', type: 'field' },
-    { name: 'anchor', type: 'string', array: true, default: defaultAnchors },
-    { name: 'avoidMarks', type: 'data', array: true },
+    {name: 'padding', type: 'number', default: 0},
+    {name: 'markIdx', type: 'number', default: 0},
+    {name: 'lineAnchor', type: 'string', values: ['begin', 'end'], default: 'end'},
+    {name: 'avoidBaseMark', type: 'boolean', default: true},
+    {name: 'size', type: 'number', array: true, length: [2]},
+    {name: 'offset', type: 'number', array: true, default: [1]},
+    {name: 'sort', type: 'field'},
+    {name: 'anchor', type: 'string', array: true, default: defaultAnchors},
+    {name: 'avoidMarks', type: 'data', array: true},
     {
       name: 'as',
       type: 'string',
       array: true,
       length: Output.length,
-      default: Output,
-    },
-  ],
+      default: Output
+    }
+  ]
 };
 
 var prototype = inherits(Label, Transform);
 
-prototype.transform = function (_, pulse) {
+prototype.transform = function(_, pulse) {
   function modp(param) {
     var p = _[param];
     return isFunction(p) && pulse.modified(p.fields);
@@ -65,17 +56,17 @@ prototype.transform = function (_, pulse) {
 
   // configure layout
   var labels = labelLayout
-    .texts(data)
-    .sort(_.sort)
-    .offset(offset, numberPositions)
-    .anchor(anchor, numberPositions)
-    .avoidMarks(_.avoidMarks ? _.avoidMarks : [])
-    .size(_.size)
-    .avoidBaseMark(_.avoidBaseMark !== undefined ? _.avoidBaseMark : true)
-    .lineAnchor(_.lineAnchor ? _.lineAnchor : 'end')
-    .markIdx(_.markIdx ? _.markIdx : 0)
-    .padding(_.padding ? _.padding : 0)
-    .layout(),
+      .texts(data)
+      .sort(_.sort)
+      .offset(offset, numberPositions)
+      .anchor(anchor, numberPositions)
+      .avoidMarks(_.avoidMarks ? _.avoidMarks : [])
+      .size(_.size)
+      .avoidBaseMark(_.avoidBaseMark !== undefined ? _.avoidBaseMark : true)
+      .lineAnchor(_.lineAnchor ? _.lineAnchor : 'end')
+      .markIdx(_.markIdx ? _.markIdx : 0)
+      .padding(_.padding ? _.padding : 0)
+      .layout(),
     n = data.length;
 
   // fill the information of transformed labels back into data

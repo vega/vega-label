@@ -1,6 +1,6 @@
 /*eslint no-fallthrough: "warn" */
 /*eslint no-console: "warn"*/
-import { Marks } from 'vega-scenegraph';
+import {Marks} from 'vega-scenegraph';
 
 const DIV = 0x5;
 const MOD = 0x1f;
@@ -39,7 +39,7 @@ export default class BitMap {
      * Get pixel ratio between real size and bitmap size
      * @returns pixel ratio between real size and bitmap size
      */
-    this.pixelRatio = function () {
+    this.pixelRatio = function() {
       return pixelRatio;
     };
 
@@ -48,7 +48,7 @@ export default class BitMap {
      * @param realPixel the real pixel to be scaled down
      * @returns scaled pixel
      */
-    this.scalePixel = function (realPixel) {
+    this.scalePixel = function(realPixel) {
       return ~~((realPixel + padding) / pixelRatio);
     };
   }
@@ -101,12 +101,7 @@ export default class BitMap {
   }
 
   markInRange(x, y, x2, y2) {
-    return this.markInRangeScaled(
-      this.scalePixel(x),
-      this.scalePixel(y),
-      this.scalePixel(x2),
-      this.scalePixel(y2)
-    );
+    return this.markInRangeScaled(this.scalePixel(x), this.scalePixel(y), this.scalePixel(x2), this.scalePixel(y2));
   }
 
   unmarkInRangeScaled(x, y, x2, y2) {
@@ -130,12 +125,7 @@ export default class BitMap {
   }
 
   unmarkInRange(x, y, x2, y2) {
-    return this.unmarkInRangeScaled(
-      this.scalePixel(x),
-      this.scalePixel(y),
-      this.scalePixel(x2),
-      this.scalePixel(y2)
-    );
+    return this.unmarkInRangeScaled(this.scalePixel(x), this.scalePixel(y), this.scalePixel(x2), this.scalePixel(y2));
   }
 
   getInRangeScaled(x, y, x2, y2) {
@@ -160,12 +150,7 @@ export default class BitMap {
   }
 
   getInRange(x, y, x2, y2) {
-    return this.getInRangeScaled(
-      this.scalePixel(x),
-      this.scalePixel(y),
-      this.scalePixel(x2),
-      this.scalePixel(y2)
-    );
+    return this.getInRangeScaled(this.scalePixel(x), this.scalePixel(y), this.scalePixel(x2), this.scalePixel(y2));
   }
 
   searchOutOfBound(x, y, x2, y2) {
@@ -325,7 +310,7 @@ function drawMark(context, originalItems, labelInside) {
   } else items = originalItems;
 
   // draw items into canvas
-  Marks[items[0].mark.marktype].draw(context, { items: items }, null);
+  Marks[items[0].mark.marktype].draw(context, {items: items}, null);
 }
 
 /**

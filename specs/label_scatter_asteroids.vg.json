@@ -47,7 +47,7 @@
       "name": "color",
       "type": "sequential",
       "domain": [0, 1],
-      "range": { "scheme": "plasma" }
+      "range": {"scheme": "plasma"}
     }
   ],
 
@@ -60,7 +60,7 @@
       "title": "Right Ascension (degrees)",
       "offset": 20,
       "tickExtra": true,
-      "values": { "signal": "sequence(0, 361, 30)" }
+      "values": {"signal": "sequence(0, 361, 30)"}
     },
     {
       "scale": "y",
@@ -70,7 +70,7 @@
       "titlePadding": 5,
       "title": "Declination (degrees)",
       "offset": 20,
-      "values": { "signal": "sequence(-90, 91, 30)" }
+      "values": {"signal": "sequence(-90, 91, 30)"}
     }
   ],
 
@@ -78,14 +78,14 @@
     {
       "name": "basePoint",
       "type": "symbol",
-      "from": { "data": "asteroids" },
+      "from": {"data": "asteroids"},
       "encode": {
         "update": {
-          "x": { "scale": "x", "field": "ra" },
-          "y": { "scale": "y", "field": "dec" },
-          "size": { "value": 30 },
-          "shape": { "value": "circle" },
-          "_fill": { "scale": "color", "field": "density" },
+          "x": {"scale": "x", "field": "ra"},
+          "y": {"scale": "y", "field": "dec"},
+          "size": {"value": 30},
+          "shape": {"value": "circle"},
+          "_fill": {"scale": "color", "field": "density"},
           "fillOpacity": {"value": 0.5}
         }
       },
@@ -94,11 +94,11 @@
     {
       "name": "label",
       "type": "text",
-      "from": { "data": "basePoint" },
+      "from": {"data": "basePoint"},
       "encode": {
         "enter": {
-          "fill": { "value": "#000" },
-          "text": { "field": "datum.denomination" }
+          "fill": {"value": "#000"},
+          "text": {"field": "datum.denomination"}
         }
       },
       "transform": [
@@ -106,23 +106,23 @@
           "type": "label",
           "offset": [2],
           "size": [800, 500],
-          "sort": { "field": "datum.ra" },
+          "sort": {"field": "datum.ra"},
           "padding": 15
         }
       ]
     },
     {
       "type": "rule",
-      "from": { "data": "label" },
+      "from": {"data": "label"},
       "encode": {
         "enter": {
-          "x": { "field": "x" },
-          "y": { "field": "y" },
-          "x2": { "field": "datum.x" },
-          "y2": { "field": "datum.y" },
-          "opacity": { "field": "opacity" },
-          "strokeOpacity": { "value": 0.3 },
-          "strokeWidth": { "value": 1 }
+          "x": {"field": "x"},
+          "y": {"field": "y"},
+          "x2": {"field": "datum.x"},
+          "y2": {"field": "datum.y"},
+          "opacity": {"field": "opacity"},
+          "strokeOpacity": {"value": 0.3},
+          "strokeWidth": {"value": 1}
         }
       },
       "zindex": -1

@@ -8,15 +8,12 @@
     {
       "name": "sex",
       "value": "all",
-      "bind": { "input": "radio", "options": ["men", "women", "all"] }
+      "bind": {"input": "radio", "options": ["men", "women", "all"]}
     },
     {
       "name": "query",
       "value": "",
-      "on": [
-        { "events": "area:click!", "update": "datum.job" },
-        { "events": "dblclick!", "update": "''" }
-      ],
+      "on": [{"events": "area:click!", "update": "datum.job"}, {"events": "dblclick!", "update": "''"}],
       "bind": {
         "input": "text",
         "placeholder": "search",
@@ -67,7 +64,7 @@
       "range": "width",
       "zero": false,
       "round": true,
-      "domain": { "data": "jobs", "field": "year" }
+      "domain": {"data": "jobs", "field": "year"}
     },
     {
       "name": "y",
@@ -75,7 +72,7 @@
       "range": "height",
       "round": true,
       "zero": true,
-      "domain": { "data": "jobs", "field": "y1" }
+      "domain": {"data": "jobs", "field": "y1"}
     },
     {
       "name": "color",
@@ -87,7 +84,7 @@
       "name": "alpha",
       "type": "linear",
       "zero": true,
-      "domain": { "data": "series", "field": "sum" },
+      "domain": {"data": "series", "field": "sum"},
       "range": [0.4, 0.8]
     },
     {
@@ -96,13 +93,13 @@
       "range": [0, 20],
       "round": true,
       "zero": true,
-      "domain": { "data": "series", "field": "argmax.perc" }
+      "domain": {"data": "series", "field": "argmax.perc"}
     },
     {
       "name": "opacity",
       "type": "quantile",
       "range": [0, 0, 0, 0, 0, 0.1, 0.2, 0.4, 0.7, 1.0],
-      "domain": { "data": "series", "field": "argmax.perc" }
+      "domain": {"data": "series", "field": "argmax.perc"}
     },
     {
       "name": "align",
@@ -135,8 +132,8 @@
       "domain": false,
       "tickSize": 12,
       "encode": {
-        "grid": { "enter": { "stroke": { "value": "#ccc" } } },
-        "ticks": { "enter": { "stroke": { "value": "#ccc" } } }
+        "grid": {"enter": {"stroke": {"value": "#ccc"}}},
+        "ticks": {"enter": {"stroke": {"value": "#ccc"}}}
       }
     }
   ],
@@ -157,17 +154,17 @@
       "marks": [
         {
           "type": "area",
-          "from": { "data": "facet" },
+          "from": {"data": "facet"},
           "encode": {
             "update": {
-              "x": { "scale": "x", "field": "year" },
-              "y": { "scale": "y", "field": "y0" },
-              "y2": { "scale": "y", "field": "y1" },
-              "fill": { "scale": "color", "field": "sex" },
-              "fillOpacity": { "scale": "alpha", "field": { "parent": "sum" } }
+              "x": {"scale": "x", "field": "year"},
+              "y": {"scale": "y", "field": "y0"},
+              "y2": {"scale": "y", "field": "y1"},
+              "fill": {"scale": "color", "field": "sex"},
+              "fillOpacity": {"scale": "alpha", "field": {"parent": "sum"}}
             },
             "hover": {
-              "fillOpacity": { "value": 0.2 }
+              "fillOpacity": {"value": 0.2}
             }
           }
         }
@@ -175,19 +172,19 @@
     },
     {
       "type": "text",
-      "from": { "data": "group" },
+      "from": {"data": "group"},
       "interactive": false,
       "encode": {
         "update": {
-          "fill": { "value": "#000" },
-          "fillOpacity": { "scale": "opacity", "field": "datum.argmax.perc" },
-          "_fillOpacity": { "value": 1 },
+          "fill": {"value": "#000"},
+          "fillOpacity": {"scale": "opacity", "field": "datum.argmax.perc"},
+          "_fillOpacity": {"value": 1},
           "fontSize": {
             "scale": "font",
             "field": "datum.argmax.perc",
             "offset": 5
           },
-          "text": { "field": "datum.job" }
+          "text": {"field": "datum.job"}
         }
       },
       "transform": [

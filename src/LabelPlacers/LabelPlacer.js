@@ -1,7 +1,7 @@
 /*eslint no-console: "warn"*/
 /*eslint no-empty: "warn"*/
-import { canvas } from 'vega-canvas';
-import { labelWidth, checkCollision } from './Common';
+import {canvas} from 'vega-canvas';
+import {labelWidth, checkCollision} from './Common';
 
 const SIZE_FACTOR = 0.707106781186548; // this is 1 over square root of 2
 
@@ -60,8 +60,7 @@ export default class LabelPlacer {
       if (!textWidth) {
         // to avoid finding width of text label,
         // skip this anchor/offset option if fail to place the label with 1px width
-        if (!isLabelPlacable(_x1, _x1, _y1, _y2, this.bm0, this.bm1, x, x, y1, y2, markBound, isInside))
-          continue;
+        if (!isLabelPlacable(_x1, _x1, _y1, _y2, this.bm0, this.bm1, x, x, y1, y2, markBound, isInside)) continue;
         // Otherwise, find the label width
         else textWidth = labelWidth(context, text, textHeight, font);
       }

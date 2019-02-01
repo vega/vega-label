@@ -1,5 +1,5 @@
 const tape = require('tape'),
-  { createCanvas } = require('canvas'),
+  {createCanvas} = require('canvas'),
   labelWidth = require('../').labelWidth;
 
 function getContext() {
