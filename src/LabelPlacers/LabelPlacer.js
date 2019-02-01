@@ -24,15 +24,16 @@ export default class LabelPlacer {
   place(d) {
     const mb = d.markBound;
     // can not be placed if the mark is not visible in the graph bound
-    if (mb[2] < 0 || mb[5] < 0 || mb[0] > this.width || mb[3] > this.height) return false;
+    if (mb[2] < 0 || mb[5] < 0 || mb[0] > this.width || mb[3] > this.height) {
+      return false;
+    }
 
-    const context = canvas().getContext('2d'),
-      n = this.offsets.length,
-      textHeight = d.textHeight,
-      markBound = d.markBound,
-      text = d.text,
-      font = d.font,
-      scalePixel = this.bm0.scalePixel;
+    const context = canvas().getContext('2d');
+    const n = this.offsets.length;
+    const textHeight = d.textHeight;
+    const markBound = d.markBound;
+    const text = d.text;
+    const font = d.font;
     let textWidth = d.textWidth;
     let dx, dy, isInside, sizeFactor, insideFactor;
     let x, x1, xc, x2, y1, yc, y2;
@@ -53,24 +54,27 @@ export default class LabelPlacer {
       y1 = yc - textHeight / 2.0;
       y2 = yc + textHeight / 2.0;
 
-      _y1 = scalePixel(y1);
-      _y2 = scalePixel(y2);
-      _x1 = scalePixel(x);
+      _y1 = this.bm0.scalePixel(y1);
+      _y2 = this.bm0.scalePixel(y2);
+      _x1 = this.bm0.scalePixel(x);
 
       if (!textWidth) {
         // to avoid finding width of text label,
-        // skip this anchor/offset option if fail to place the label with 1px width
-        if (!isLabelPlacable(_x1, _x1, _y1, _y2, this.bm0, this.bm1, x, x, y1, y2, markBound, isInside)) continue;
-        // Otherwise, find the label width
-        else textWidth = labelWidth(context, text, textHeight, font);
+        if (!isLabelPlacable(_x1, _x1, _y1, _y2, this.bm0, this.bm1, x, x, y1, y2, markBound, isInside)) {
+          // skip this anchor/offset option if fail to place the label with 1px width
+          continue;
+        } else {
+          // Otherwise, find the label width
+          textWidth = labelWidth(context, text, textHeight, font);
+        }
       }
 
       xc = x + (insideFactor * textWidth * dx) / 2.0;
       x1 = xc - textWidth / 2.0;
       x2 = xc + textWidth / 2.0;
 
-      _x1 = scalePixel(x1);
-      _x2 = scalePixel(x2);
+      _x1 = this.bm0.scalePixel(x1);
+      _x2 = this.bm0.scalePixel(x2);
 
       if (isLabelPlacable(_x1, _x2, _y1, _y2, this.bm0, this.bm1, x1, x2, y1, y2, markBound, isInside)) {
         // place label if the position is placable

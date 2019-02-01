@@ -3,11 +3,11 @@ import labelLayout from './LabelLayout';
 import {Transform} from 'vega-dataflow';
 import {inherits, isFunction} from 'vega-util';
 
-var Output = ['x', 'y', 'opacity', 'align', 'baseline', 'originalOpacity', 'transformed'];
+const Output = ['x', 'y', 'opacity', 'align', 'baseline', 'originalOpacity', 'transformed'];
 
-var Params = ['offset'];
+const Params = ['offset'];
 
-var defaultAnchors = ['top-left', 'left', 'bottom-left', 'top', 'bottom', 'top-right', 'right', 'bottom-right'];
+const defaultAnchors = ['top-left', 'left', 'bottom-left', 'top', 'bottom', 'top-right', 'right', 'bottom-right'];
 
 export default function Label(params) {
   Transform.call(this, labelLayout(), params);
@@ -36,42 +36,42 @@ Label.Definition = {
   ]
 };
 
-var prototype = inherits(Label, Transform);
+const prototype = inherits(Label, Transform);
 
 prototype.transform = function(_, pulse) {
   function modp(param) {
-    var p = _[param];
+    const p = _[param];
     return isFunction(p) && pulse.modified(p.fields);
   }
 
-  var mod = _.modified();
+  const mod = _.modified();
   if (!(mod || pulse.changed(pulse.ADD_REM) || Params.some(modp))) return;
 
-  var data = pulse.materialize(pulse.SOURCE).source,
-    labelLayout = this.value,
-    as = _.as ? _.as : Output,
-    offset = _.offset ? _.offset : [1],
-    anchor = _.anchor ? _.anchor : defaultAnchors,
-    numberPositions = offset.length > anchor.length ? offset.length : anchor.length;
+  const data = pulse.materialize(pulse.SOURCE).source;
+  const labelLayout = this.value;
+  const as = _.as ? _.as : Output;
+  const offset = _.offset ? _.offset : [1];
+  const anchor = _.anchor ? _.anchor : defaultAnchors;
+  const numberPositions = offset.length > anchor.length ? offset.length : anchor.length;
 
   // configure layout
-  var labels = labelLayout
-      .texts(data)
-      .sort(_.sort)
-      .offset(offset, numberPositions)
-      .anchor(anchor, numberPositions)
-      .avoidMarks(_.avoidMarks ? _.avoidMarks : [])
-      .size(_.size)
-      .avoidBaseMark(_.avoidBaseMark !== undefined ? _.avoidBaseMark : true)
-      .lineAnchor(_.lineAnchor ? _.lineAnchor : 'end')
-      .markIdx(_.markIdx ? _.markIdx : 0)
-      .padding(_.padding ? _.padding : 0)
-      .layout(),
-    n = data.length;
+  const labels = labelLayout
+    .texts(data)
+    .sort(_.sort)
+    .offset(offset, numberPositions)
+    .anchor(anchor, numberPositions)
+    .avoidMarks(_.avoidMarks ? _.avoidMarks : [])
+    .size(_.size)
+    .avoidBaseMark(_.avoidBaseMark !== undefined ? _.avoidBaseMark : true)
+    .lineAnchor(_.lineAnchor ? _.lineAnchor : 'end')
+    .markIdx(_.markIdx ? _.markIdx : 0)
+    .padding(_.padding ? _.padding : 0)
+    .layout();
+  const n = data.length;
 
   // fill the information of transformed labels back into data
-  var l, t;
-  for (var i = 0; i < n; i++) {
+  let l, t;
+  for (let i = 0; i < n; i++) {
     l = labels[i];
     t = l.datum;
 

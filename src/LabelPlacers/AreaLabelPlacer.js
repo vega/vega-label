@@ -17,18 +17,17 @@ export default class AreaLabelPlacer {
   }
 
   place(d) {
-    const context = canvas().getContext('2d'),
-      items = d.datum.datum.items[0].items,
-      n = items.length,
-      textHeight = d.textHeight,
-      textWidth = labelWidth(context, d.text, textHeight, d.font),
-      scalePixel = this.bm0.scalePixel,
-      pixelRatio = this.bm1.pixelRatio(),
-      stack = new Stack();
-    let maxSize = this.avoidBaseMark ? textHeight : 0,
-      labelPlaced = false,
-      labelPlaced2 = false,
-      maxAreaWidth = 0;
+    const context = canvas().getContext('2d');
+    const items = d.datum.datum.items[0].items;
+    const n = items.length;
+    const textHeight = d.textHeight;
+    const textWidth = labelWidth(context, d.text, textHeight, d.font);
+    const pixelRatio = this.bm1.getPixelRatio();
+    const stack = new Stack();
+    let maxSize = this.avoidBaseMark ? textHeight : 0;
+    let labelPlaced = false;
+    let labelPlaced2 = false;
+    let maxAreaWidth = 0;
     let x1, x2, y1, y2, x, y, _x, _y, lo, hi, mid, areaWidth, coordinate, nextX, nextY;
 
     for (let i = 0; i < n; i++) {
@@ -36,7 +35,7 @@ export default class AreaLabelPlacer {
       y1 = items[i].y;
       x2 = items[i].x2 !== undefined ? items[i].x2 : x1;
       y2 = items[i].y2 !== undefined ? items[i].y2 : y1;
-      stack.push(scalePixel((x1 + x2) / 2.0), scalePixel((y1 + y2) / 2.0));
+      stack.push(this.bm0.scalePixel((x1 + x2) / 2.0), this.bm0.scalePixel((y1 + y2) / 2.0));
       while (!stack.isEmpty()) {
         coordinate = stack.pop();
         _x = coordinate[0];
@@ -46,7 +45,9 @@ export default class AreaLabelPlacer {
           for (let j = 0; j < 4; j++) {
             nextX = _x + X_DIR[j];
             nextY = _y + Y_DIR[j];
-            if (!this.bm2.searchOutOfBound(nextX, nextY, nextX, nextY)) stack.push(nextX, nextY);
+            if (!this.bm2.searchOutOfBound(nextX, nextY, nextX, nextY)) {
+              stack.push(nextX, nextY);
+            }
           }
 
           x = _x * pixelRatio - this.bm0.padding;
@@ -59,8 +60,11 @@ export default class AreaLabelPlacer {
           ) {
             while (hi - lo >= 1) {
               mid = (lo + hi) / 2;
-              if (collide(x, y, textHeight, textWidth, mid, this.bm0, this.bm1)) hi = mid;
-              else lo = mid;
+              if (collide(x, y, textHeight, textWidth, mid, this.bm0, this.bm1)) {
+                hi = mid;
+              } else {
+                lo = mid;
+              }
             }
             if (lo > maxSize) {
               d.x = x;
@@ -89,10 +93,10 @@ export default class AreaLabelPlacer {
     }
 
     if (labelPlaced || labelPlaced2) {
-      x1 = scalePixel(d.x - textWidth / 2.0);
-      y1 = scalePixel(d.y - textHeight / 2.0);
-      x2 = scalePixel(d.x + textWidth / 2.0);
-      y2 = scalePixel(d.y + textHeight / 2.0);
+      x1 = this.bm0.scalePixel(d.x - textWidth / 2.0);
+      y1 = this.bm0.scalePixel(d.y - textHeight / 2.0);
+      x2 = this.bm0.scalePixel(d.x + textWidth / 2.0);
+      y2 = this.bm0.scalePixel(d.y + textHeight / 2.0);
       this.bm0.markInRangeScaled(x1, y1, x2, y2);
       d.align = 'center';
       d.baseline = 'middle';
@@ -106,21 +110,19 @@ export default class AreaLabelPlacer {
 }
 
 function checkLabelOutOfBound(x, y, textWidth, textHeight, width, height) {
-  const x1 = x - textWidth / 2.0,
-    x2 = x + textWidth / 2.0,
-    y1 = y - textHeight / 2.0,
-    y2 = y + textHeight / 2.0;
-  return x1 < 0 || y1 < 0 || x2 > width || y2 > height;
+  return (
+    x - textWidth / 2.0 < 0 || y - textHeight / 2.0 < 0 || x + textWidth / 2.0 > width || y + textHeight / 2.0 > height
+  );
 }
 
 function collide(x, y, textHeight, textWidth, h, bm0, bm1) {
   const w = (textWidth * h) / (textHeight * 2.0);
   h = h / 2.0;
-  const scalePixel = bm0.scalePixel,
-    _x1 = scalePixel(x - w),
-    _x2 = scalePixel(x + w),
-    _y1 = scalePixel(y - h),
-    _y2 = scalePixel(y + h);
+  const _x1 = bm0.scalePixel(x - w);
+  const _x2 = bm0.scalePixel(x + w);
+  const _y1 = bm0.scalePixel(y - h);
+  const _y2 = bm0.scalePixel(y + h);
+
   return (
     bm0.searchOutOfBound(_x1, _y1, _x2, _y2) ||
     checkCollision(_x1, _y1, _x2, _y2, bm0) ||
@@ -147,7 +149,9 @@ class Stack {
     if (this.idx > 0) {
       this.idx--;
       return [this.xStack[this.idx], this.yStack[this.idx]];
-    } else return null;
+    } else {
+      return null;
+    }
   }
 
   peak() {
@@ -160,8 +164,8 @@ class Stack {
 }
 
 function resize(obj) {
-  const newXStack = new Int32Array(obj.size * 2),
-    newYStack = new Int32Array(obj.size * 2);
+  const newXStack = new Int32Array(obj.size * 2);
+  const newYStack = new Int32Array(obj.size * 2);
 
   for (let i = 0; i < obj.idx; i++) {
     newXStack[i] = obj.xStack[i];

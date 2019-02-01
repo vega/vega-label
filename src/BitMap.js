@@ -25,32 +25,32 @@ function applyUnmark(array, index, mask) {
 
 export default class BitMap {
   constructor(width, height, padding) {
-    let pixelRatio = Math.sqrt((width * height) / 1000000.0);
-    pixelRatio = pixelRatio >= 1 ? pixelRatio : 1;
+    this.pixelRatio = Math.sqrt((width * height) / 1000000.0);
+    this.pixelRatio = this.pixelRatio >= 1 ? this.pixelRatio : 1;
 
     this.padding = padding;
 
-    this.width = ~~((width + 2 * padding + pixelRatio) / pixelRatio);
-    this.height = ~~((height + 2 * padding + pixelRatio) / pixelRatio);
+    this.width = ~~((width + 2 * padding + this.pixelRatio) / this.pixelRatio);
+    this.height = ~~((height + 2 * padding + this.pixelRatio) / this.pixelRatio);
 
     this.array = new Uint32Array(~~((this.width * this.height + SIZE) / SIZE));
+  }
 
-    /**
-     * Get pixel ratio between real size and bitmap size
-     * @returns pixel ratio between real size and bitmap size
-     */
-    this.pixelRatio = function() {
-      return pixelRatio;
-    };
+  /**
+   * Get pixel ratio between real size and bitmap size
+   * @returns pixel ratio between real size and bitmap size
+   */
+  getPixelRatio() {
+    return this.pixelRatio;
+  }
 
-    /**
-     * Scale real pixel in the chart into bitmap pixel
-     * @param realPixel the real pixel to be scaled down
-     * @returns scaled pixel
-     */
-    this.scalePixel = function(realPixel) {
-      return ~~((realPixel + padding) / pixelRatio);
-    };
+  /**
+   * Scale real pixel in the chart into bitmap pixel
+   * @param realPixel the real pixel to be scaled down
+   * @returns scaled pixel
+   */
+  scalePixel(realPixel) {
+    return ~~((realPixel + this.padding) / this.pixelRatio);
   }
 
   markScaled(x, y) {
@@ -136,13 +136,21 @@ export default class BitMap {
       indexStart = start >>> DIV;
       indexEnd = end >>> DIV;
       if (indexStart === indexEnd) {
-        if (this.array[indexStart] & right0[start & MOD] & right1[(end & MOD) + 1]) return true;
+        if (this.array[indexStart] & right0[start & MOD] & right1[(end & MOD) + 1]) {
+          return true;
+        }
       } else {
-        if (this.array[indexStart] & right0[start & MOD]) return true;
-        if (this.array[indexEnd] & right1[(end & MOD) + 1]) return true;
+        if (this.array[indexStart] & right0[start & MOD]) {
+          return true;
+        }
+        if (this.array[indexEnd] & right1[(end & MOD) + 1]) {
+          return true;
+        }
 
         for (let i = indexStart + 1; i < indexEnd; i++) {
-          if (this.array[i]) return true;
+          if (this.array[i]) {
+            return true;
+          }
         }
       }
     }
@@ -183,10 +191,10 @@ const INSIDE_OPACITY = 0.0625;
  *            undefined if checking border of base mark is not needed when not avoiding any mark)
  */
 export function prepareBitmap(data, size, marktype, avoidBaseMark, avoidMarks, labelInside, padding) {
-  const isGroupArea = marktype === 'group' && data[0].datum.datum.items[0].marktype === 'area',
-    width = size[0],
-    height = size[1],
-    n = data.length;
+  const isGroupArea = marktype === 'group' && data[0].datum.datum.items[0].marktype === 'area';
+  const width = size[0];
+  const height = size[1];
+  const n = data.length;
 
   // extract data information from base mark when base mark is to be avoid
   // or base mark is implicitly avoid when base mark is group area
@@ -225,10 +233,10 @@ export function prepareBitmap(data, size, marktype, avoidBaseMark, avoidMarks, l
  * @returns canvas context, to which all avoiding marks are drawn
  */
 function writeToCanvas(avoidMarks, width, height, labelInside) {
-  const m = avoidMarks.length,
-    // c = document.getElementById('canvas-render'), // debugging canvas
-    c = document.createElement('canvas'),
-    context = c.getContext('2d');
+  const m = avoidMarks.length;
+  // const c = document.getElementById('canvas-render'); // debugging canvas
+  const c = document.createElement('canvas');
+  const context = c.getContext('2d');
   let originalItems, itemsLen;
   c.setAttribute('width', width);
   c.setAttribute('height', height);
@@ -237,10 +245,15 @@ function writeToCanvas(avoidMarks, width, height, labelInside) {
   for (let i = 0; i < m; i++) {
     originalItems = avoidMarks[i];
     itemsLen = originalItems.length;
-    if (!itemsLen) continue;
+    if (!itemsLen) {
+      continue;
+    }
 
-    if (originalItems[0].mark.marktype !== 'group') drawMark(context, originalItems, labelInside);
-    else drawGroup(context, originalItems, labelInside);
+    if (originalItems[0].mark.marktype !== 'group') {
+      drawMark(context, originalItems, labelInside);
+    } else {
+      drawGroup(context, originalItems, labelInside);
+    }
   }
 
   return context;
@@ -260,10 +273,10 @@ function writeToCanvas(avoidMarks, width, height, labelInside) {
  *          - second bitmap is filled with borders of all the avoiding marks
  */
 function writeToBitMaps(context, width, height, labelInside, isGroupArea, padding) {
-  const layer1 = new BitMap(width, height, padding),
-    layer2 = labelInside || isGroupArea ? new BitMap(width, height, padding) : undefined,
-    imageData = context.getImageData(0, 0, width, height),
-    canvasBuffer = new Uint32Array(imageData.data.buffer);
+  const layer1 = new BitMap(width, height, padding);
+  const layer2 = labelInside || isGroupArea ? new BitMap(width, height, padding) : undefined;
+  const imageData = context.getImageData(0, 0, width, height);
+  const canvasBuffer = new Uint32Array(imageData.data.buffer);
   let x, y, alpha;
 
   if (isGroupArea) {
@@ -272,7 +285,9 @@ function writeToBitMaps(context, width, height, labelInside, isGroupArea, paddin
         alpha = canvasBuffer[y * width + x] & ALPHA_MASK;
         // only fill second layer for group area because labels are only not allowed to place over
         // border of area
-        if (alpha && alpha ^ INSIDE_OPACITY_IN_ALPHA) layer2.mark(x, y);
+        if (alpha && alpha ^ INSIDE_OPACITY_IN_ALPHA) {
+          layer2.mark(x, y);
+        }
       }
     }
   } else {
@@ -285,7 +300,9 @@ function writeToBitMaps(context, width, height, labelInside, isGroupArea, paddin
 
           // fill second layer if there is a border in canvas in that location
           // and label can be placed inside
-          if (labelInside && alpha ^ INSIDE_OPACITY_IN_ALPHA) layer2.mark(x, y);
+          if (labelInside && alpha ^ INSIDE_OPACITY_IN_ALPHA) {
+            layer2.mark(x, y);
+          }
         }
       }
     }
@@ -307,7 +324,9 @@ function drawMark(context, originalItems, labelInside) {
     for (let i = 0; i < n; i++) {
       items[i] = prepareMarkItem(originalItems[i]);
     }
-  } else items = originalItems;
+  } else {
+    items = originalItems;
+  }
 
   // draw items into canvas
   Marks[items[0].mark.marktype].draw(context, {items: items}, null);
@@ -326,8 +345,12 @@ function drawGroup(context, groups, labelInside) {
     marks = groups[i].items;
     for (let j = 0; j < marks.length; j++) {
       const g = marks[j];
-      if (g.marktype !== 'group') drawMark(context, g.items, labelInside);
-      else drawGroup(context, g.items, labelInside); // recursivly draw group of marks
+      if (g.marktype !== 'group') {
+        drawMark(context, g.items, labelInside);
+      } else {
+        // recursivly draw group of marks
+        drawGroup(context, g.items, labelInside);
+      }
     }
   }
 }
@@ -343,7 +366,9 @@ function prepareMarkItem(originalItem) {
   for (const key in originalItem) {
     item[key] = originalItem[key];
   }
-  if (item.stroke) item.strokeOpacity = 1;
+  if (item.stroke) {
+    item.strokeOpacity = 1;
+  }
 
   if (item.fill) {
     item.fillOpacity = INSIDE_OPACITY;
@@ -357,10 +382,16 @@ function prepareMarkItem(originalItem) {
 // debugging tools
 
 export function printBitMap(bitmap, id) {
-  if (!arguments.length) id = 'bitmap';
+  if (!arguments.length) {
+    id = 'bitmap';
+  }
+
   let x, y;
   const canvas = document.getElementById(id);
-  if (!canvas) return;
+  if (!canvas) {
+    return;
+  }
+
   canvas.setAttribute('width', bitmap.width);
   canvas.setAttribute('height', bitmap.height);
   const ctx = canvas.getContext('2d');

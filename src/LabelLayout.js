@@ -34,17 +34,20 @@ export default function() {
 
   label.layout = function() {
     const n = texts.length;
-    if (!n) return texts; // return immediately when there is not a label to be placed
+    if (!n) {
+      // return immediately when there is not a label to be placed
+      return texts;
+    }
 
     if (!size || size.length !== 2) {
       throw Error('Size of chart should be specified as an array of width and height');
     }
 
-    const data = new Array(n),
-      marktype = texts[0].datum && texts[0].datum.mark ? texts[0].datum.mark.marktype : undefined,
-      transformed = texts[0].transformed,
-      grouptype = marktype === 'group' ? texts[0].datum.items[markIdx].marktype : undefined,
-      getMarkBoundary = getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIdx);
+    const data = new Array(n);
+    const marktype = texts[0].datum && texts[0].datum.mark ? texts[0].datum.mark.marktype : undefined;
+    const transformed = texts[0].transformed;
+    const grouptype = marktype === 'group' ? texts[0].datum.items[markIdx].marktype : undefined;
+    const getMarkBoundary = getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIdx);
 
     // prepare text mark data for placing
     for (let i = 0; i < n; i++) {
@@ -52,7 +55,7 @@ export default function() {
 
       data[i] = {
         textWidth: undefined,
-        textHeight: d.fontSize,
+        textHeight: d.fontSize, // fontSize represents text height of a text
         fontSize: d.fontSize,
         font: d.font,
         text: d.text,
@@ -64,8 +67,10 @@ export default function() {
       };
     }
 
-    // sort field has to be primitive variable type
-    if (sort) data.sort((a, b) => a.sort - b.sort);
+    if (sort) {
+      // sort field has to be primitive variable type
+      data.sort((a, b) => a.sort - b.sort);
+    }
 
     // a flag for determining if it is possible for label to be placed inside its base mark
     let labelInside = false;
@@ -104,76 +109,110 @@ export default function() {
     if (arguments.length) {
       texts = _;
       return label;
-    } else return texts;
+    } else {
+      return texts;
+    }
   };
 
   label.offset = function(_, len) {
     if (arguments.length) {
       const n = _.length;
       offsets = new Float64Array(len);
-      for (let i = 0; i < n; i++) offsets[i] = _[i] ? _[i] : 0;
-      for (let i = n; i < len; i++) offsets[i] = offsets[n - 1] ? offsets[n - 1] : 0;
+
+      for (let i = 0; i < n; i++) {
+        offsets[i] = _[i] ? _[i] : 0;
+      }
+
+      for (let i = n; i < len; i++) {
+        offsets[i] = offsets[n - 1] ? offsets[n - 1] : 0;
+      }
+
       return label;
-    } else return offsets;
+    } else {
+      return offsets;
+    }
   };
 
   label.anchor = function(_, len) {
     if (arguments.length) {
       const n = _.length;
       anchors = new Int8Array(len);
-      for (let i = 0; i < n; i++) anchors[i] |= anchorTextToNumber[_[i]];
-      for (let i = n; i < len; i++) anchors[i] = anchors[n - 1];
+
+      for (let i = 0; i < n; i++) {
+        anchors[i] |= anchorTextToNumber[_[i]];
+      }
+
+      for (let i = n; i < len; i++) {
+        anchors[i] = anchors[n - 1];
+      }
+
       return label;
-    } else return anchors;
+    } else {
+      return anchors;
+    }
   };
 
   label.sort = function(_) {
     if (arguments.length) {
       sort = _;
       return label;
-    } else return sort;
+    } else {
+      return sort;
+    }
   };
 
   label.avoidMarks = function(_) {
     if (arguments.length) {
       avoidMarks = _;
       return label;
-    } else return sort;
+    } else {
+      return sort;
+    }
   };
 
   label.size = function(_) {
     if (arguments.length) {
       size = _;
       return label;
-    } else return size;
+    } else {
+      return size;
+    }
   };
 
   label.avoidBaseMark = function(_) {
     if (arguments.length) {
       avoidBaseMark = _;
       return label;
-    } else return avoidBaseMark;
+    } else {
+      return avoidBaseMark;
+    }
   };
 
   label.lineAnchor = function(_) {
     if (arguments.length) {
       lineAnchor = _;
       return label;
-    } else return lineAnchor;
+    } else {
+      return lineAnchor;
+    }
   };
 
   label.markIdx = function(_) {
     if (arguments.length) {
       markIdx = _;
       return label;
-    } else return markIdx;
+    } else {
+      return markIdx;
+    }
   };
 
   label.padding = function(_) {
     if (arguments.length) {
       padding = _;
       return label;
-    } else return padding;
+    } else {
+      return padding;
+    }
   };
 
   return label;
