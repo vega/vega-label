@@ -49,10 +49,10 @@ prototype.transform = function(_, pulse) {
 
   const data = pulse.materialize(pulse.SOURCE).source;
   const labelLayout = this.value;
-  const as = _.as ? _.as : Output;
-  const offset = _.offset ? _.offset : [1];
-  const anchor = _.anchor ? _.anchor : defaultAnchors;
-  const numberPositions = offset.length > anchor.length ? offset.length : anchor.length;
+  const as = _.as || Output;
+  const offset = _.offset || [1];
+  const anchor = _.anchor || defaultAnchors;
+  const numberPositions = Math.max(offset.length, anchor.length);
 
   // configure layout
   const labels = labelLayout
@@ -60,12 +60,12 @@ prototype.transform = function(_, pulse) {
     .sort(_.sort)
     .offset(offset, numberPositions)
     .anchor(anchor, numberPositions)
-    .avoidMarks(_.avoidMarks ? _.avoidMarks : [])
+    .avoidMarks(_.avoidMarks || [])
     .size(_.size)
     .avoidBaseMark(_.avoidBaseMark !== undefined ? _.avoidBaseMark : true)
-    .lineAnchor(_.lineAnchor ? _.lineAnchor : 'end')
-    .markIdx(_.markIdx ? _.markIdx : 0)
-    .padding(_.padding ? _.padding : 0)
+    .lineAnchor(_.lineAnchor || 'end')
+    .markIdx(_.markIdx || 0)
+    .padding(_.padding || 0)
     .layout();
   const n = data.length;
 

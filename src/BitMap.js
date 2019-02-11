@@ -26,7 +26,11 @@ function applyUnmark(array, index, mask) {
 export default class BitMap {
   constructor(width, height, padding) {
     this.pixelRatio = Math.sqrt((width * height) / 1000000.0);
-    this.pixelRatio = this.pixelRatio >= 1 ? this.pixelRatio : 1;
+
+    // bound pixelRatio to be not less than 1
+    if (this.pixelRatio < 1) {
+      this.pixelRatio = 1;
+    }
 
     this.padding = padding;
 
@@ -274,7 +278,7 @@ function writeToCanvas(avoidMarks, width, height, labelInside) {
  */
 function writeToBitMaps(context, width, height, labelInside, isGroupArea, padding) {
   const layer1 = new BitMap(width, height, padding);
-  const layer2 = labelInside || isGroupArea ? new BitMap(width, height, padding) : undefined;
+  const layer2 = (labelInside || isGroupArea) && new BitMap(width, height, padding);
   const imageData = context.getImageData(0, 0, width, height);
   const canvasBuffer = new Uint32Array(imageData.data.buffer);
   let x, y, alpha;

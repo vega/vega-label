@@ -44,10 +44,10 @@ export default function() {
     }
 
     const data = new Array(n);
-    const marktype = texts[0].datum && texts[0].datum.mark ? texts[0].datum.mark.marktype : undefined;
-    const transformed = texts[0].transformed;
-    const grouptype = marktype === 'group' ? texts[0].datum.items[markIdx].marktype : undefined;
+    const marktype = texts[0].datum && texts[0].datum.mark && texts[0].datum.mark.marktype;
+    const grouptype = marktype === 'group' && texts[0].datum.items[markIdx].marktype;
     const getMarkBoundary = getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIdx);
+    const getOriginalOpacity = getOriginalOpacityFactory(texts[0].transformed);
 
     // prepare text mark data for placing
     for (let i = 0; i < n; i++) {
@@ -59,9 +59,9 @@ export default function() {
         fontSize: d.fontSize,
         font: d.font,
         text: d.text,
-        sort: sort ? sort(d.datum) : undefined,
+        sort: sort && sort(d.datum),
         markBound: getMarkBoundary(d),
-        originalOpacity: transformed ? d.originalOpacity : d.opacity,
+        originalOpacity: getOriginalOpacity(d),
         opacity: 0,
         datum: d
       };
@@ -120,11 +120,11 @@ export default function() {
       offsets = new Float64Array(len);
 
       for (let i = 0; i < n; i++) {
-        offsets[i] = _[i] ? _[i] : 0;
+        offsets[i] = _[i] || 0;
       }
 
       for (let i = n; i < len; i++) {
-        offsets[i] = offsets[n - 1] ? offsets[n - 1] : 0;
+        offsets[i] = offsets[n - 1];
       }
 
       return label;
@@ -216,6 +216,21 @@ export default function() {
   };
 
   return label;
+}
+
+/**
+ * Factory function for geting original opacity from a data point information.
+ * @param {boolean} transformed a boolean flag if data points are already transformed
+ *
+ * @return a function that return originalOpacity property of a data point if
+ *         transformed. Otherwise, a function that return .opacity property of a data point
+ */
+function getOriginalOpacityFactory(transformed) {
+  if (transformed) {
+    return d => d.originalOpacity;
+  } else {
+    return d => d.opacity;
+  }
 }
 
 /**

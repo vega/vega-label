@@ -33,8 +33,8 @@ export default class AreaLabelPlacer {
     for (let i = 0; i < n; i++) {
       x1 = items[i].x;
       y1 = items[i].y;
-      x2 = items[i].x2 !== undefined ? items[i].x2 : x1;
-      y2 = items[i].y2 !== undefined ? items[i].y2 : y1;
+      x2 = items[i].x2 === undefined ? x1 : items[i].x2;
+      y2 = items[i].y2 === undefined ? y1 : items[i].y2;
       stack.push(this.bm0.scalePixel((x1 + x2) / 2.0), this.bm0.scalePixel((y1 + y2) / 2.0));
       while (!stack.isEmpty()) {
         coordinate = stack.pop();
@@ -126,7 +126,7 @@ function collide(x, y, textHeight, textWidth, h, bm0, bm1) {
   return (
     bm0.searchOutOfBound(_x1, _y1, _x2, _y2) ||
     checkCollision(_x1, _y1, _x2, _y2, bm0) ||
-    (bm1 ? checkCollision(_x1, _y1, _x2, _y2, bm1) : false)
+    (bm1 && checkCollision(_x1, _y1, _x2, _y2, bm1))
   );
 }
 
@@ -139,7 +139,7 @@ class Stack {
   }
 
   push(x, y) {
-    if (this.idx === this.size - 1) resize(this);
+    if (this.idx === this.size - 1) resizeStack(this);
     this.xStack[this.idx] = x;
     this.yStack[this.idx] = y;
     this.idx++;
@@ -154,16 +154,12 @@ class Stack {
     }
   }
 
-  peak() {
-    return this.idx > 0 ? [this.xStack[this.idx - 1], this.yStack[this.idx - 1]] : null;
-  }
-
   isEmpty() {
     return this.idx <= 0;
   }
 }
 
-function resize(obj) {
+function resizeStack(obj) {
   const newXStack = new Int32Array(obj.size * 2);
   const newYStack = new Int32Array(obj.size * 2);
 
