@@ -8,5 +8,4 @@ data/
 test_code/
 runtime_test/
 experiment_result.*
-demo.*
 demo-all.*
