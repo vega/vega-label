@@ -28,7 +28,7 @@ const anchorTextToNumber = {
 
 export default function() {
   let offsets, sort, anchors, avoidMarks, size;
-  let avoidBaseMark, lineAnchor, markIdx, padding;
+  let avoidBaseMark, lineAnchor, markIndex, padding;
   let label = {},
     texts = [];
 
@@ -45,8 +45,8 @@ export default function() {
 
     const data = new Array(n);
     const marktype = texts[0].datum && texts[0].datum.mark && texts[0].datum.mark.marktype;
-    const grouptype = marktype === 'group' && texts[0].datum.items[markIdx].marktype;
-    const getMarkBoundary = getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIdx);
+    const grouptype = marktype === 'group' && texts[0].datum.items[markIndex].marktype;
+    const getMarkBoundary = getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIndex);
     const getOriginalOpacity = getOriginalOpacityFactory(texts[0].transformed);
 
     // prepare text mark data for placing
@@ -197,12 +197,12 @@ export default function() {
     }
   };
 
-  label.markIdx = function(_) {
+  label.markIndex = function(_) {
     if (arguments.length) {
-      markIdx = _;
+      markIndex = _;
       return label;
     } else {
-      return markIdx;
+      return markIndex;
     }
   };
 
@@ -246,11 +246,11 @@ function getOriginalOpacityFactory(transformed) {
  *                           undefined if the base mark is not in group)
  * @param {string} lineAnchor anchor point of group line mark if group type is 'line' can be either
  *                            'begin' or 'end'
- * @param {number} markIdx index of base mark if base mark is in a group with multiple marks
+ * @param {number} markIndex index of base mark if base mark is in a group with multiple marks
  *
  * @returns function(d) for getting mark boundary from data point information d
  */
-function getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIdx) {
+function getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIndex) {
   if (!marktype) {
     // no reactive geometry
     return d => [d.x, d.x, d.x, d.y, d.y, d.y];
@@ -262,7 +262,7 @@ function getMarkBoundaryFactory(marktype, grouptype, lineAnchor, markIdx) {
   } else if (grouptype === 'line') {
     const endItemIndex = lineAnchor === 'begin' ? m => m - 1 : () => 0;
     return function(d) {
-      const items = d.datum.items[markIdx].items;
+      const items = d.datum.items[markIndex].items;
       const m = items.length;
       if (m) {
         // this line has at least 1 item
