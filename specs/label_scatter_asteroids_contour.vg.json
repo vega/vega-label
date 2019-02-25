@@ -144,6 +144,16 @@
           "size": [800, 500],
           "sort": {"field": "datum.ra"},
           "padding": 15
+        },
+        {
+          "type": "formula",
+          "as": "xWithOffset",
+          "expr": "(datum.x + datum.datum.x) / 2.0"
+        },
+        {
+          "type": "formula",
+          "as": "yWithOffset",
+          "expr": "(datum.y + datum.datum.y) / 2.0"
         }
       ]
     },
@@ -154,8 +164,8 @@
         "enter": {
           "x": {"field": "x"},
           "y": {"field": "y"},
-          "x2": {"field": "datum.x"},
-          "y2": {"field": "datum.y"},
+          "x2": {"field": "xWithOffset"},
+          "y2": {"field": "yWithOffset"},
           "opacity": {"field": "opacity"},
           "strokeOpacity": {"value": 0.3},
           "strokeWidth": {"value": 1}

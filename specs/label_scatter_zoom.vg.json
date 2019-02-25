@@ -283,6 +283,16 @@
           "avoidMarks": ["basePoint"],
           "allowOutside": true,
           "size": [600, 400]
+        },
+        {
+          "type": "formula",
+          "as": "xWithOffset",
+          "expr": "(datum.x + datum.datum.x) / 2.0"
+        },
+        {
+          "type": "formula",
+          "as": "yWithOffset",
+          "expr": "(datum.y + datum.datum.y) / 2.0"
         }
       ]
     },
@@ -294,10 +304,10 @@
           "strokeWidth": {"value": 1}
         },
         "update": {
-          "x": {"scale": "xscale", "field": "datum.datum.Horsepower"},
-          "y": {"scale": "yscale", "field": "datum.datum.Miles_per_Gallon"},
-          "x2": {"field": "x"},
-          "y2": {"field": "y"},
+          "x": {"field": "x"},
+          "y": {"field": "y"},
+          "x2": {"field": "xWithOffset"},
+          "y2": {"field": "yWithOffset"},
           "opacity": {"field": "opacity"}
         }
       }
