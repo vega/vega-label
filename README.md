@@ -1,12 +1,30 @@
 # Vega-Label
 
-Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega), which transform text mark into readable label based on mark type.
+The **label** transform repositions texts from text mark, so that their placements are not conflicting with other elements in the chart. Those elements include marks that have name included in property `avoidMarks` and the mark that is used as backing data (as explained in [reactive geometry](https://vega.github.io/vega/docs/marks/)) of the text mark this label transform is transforming.
 
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=popout)](https://github.com/prettier/prettier)
+The label transform is useful for labeling data points by creating a text mark that takes in data from the mark that represents the data point (we will call this 'base mark' for this label documentation), then use the label transform on the text mark to reposition the text for readability.
 
-## Syntax for label transform
+## Transform Parameters
 
-```json
+| Property      |              Type               | Description                                                                                                                                        |
+| :------------ | :-----------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------- |
+| sort          |  {% include type t="Field" %}   | the field indicating order of labels to be placed (**greater** will be placed **after**).                                                          |
+| avoidMarks    | {% include type t="String[]" %} | list of names of mark channels; labels will not be placed in collision with these marks.                                                           |
+| padding       |  {% include type t="Number" %}  | the amount of pixels label can extend pass chart bounding box.                                                                                     |
+| size          | {% include type t="Number[]" %} | {% include required %} size of the chart in format `[width, height]`. **This size have to match with the chart size**.                             |
+| anchor        | {% include type t="String[]" %} | list of anchor points of labels relative to its base mark's bounding box.                                                                          |
+| offset        | {% include type t="Number[]" %} | list of offset of labels relative to its base mark's bounding box.                                                                                 |
+| avoidMarks    | {% include type t="String[]" %} | list of names of marks. Labels will not collide into these marks when being placed.                                                                |
+| padding       |  {% include type t="Number" %}  | the amount of pixels extending from the chart bounding box as an available space for labels to be placed.                                          |
+| avoidBaseMark | {% include type t="Boolean" %}  | a flag specifying if labels are avoiding base mark (from reactive geometry) or not.                                                                |
+| lineAnchor    |  {% include type t="String" %}  | an anchor point for group line mark can be `begin` or `end`. **Note**: this flag only work with group line mark as a base mark.                    |
+| markIndex     |  {% include type t="Number" %}  | an index to specify which mark in the group is to used to calculate anchor points for labels. **Note**: this only work with base mark type `group` |
+
+## Usage
+
+TODO: add usage
+
+<!-- ```json
 "transform": [
   {
     "type": "label",
@@ -68,7 +86,37 @@ Vega-Label is a post-encoding transform for [Vega](https://github.com/vega/vega)
   - To specify which mark in the group is to used to calculate anchor points for labels.
 
 - label transform has to be used with reactive geometry to use it as base mark to calculate positions of label.
-  - Right now, Vega-Label works with `symbol`, `line`, `rect`, and `group` of `line` and `area`.
+  - Right now, Vega-Label works with `symbol`, `line`, `rect`, and `group` of `line` and `area`. -->
+
+# Setting up Vega-Label Instructions
+
+Right now, Vega-Label cannot be integrated into Vega yet.
+
+However, for trying vega-label, first clone this repository
+
+We assume you have [yarn](https://yarnpkg.com/en/) and [python](https://www.python.org/) installed.
+
+1. Install the dependencies:
+
+```
+$ yarn
+```
+
+2. Build Vega-Label:
+
+```
+$ yarn build
+```
+
+3. Serve the demo site with python:
+
+```
+python -m SimpleHTTPServer
+```
+
+4. In browser, go to http://localhost:8000/demo.html to see demo for Vega-Label
+
+5. In demo.js, uncomment a spec name to try other examples, or try your own spec by putting them in directory `specs` with name format `label_SPECNAME.vg.json`
 
 # Examples of Vega-Label
 
