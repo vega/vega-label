@@ -1,6 +1,6 @@
 # Vega-Label
 
-The **label** transform repositions texts from text mark, so that their placements are not conflicting with other elements in the chart. Those elements include marks that have name included in property `avoidMarks` and the mark that is used as backing data (as explained in [reactive geometry](https://vega.github.io/vega/docs/marks/)) of the text mark this label transform is transforming.
+The **label** transform repositions texts in text mark, so that their placements are not conflicting with other elements in the chart. Those elements include marks that have name included in property `avoidMarks` and the mark that is used as backing data (as explained in [reactive geometry](https://vega.github.io/vega/docs/marks/)) of the text mark this label transform is transforming.
 
 The label transform is useful for labeling data points by creating a text mark that takes in data from the mark that represents the data point (we will call this 'base mark' for this label documentation), then use the label transform on the text mark to reposition the text for readability.
 
@@ -94,29 +94,23 @@ Right now, Vega-Label cannot be integrated into Vega yet.
 
 However, for trying vega-label, first clone this repository
 
-We assume you have [yarn](https://yarnpkg.com/en/) and [python](https://www.python.org/) installed.
+We assume you have [yarn](https://yarnpkg.com/en/) and [python](https://www.python.org/) installed (python is not necessary for running Vega, just for serving demo website).
 
-1. Install the dependencies:
-
-```
-$ yarn
-```
-
-2. Build Vega-Label:
+1. Install the dependencies and build Vega-Label:
 
 ```
-$ yarn build
+$ yarn && yarn build
 ```
 
-3. Serve the demo site with python:
+2. Serve the demo site with python:
 
 ```
-python -m SimpleHTTPServer
+$ python -m SimpleHTTPServer
 ```
 
-4. In browser, go to http://localhost:8000/demo.html to see demo for Vega-Label
+3. In browser, go to http://localhost:8000/demo.html to see demo for a Vega-Label example.
 
-5. In demo.js, uncomment a spec name to try other examples, or try your own spec by putting them in directory `specs` with name format `label_SPECNAME.vg.json`
+4. In demo.js, uncomment a spec name to try other examples, or try your own spec by putting them in directory `specs` with name format `label_SPECNAME.vg.json`.
 
 # Examples of Vega-Label
 
