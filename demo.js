@@ -28,7 +28,9 @@ var specName
 rawFile.open('GET', '../specs/label_' + specName + '.vg.json', false);
 rawFile.onreadystatechange = () => {
   if (rawFile.readyState === 4)
-    if (rawFile.status === 200 || rawFile.status === 0) jsonText = rawFile.responseText;
+    if (rawFile.status === 200 || rawFile.status === 0) {
+      jsonText = rawFile.responseText;
+    }
 };
 rawFile.send(null);
 

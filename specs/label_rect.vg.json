@@ -64,7 +64,7 @@
         {
           "type": "label",
           "offset": [-15, 15],
-          "anchor": ["right"],
+          "anchor": "right",
           "size": [700, 500]
         }
       ]

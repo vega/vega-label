@@ -278,7 +278,7 @@
       "transform": [
         {
           "type": "label",
-          "offset": [3],
+          "offset": 3,
           "fill": "#000",
           "avoidMarks": ["basePoint"],
           "allowOutside": true,

@@ -94,7 +94,7 @@
       "transform": [
         {
           "type": "label",
-          "offset": [2],
+          "offset": 2,
           "anchor": ["right", "top-right", "bottom-right"],
           "size": [800, 500],
           "padding": 20

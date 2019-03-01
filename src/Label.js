@@ -22,9 +22,9 @@ Label.Definition = {
     {name: 'lineAnchor', type: 'string', values: ['begin', 'end'], default: 'end'},
     {name: 'avoidBaseMark', type: 'boolean', default: true},
     {name: 'size', type: 'number', array: true, length: [2]},
-    {name: 'offset', type: 'number', array: true, default: [1]},
+    {name: 'offset', type: 'number', default: [1]},
     {name: 'sort', type: 'field'},
-    {name: 'anchor', type: 'string', array: true, default: defaultAnchors},
+    {name: 'anchor', type: 'string', default: defaultAnchors},
     {name: 'avoidMarks', type: 'data', array: true},
     {
       name: 'as',
@@ -50,8 +50,8 @@ prototype.transform = function(_, pulse) {
   const data = pulse.materialize(pulse.SOURCE).source;
   const labelLayout = this.value;
   const as = _.as || Output;
-  const offset = _.offset || [1];
-  const anchor = _.anchor || defaultAnchors;
+  const offset = Array.isArray(_.offset) ? _.offset : Number.isFinite(_.offset) ? [_.offset] : [1];
+  const anchor = Array.isArray(_.anchor) ? _.anchor : typeof _.anchor === 'string' ? [_.anchor] : defaultAnchors;
   const numberPositions = Math.max(offset.length, anchor.length);
 
   // configure layout

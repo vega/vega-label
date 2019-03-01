@@ -98,7 +98,7 @@
       "transform": [
         {
           "type": "label",
-          "offset": [3],
+          "offset": 3,
           "size": [500, 500],
           "avoidMarks": ["group"]
         }

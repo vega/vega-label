@@ -140,7 +140,7 @@
       "transform": [
         {
           "type": "label",
-          "offset": [2],
+          "offset": 2,
           "size": [800, 500],
           "sort": {"field": "datum.ra"},
           "padding": 15
