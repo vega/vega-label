@@ -121,9 +121,10 @@ $ python -m SimpleHTTPServer
 
 Groups of area are used as the base mark, but `avoidBaseMark` flag is `false`, so labels can collide with their marks, but not to each other. Here is the [Vega Specification](./specs/label_area_job_voyager.vg.json).
 
-This example is from Vega [Job Voyager Example](https://vega.github.io/vega/examples/job-voyager/). In the original example, each label is placed at the position that has the widest vertical space in the area. ![original_job_voyager_algo](pics/original_job_voyager_algo.png)
-
-When adding label using text with label transform, each label is placed at the position that has the largest rectangle (with the same ratil as the label) fitting in the area. ![vega_label_job_voyager_algo](pics/vega_label_job_voyager_algo.png) This method is better because label transform considers both horizontal and vertical space, so it is more likely for the label to be placed completely inside the area.
+|                                                                                                                                                                                                                                                                                                                                                        |                                                                      |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------- |
+| This example is from Vega [Job Voyager Example](https://vega.github.io/vega/examples/job-voyager/). In the original example, each label is placed at the position that has the widest vertical space in the area.                                                                                                                                      | ![original_job_voyager_algo](pics/original_job_voyager_algo.png)     |
+| When adding label using text with label transform, each label is placed at the position that has the largest rectangle (with the same ratil as the label) fitting in the area. This method is better because label transform considers both horizontal and vertical space, so it is more likely for the label to be placed completely inside the area. | ![vega_label_job_voyager_algo](pics/vega_label_job_voyager_algo.png) |
 
 ### With line
 
