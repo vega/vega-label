@@ -1,22 +1,21 @@
 # Vega-Label
 
-The **label** transform repositions texts in text mark, so that their placements are not conflicting with other elements in the chart. Those elements include marks that have name included in property `avoidMarks` and the mark that is used as backing data (as explained in [reactive geometry](https://vega.github.io/vega/docs/marks/)) of the text mark this label transform is transforming.
+The **label** transform repositions texts in text mark, so that their placements are not colliding with other elements in the chart. Those elements include marks that have name included in property `avoidMarks` and the mark that is used as backing data (as explained in [reactive geometry](https://vega.github.io/vega/docs/marks/)) of the text mark this label transform is transforming.
 
-The label transform is useful for labeling data points by creating a text mark that takes in data from the mark that represents the data point (we will call this 'base mark' for this label documentation), then use the label transform on the text mark to reposition the text for readability.
+The label transform is useful for labeling data points by creating a text mark that takes in data from the mark that represents the data point (we will call this 'base mark' for this label documentation), then use the label transform on the text mark to reposition the text, so that the texts appear near their data points without colliding into other objects in the chart.
 
 ## Transform Parameters
 
 | Property      |              Type               | Description                                                                                                                                        |
 | :------------ | :-----------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------- |
 | sort          |  {% include type t="Field" %}   | the field indicating order of labels to be placed (**greater** will be placed **after**).                                                          |
-| avoidMarks    | {% include type t="String[]" %} | list of names of mark channels; labels will not be placed in collision with these marks.                                                           |
 | padding       |  {% include type t="Number" %}  | the amount of pixels label can extend pass chart bounding box.                                                                                     |
 | size          | {% include type t="Number[]" %} | {% include required %} size of the chart in format `[width, height]`. **This size have to match with the chart size**.                             |
-| anchor        |    {% include type t="String    | String[]" %}                                                                                                                                       | list of anchor points of labels relative to its base mark's bounding box. |
-| offset        |    {% include type t="Number    | Number[]" %}                                                                                                                                       | list of offset of labels relative to its base mark's bounding box. |
-| avoidMarks    | {% include type t="String[]" %} | list of names of marks. Labels will not collide into these marks when being placed.                                                                |
+| anchor        |    {% include type t="String    | String[]" %}                                                                                                                                       | list of anchor points of labels relative to its base mark's bounding box that you want Vega-Label to consider placing. The available options are `"top-left"`, `"left"`, `"bottom-left"`, `"top"`, `"bottom"`, `"top-right"`, `"right"`, `"bottom-right"`, `"middle"`. Can also be specified as a single anchor point. |
+| offset        |    {% include type t="Number    | Number[]" %}                                                                                                                                       | list of offset of labels relative to its base mark's bounding box. This list is parallel to the list of anchor points. This property can also be specified as a single number for a constant offset through every anchor point |
+| avoidMarks    | {% include type t="String[]" %} | list of names of marks. Labels will not be placed in collision with these marks.                                                                   |
 | padding       |  {% include type t="Number" %}  | the amount of pixels extending from the chart bounding box as an available space for labels to be placed.                                          |
-| avoidBaseMark | {% include type t="Boolean" %}  | a flag specifying if labels are avoiding base mark (from reactive geometry) or not.                                                                |
+| avoidBaseMark | {% include type t="Boolean" %}  | a flag specifying if labels can collide their base mark (from reactive geometry) or not.                                                           |
 | lineAnchor    |  {% include type t="String" %}  | an anchor point for group line mark can be `begin` or `end`. **Note**: this flag only work with group line mark as a base mark.                    |
 | markIndex     |  {% include type t="Number" %}  | an index to specify which mark in the group is to used to calculate anchor points for labels. **Note**: this only work with base mark type `group` |
 
@@ -88,7 +87,7 @@ TODO: add usage
 - label transform has to be used with reactive geometry to use it as base mark to calculate positions of label.
   - Right now, Vega-Label works with `symbol`, `line`, `rect`, and `group` of `line` and `area`. -->
 
-# Setting up Vega-Label Instructions
+## Setting up Vega-Label Instructions
 
 Right now, Vega-Label cannot be integrated into Vega yet.
 
@@ -112,11 +111,11 @@ $ python -m SimpleHTTPServer
 
 4. In demo.js, uncomment a spec name to try other examples, or try your own spec by putting them in directory `specs` with name format `label_SPECNAME.vg.json`.
 
-# Examples of Vega-Label
+## Examples of Vega-Label
 
-## With area
+### With area
 
-### In Stacked Area Chart - Job Voyager Example
+#### In Stacked Area Chart - Job Voyager Example
 
 ![area_job_voyager](pics/label_area_job_voyager.png)
 
@@ -124,9 +123,9 @@ Groups of area are used as the base mark, but `avoidBaseMark` flag is `false`, s
 
 This example is from Vega [Job Voyager Example](https://vega.github.io/vega/examples/job-voyager/).
 
-## With line
+### With line
 
-### In Connected Scatter Plot - Connected Scatter Plot Example
+#### In Connected Scatter Plot - Connected Scatter Plot Example
 
 ![line_connected_scatter](pics/label_line_connected_scatter.png)
 
@@ -134,7 +133,7 @@ Symbol is used as the base mark to label, and line is the mark to avoid when lab
 
 This example is from Vega [Connected Scatter Plot Example](https://vega.github.io/vega/examples/connected-scatter-plot/).
 
-### In Grouped Lines Chart - Carbon Dioxide in the Atmosphere
+#### In Grouped Lines Chart - Carbon Dioxide in the Atmosphere
 
 ![line_end](pics/label_line_end.png)
 
@@ -142,9 +141,9 @@ Groups of line are used as the base mark to label, so one label is placed at the
 
 This example is inspired by Vega-Lite [Carbon Dioxide in the Atmosphere](https://vega.github.io/vega-lite/examples/layer_line_co2_concentration.html).
 
-## With rect
+### With rect
 
-### In Stacked Bar Chart - Stacked Bar Chart Example
+#### In Stacked Bar Chart - Stacked Bar Chart Example
 
 ![rect_stack](pics/label_rect_stack.png)
 
@@ -152,15 +151,15 @@ Rect is used as the base mark to label. There are 2 sets of labels in this chart
 
 This example is inspired by Vega [Stacked Bar Chart Example](https://vega.github.io/vega/examples/stacked-bar-chart/).
 
-### In Bar Bhart - Bar Chart Example
+#### In Bar Bhart - Bar Chart Example
 
 ![rect](pics/label_rect.png)
 
 Rect is used as the base mark to label. The label position is set to inner right of each bar as default, and outer right if bar is too small. Here is the [Vega Specification](./specs/label_rect.vg.json).
 
-## With symbol
+### With symbol
 
-### In Scatter Plot - Asteroid Positions
+#### In Scatter Plot - Asteroid Positions
 
 ![scatter_asteroids](pics/label_scatter_asteroids.png)
 
