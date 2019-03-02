@@ -119,9 +119,11 @@ $ python -m SimpleHTTPServer
 
 ![area_job_voyager](pics/label_area_job_voyager.png)
 
-Groups of area are used as the base mark, but `avoidBaseMark` flag is `false`, so labels can collide with their marks. Here is the [Vega Specification](./specs/label_area_job_voyager.vg.json).
+Groups of area are used as the base mark, but `avoidBaseMark` flag is `false`, so labels can collide with their marks, but not to each other. Here is the [Vega Specification](./specs/label_area_job_voyager.vg.json).
 
-This example is from Vega [Job Voyager Example](https://vega.github.io/vega/examples/job-voyager/).
+This example is from Vega [Job Voyager Example](https://vega.github.io/vega/examples/job-voyager/). In the original example, each label is placed at the position that has the widest vertical space in the area. ![original_job_voyager_algo](pics/original_job_voyager_algo.png)
+
+When adding label using text with label transform, each label is placed at the position that has the largest rectangle (with the same ratil as the label) fitting in the area. ![vega_label_job_voyager_algo](pics/vega_label_job_voyager_algo.png) This method is better because label transform considers both horizontal and vertical space, so it is more likely for the label to be placed completely inside the area.
 
 ### With line
 
@@ -131,7 +133,9 @@ This example is from Vega [Job Voyager Example](https://vega.github.io/vega/exam
 
 Symbol is used as the base mark to label, and line is the mark to avoid when labeling. Here is the [Vega Specification](./specs/label_line_connected_scatter.vg.json).
 
-This example is from Vega [Connected Scatter Plot Example](https://vega.github.io/vega/examples/connected-scatter-plot/).
+This example is from Vega [Connected Scatter Plot Example](https://vega.github.io/vega/examples/connected-scatter-plot/). In the original example, the position of each label is pre-calculated into the dataset. Therefore, both the dataset and the vega spec depend on each other.
+
+By adding label using text with label transform, the position of each label is calculated based on the object in the chart, so making changes to dataset or vega spec is more flexible.
 
 #### In Grouped Lines Chart - Carbon Dioxide in the Atmosphere
 
@@ -139,7 +143,9 @@ This example is from Vega [Connected Scatter Plot Example](https://vega.github.i
 
 Groups of line are used as the base mark to label, so one label is placed at the end of each line. Here is the [Vega Specification](./specs/label_line_end.vg.json).
 
-This example is inspired by Vega-Lite [Carbon Dioxide in the Atmosphere](https://vega.github.io/vega-lite/examples/layer_line_co2_concentration.html).
+This example is inspired by Vega-Lite [Carbon Dioxide in the Atmosphere](https://vega.github.io/vega-lite/examples/layer_line_co2_concentration.html). In the original, Vega-Lite example, we need to find the begining and the end data points of each line, and mark them as begin/end. Then, place labels twice. First time, place each label at the lower-right of its data point, and filter out all the labels except the beginning labels. Second time, do the same but place each label at the upper-right of its data point, and filter out all the labels except the end labels. This process is complicated, and may cause inefficiency by transforming and filtering out most of the labels.
+
+By adding label using text with label transform in Vega, labels are automatically positioned at the end of each lines when the text mark's data is backed by the group-line mark using reactive geometry.
 
 ### With rect
 
@@ -149,7 +155,9 @@ This example is inspired by Vega-Lite [Carbon Dioxide in the Atmosphere](https:/
 
 Rect is used as the base mark to label. There are 2 sets of labels in this chart. The first label is the overall height of each combined bars, and label positions is set to the outer top of each bar. The second label is the height of each bar, and label position is set to the inner top of each bar Here is the [Vega Specification](./specs/label_rect_stack.vg.json).
 
-This example is inspired by Vega [Stacked Bar Chart Example](https://vega.github.io/vega/examples/stacked-bar-chart/).
+This example is inspired by Vega [Stacked Bar Chart Example](https://vega.github.io/vega/examples/stacked-bar-chart/). The original example does not have label on the chart.
+
+When adding label using text with label transform, labels are placed in the available position, and they are hidden when there is not enough space (collision with the bar itself). The example is at the blue bars at `x = 3, 7` and the orange bars at `x = 8, 9`.
 
 #### In Bar Bhart - Bar Chart Example
 

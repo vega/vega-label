@@ -25,24 +25,6 @@
           "type": "formula",
           "expr": "(datum.year % 10) + (month(datum.Date)/12)",
           "as": "scaled_date"
-        },
-        {
-          "type": "window",
-          "params": [null, null],
-          "as": ["first_date", "last_date"],
-          "ops": ["first_value", "last_value"],
-          "fields": ["scaled_date", "scaled_date"],
-          "sort": {
-            "field": ["scaled_date", "scaled_date"],
-            "order": ["ascending", "ascending"]
-          },
-          "groupby": ["decade"],
-          "frame": [null, null]
-        },
-        {
-          "type": "formula",
-          "expr": "datum.first_date === datum.scaled_date ? 'first' : datum.last_date === datum.scaled_date ? 'last' : null",
-          "as": "end"
         }
       ]
     }
