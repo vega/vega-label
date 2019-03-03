@@ -6,26 +6,25 @@ The label transform is useful for labeling data points by creating a text mark t
 
 ## Transform Parameters
 
-| Property      |              Type               | Description                                                                                                                                        |
-| :------------ | :-----------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------- |
-| sort          |  {% include type t="Field" %}   | the field indicating order of labels to be placed (**greater** will be placed **after**).                                                          |
-| padding       |  {% include type t="Number" %}  | the amount of pixels label can extend pass chart bounding box.                                                                                     |
-| size          | {% include type t="Number[]" %} | {% include required %} size of the chart in format `[width, height]`. **This size have to match with the chart size**.                             |
-| anchor        |    {% include type t="String    | String[]" %}                                                                                                                                       | list of anchor points of labels relative to its base mark's bounding box that you want Vega-Label to consider placing. The available options are `"top-left"`, `"left"`, `"bottom-left"`, `"top"`, `"bottom"`, `"top-right"`, `"right"`, `"bottom-right"`, `"middle"`. Can also be specified as a single anchor point. |
-| offset        |    {% include type t="Number    | Number[]" %}                                                                                                                                       | list of offset of labels relative to its base mark's bounding box. This list is parallel to the list of anchor points. This property can also be specified as a single number for a constant offset through every anchor point |
-| avoidMarks    | {% include type t="String[]" %} | list of names of marks. Labels will not be placed in collision with these marks.                                                                   |
-| padding       |  {% include type t="Number" %}  | the amount of pixels extending from the chart bounding box as an available space for labels to be placed.                                          |
-| avoidBaseMark | {% include type t="Boolean" %}  | a flag specifying if labels can collide their base mark (from reactive geometry) or not.                                                           |
-| lineAnchor    |  {% include type t="String" %}  | an anchor point for group line mark can be `begin` or `end`. **Note**: this flag only work with group line mark as a base mark.                    |
-| markIndex     |  {% include type t="Number" %}  | an index to specify which mark in the group is to used to calculate anchor points for labels. **Note**: this only work with base mark type `group` |
-| as            | {% include type t="String[]" %} |                                                                                                                                                    |
+| Property      |              Type               | Description                                                                                                                                                                                                                                                                                                                                                                                                                |
+| :------------ | :-----------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| sort          |  {% include type t="Field" %}   | the field indicating order of labels to be placed (**greater** will be placed **after**).                                                                                                                                                                                                                                                                                                                                  |
+| padding       |  {% include type t="Number" %}  | the amount of pixels label can extend pass chart bounding box. **Default value:** `0`                                                                                                                                                                                                                                                                                                                                      |
+| size          | {% include type t="Number[]" %} | {% include required %} size of the chart in format `[width, height]`. **This size have to match with the chart size**.                                                                                                                                                                                                                                                                                                     |
+| anchor        |    {% include type t="String    | String[]" %}                                                                                                                                                                                                                                                                                                                                                                                                               | list of anchor points of labels relative to its base mark's bounding box that you want Vega-Label to consider placing. The available options are `"top-left"`, `"left"`, `"bottom-left"`, `"top"`, `"bottom"`, `"top-right"`, `"right"`, `"bottom-right"`, `"middle"`. Can also be specified as a single anchor point. **Default value:** `["top-left", "left", "bottom-left", "top", "bottom", "top-right", "right", "bottom-right"]` |
+| offset        |    {% include type t="Number    | Number[]" %}                                                                                                                                                                                                                                                                                                                                                                                                               | list of offset of labels relative to its base mark's bounding box. This list is parallel to the list of anchor points. This property can also be specified as a single number for a constant offset through every anchor point. **Default value:** `[1, 1, 1, 1, 1, 1, 1, 1]` |
+| avoidMarks    | {% include type t="String[]" %} | The property `avoidMarks` is useful when you want to take other objects in the chart into consideration when placing label. For example, in connected scatter plot in below example, we do not want label to the data point itself, but we also do not want a line to cross over our labels. So, we have to add the name of the line mark into `avoidMarks` to avoid the line when placing labels. **Default value:** `[]` |
+| avoidBaseMark | {% include type t="Boolean" %}  | the flag to specify if you want you labels to collide with the base mark. This flag is usually `true` (no allowing collision between labels and base mark); however, in some case like area chart, we want to place each label inside its area, so this flag has to be `false`. **Default value:** `true`                                                                                                                  |
+| lineAnchor    |  {% include type t="String" %}  | When labeling group-line mark, you can only have one label per 1 line. `lineAnchor` specify if you want the labels to be at the beginning (`"begin"`) or at the end (`"end"`) of the line. **Note**: this property only works with group line mark as the base mark. **Default value:** `"end"`                                                                                                                            |
+| markIndex     |  {% include type t="Number" %}  | `markIndex` is used to specify which mark in the group mark you want to label because group mark can have more than 1 mark in the group. Regularly, `markIndex` is used with group-line and group-area mark. **Note**: `markIndex` only works with group mark as the base mark. **Default value:** `0`                                                                                                                     |
+| as            | {% include type t="String[]" %} |                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
 ## Usage
 
 ### Basic concept
 
-| Symbol mark only                       | Add text mark using reactive geometry | Add label transform to the text mark  |
-| -------------------------------------- | ------------------------------------- | ------------------------------------- |
+|            Symbol mark only            | Add text mark using reactive geometry | Add label transform to the text mark  |
+| :------------------------------------: | :-----------------------------------: | :-----------------------------------: |
 | ![](pics/explanations/demo_symbol.png) | ![](pics/explanations/demo_text.png)  | ![](pics/explanations/demo_label.png) |
 
 ```
@@ -37,29 +36,20 @@ The label transform is useful for labeling data points by creating a text mark t
     "encode": {
       "enter": {
         "x": {"scale": "x", "field": "miles"},
-        "y": {"scale": "y", "field": "gas"},
-        "fill": {"value": "#fff"},
-        "stroke": {"value": "#000"},
-        "strokeWidth": {"value": 1},
-        "size": {"value": 50}
+        "y": {"scale": "y", "field": "gas"}
       }
     }
   },
   {
     "type": "text",
     "from": {"data": "basePoint"},
-    "name": "label",
     "encode": {
       "enter": {
-        "fill": {"value": "#000"},
         "text": {"field": "datum.year"}
       }
     },
     "transform": [
-      {
-        "type": "label",
-        "size": [800, 500]
-      }
+      {"type": "label", "size": [800, 500]}
     ]
   }
 ]
@@ -69,71 +59,21 @@ In scatter plot, labeling can be done by having text mark that takes in data fro
 
 **Note** the reason why we do not have `x` and `y` channels in the text mark's encoding is that label transform will replace the `x` and `y` channels of the text mark anyway. Label transform will use the position bounding box of each point in `"basePoint"` to decide the position of each label.
 
-TODO: add more usage
+### How we label area chart
 
-<!-- ```json
-"transform": [
-  {
-    "type": "label",
-    "size": [800, 500],
-    "padding": 0,
-    "anchor": [
-      "top-left",
-      "left",
-      "bottom-left",
-      "top",
-      "bottom",
-      "top-right",
-      "right",
-      "bottom-right",
-    ],
-    "offset": [ 1, 1, 1, 1, 1, 1, 1, 1 ],
-    "sort": { "field": "datum.year" },
-    "avoidMarks": [ "basePoint", "baseLine" ],
-    "avoidBaseMark": true,
-    "lineAnchor": "end",
-    "markIndex": 0,
-  }
-]
-```
+TODO: explain how Vega-Label works with area chart
 
-- `sort`: order of label to be placed (**greater** will be placed **after**).
+### Further explanation of `padding`
 
-- `size`: size of the chart in format `[width, height]`. **This size have to match with the chart size**.
+|             padding = 0              |              padding > 0               |              padding < 0               |
+| :----------------------------------: | :------------------------------------: | :------------------------------------: |
+| ![](pics/explanations/padding_0.png) | ![](pics/explanations/padding_pos.png) | ![](pics/explanations/padding_neg.png) |
 
-- `anchor` and `offset`: parallel arrays of anchor points and offset values.
+### `Anchor`/`Offset` confusion
 
-  - `anchor`: list of anchor points of labels to its mark's bounding box.
+`anchor` and `offset` are parallel array to specify possible positions of each label in relation to its data point bounding box. For example, when `anchor = ["top", "left", "right", "bottom"]` and `offset = [1, 2, 3, 4]`, the possible positions of each label in relation to its data point bounding box are top with offset=1, left with offset=2, right with offset=3, bottom with offset=4.
 
-    - From the example above, for each label, Vega-Label will try to place it at the `middle` first, relative to its mark.
-    - If it collide with some other mark or label, Vega-Label will try to place it at the `right`, relative to its mark.
-
-  - `offset`: list of offset values from the bounding box of the **base mark**.
-    - From the example above, Vega-Label will try to place label with no offset.
-      - **Note**: if the parallel anchor is `middle`, the offset value should be `null`. Otherwise, the value is ignored.
-    - If it cannot place the label, Vega-Label will try to place label with offset value 2.
-    - If it cannot place the label, Vega-Label will try to place label with offset value 1 inside its mark.
-      - **Note**: label will be placed inside its mark if offset is negative.
-
-- `avoidMarks`: list of data of mark; labels will not collide with these marks.
-
-- `padding`: the amount of pixels label can extend pass chart bounding box.
-
-- `avoidBaseMark`: a flag specifying if labels are avoiding base mark (from reactive geometry) or not.
-
-  - If this flag is `false`, Vega-Label only uses base mark to calculate anchor points for label but not mark to be avoided.
-
-- `lineAnchor`: an anchor point for group line mark can be `begin` or `end`.
-
-  - If `lineAnchor` is `begin`, label is at the beginning of the line. Otherwise, label is at the end of the line.
-  - **Note**: this flag only work with group line mark as a base mark using reactive geometry.
-
-- `markIndex`: use when the reactive geometry's mark type is `'group'`.
-
-  - To specify which mark in the group is to used to calculate anchor points for labels.
-
-- label transform has to be used with reactive geometry to use it as base mark to calculate positions of label.
-  - Right now, Vega-Label works with `symbol`, `line`, `rect`, and `group` of `line` and `area`. -->
+When the arrays of `anchor` and `offset` have different size, vega transform will auto pad the small array using the last element. For example, `anchor = ["top", "bottom", "left"]` and `offset = [1, 2, 3, 4, 5, 6]`, the padded `anchor` is `["top", "bottom", "left", "left", "left", "left"]`.
 
 ## Setting up Vega-Label Instructions
 
