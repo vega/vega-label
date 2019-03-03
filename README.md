@@ -18,10 +18,58 @@ The label transform is useful for labeling data points by creating a text mark t
 | avoidBaseMark | {% include type t="Boolean" %}  | a flag specifying if labels can collide their base mark (from reactive geometry) or not.                                                           |
 | lineAnchor    |  {% include type t="String" %}  | an anchor point for group line mark can be `begin` or `end`. **Note**: this flag only work with group line mark as a base mark.                    |
 | markIndex     |  {% include type t="Number" %}  | an index to specify which mark in the group is to used to calculate anchor points for labels. **Note**: this only work with base mark type `group` |
+| as            | {% include type t="String[]" %} |                                                                                                                                                    |
 
 ## Usage
 
-TODO: add usage
+### Basic concept
+
+| Symbol mark only                       | Add text mark using reactive geometry | Add label transform to the text mark  |
+| -------------------------------------- | ------------------------------------- | ------------------------------------- |
+| ![](pics/explanations/demo_symbol.png) | ![](pics/explanations/demo_text.png)  | ![](pics/explanations/demo_label.png) |
+
+```
+"marks": [
+  {
+    "type": "symbol",
+    "name": "basePoint",
+    "from": {"data": "drive"},
+    "encode": {
+      "enter": {
+        "x": {"scale": "x", "field": "miles"},
+        "y": {"scale": "y", "field": "gas"},
+        "fill": {"value": "#fff"},
+        "stroke": {"value": "#000"},
+        "strokeWidth": {"value": 1},
+        "size": {"value": 50}
+      }
+    }
+  },
+  {
+    "type": "text",
+    "from": {"data": "basePoint"},
+    "name": "label",
+    "encode": {
+      "enter": {
+        "fill": {"value": "#000"},
+        "text": {"field": "datum.year"}
+      }
+    },
+    "transform": [
+      {
+        "type": "label",
+        "size": [800, 500]
+      }
+    ]
+  }
+]
+```
+
+In scatter plot, labeling can be done by having text mark that takes in data from the the symbol mark name `"basePoint"`(or what we call base mark). The text mark recieves all the information including position and bounding box of each point in `"basePoint"`. Then, we transform the text mark with label transform so that the labels spaced out nicely near the point it is representing and not colliding into each other.
+
+**Note** the reason why we do not have `x` and `y` channels in the text mark's encoding is that label transform will replace the `x` and `y` channels of the text mark anyway. Label transform will use the position bounding box of each point in `"basePoint"` to decide the position of each label.
+
+TODO: add more usage
 
 <!-- ```json
 "transform": [
@@ -117,20 +165,20 @@ $ python -m SimpleHTTPServer
 
 #### In Stacked Area Chart - Job Voyager Example
 
-![area_job_voyager](pics/label_area_job_voyager.png)
+![area_job_voyager](pics/examples/label_area_job_voyager.png)
 
 Groups of area are used as the base mark, but `avoidBaseMark` flag is `false`, so labels can collide with their marks, but not to each other. Here is the [Vega Specification](./specs/label_area_job_voyager.vg.json).
 
-|                                                                                                                                                                                                                                                                                                                                                        |                                                                      |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------- |
-| This example is from Vega [Job Voyager Example](https://vega.github.io/vega/examples/job-voyager/). In the original example, each label is placed at the position that has the widest vertical space in the area.                                                                                                                                      | ![original_job_voyager_algo](pics/original_job_voyager_algo.png)     |
-| When adding label using text with label transform, each label is placed at the position that has the largest rectangle (with the same ratil as the label) fitting in the area. This method is better because label transform considers both horizontal and vertical space, so it is more likely for the label to be placed completely inside the area. | ![vega_label_job_voyager_algo](pics/vega_label_job_voyager_algo.png) |
+|                                                                                                                                                                                                                                                                                                                                                        |                                                                                   |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| This example is from Vega [Job Voyager Example](https://vega.github.io/vega/examples/job-voyager/). In the original example, each label is placed at the position that has the widest vertical space in the area.                                                                                                                                      | ![original_job_voyager_algo](pics/explanations/original_job_voyager_algo.png)     |
+| When adding label using text with label transform, each label is placed at the position that has the largest rectangle (with the same ratil as the label) fitting in the area. This method is better because label transform considers both horizontal and vertical space, so it is more likely for the label to be placed completely inside the area. | ![vega_label_job_voyager_algo](pics/explanations/vega_label_job_voyager_algo.png) |
 
 ### With line
 
 #### In Connected Scatter Plot - Connected Scatter Plot Example
 
-![line_connected_scatter](pics/label_line_connected_scatter.png)
+![line_connected_scatter](pics/examples/label_line_connected_scatter.png)
 
 Symbol is used as the base mark to label, and line is the mark to avoid when labeling. Here is the [Vega Specification](./specs/label_line_connected_scatter.vg.json).
 
@@ -140,7 +188,7 @@ By adding label using text with label transform, the position of each label is c
 
 #### In Grouped Lines Chart - Carbon Dioxide in the Atmosphere
 
-![line_end](pics/label_line_end.png)
+![line_end](pics/examples/label_line_end.png)
 
 Groups of line are used as the base mark to label, so one label is placed at the end of each line. Here is the [Vega Specification](./specs/label_line_end.vg.json).
 
@@ -152,7 +200,7 @@ By adding label using text with label transform in Vega, labels are automaticall
 
 #### In Stacked Bar Chart - Stacked Bar Chart Example
 
-![rect_stack](pics/label_rect_stack.png)
+![rect_stack](pics/examples/label_rect_stack.png)
 
 Rect is used as the base mark to label. There are 2 sets of labels in this chart. The first label is the overall height of each combined bars, and label positions is set to the outer top of each bar. The second label is the height of each bar, and label position is set to the inner top of each bar Here is the [Vega Specification](./specs/label_rect_stack.vg.json).
 
@@ -162,7 +210,7 @@ When adding label using text with label transform, labels are placed in the avai
 
 #### In Bar Bhart - Bar Chart Example
 
-![rect](pics/label_rect.png)
+![rect](pics/examples/label_rect.png)
 
 Rect is used as the base mark to label. The label position is set to inner right of each bar as default, and outer right if bar is too small. Here is the [Vega Specification](./specs/label_rect.vg.json).
 
@@ -170,7 +218,7 @@ Rect is used as the base mark to label. The label position is set to inner right
 
 #### In Scatter Plot - Asteroid Positions
 
-![scatter_asteroids](pics/label_scatter_asteroids.png)
+![scatter_asteroids](pics/examples/label_scatter_asteroids.png)
 
 Symbol is used as the base mark to label. Here is the [Vega Specification](./specs/label_scatter_asteroids.vg.json).
 
