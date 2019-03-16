@@ -8,9 +8,10 @@
     "layout"
   ],
   "license": "BSD-3-Clause",
-  "author": {
-    "name": "Chanwut Kittivorawong"
-  },
+  "author": "UW Interactive Data Lab (http://idl.cs.washington.edu)",
+  "maintainers": [
+    "Chanwut Kittivorawong"
+  ],
   "main": "build/vega-label.js",
   "jsnext:main": "index",
   "module": "index",
