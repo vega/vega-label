@@ -1,0 +1,177 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "width": 800,
+  "height": 500,
+  "padding": 10,
+
+  "signals": [
+    {
+      "name": "count",
+      "value": 100
+    }
+  ],
+
+  "data": [
+    {
+      "name": "asteroids",
+      "url": "data/gaia_asteroids_pos_name.json",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum['denomination'] != null && datum['ra'] != null && datum['dec'] != null"
+        }
+      ]
+    },
+    {
+      "name": "contours",
+      "source": "asteroids",
+      "transform": [
+        {
+          "type": "contour",
+          "x": {"expr": "scale('x', datum.ra)"},
+          "y": {"expr": "scale('y', datum.dec)"},
+          "size": [{"signal": "width"}, {"signal": "height"}],
+          "count": {"signal": "count"}
+        }
+      ]
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "round": true,
+      "nice": false,
+      "zero": true,
+      "domain": [0, 360],
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "round": true,
+      "nice": false,
+      "zero": true,
+      "domain": [-90, 90],
+      "range": "height"
+    },
+    {
+      "name": "color",
+      "type": "sequential",
+      "domain": [0, 1],
+      "range": {"scheme": "plasma"}
+    },
+    {
+      "name": "color2",
+      "type": "sequential",
+      "zero": true,
+      "domain": {"data": "contours", "field": "value"},
+      "range": {"scheme": "redpurple"},
+      "reverse": false
+    }
+  ],
+
+  "axes": [
+    {
+      "scale": "x",
+      "grid": true,
+      "domain": true,
+      "orient": "bottom",
+      "title": "Right Ascension (degrees)",
+      "offset": 20,
+      "tickExtra": true,
+      "values": {"signal": "sequence(0, 361, 30)"}
+    },
+    {
+      "scale": "y",
+      "grid": true,
+      "domain": true,
+      "orient": "left",
+      "titlePadding": 5,
+      "title": "Declination (degrees)",
+      "offset": 20,
+      "values": {"signal": "sequence(-90, 91, 30)"}
+    }
+  ],
+
+  "marks": [
+    {
+      "name": "basePoint",
+      "type": "symbol",
+      "from": {"data": "asteroids"},
+      "encode": {
+        "update": {
+          "x": {"scale": "x", "field": "ra"},
+          "y": {"scale": "y", "field": "dec"},
+          "size": {"value": 30},
+          "shape": {"value": "circle"},
+          "_fill": {"scale": "color", "field": "density"},
+          "fillOpacity": {"value": 0},
+          "stroke": {"value": "#000"},
+          "strokeOpacity": {"value": 0.1}
+        }
+      },
+      "zindex": 1
+    },
+    {
+      "type": "path",
+      "from": {"data": "contours"},
+      "encode": {
+        "enter": {
+          "fill": {"scale": "color2", "field": "value"},
+          "fillOpacity": {"value": 0.35}
+        }
+      },
+      "transform": [{"type": "geopath", "field": "datum"}]
+    },
+    {
+      "name": "label",
+      "type": "text",
+      "from": {"data": "basePoint"},
+      "encode": {
+        "enter": {
+          "x": {"field": "x"},
+          "y": {"field": "y"},
+          "fill": {"value": "#000"},
+          "text": {"field": "datum.denomination"}
+        }
+      },
+      "transform": [
+        {
+          "type": "label",
+          "offset": 2,
+          "size": [800, 500],
+          "sort": {"field": "datum.ra"},
+          "padding": 15
+        },
+        {
+          "type": "formula",
+          "as": "xWithOffset",
+          "expr": "(datum.x + datum.datum.x) / 2.0"
+        },
+        {
+          "type": "formula",
+          "as": "yWithOffset",
+          "expr": "(datum.y + datum.datum.y) / 2.0"
+        }
+      ]
+    },
+    {
+      "type": "rule",
+      "from": {"data": "label"},
+      "encode": {
+        "enter": {
+          "x": {"field": "x"},
+          "y": {"field": "y"},
+          "x2": {"field": "xWithOffset"},
+          "y2": {"field": "yWithOffset"},
+          "opacity": {"field": "opacity"},
+          "strokeOpacity": {"value": 0.3},
+          "strokeWidth": {"value": 1}
+        }
+      },
+      "zindex": -1
+    }
+  ]
+}

@@ -7,7 +7,15 @@
   "data": [
     {
       "name": "drive",
-      "url": "https://raw.githubusercontent.com/vega/vega-datasets/gh-pages/data/driving.json"
+      "url": "../data/test_label_cluster_3_10000.json"
+    }
+  ],
+
+  "signals": [
+    {
+      "name": "active",
+      "value": {},
+      "on": [{"events": "@label:mouseover", "update": "datum"}, {"events": "@label:mouseout", "update": "{}"}]
     }
   ],
 
@@ -42,7 +50,7 @@
       "domain": false,
       "encode": {
         "domain": {
-          "enter": { "stroke": {"value": "transparent"} }
+          "enter": {"stroke": {"value": "transparent"}}
         },
         "labels": {
           "enter": {
@@ -56,8 +64,11 @@
     },
     {
       "title": "Miles driven per capita each year",
-      "orient": "bottom", "scale": "x",
-      "domain": false, "ticks": false, "labels": false
+      "orient": "bottom",
+      "scale": "x",
+      "domain": false,
+      "ticks": false,
+      "labels": false
     },
     {
       "orient": "left",
@@ -83,28 +94,19 @@
     },
     {
       "title": "Price of a gallon of gasoline (adjusted for inflation)",
-      "orient": "right", "scale": "y",
-      "domain": false, "ticks": false, "labels": false
+      "orient": "right",
+      "scale": "y",
+      "domain": false,
+      "ticks": false,
+      "labels": false
     }
   ],
 
   "marks": [
     {
-      "type": "line",
-      "from": {"data": "drive"},
-      "encode": {
-        "enter": {
-          "interpolate": {"value": "cardinal"},
-          "x": {"scale": "x", "field": "miles"},
-          "y": {"scale": "y", "field": "gas"},
-          "stroke": {"value": "#000"},
-          "strokeWidth": {"value": 3}
-        }
-      }
-    },
-    {
       "type": "symbol",
       "from": {"data": "drive"},
+      "name": "baseMark",
       "encode": {
         "enter": {
           "x": {"scale": "x", "field": "miles"},
@@ -112,24 +114,37 @@
           "fill": {"value": "#fff"},
           "stroke": {"value": "#000"},
           "strokeWidth": {"value": 1},
-          "size": {"value": 49}
+          "size": {"value": 2}
+        },
+        "update": {
+          "strokeWidth": [
+            {
+              "test": "active == datum",
+              "value": 5
+            },
+            {"value": 1}
+          ]
         }
       }
     },
     {
       "type": "text",
+      "name": "label",
       "from": {"data": "drive"},
       "encode": {
         "enter": {
           "x": {"scale": "x", "field": "miles"},
           "y": {"scale": "y", "field": "gas"},
           "fill": {"value": "#000"},
-          "text": {"field": "year"}
+          "text": {"field": "year"},
+          "fontSize": {"value": 14}
         }
       },
       "transform": [
         {
-          "type": "label"
+          "type": "label",
+          "offset": 2,
+          "size": [800, 500]
         }
       ]
     }
