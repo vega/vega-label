@@ -38,12 +38,15 @@ prototype.transform = function(_, pulse) {
       padding = _.padding || 3;
 
   // configure layout
+  var t1 = new Date();
   var labels = labelLayout
     .markData(data)
     .size(_.size)
     .padding(padding)
     .layout(),
     t;
+  var t2 = new Date();
+  console.log(t2.getTime() - t1.getTime());
 
   labels.forEach(function(l) {
     t = l.datum;
