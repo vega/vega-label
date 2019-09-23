@@ -1,8 +1,8 @@
 /*eslint no-unused-vars: "warn"*/
 /*eslint no-console: "warn"*/
 import { canvas } from 'vega-canvas';
-// import { placeLabels } from './ParticleBasedLabel';
-import { placeLabels } from './OldPixelBasedLabel';
+import { placeLabels } from './ParticleBasedLabel';
+// import { placeLabels } from './OldPixelBasedLabel';
 // import { placeLabels } from './PixelBasedLabel';
 
 export default function() {

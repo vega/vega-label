@@ -17,6 +17,11 @@ var types = ['clustered', 'uniform'];
 var ns = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000];
 var sizes = [1000, 10000];
 
+// new vega.View(vega.parse(spec))
+//   .renderer('canvas')     // set renderer (canvas or svg)
+//   .initialize('#vis')  // initialize view within parent dom container
+//   .hover()             // enable hover encode set processing
+//   .run();
 function render(typeItr, nItr, sizeItr, i) {
   var n = ns[nItr];
   var size = sizes[sizeItr];
@@ -47,7 +52,7 @@ function render(typeItr, nItr, sizeItr, i) {
     typeItr++;
   }
   if (typeItr < types.length) {
-    setTimeout(render, 2000, typeItr, nItr, sizeItr, i);
+    setTimeout(render, 10000, typeItr, nItr, sizeItr, i);
   }
 }
 
