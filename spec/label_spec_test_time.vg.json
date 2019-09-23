@@ -90,6 +90,20 @@
 
   "marks": [
     {
+      "type": "symbol",
+      "from": {"data": "drive"},
+      "encode": {
+        "enter": {
+          "x": {"scale": "x", "field": "miles"},
+          "y": {"scale": "y", "field": "gas"},
+          "fill": {"value": "#fff"},
+          "stroke": {"value": "#000"},
+          "strokeWidth": {"value": 1},
+          "size": {"value": 2}
+        }
+      }
+    },
+    {
       "type": "text",
       "from": {"data": "drive"},
       "encode": {

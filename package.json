@@ -33,7 +33,7 @@
     "vega-util": "^1.7.0"
   },
   "devDependencies": {
-    "canvas": "^1.6.10",
+    "canvas": "^2.6.0",
     "eslint": "4",
     "rollup": "0.58.2",
     "tape": "4",
