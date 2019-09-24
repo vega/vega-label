@@ -17,11 +17,6 @@ var types = ['clustered', 'uniform'];
 var ns = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000];
 var sizes = [1000, 10000];
 
-// new vega.View(vega.parse(spec))
-//   .renderer('canvas')     // set renderer (canvas or svg)
-//   .initialize('#vis')  // initialize view within parent dom container
-//   .hover()             // enable hover encode set processing
-//   .run();
 function render(typeItr, nItr, sizeItr, i) {
   var n = ns[nItr];
   var size = sizes[sizeItr];
@@ -31,7 +26,7 @@ function render(typeItr, nItr, sizeItr, i) {
   spec["height"] = size;
   spec["data"][0]["url"] = `../data/test_label_${suffix[typeItr]}${n}.json`;
   spec["marks"][1]["transform"][0]["size"] = [size, size];
-  spec["marks"][1]["encode"]["enter"]["fontSize"]["value"] = 14 * size / 1000;
+  // spec["marks"][1]["encode"]["enter"]["fontSize"]["value"] = 14 * size / 1000;
   new vega.View(vega.parse(spec))
     .renderer('canvas')     // set renderer (canvas or svg)
     .initialize('#vis')  // initialize view within parent dom container
@@ -52,8 +47,13 @@ function render(typeItr, nItr, sizeItr, i) {
     typeItr++;
   }
   if (typeItr < types.length) {
-    setTimeout(render, 10000, typeItr, nItr, sizeItr, i);
+    setTimeout(render, 20000, typeItr, nItr, sizeItr, i);
   }
 }
 
+// new vega.View(vega.parse(spec))
+//   .renderer('canvas')     // set renderer (canvas or svg)
+//   .initialize('#vis')  // initialize view within parent dom container
+//   .hover()             // enable hover encode set processing
+//   .run();
 render(0, 0, 0, 0);
