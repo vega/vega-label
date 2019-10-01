@@ -1,0 +1,61 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "data": {
+    "url": "https://gist.githubusercontent.com/chanwutk/910985e195f3b482bf57b99480b4e6ac/raw/9adb1586f995edaab0f31166f7a460b7da9946d5/label_time_7_opt.json"
+  },
+  "transform": [
+    {
+      "calculate": "datum.input_shape === 'uniform' ? 1 : 0.5",
+      "as": "opacity"
+    }
+  ],
+  "facet": {
+    "column": {
+      "field": "width",
+      "type": "quantitative",
+      "title": "Width and Height of the Chart"
+    }
+  },
+  "spec": {
+    "width": 250,
+    "height": 250,
+    "encoding": {
+      "y": {
+        "aggregate": "mean",
+        "field": "time",
+        "type": "quantitative",
+        "title": "Average of runtime"
+      },
+      "x": {
+        "field": "input_size",
+        "type": "quantitative",
+        "title": "Number of Data Points"
+      },
+      "color": { "field": "method", "type": "nominal" }
+    },
+    "layer": [
+      {
+        "mark": { "type": "line", "point": true, "interpolate": "monotone" },
+        "encoding": {
+          "opacity": {
+            "field": "opacity",
+            "type": "quantitative",
+            "legend": null
+          }
+        }
+      },
+      {
+        "encoding": {
+          "text": { "field": "input_shape", "type": "nominal" },
+          "detail": { "field": "input_shape", "type": "nominal" }
+        },
+        "transform": [{ "filter": "datum.input_size >= 10000" }],
+        "layer": [
+          {
+            "mark": { "type": "text", "align": "left", "dx": 6 }
+          }
+        ]
+      }
+    ]
+  }
+}

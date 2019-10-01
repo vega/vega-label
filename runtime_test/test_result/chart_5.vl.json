@@ -1,0 +1,93 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "data": {
+    "url": "https://gist.githubusercontent.com/chanwutk/7fd13b4978f65b1ff766b2c1771d70ff/raw/34f586f5e36ac32fe87655f878e91760d267ffd8/label_time_5.json"
+  },
+  "transform": [
+    {
+      "calculate": "datum.input_shape === 'uniform' ? 1 : 0.5",
+      "as": "opacity"
+    }
+  ],
+  "facet": {
+    "column": {
+      "field": "width",
+      "type": "quantitative",
+      "title": "Width and Height of the Chart"
+    }
+  },
+  "spec": {
+    "width": 250,
+    "height": 250,
+    "encoding": {
+      "y": {
+        "aggregate": "mean",
+        "field": "time",
+        "type": "quantitative",
+        "title": "Average of runtime"
+      },
+      "x": {
+        "field": "input_size",
+        "type": "quantitative",
+        "title": "Number of Data Points"
+      },
+      "color": { "field": "method", "type": "nominal" }
+    },
+    "layer": [
+      {
+        "mark": { "type": "line", "point": true, "interpolate": "monotone" },
+        "encoding": {
+          "opacity": {
+            "field": "opacity",
+            "type": "quantitative",
+            "legend": null
+          }
+        }
+      },
+      {
+        "encoding": {
+          "text": { "field": "input_shape", "type": "nominal" },
+          "detail": { "field": "input_shape", "type": "nominal" }
+        },
+        "transform": [{ "filter": "datum.input_size >= 10000" }],
+        "layer": [
+          {
+            "transform": [
+              {
+                "filter": "datum.width != 10000 || datum.method !== 'particle-based'"
+              }
+            ],
+            "mark": { "type": "text", "align": "left", "dx": 6 }
+          },
+          {
+            "transform": [
+              {
+                "filter": "datum.width === 10000 && datum.method === 'particle-based' && datum.input_shape === 'uniform'"
+              }
+            ],
+            "mark": {
+              "type": "text",
+              "align": "left",
+              "baseline": "top",
+              "dx": 6
+            }
+          },
+          {
+            "transform": [
+              {
+                "filter": "datum.width === 10000 && datum.method === 'particle-based' && datum.input_shape === 'clustered'"
+              }
+            ],
+            "mark": {
+              "type": "text",
+              "align": "left",
+              "baseline": "bottom",
+              "dy": -4,
+              "dx": 6
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
