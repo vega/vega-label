@@ -21,7 +21,7 @@
     "height": 250,
     "encoding": {
       "y": {
-        "aggregate": "mean",
+        "aggregate": "q1",
         "field": "time",
         "type": "quantitative",
         "title": "Average of runtime"

@@ -21,7 +21,7 @@
     "height": 250,
     "encoding": {
       "y": {
-        "aggregate": "mean",
+        "aggregate": "q1",
         "field": "time",
         "type": "quantitative",
         "title": "Average of runtime"
@@ -31,11 +31,18 @@
         "type": "quantitative",
         "title": "Number of Data Points"
       },
-      "color": { "field": "method", "type": "nominal" }
+      "color": {
+        "field": "method",
+        "type": "nominal"
+      }
     },
     "layer": [
       {
-        "mark": { "type": "line", "point": true, "interpolate": "monotone" },
+        "mark": {
+          "type": "line",
+          "point": true,
+          "interpolate": "monotone"
+        },
         "encoding": {
           "opacity": {
             "field": "opacity",
@@ -46,10 +53,20 @@
       },
       {
         "encoding": {
-          "text": { "field": "input_shape", "type": "nominal" },
-          "detail": { "field": "input_shape", "type": "nominal" }
+          "text": {
+            "field": "input_shape",
+            "type": "nominal"
+          },
+          "detail": {
+            "field": "input_shape",
+            "type": "nominal"
+          }
         },
-        "transform": [{ "filter": "datum.input_size >= 10000" }],
+        "transform": [
+          {
+            "filter": "datum.input_size >= 10000"
+          }
+        ],
         "layer": [
           {
             "transform": [
@@ -57,7 +74,11 @@
                 "filter": "datum.width != 10000 || datum.method !== 'particle-based'"
               }
             ],
-            "mark": { "type": "text", "align": "left", "dx": 6 }
+            "mark": {
+              "type": "text",
+              "align": "left",
+              "dx": 6
+            }
           },
           {
             "transform": [
@@ -69,6 +90,7 @@
               "type": "text",
               "align": "left",
               "baseline": "top",
+              "dy": -1,
               "dx": 6
             }
           },
@@ -82,7 +104,7 @@
               "type": "text",
               "align": "left",
               "baseline": "bottom",
-              "dy": -4,
+              "dy": -2,
               "dx": 6
             }
           }
