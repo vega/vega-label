@@ -20,34 +20,34 @@ export function BitMap(_width, _height) {
   this.height = ~~((_height + this.pixelSize) / this.pixelSize);
   this.array = new Uint32Array(~~(((this.width * this.height) + SIZE) / SIZE));
 
-  this.markBinned = function (x, y) {
+  this.markScaled = function (x, y) {
     var position = (y * this.width) + x;
     this.array[position >>> DIV] |= 1 << (position & MOD);
   };
 
   this.mark = function (x, y) {
-    this.markBinned(this.bin(x), this.bin(y));
+    this.markScaled(this.bin(x), this.bin(y));
   };
 
-  this.unmarkBinned = function(x, y) {
+  this.unmarkScaled = function(x, y) {
       var position = (y * this.width) + x;
       this.array[position >>> DIV] &= ~(1 << (position & MOD));
   }
 
   this.unmark = function(x, y) {
-      this.unmarkBinned(this.bin(x), this.bin(y));
+      this.unmarkScaled(this.bin(x), this.bin(y));
   }
 
-  this.getBinned = function (x, y) {
+  this.getScaled = function (x, y) {
     var position = (y * this.width) + x;
     return this.array[position >>> DIV] & (1 << (position & MOD));
   };
 
   this.get = function (x, y) {
-    return this.getBinned(this.bin(x), this.bin(y));
+    return this.getScaled(this.bin(x), this.bin(y));
   };
 
-  this.getInBoundBinned = function (sx, sy, ex, ey) {
+  this.getAllScaled = function (sx, sy, ex, ey) {
     var from, to,
         dFrom, dTo;
     for (; sy <= ey; sy++) {
@@ -69,11 +69,11 @@ export function BitMap(_width, _height) {
     return false;
   }
 
-  this.getInBound = function (sx, sy, ex, ey) {
-    return this.getRangeBinned(this.bin(sx), this.bin(sy), this.bin(ex), this.bin(ey));
+  this.getAll = function (sx, sy, ex, ey) {
+    return this.getRangeScaled(this.bin(sx), this.bin(sy), this.bin(ex), this.bin(ey));
   }
 
-  this.flushBinned = function (sx, sy, ex, ey) {
+  this.setAllScaled = function (sx, sy, ex, ey) {
     var from, to,
         dFrom, dTo;
     for (; sy <= ey; sy++) {
@@ -95,7 +95,7 @@ export function BitMap(_width, _height) {
   }
 
   this.getRange = function (sx, sy, ex, ey) {
-    return this.getRangeBinned(this.bin(sx), this.bin(sy), this.bin(ex), this.bin(ey));
+    return this.getRangeScaled(this.bin(sx), this.bin(sy), this.bin(ex), this.bin(ey));
   }
 
   this.bin = function (coordinate) {

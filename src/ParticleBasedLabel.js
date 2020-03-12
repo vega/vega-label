@@ -8,31 +8,15 @@ export function placeLabels(data, size, padding) {
       minTextWidth = Number.MAX_SAFE_INTEGER, 
       minTextHeight = Number.MAX_SAFE_INTEGER;
 
-  data.sort(function(a, b) {
-    textWidth = a.textWidth > b.textWidth ? a.textWidth : b.textWidth;
-    textHeight = a.textHeight + b.textHeight;
-    if (-textWidth <= a.x - b.x && a.x - b.x <= textWidth &&
-        -textHeight <= a.y - b.y && a.y - b.y <= textHeight) {
-      return a.y - b.y;
-    }
-    return a.x - b.x;
-  });
+  width = size[0];
+  height = size[1];
 
-  if (size) {
-    width = size[0];
-    height = size[1];
-  } else {
-    data.forEach(function(d) {
-      width = Math.max(width, d.x + d.textWidth);
-      height = Math.max(height, d.y + d.textHeight);
-    });
-  }
   data.forEach(function(d) {
     minTextWidth = d.textWidth < minTextWidth ? d.textWidth : minTextWidth;
     minTextHeight = d.textHeight < minTextHeight ? d.textHeight : minTextHeight;
   });
   bins.mark = getMarkBin(data, width, height, minTextWidth, minTextHeight);
-  bins.label = new ArrayMap(width, height, minTextWidth, minTextHeight);
+  // bins.label = new ArrayMap(width, height, minTextWidth, minTextHeight);
 
   data.forEach(function(d) {
     d.currentPosition = [-1, -1];
@@ -49,13 +33,13 @@ export function placeLabels(data, size, padding) {
         findAvailablePosition(d, bins, padding, function() {
           d.extendedBoundary = getExtendedBound(d);
           d.extendedSearchBound = getExtendedSearchBound(d.extendedBoundary, bins.mark);
-          if (!checkCollision(d, d.extendedBoundary, d.extendedSearchBound, bins.mark) && !checkCollision(d, d.boundary, d.searchBound, bins.label)) {
+          if (!checkCollision(d, d.extendedBoundary, d.extendedSearchBound, bins.mark) && !checkCollision(d, d.boundary, d.searchBound, bins.mark)) {
             d.labelPlaced = true;
           }
         });
 
         if (d.labelPlaced) {
-          placeLabel(d.boundary, bins.label, minTextWidth, minTextHeight);
+          placeLabel(d.boundary, bins.mark, minTextWidth, minTextHeight);
         } else {
           d.fill = null;
           d.z = 0;

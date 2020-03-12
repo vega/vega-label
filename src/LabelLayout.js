@@ -1,6 +1,7 @@
 /*eslint no-unused-vars: "warn"*/
 /*eslint no-console: "warn"*/
 import { canvas } from 'vega-canvas';
+import { labelWidth } from './Common';
 // import { placeLabels } from './ParticleBasedLabel';
 // import { placeLabels } from './OldPixelBasedLabel';
 import { placeLabels } from './PixelBasedLabel';
@@ -76,9 +77,4 @@ function getBoundaryFunction(x, y, w, h) {
       x2: _x + (w / 2.0),
     }
   };
-}
-
-function labelWidth (text, fontSize, font, context) {
-  context.font = fontSize + "px " + font;
-  return context.measureText(text + ".").width;
 }

@@ -8,27 +8,11 @@ export function placeLabels(data, size, padding) {
       minTextWidth = Number.MAX_SAFE_INTEGER, 
       minTextHeight = Number.MAX_SAFE_INTEGER;
 
-  data.sort(function(a, b) {
-    textWidth = a.textWidth > b.textWidth ? a.textWidth : b.textWidth;
-    textHeight = a.textHeight + b.textHeight;
-    if (-textWidth <= a.x - b.x && a.x - b.x <= textWidth &&
-        -textHeight <= a.y - b.y && a.y - b.y <= textHeight) {
-      return a.y - b.y;
-    }
-    return a.x - b.x;
-  });
+  width = size[0];
+  height = size[1];
 
-  if (size) {
-    width = size[0];
-    height = size[1];
-  } else {
-    data.forEach(function(d) {
-      width = Math.max(width, d.x + d.textWidth);
-      height = Math.max(height, d.y + d.textHeight);
-    });
-  }
   bitMaps.mark = getMarkBitMap(data, width, height);
-  bitMaps.label = new BitMap(width, height);
+  // bitMaps.label = new BitMap(width, height);
 
   data.forEach(function(d) {
     bitMaps.mark.unmark(d.x, d.y);
@@ -55,14 +39,14 @@ export function placeLabels(data, size, padding) {
       bitMaps.mark.unmark(d.x, d.y);
       findAvailablePosition(d, bitMaps, padding, function() {
         d.extendedSearchBound = getExtendedSearchBound(d, bitMaps.mark);
-        if (!checkCollision(d.extendedSearchBound, bitMaps.mark) && !checkCollision(d.searchBound, bitMaps.label)) {
+        if (!checkCollision(d.extendedSearchBound, bitMaps.mark) && !checkCollision(d.searchBound, bitMaps.mark)) {
           d.labelPlaced = true;
         }
       });
       bitMaps.mark.mark(d.x, d.y);
 
       if (d.labelPlaced) {
-        placeLabel(d.searchBound, bitMaps.label);
+        placeLabel(d.searchBound, bitMaps.mark);
       } else {
         d.fill = null;
         d.z = 0;
@@ -127,12 +111,12 @@ function getSearchBound(bound, bm) {
 }
 
 function placeLabel(b, bitMap) {
-  bitMap.flushBinned(b.startX, b.startY, b.endX, b.endY);
+  bitMap.setAllScaled(b.startX, b.startY, b.endX, b.endY);
 }
 
 function checkCollision(b, bitMap) {
 
-  return bitMap.getInBoundBinned(b.startX, b.startY, b.endX, b.endY);
+  return bitMap.getAllScaled(b.startX, b.startY, b.endX, b.endY);
 }
 
 function getMarkBitMap(data, width, height) {
