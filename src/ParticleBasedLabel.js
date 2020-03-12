@@ -2,8 +2,7 @@
 import { ArrayMap } from './ArrayMap';
 
 export function placeLabels(data, size, padding) {
-  var textWidth, textHeight,
-      width = 0, height = 0,
+  var width = 0, height = 0,
       bins = {},
       minTextWidth = Number.MAX_SAFE_INTEGER, 
       minTextHeight = Number.MAX_SAFE_INTEGER;
@@ -16,34 +15,18 @@ export function placeLabels(data, size, padding) {
     minTextHeight = d.textHeight < minTextHeight ? d.textHeight : minTextHeight;
   });
   bins.mark = getMarkBin(data, width, height, minTextWidth, minTextHeight);
-  // bins.label = new ArrayMap(width, height, minTextWidth, minTextHeight);
 
   data.forEach(function(d) {
+    d.z = 1;
     d.currentPosition = [-1, -1];
     findAvailablePosition(d, bins, padding, function() {
       if (!checkCollision(d, d.boundary, d.searchBound, bins.mark)) {
         d.labelPlaced = true;
       }
     });
-  });
 
-  data.forEach(function(d) {
-    d.z = 1;
     if (d.labelPlaced) {
-        findAvailablePosition(d, bins, padding, function() {
-          d.extendedBoundary = getExtendedBound(d);
-          d.extendedSearchBound = getExtendedSearchBound(d.extendedBoundary, bins.mark);
-          if (!checkCollision(d, d.extendedBoundary, d.extendedSearchBound, bins.mark) && !checkCollision(d, d.boundary, d.searchBound, bins.mark)) {
-            d.labelPlaced = true;
-          }
-        });
-
-        if (d.labelPlaced) {
-          placeLabel(d.boundary, bins.mark, minTextWidth, minTextHeight);
-        } else {
-          d.fill = null;
-          d.z = 0;
-        }
+      placeLabel(d.boundary, bins.mark, minTextWidth, minTextHeight);
     } else {
       d.fill = null;
       d.z = 0;
@@ -79,28 +62,6 @@ function findAvailablePosition(datum, bins, padding, checkAvailability) {
 
 function outOfBound(b, bm) {
   return b.startX < 0 || b.startY < 0 || b.endY >= bm.height || b.endX >= bm.width;
-}
-
-function getExtendedBound(d) {
-  var bound = d.boundary,
-      w = d.textWidth * d.currentPosition[0],
-      h = d.textHeight * d.currentPosition[1];
-
-  return {
-    x: bound.x + (w < 0 ? w : 0),
-    y: bound.y + (h < 0 ? h : 0),
-    x2: bound.x2 + (w > 0 ? w : 0),
-    y2: bound.y2 + (h > 0 ? h : 0),
-  }
-}
-
-function getExtendedSearchBound(b, bm) {
-  return {
-    startX: bm.binWidth(b.x),
-    startY: bm.binHeight(b.y),
-    endX: bm.binWidth(b.x2),
-    endY: bm.binHeight(b.y2),
-  };
 }
 
 function getSearchBound(bound, bm) {
@@ -141,7 +102,7 @@ function checkCollision(d, b, searchBound, bin) {
   for (x = searchBound.startX; x <= searchBound.endX; x++) {
     for (y = searchBound.startY; y <= searchBound.endY; y++) {
       bucket = bin.getBinned(x, y);
-      if (bucket && bucket.some(function(p) { return isIn(b, p) && !(p[0] === d.x && p[1] === d.y) })) {
+      if (bucket && bucket.some(function(p) { return isIn(b, p) })) {
         return true;
       }
     }
