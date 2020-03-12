@@ -1,5 +1,6 @@
 /*eslint no-unused-vars: "warn"*/
 import { ArrayMap } from './ArrayMap';
+import { getBoundary, labelWidth } from './Common';
 
 export function placeLabels(data, size, padding) {
   var width = 0, height = 0,
@@ -11,6 +12,8 @@ export function placeLabels(data, size, padding) {
   height = size[1];
 
   data.forEach(function(d) {
+    var datum = d.datum;
+    d.textWidth = labelWidth(datum.text, datum.fonrSize, datum.font);
     minTextWidth = d.textWidth < minTextWidth ? d.textWidth : minTextWidth;
     minTextHeight = d.textHeight < minTextHeight ? d.textHeight : minTextHeight;
   });
@@ -47,7 +50,7 @@ function findAvailablePosition(datum, bins, padding, checkAvailability) {
   for (i = datum.currentPosition[0]; i <= 1 && !datum.labelPlaced; i++) {
     for (j = initJ; j <= 1 && !datum.labelPlaced; j++) {
       if (!i && !j) continue;
-      datum.boundary = datum.boundaryFun(i, j, padding);
+      datum.boundary = getBoundary(datum, i, j, padding);
       searchBound = getSearchBound(datum.boundary, bins.mark);
 
       if (outOfBound(searchBound, bins.mark)) continue;

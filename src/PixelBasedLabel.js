@@ -1,5 +1,6 @@
 /*eslint no-unused-vars: "warn"*/
 import { BitMap } from './BitMap';
+import { getBoundary, labelWidth } from './Common';
 
 export function placeLabels(data, size, padding) {
   var width = 0, height = 0,
@@ -38,10 +39,23 @@ function findAvailablePosition(datum, bitMaps, padding, checkAvailability) {
       initJ = datum.currentPosition[1];
 
   datum.labelPlaced = false;
+  datum.textWidth = 1;
+  var textWidthCalculated = false;
   for (i = datum.currentPosition[0]; i <= 1 && !datum.labelPlaced; i++) {
     for (j = initJ; j <= 1 && !datum.labelPlaced; j++) {
       if (!i && !j) continue;
-      datum.boundary = datum.boundaryFun(i, j, padding);
+      if (!textWidthCalculated) {
+        datum.boundary = getBoundary(datum, i, j, padding);
+        searchBound = getSearchBound(getBoundary(datum, i, j, padding), bitMaps.mark);
+        if (checkCollision(searchBound, bitMaps.mark)) {
+          continue;
+        } else {
+          textWidthCalculated = true;
+          datum.textWidth = labelWidth(datum.datum.text, datum.datum.fontSize, datum.datum.font);
+        }
+      }
+
+      datum.boundary = getBoundary(datum, i, j, padding);
       searchBound = getSearchBound(datum.boundary, bitMaps.mark);
 
       if (outOfBound(searchBound, bitMaps.mark)) continue;

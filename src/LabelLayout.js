@@ -1,29 +1,25 @@
 /*eslint no-unused-vars: "warn"*/
 /*eslint no-console: "warn"*/
-import { canvas } from 'vega-canvas';
 import { labelWidth } from './Common';
-import { placeLabels } from './ParticleBasedLabel';
+// import { placeLabels } from './ParticleBasedLabel';
 // import { placeLabels } from './OldPixelBasedLabel';
-// import { placeLabels } from './PixelBasedLabel';
+import { placeLabels } from './PixelBasedLabel';
 
 export default function() {
-  var context = canvas().getContext("2d"),
-      markData = [],
+  var markData = [],
       size,
       padding = 3,
       label = {};
 
   label.layout = function() {
     var data = markData.map(function(d) {
-      var textWidth = labelWidth(d.text, d.fontSize, d.font, context),
-          textHeight = d.fontSize;
+      var textHeight = d.fontSize;
       return {
         fontSize: d.fontSize,
         x: d.x,
         y: d.y,
-        textWidth: textWidth,
+        textWidth: null,
         textHeight: textHeight,
-        boundaryFun: getBoundaryFunction(d.x, d.y, textWidth, textHeight),
         fill: d.fill,
         datum: d
       };
@@ -60,21 +56,4 @@ export default function() {
   }
 
   return label;
-}
-
-function getBoundaryFunction(x, y, w, h) {
-
-  return function (dx, dy, padding) {
-    var size = (dy * dy) + (dx * dx),
-        _y = y + (h * dy / 2.0) + (padding * dy / size),
-        _x = x + (w * dx / 2.0) + (padding * dx / size);
-    return {
-      y: _y - (h / 2.0),
-      yc: _y,
-      y2: _y + (h / 2.0),
-      x: _x - (w / 2.0),
-      xc: _x,
-      x2: _x + (w / 2.0),
-    }
-  };
 }
