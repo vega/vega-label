@@ -1,800 +1,444 @@
 clustered 1000 1000
-88
+53
 clustered 1000 1000
-70
+43
 clustered 1000 1000
-46
+21
 clustered 1000 1000
-66
+25
 clustered 1000 1000
-71
+36
 clustered 1000 1000
-45
+24
 clustered 1000 1000
-37
+17
 clustered 1000 1000
-72
+35
 clustered 1000 1000
-46
+25
 clustered 1000 1000
-38
+18
 clustered 1000 10000
-71
+29
 clustered 1000 10000
-44
+17
 clustered 1000 10000
-81
+15
 clustered 1000 10000
-78
+35
 clustered 1000 10000
-42
+35
 clustered 1000 10000
-37
+18
 clustered 1000 10000
-89
-clustered 1000 10000
-77
-clustered 1000 10000
-76
-clustered 1000 10000
-79
-clustered 2000 1000
-110
-clustered 2000 1000
-70
-clustered 2000 1000
-62
-clustered 2000 1000
-98
-clustered 2000 1000
-79
-clustered 2000 1000
-79
-clustered 2000 1000
-102
-clustered 2000 1000
-68
-clustered 2000 1000
-66
-clustered 2000 1000
-103
-clustered 2000 10000
-83
-clustered 2000 10000
-109
-clustered 2000 10000
-122
-clustered 2000 10000
-81
-clustered 2000 10000
-78
-clustered 2000 10000
-111
-clustered 2000 10000
-116
-clustered 2000 10000
-116
-clustered 2000 10000
-116
-clustered 2000 10000
-118
-clustered 3000 1000
-137
-clustered 3000 1000
-118
-clustered 3000 1000
-131
-clustered 3000 1000
-102
-clustered 3000 1000
-92
-clustered 3000 1000
-133
-clustered 3000 1000
-101
-clustered 3000 1000
-94
-clustered 3000 1000
-133
-clustered 3000 1000
-102
-clustered 3000 10000
-117
-clustered 3000 10000
-176
-clustered 3000 10000
-139
-clustered 3000 10000
-114
-clustered 3000 10000
-171
-clustered 3000 10000
-175
-clustered 3000 10000
-171
-clustered 3000 10000
-138
-clustered 3000 10000
-166
-clustered 3000 10000
-139
-clustered 4000 1000
-156
-clustered 4000 1000
-170
-clustered 4000 1000
-148
-clustered 4000 1000
-169
-clustered 4000 1000
-168
-clustered 4000 1000
-148
-clustered 4000 1000
-138
-clustered 4000 1000
-171
-clustered 4000 1000
-151
-clustered 4000 1000
-139
-clustered 4000 10000
-207
-clustered 4000 10000
-219
-clustered 4000 10000
-223
-clustered 4000 10000
-207
-clustered 4000 10000
-165
-clustered 4000 10000
-157
-clustered 4000 10000
-215
-clustered 4000 10000
-221
-clustered 4000 10000
-217
-clustered 4000 10000
-180
-clustered 5000 1000
-205
-clustered 5000 1000
-214
-clustered 5000 1000
-201
-clustered 5000 1000
-233
-clustered 5000 1000
-214
-clustered 5000 1000
-196
-clustered 5000 1000
-232
-clustered 5000 1000
-214
-clustered 5000 1000
-196
-clustered 5000 1000
-230
-clustered 5000 10000
-268
-clustered 5000 10000
-316
-clustered 5000 10000
-296
-clustered 5000 10000
-248
-clustered 5000 10000
-265
-clustered 5000 10000
-319
-clustered 5000 10000
-320
-clustered 5000 10000
-317
-clustered 5000 10000
-313
-clustered 5000 10000
-315
-clustered 6000 1000
-274
-clustered 6000 1000
-247
-clustered 6000 1000
-270
-clustered 6000 1000
-252
-clustered 6000 1000
-236
-clustered 6000 1000
-267
-clustered 6000 1000
-257
-clustered 6000 1000
-248
-clustered 6000 1000
-262
-clustered 6000 1000
-253
-clustered 6000 10000
-306
-clustered 6000 10000
-367
-clustered 6000 10000
-289
-clustered 6000 10000
-363
-clustered 6000 10000
-368
-clustered 6000 10000
-352
-clustered 6000 10000
-317
-clustered 6000 10000
-303
-clustered 6000 10000
-373
-clustered 6000 10000
-294
-clustered 7000 1000
-354
-clustered 7000 1000
-313
-clustered 7000 1000
-288
-clustered 7000 1000
-288
-clustered 7000 1000
-287
-clustered 7000 1000
-298
-clustered 7000 1000
-314
-clustered 7000 1000
-286
-clustered 7000 1000
-285
-clustered 7000 1000
-312
-clustered 7000 10000
-367
-clustered 7000 10000
-410
-clustered 7000 10000
-419
-clustered 7000 10000
-421
-clustered 7000 10000
-420
-clustered 7000 10000
-424
-clustered 7000 10000
-393
-clustered 7000 10000
-375
-clustered 7000 10000
-354
-clustered 7000 10000
-418
-clustered 8000 1000
-313
-clustered 8000 1000
-353
-clustered 8000 1000
-347
-clustered 8000 1000
-321
-clustered 8000 1000
-296
-clustered 8000 1000
-344
-clustered 8000 1000
-327
-clustered 8000 1000
-301
-clustered 8000 1000
-358
-clustered 8000 1000
-361
-clustered 8000 10000
-418
-clustered 8000 10000
-460
-clustered 8000 10000
-497
-clustered 8000 10000
-460
-clustered 8000 10000
-434
-clustered 8000 10000
-461
-clustered 8000 10000
-488
-clustered 8000 10000
-459
-clustered 8000 10000
-493
-clustered 8000 10000
-453
-clustered 9000 1000
-379
-clustered 9000 1000
-400
-clustered 9000 1000
-368
-clustered 9000 1000
-361
-clustered 9000 1000
-389
-clustered 9000 1000
-368
-clustered 9000 1000
-353
-clustered 9000 1000
-398
-clustered 9000 1000
-368
-clustered 9000 1000
-353
-clustered 9000 10000
-504
-clustered 9000 10000
-542
-clustered 9000 10000
-527
-clustered 9000 10000
-507
-clustered 9000 10000
-542
-clustered 9000 10000
-532
-clustered 9000 10000
-535
-clustered 9000 10000
-507
-clustered 9000 10000
-535
-clustered 9000 10000
-539
-clustered 10000 1000
-432
-clustered 10000 1000
-393
-clustered 10000 1000
-380
-clustered 10000 1000
-427
-clustered 10000 1000
-411
-clustered 10000 1000
-389
-clustered 10000 1000
-430
-clustered 10000 1000
-411
-clustered 10000 1000
-394
-clustered 10000 1000
-439
-clustered 10000 10000
-561
-clustered 10000 10000
-587
-clustered 10000 10000
-586
-clustered 10000 10000
-645
-clustered 10000 10000
-574
-clustered 10000 10000
-630
-clustered 10000 10000
-569
-clustered 10000 10000
-612
-clustered 10000 10000
-585
-clustered 10000 10000
-578
-uniform 1000 1000
 48
-uniform 1000 1000
-40
-uniform 1000 1000
-65
-uniform 1000 1000
+clustered 1000 10000
+32
+clustered 1000 10000
+18
+clustered 1000 10000
+13
+clustered 2000 1000
+55
+clustered 2000 1000
 38
-uniform 1000 1000
-31
-uniform 1000 1000
+clustered 2000 1000
+29
+clustered 2000 1000
+54
+clustered 2000 1000
+41
+clustered 2000 1000
+27
+clustered 2000 1000
+48
+clustered 2000 1000
+38
+clustered 2000 1000
+28
+clustered 2000 1000
+53
+clustered 2000 10000
+59
+clustered 2000 10000
+33
+clustered 2000 10000
+33
+clustered 2000 10000
+55
+clustered 2000 10000
+34
+clustered 2000 10000
+29
+clustered 2000 10000
+59
+clustered 2000 10000
+34
+clustered 2000 10000
+29
+clustered 2000 10000
+58
+clustered 3000 1000
 64
+clustered 3000 1000
+42
+clustered 3000 1000
+66
+clustered 3000 1000
+40
+clustered 3000 1000
+54
+clustered 3000 1000
+69
+clustered 3000 1000
+64
+clustered 3000 1000
+39
+clustered 3000 1000
+56
+clustered 3000 1000
+66
+clustered 3000 10000
+46
+clustered 3000 10000
+44
+clustered 3000 10000
+78
+clustered 3000 10000
+53
+clustered 3000 10000
+45
+clustered 3000 10000
+82
+clustered 3000 10000
+51
+clustered 3000 10000
+46
+clustered 3000 10000
+79
+clustered 3000 10000
+51
+clustered 4000 1000
+56
+clustered 4000 1000
+81
+clustered 4000 1000
+55
+clustered 4000 1000
+50
+clustered 4000 1000
+86
+clustered 4000 1000
+82
+clustered 4000 1000
+55
+clustered 4000 1000
+49
+clustered 4000 1000
+81
+clustered 4000 1000
+54
+clustered 4000 10000
+70
+clustered 4000 10000
+95
+clustered 4000 10000
+86
+clustered 4000 10000
+63
+clustered 4000 10000
+96
+clustered 4000 10000
+85
+clustered 4000 10000
+62
+clustered 4000 10000
+101
+clustered 4000 10000
+86
+clustered 4000 10000
+62
+clustered 5000 1000
+100
+clustered 5000 1000
+95
+clustered 5000 1000
+84
+clustered 5000 1000
+80
+clustered 5000 1000
+97
+clustered 5000 1000
+87
+clustered 5000 1000
+78
+clustered 5000 1000
+97
+clustered 5000 1000
+92
+clustered 5000 1000
+79
+clustered 5000 10000
+125
+clustered 5000 10000
+83
+clustered 5000 10000
+97
+clustered 5000 10000
+109
+clustered 5000 10000
+87
+clustered 5000 10000
+75
+clustered 5000 10000
+116
+clustered 5000 10000
+130
+clustered 5000 10000
+87
+clustered 5000 10000
+77
+clustered 6000 1000
+114
+clustered 6000 1000
+101
+clustered 6000 1000
+97
+clustered 6000 1000
+110
+clustered 6000 1000
+99
+clustered 6000 1000
+96
+clustered 6000 1000
+113
+clustered 6000 1000
+99
+clustered 6000 1000
+93
+clustered 6000 1000
+112
+clustered 6000 10000
+105
+clustered 6000 10000
+96
+clustered 6000 10000
+148
+clustered 6000 10000
+132
+clustered 6000 10000
+110
+clustered 6000 10000
+93
+clustered 6000 10000
+147
+clustered 6000 10000
+107
+clustered 6000 10000
+96
+clustered 6000 10000
+131
+clustered 7000 1000
+126
+clustered 7000 1000
+109
+clustered 7000 1000
+122
+clustered 7000 1000
+109
+clustered 7000 1000
+101
+clustered 7000 1000
+126
+clustered 7000 1000
+89
+clustered 7000 1000
+104
+clustered 7000 1000
+136
+clustered 7000 1000
+120
+clustered 7000 10000
+158
+clustered 7000 10000
+140
+clustered 7000 10000
+164
+clustered 7000 10000
+122
+clustered 7000 10000
+115
+clustered 7000 10000
+151
+clustered 7000 10000
+125
+clustered 7000 10000
+113
+clustered 7000 10000
+152
+clustered 7000 10000
+125
+clustered 8000 1000
+128
+clustered 8000 1000
+146
+clustered 8000 1000
+126
+clustered 8000 1000
+108
+clustered 8000 1000
+154
+clustered 8000 1000
+147
+clustered 8000 1000
+123
+clustered 8000 1000
+110
+clustered 8000 1000
+135
+clustered 8000 1000
+115
+clustered 8000 10000
+175
+clustered 8000 10000
+171
+clustered 8000 10000
+176
+clustered 8000 10000
+160
+clustered 8000 10000
+183
+clustered 8000 10000
+171
+clustered 8000 10000
+174
+clustered 8000 10000
+184
+clustered 8000 10000
+141
+clustered 8000 10000
+131
+clustered 9000 1000
+154
+clustered 9000 1000
+120
+clustered 9000 1000
+131
+clustered 9000 1000
+156
+clustered 9000 1000
+148
+clustered 9000 1000
+142
+clustered 9000 1000
+135
+clustered 9000 1000
+154
+clustered 9000 1000
+136
+clustered 9000 1000
+127
+clustered 9000 10000
+218
+clustered 9000 10000
+159
+clustered 9000 10000
+224
+clustered 9000 10000
+209
+clustered 9000 10000
+165
+clustered 9000 10000
+235
+clustered 9000 10000
+204
+clustered 9000 10000
+203
+clustered 9000 10000
+176
+clustered 9000 10000
+233
+clustered 10000 1000
+174
+clustered 10000 1000
+187
+clustered 10000 1000
+192
+clustered 10000 1000
+206
+clustered 10000 1000
+182
+clustered 10000 1000
+196
+clustered 10000 1000
+203
+clustered 10000 1000
+191
+clustered 10000 1000
+192
+clustered 10000 1000
+208
+clustered 10000 10000
+254
+clustered 10000 10000
+236
+clustered 10000 10000
+270
+clustered 10000 10000
+269
+clustered 10000 10000
+298
+clustered 10000 10000
+308
+clustered 10000 10000
+269
+clustered 10000 10000
+243
+clustered 10000 10000
+208
+clustered 10000 10000
+262
 uniform 1000 1000
-38
+29
+uniform 1000 1000
+21
+uniform 1000 1000
+44
+uniform 1000 1000
+29
+uniform 1000 1000
+16
+uniform 1000 1000
+50
+uniform 1000 1000
+29
+uniform 1000 1000
+19
+uniform 1000 1000
+33
 uniform 1000 1000
 39
-uniform 1000 1000
+uniform 1000 10000
+20
+uniform 1000 10000
+18
+uniform 1000 10000
+35
+uniform 1000 10000
+19
+uniform 1000 10000
+18
+uniform 1000 10000
+33
+uniform 1000 10000
+20
+uniform 1000 10000
+17
+uniform 1000 10000
+32
+uniform 1000 10000
+20
+uniform 2000 1000
+46
+uniform 2000 1000
 64
-uniform 1000 1000
-38
-uniform 1000 10000
-44
-uniform 1000 10000
-76
-uniform 1000 10000
-76
-uniform 1000 10000
-49
-uniform 1000 10000
-41
-uniform 1000 10000
-79
-uniform 1000 10000
-79
-uniform 1000 10000
-50
-uniform 1000 10000
-77
-uniform 1000 10000
-70
-uniform 2000 1000
-86
-uniform 2000 1000
-103
-uniform 2000 1000
-67
-uniform 2000 1000
-79
-uniform 2000 1000
-103
-uniform 2000 1000
-67
-uniform 2000 1000
-79
-uniform 2000 1000
-102
-uniform 2000 1000
-108
-uniform 2000 1000
-68
-uniform 2000 10000
-91
-uniform 2000 10000
-135
-uniform 2000 10000
-142
-uniform 2000 10000
-131
-uniform 2000 10000
-132
-uniform 2000 10000
-99
-uniform 2000 10000
-89
-uniform 2000 10000
-112
-uniform 2000 10000
-127
-uniform 2000 10000
-129
-uniform 3000 1000
-148
-uniform 3000 1000
-146
-uniform 3000 1000
-118
-uniform 3000 1000
-93
-uniform 3000 1000
-146
-uniform 3000 1000
-118
-uniform 3000 1000
-94
-uniform 3000 1000
-145
-uniform 3000 1000
-119
-uniform 3000 1000
-94
-uniform 3000 10000
-166
-uniform 3000 10000
-185
-uniform 3000 10000
-184
-uniform 3000 10000
-192
-uniform 3000 10000
-152
-uniform 3000 10000
-132
-uniform 3000 10000
-180
-uniform 3000 10000
-179
-uniform 3000 10000
-179
-uniform 3000 10000
-187
-uniform 4000 1000
-189
-uniform 4000 1000
-151
-uniform 4000 1000
-139
-uniform 4000 1000
-179
-uniform 4000 1000
-152
-uniform 4000 1000
-139
-uniform 4000 1000
-179
-uniform 4000 1000
-149
-uniform 4000 1000
-139
-uniform 4000 1000
-174
-uniform 4000 10000
-171
-uniform 4000 10000
-226
-uniform 4000 10000
-217
-uniform 4000 10000
-193
-uniform 4000 10000
-181
-uniform 4000 10000
-227
-uniform 4000 10000
-222
-uniform 4000 10000
-223
-uniform 4000 10000
-224
-uniform 4000 10000
-227
-uniform 5000 1000
-214
-uniform 5000 1000
-191
-uniform 5000 1000
-207
-uniform 5000 1000
-190
-uniform 5000 1000
-171
-uniform 5000 1000
-213
-uniform 5000 1000
-190
-uniform 5000 1000
-151
-uniform 5000 1000
-208
-uniform 5000 1000
-192
-uniform 5000 10000
-219
-uniform 5000 10000
-281
-uniform 5000 10000
-237
-uniform 5000 10000
-226
-uniform 5000 10000
-303
-uniform 5000 10000
-288
-uniform 5000 10000
-300
-uniform 5000 10000
-304
-uniform 5000 10000
-302
-uniform 5000 10000
-303
-uniform 6000 1000
-260
-uniform 6000 1000
-275
-uniform 6000 1000
-256
-uniform 6000 1000
-236
-uniform 6000 1000
-286
-uniform 6000 1000
-248
-uniform 6000 1000
-243
-uniform 6000 1000
-289
-uniform 6000 1000
-247
-uniform 6000 1000
-241
-uniform 6000 10000
-351
-uniform 6000 10000
-349
-uniform 6000 10000
-381
-uniform 6000 10000
-366
-uniform 6000 10000
-346
-uniform 6000 10000
-350
-uniform 6000 10000
-385
-uniform 6000 10000
-371
-uniform 6000 10000
-386
-uniform 6000 10000
-386
-uniform 7000 1000
-314
-uniform 7000 1000
-288
-uniform 7000 1000
-276
-uniform 7000 1000
-319
-uniform 7000 1000
-285
-uniform 7000 1000
-277
-uniform 7000 1000
-319
-uniform 7000 1000
-289
-uniform 7000 1000
-272
-uniform 7000 1000
-321
-uniform 7000 10000
-380
-uniform 7000 10000
-426
-uniform 7000 10000
-412
-uniform 7000 10000
-397
-uniform 7000 10000
-408
-uniform 7000 10000
-429
-uniform 7000 10000
-428
-uniform 7000 10000
-425
-uniform 7000 10000
-424
-uniform 7000 10000
-432
-uniform 8000 1000
-361
-uniform 8000 1000
-328
-uniform 8000 1000
-367
-uniform 8000 1000
-328
-uniform 8000 1000
-310
-uniform 8000 1000
-360
-uniform 8000 1000
-328
-uniform 8000 1000
-311
-uniform 8000 1000
-360
-uniform 8000 1000
-328
-uniform 8000 10000
-443
-uniform 8000 10000
-485
-uniform 8000 10000
-532
-uniform 8000 10000
-476
-uniform 8000 10000
-499
-uniform 8000 10000
-513
-uniform 8000 10000
-489
-uniform 8000 10000
-494
-uniform 8000 10000
-475
-uniform 8000 10000
-475
-uniform 9000 1000
-406
-uniform 9000 1000
-407
-uniform 9000 1000
-379
-uniform 9000 1000
-351
-uniform 9000 1000
-399
-uniform 9000 1000
-372
-uniform 9000 1000
-351
-uniform 9000 1000
-411
-uniform 9000 1000
-378
-uniform 9000 1000
-350
-uniform 9000 10000
-520
-uniform 9000 10000
-518
-uniform 9000 10000
-534
-uniform 9000 10000
-531
-uniform 9000 10000
-571
-uniform 9000 10000
-535
-uniform 9000 10000
-558
-uniform 9000 10000
-541
-uniform 9000 10000
-568
-uniform 9000 10000
-529
-uniform 10000 1000
-446
-uniform 10000 1000
-413
-uniform 10000 1000
-395
-uniform 10000 1000
-434
-uniform 10000 1000
-412
-uniform 10000 1000
-396
-uniform 10000 1000
-445
-uniform 10000 1000
-413
-uniform 10000 1000
-398
-uniform 10000 1000
-446
-uniform 10000 10000
-566
-uniform 10000 10000
-644
-uniform 10000 10000
-580
-uniform 10000 10000
-579
-uniform 10000 10000
-616
-uniform 10000 10000
-581
-uniform 10000 10000
-664
-uniform 10000 10000
-582
-uniform 10000 10000
-618
-uniform 10000 10000
-580

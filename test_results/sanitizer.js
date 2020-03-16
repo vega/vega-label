@@ -1,7 +1,7 @@
 const fs = require("fs");
 const dir = "./test_results";
 
-const labelers = ["old_pixel", "pixel", "partical"];
+const labelers = ["pixel", "partical"];
 const data = [];
 function sanitize(labeler, scale) {
   const content = fs.readFileSync(`${dir}/${labeler}_${scale}.txt`, "utf8");
@@ -21,7 +21,7 @@ function sanitize(labeler, scale) {
 }
 
 labelers.forEach(labeler => {
-  sanitize(labeler, "scale");
+  // sanitize(labeler, "scale");
   sanitize(labeler, "not_scale");
 });
 

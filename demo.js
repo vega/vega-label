@@ -26,7 +26,7 @@ function render(typeItr, nItr, sizeItr, i) {
   spec["height"] = size;
   spec["data"][0]["url"] = `../data/test_label_${suffix[typeItr]}${n}.json`;
   spec["marks"][1]["transform"][0]["size"] = [size, size];
-  // spec["marks"][1]["encode"]["enter"]["fontSize"]["value"] = 14 * size / 1000;
+  spec["marks"][1]["encode"]["enter"]["fontSize"]["value"] = 14 * size / 1000;
   new vega.View(vega.parse(spec))
     .renderer('canvas')     // set renderer (canvas or svg)
     .initialize('#vis')  // initialize view within parent dom container

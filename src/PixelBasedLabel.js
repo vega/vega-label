@@ -86,7 +86,6 @@ function placeLabel(b, bitMap) {
 }
 
 function checkCollision(b, bitMap) {
-
   return bitMap.getAllScaled(b.startX, b.startY, b.endX, b.endY);
 }
 
