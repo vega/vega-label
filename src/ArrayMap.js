@@ -36,4 +36,18 @@ export function ArrayMap(_width, _height, _binWidth, _binHeight) {
   this.binHeight = function (coordinate) {
     return Math.floor(coordinate / this.binHeightSize);
   };
+
+  this.write = function(id, width, height) {
+    var canvas = document.getElementById(id);
+    canvas.setAttribute("width", width);
+    canvas.setAttribute("height", height);
+    var ctx = canvas.getContext("2d");
+    for (var i = 0; i < this.array.length; i++) {
+      if (this.array[i]) {
+        for (var j = 0; j < this.array[i].length; j++) {
+          ctx.fillRect(this.array[i][j][0], this.array[i][j][1], 1, 1);
+        }
+      }
+    }
+  }
 }
