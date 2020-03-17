@@ -4,18 +4,21 @@ import { labelWidth } from './Common';
 import { placeLabels } from './ParticleBasedLabel'; var labeler = "particle";
 // import { placeLabels } from './OldPixelBasedLabel';
 // import { placeLabels } from './PixelBasedLabel'; var labeler = "pixel";
+import { drawAvoidMarks } from './markBitmaps';
 
 export default function() {
   var markData = [],
       size,
       padding = 3,
       label = {},
-      config;
+      config,
+      avoidMarks = [];
 
   label.layout = function() {
     var ret;
     config.labeler = labeler;
     for (var i = 0; i < 10; i++) {
+      var avoidMarksCtx = drawAvoidMarks(avoidMarks, width, height);
       var before = performance.now();
       var data = markData.map(function(d) {
         var textHeight = d.fontSize;
@@ -30,7 +33,7 @@ export default function() {
         };
       });
       
-      ret = placeLabels(data, size, padding);
+      ret = placeLabels(data, size, padding, avoidMarksCtx);
       config.runtime = performance.now() - before;
       console.log(JSON.stringify(config) + ",");
     }
@@ -70,6 +73,15 @@ export default function() {
       return label;
     } else {
       return padding;
+    }
+  }
+
+  label.avoidMarks = function(_) {
+    if (arguments.length) {
+      avoidMarks = _ ? _ : [];
+      return label;
+    } else {
+      return avoidMarks
     }
   }
 

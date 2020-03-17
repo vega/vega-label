@@ -2,7 +2,7 @@
 import { BitMap } from './BitMap';
 import { getBoundary, labelWidth } from './Common';
 
-export function placeLabels(data, size, padding) {
+export function placeLabels(data, size, padding, avoidMarksCtx) {
   var width = 0, height = 0,
       bitMaps = {};
 

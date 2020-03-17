@@ -17,6 +17,7 @@ Label.Definition = {
   "params": [
     { "name": "size", "type": "number", "array": true },
     { "name": "padding", "type": "number", "default": 2},
+    { name: 'avoidMarks', type: 'data', array: true },
     { "name": "as", "type": "string", "array": true, "length": Output.length, "default": Output }
   ]
 };
@@ -35,7 +36,8 @@ prototype.transform = function(_, pulse) {
   var data = pulse.materialize(pulse.SOURCE).source,
       labelLayout = this.value,
       as = _.as || Output,
-      padding = _.padding || 3;
+      padding = _.padding || 3,
+      avoidMarks = _.avoidMarks;
 
   // configure layout
   // var t1 = new Date();
@@ -44,6 +46,7 @@ prototype.transform = function(_, pulse) {
     .size(_.size)
     .padding(padding)
     .config(_.size[2])
+    .avoidMarks(avoidMarks)
     .layout(),
     t;
   // var t2 = new Date();

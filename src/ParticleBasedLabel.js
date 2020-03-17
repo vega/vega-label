@@ -2,7 +2,7 @@
 import { ArrayMap } from './ArrayMap';
 import { getBoundary, labelWidth } from './Common';
 
-export function placeLabels(data, size, padding) {
+export function placeLabels(data, size, padding, avoidMarksCtx) {
   var width = 0, height = 0,
       bins = {},
       minTextWidth = Number.MAX_SAFE_INTEGER, 
@@ -19,7 +19,9 @@ export function placeLabels(data, size, padding) {
     minTextWidth = d.textWidth < minTextWidth ? d.textWidth : minTextWidth;
     minTextHeight = d.textHeight < minTextHeight ? d.textHeight : minTextHeight;
   });
-  bins.mark = getMarkBin(data, width, height, minTextWidth, minTextHeight);
+  // todo: write avoidMarksCtx to bins
+  bins.mark = getMarkBin(data, width, height, minTextWidth, minTextHeight, avoidMarksCtx);
+  // bins.mark.write("canvas-before", width, height);
 
   data.forEach(function(d) {
     d.z = 1;
@@ -39,8 +41,7 @@ export function placeLabels(data, size, padding) {
     d.x = d.boundary.xc;
     d.y = d.boundary.yc;
   });
-  // console.log(performance.now() - before);
-  // bins.mark.write("canvas", width, height);
+  bins.mark.write("canvas-after", width, height);
 
   return data;
 }
@@ -105,8 +106,8 @@ function placeLabel(b, bin, minTextWidth, minTextHeight) {
 function checkCollision(d, b, searchBound, bin) {
   var x, y, p, bucket;
 
-  for (x = searchBound.startX; x <= searchBound.endX; x++) {
-    for (y = searchBound.startY; y <= searchBound.endY; y++) {
+  for (x = searchBound.startX-1; x <= searchBound.endX+1; x++) {
+    for (y = searchBound.startY-1; y <= searchBound.endY+1; y++) {
       bucket = bin.getBinned(x, y);
       if (bucket) {
         for (p = 0; p < bucket.length; p++) {
@@ -124,13 +125,25 @@ function isIn(bound, point) {
          (bound.y <= point[1] && point[1] <= bound.y2);
 }
 
-function getMarkBin(data, width, height, minTextWidth, minTextHeight) {
+function getMarkBin(data, width, height, minTextWidth, minTextHeight, avoidMarksCtx) {
   if (!data.length) return null;
   var bin = new ArrayMap(width, height, minTextWidth, minTextHeight);
 
   data.forEach(function(d) {
     bin.add(d.x, d.y);
   });
+
+  const buffer = new Uint32Array(
+    avoidMarksCtx.getImageData(0, 0, width, height).data.buffer
+  );
+  let x, y;
+  for (y = 0; y < height; y++) {
+    for (x = 0; x < width; x++) {
+      if (buffer[y * width + x]) {
+        bin.add(x, y);
+      }
+    }
+  }
   
   return bin;
 }
