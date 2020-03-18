@@ -9,6 +9,8 @@ export function placeLabels(data, size, padding) {
   width = size[0];
   height = size[1];
 
+  // var before;
+  // before = performance.now();
   bitMaps.mark = getMarkBitMap(data, width, height);
 
   data.forEach(function(d) {
@@ -29,6 +31,7 @@ export function placeLabels(data, size, padding) {
     d.x = d.boundary.xc;
     d.y = d.boundary.yc;
   });
+  // console.log(performance.now() - before);
 
   return data;
 }

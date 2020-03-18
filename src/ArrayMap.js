@@ -21,6 +21,10 @@ export function ArrayMap(_width, _height, _binWidth, _binHeight) {
     this.addBinned(this.binWidth(x), this.binHeight(y), [x, y]);
   };
 
+  this.addWithData = function (x, y, data) {
+    this.addBinned(this.binWidth(x), this.binHeight(y), [x, y, data]);
+  };
+
   this.getBinned = function (x, y) {
     return this.array[this.getPosition(x, y)];
   };
@@ -45,7 +49,8 @@ export function ArrayMap(_width, _height, _binWidth, _binHeight) {
     for (var i = 0; i < this.array.length; i++) {
       if (this.array[i]) {
         for (var j = 0; j < this.array[i].length; j++) {
-          ctx.fillRect(this.array[i][j][0], this.array[i][j][1], 1, 1);
+          ctx.fillStyle = this.array[i][j].length == 3 ? this.array[i][j][2] : "black";
+          ctx.fillRect(this.array[i][j][0], this.array[i][j][1], 3, 3);
         }
       }
     }

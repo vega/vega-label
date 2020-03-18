@@ -1,31 +1,40 @@
 /*eslint no-unused-vars: "warn"*/
 /*eslint no-console: "warn"*/
 import { labelWidth } from './Common';
-// import { placeLabels } from './ParticleBasedLabel';
+import { placeLabels } from './ParticleBasedLabel'; var labeler = "particle";
 // import { placeLabels } from './OldPixelBasedLabel';
-import { placeLabels } from './PixelBasedLabel';
+// import { placeLabels } from './PixelBasedLabel'; var labeler = "pixel";
 
 export default function() {
   var markData = [],
       size,
       padding = 3,
-      label = {};
+      label = {},
+      config;
 
   label.layout = function() {
-    var data = markData.map(function(d) {
-      var textHeight = d.fontSize;
-      return {
-        fontSize: d.fontSize,
-        x: d.x,
-        y: d.y,
-        textWidth: null,
-        textHeight: textHeight,
-        fill: d.fill,
-        datum: d
-      };
-    });
-    
-    return placeLabels(data, size, padding);
+    var ret;
+    config.labeler = labeler;
+    for (var i = 0; i < 10; i++) {
+      var before = performance.now();
+      var data = markData.map(function(d) {
+        var textHeight = d.fontSize;
+        return {
+          fontSize: d.fontSize,
+          x: d.x,
+          y: d.y,
+          textWidth: null,
+          textHeight: textHeight,
+          fill: d.fill,
+          datum: d
+        };
+      });
+      
+      ret = placeLabels(data, size, padding);
+      config.runtime = performance.now() - before;
+      console.log(JSON.stringify(config) + ",");
+    }
+    return ret;
   };
 
   label.markData = function(_) {
@@ -45,6 +54,15 @@ export default function() {
       return size;
     }
   };
+
+  label.config = function(_) {
+    if (arguments.length) {
+      config = _;
+      return label;
+    } else {
+      return config;
+    }
+  }
 
   label.padding = function(_) {
     if (arguments.length) {

@@ -15,7 +15,7 @@ Label.Definition = {
   "type": "Label",
   "metadata": {"modifies": true},
   "params": [
-    { "name": "size", "type": "number", "array": true, "length": 2 },
+    { "name": "size", "type": "number", "array": true },
     { "name": "padding", "type": "number", "default": 2},
     { "name": "as", "type": "string", "array": true, "length": Output.length, "default": Output }
   ]
@@ -38,15 +38,16 @@ prototype.transform = function(_, pulse) {
       padding = _.padding || 3;
 
   // configure layout
-  var t1 = new Date();
+  // var t1 = new Date();
   var labels = labelLayout
     .markData(data)
     .size(_.size)
     .padding(padding)
+    .config(_.size[2])
     .layout(),
     t;
-  var t2 = new Date();
-  console.log(t2.getTime() - t1.getTime());
+  // var t2 = new Date();
+  // console.log(t2.getTime() - t1.getTime());
 
   labels.forEach(function(l) {
     t = l.datum;

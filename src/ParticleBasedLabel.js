@@ -11,9 +11,11 @@ export function placeLabels(data, size, padding) {
   width = size[0];
   height = size[1];
 
+  // var before;
+  // before = performance.now();
   data.forEach(function(d) {
     var datum = d.datum;
-    d.textWidth = labelWidth(datum.text, datum.fonrSize, datum.font);
+    d.textWidth = labelWidth(datum.text, datum.fontSize, datum.font);
     minTextWidth = d.textWidth < minTextWidth ? d.textWidth : minTextWidth;
     minTextHeight = d.textHeight < minTextHeight ? d.textHeight : minTextHeight;
   });
@@ -37,6 +39,8 @@ export function placeLabels(data, size, padding) {
     d.x = d.boundary.xc;
     d.y = d.boundary.yc;
   });
+  // console.log(performance.now() - before);
+  // bins.mark.write("canvas", width, height);
 
   return data;
 }
@@ -83,7 +87,6 @@ function placeLabel(b, bin, minTextWidth, minTextHeight) {
   
   for (x = sx; x < ex; x += minTextWidth) {
     for (y = sy; y < ey; y += minTextHeight) {
-      if (x === b.x && y === b.y) continue;
       bin.add(x, y);
     }
   }
@@ -100,13 +103,15 @@ function placeLabel(b, bin, minTextWidth, minTextHeight) {
 }
 
 function checkCollision(d, b, searchBound, bin) {
-  var x, y, bucket;
+  var x, y, p, bucket;
 
   for (x = searchBound.startX; x <= searchBound.endX; x++) {
     for (y = searchBound.startY; y <= searchBound.endY; y++) {
       bucket = bin.getBinned(x, y);
-      if (bucket && bucket.some(function(p) { return isIn(b, p) })) {
-        return true;
+      if (bucket) {
+        for (p = 0; p < bucket.length; p++) {
+          if (isIn(b, bucket[p])) return true;
+        }
       }
     }
   }
