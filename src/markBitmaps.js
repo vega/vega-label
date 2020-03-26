@@ -1,12 +1,12 @@
 import {canvas} from 'vega-canvas';
-import {rederive} from 'vega-dataflow';
+// import {rederive} from 'vega-dataflow';
 import {Marks} from 'vega-scenegraph';
 
 // bit mask for getting first 2 bytes of alpha value
-const ALPHA_MASK = 0xff000000;
+var ALPHA_MASK = 0xff000000;
 
 // alpha value equivalent to opacity 0.0625
-const INSIDE_OPACITY_IN_ALPHA = 0x10000000;
+var INSIDE_OPACITY_IN_ALPHA = 0x10000000;
 
 
 export function drawAvoidMarks(avoidMarks, width, height) {
@@ -17,21 +17,21 @@ export function drawAvoidMarks(avoidMarks, width, height) {
 
 export function markBitmaps($, avoidMarks, labelInside, isGroupArea) {
   // create canvas
-  const width = $.width,
-        height = $.height,
-        border = labelInside || isGroupArea,
-        context = canvas(width, height).getContext('2d');
+  var width = $.width,
+      height = $.height,
+      border = labelInside || isGroupArea,
+      context = canvas(width, height).getContext('2d');
 
   // render all marks to be avoided into canvas
   avoidMarks.forEach(items => draw(context, items, border));
 
   // get canvas buffer, create bitmaps
-  const buffer = new Uint32Array(context.getImageData(0, 0, width, height).data.buffer),
+  var buffer = new Uint32Array(context.getImageData(0, 0, width, height).data.buffer),
         layer1 = $.bitmap(),
         layer2 = border && $.bitmap();
 
   // populate bitmap layers
-  let x, y, u, v, alpha;
+  var x, y, u, v, alpha;
   for (y=0; y < height; ++y) {
     for (x=0; x < width; ++x) {
       alpha = buffer[y * width + x] & ALPHA_MASK;
@@ -49,7 +49,7 @@ export function markBitmaps($, avoidMarks, labelInside, isGroupArea) {
 
 function draw(context, items) {
   if (!items.length) return;
-  const type = items[0].mark.marktype;
+  var type = items[0].mark.marktype;
 
   if (type === 'group') {
     items.forEach(function(group) {

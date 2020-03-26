@@ -14,10 +14,11 @@ var spec = JSON.parse(jsonText);
 
 var suffix = ['cluster_3_', ''];
 var types = ['clustered', 'uniform'];
-var ns = [1000, 10000];
+var ns = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 10000];
 var sizes = [1000, 10000];
+var labelers = ["pixel", "particle"];
 
-function render(typeItr, nItr, sizeItr) {
+function render(typeItr, nItr, sizeItr, labelerItr) {
   var n = ns[nItr];
   var size = sizes[sizeItr];
 
@@ -25,8 +26,9 @@ function render(typeItr, nItr, sizeItr) {
   spec["width"] = size;
   spec["height"] = size;
   spec["data"][0]["url"] = `../data/test_label_${suffix[typeItr]}${n}.json`;
-  spec["marks"][1]["transform"][0]["size"] = [size, size, {type: types[typeItr], num_point: n, chart_width: size}];
-  spec["marks"][1]["encode"]["enter"]["fontSize"]["value"] = 14 * size / 1000;
+  spec["marks"][2]["transform"][0]["size"] = [size, size, {type: types[typeItr], num_point: n, chart_width: size}];
+  spec["marks"][2]["transform"][0]["labeler"] = labelers[labelerItr];
+  spec["marks"][2]["encode"]["enter"]["fontSize"]["value"] = 14 * size / 1000;
   new vega.View(vega.parse(spec))
     .renderer('canvas')     // set renderer (canvas or svg)
     .initialize('#vis')  // initialize view within parent dom container
@@ -42,8 +44,14 @@ function render(typeItr, nItr, sizeItr) {
     nItr = 0;
     typeItr++;
   }
-  if (typeItr < types.length) {
-    setTimeout(render, 20000, typeItr, nItr, sizeItr);
+  if (typeItr >= types.length) {
+    typeItr = 0;
+    labelerItr++;
+  }
+  if (labelerItr >= labelers.length) {
+    console.log("done");
+  } else {
+    setTimeout(render, 20000, typeItr, nItr, sizeItr, labelerItr);
   }
 }
 
@@ -52,4 +60,4 @@ function render(typeItr, nItr, sizeItr) {
 //   .initialize('#vis')  // initialize view within parent dom container
 //   .hover()             // enable hover encode set processing
 //   .run();
-render(0, 0, 0);
+render(0, 0, 0, 0);

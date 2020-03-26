@@ -1,10 +1,15 @@
 /*eslint no-unused-vars: "warn"*/
 /*eslint no-console: "warn"*/
 import { labelWidth } from './Common';
-import { placeLabels } from './ParticleBasedLabel'; var labeler = "particle";
-// import { placeLabels } from './OldPixelBasedLabel';
-// import { placeLabels } from './PixelBasedLabel'; var labeler = "pixel";
+import * as particle from './ParticleBasedLabel';
+import * as pixel from './PixelBasedLabel';
 import { drawAvoidMarks } from './markBitmaps';
+
+var NUM_RECORDS = 10;
+var PLACE_LABELS = {
+  "pixel": pixel.placeLabels,
+  "particle": particle.placeLabels,
+};
 
 export default function() {
   var markData = [],
@@ -12,20 +17,21 @@ export default function() {
       padding = 3,
       label = {},
       config,
-      avoidMarks = [];
+      avoidMarks = [],
+      labeler;
 
   label.layout = function() {
     var ret;
     config.labeler = labeler;
-    for (var i = 0; i < 10; i++) {
-      var avoidMarksCtx = drawAvoidMarks(avoidMarks, width, height);
+    for (var i = 0; i < NUM_RECORDS; i++) {
+      var avoidMarksCtx = drawAvoidMarks(avoidMarks, size[0], size[1]);
       var before = performance.now();
       var data = markData.map(function(d) {
         var textHeight = d.fontSize;
         return {
           fontSize: d.fontSize,
-          x: d.x,
-          y: d.y,
+          x: d.datum.x,
+          y: d.datum.y,
           textWidth: null,
           textHeight: textHeight,
           fill: d.fill,
@@ -33,8 +39,11 @@ export default function() {
         };
       });
       
-      ret = placeLabels(data, size, padding, avoidMarksCtx);
+      ret = PLACE_LABELS[labeler](data, size, padding, avoidMarksCtx);
       config.runtime = performance.now() - before;
+      config.placed = ret.reduce(function(total, d) {
+        return total + (d.fill !== null);
+      }, 0);
       console.log(JSON.stringify(config) + ",");
     }
     return ret;
@@ -82,6 +91,15 @@ export default function() {
       return label;
     } else {
       return avoidMarks
+    }
+  }
+
+  label.labeler = function(_) {
+    if (arguments.length) {
+      labeler = _ ? _ : "pixel";
+      return label;
+    } else {
+      return labeler;
     }
   }
 

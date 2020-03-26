@@ -21,7 +21,7 @@ export function placeLabels(data, size, padding, avoidMarksCtx) {
   });
   // todo: write avoidMarksCtx to bins
   bins.mark = getMarkBin(data, width, height, minTextWidth, minTextHeight, avoidMarksCtx);
-  // bins.mark.write("canvas-before", width, height);
+  // bins.mark.write("canvas", width, height);
 
   data.forEach(function(d) {
     d.z = 1;
@@ -41,7 +41,7 @@ export function placeLabels(data, size, padding, avoidMarksCtx) {
     d.x = d.boundary.xc;
     d.y = d.boundary.yc;
   });
-  bins.mark.write("canvas-after", width, height);
+  // bins.mark.write("canvas-after", width, height);
 
   return data;
 }
@@ -133,14 +133,25 @@ function getMarkBin(data, width, height, minTextWidth, minTextHeight, avoidMarks
     bin.add(d.x, d.y);
   });
 
-  const buffer = new Uint32Array(
+  var buffer = new Uint32Array(
     avoidMarksCtx.getImageData(0, 0, width, height).data.buffer
   );
-  let x, y;
-  for (y = 0; y < height; y++) {
-    for (x = 0; x < width; x++) {
-      if (buffer[y * width + x]) {
-        bin.add(x, y);
+  var xStep = ~~(minTextWidth / 2),
+      yStep = ~~(minTextHeight / 2);
+  var xHalfStep = xStep / 2,
+      yHalfStep = yStep / 2;
+  var x, y, xIn, yIn;
+  var toAdd;
+  for (y = 0; y < height; y += yStep) {
+    for (x = 0; x < width; x += xStep) {
+      toAdd = false;
+      for (yIn = 0; yIn < yStep && y + yIn < height && !toAdd; yIn++) {
+        for (xIn = 0; xIn < xStep && x + xIn < width && !toAdd; xIn++) {
+          toAdd = buffer[(y + yIn) * width + (x + xIn)];
+        }
+      }
+      if (toAdd) {
+        bin.add(x + xHalfStep, y + yHalfStep);
       }
     }
   }

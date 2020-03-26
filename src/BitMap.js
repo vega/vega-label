@@ -14,7 +14,7 @@ var SIZE = 0x20
 
 
 export function BitMap(_width, _height) {
-  this.pixelSize = Math.min(_width, _height) / 1000.0;
+  this.pixelSize = ~~(Math.min(_width, _height) / 1000.0);
   this.pixelSize = this.pixelSize >= 1 ? this.pixelSize : 1;
   this.width = ~~((_width + this.pixelSize) / this.pixelSize);
   this.height = ~~((_height + this.pixelSize) / this.pixelSize);

@@ -11,7 +11,7 @@ export function placeLabels(data, size, padding, avoidMarksCtx) {
 
   // var before;
   // before = performance.now();
-  bitMaps.mark = getMarkBitMap(data, width, height);
+  bitMaps.mark = getMarkBitMap(data, width, height, avoidMarksCtx);
 
   data.forEach(function(d) {
     d.z = 1;
@@ -92,13 +92,32 @@ function checkCollision(b, bitMap) {
   return bitMap.getAllScaled(b.startX, b.startY, b.endX, b.endY);
 }
 
-function getMarkBitMap(data, width, height) {
+function getMarkBitMap(data, width, height, avoidMarksCtx) {
   if (!data.length) return null;
   var bitMap = new BitMap(width, height);
 
   data.forEach(function(d) {
     bitMap.mark(d.x, d.y);
   });
+
+  var buffer = new Uint32Array(
+    avoidMarksCtx.getImageData(0, 0, width, height).data.buffer
+  );
+
+  var x, y, x_, pixelSize_, pixelSize = bitMap.pixelSize;
+  for (y = 0; y < height; y++) {
+    for (x = 0; x < width; x += pixelSize) {
+      if (!bitMap.get(x, y)) {
+        pixelSize_ = (pixelSize < width - x) ? pixelSize : width - x;
+        for (x_ = 0; x_ < pixelSize_; x_++) {
+          if (buffer[y * width + (x + x_)]) {
+            bitMap.mark(x + x_, y);
+            break;
+          }
+        }
+      }
+    }
+  }
   
   return bitMap;
 }

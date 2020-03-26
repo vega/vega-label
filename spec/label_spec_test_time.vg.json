@@ -2,12 +2,24 @@
   "$schema": "https://vega.github.io/schema/vega/v4.json",
   "width": 1000,
   "height": 1000,
-  "padding": 5,
 
   "data": [
     {
       "name": "drive",
       "url": "../data/test_label_10000.json"
+    },
+    {
+      "name": "table",
+      "values": [
+        {"category": "A", "amount": 28},
+        {"category": "B", "amount": 55},
+        {"category": "C", "amount": 43},
+        {"category": "D", "amount": 91},
+        {"category": "E", "amount": 81},
+        {"category": "F", "amount": 53},
+        {"category": "G", "amount": 19},
+        {"category": "H", "amount": 87}
+      ]
     }
   ],
 
@@ -29,69 +41,44 @@
       "nice": true,
       "zero": false,
       "round": true
-    }
-  ],
-
-  "axes": [
-    {
-      "orient": "top",
-      "scale": "x",
-      "tickCount": 5,
-      "tickSize": 0,
-      "grid": true,
-      "domain": false,
-      "encode": {
-        "domain": {
-          "enter": { "stroke": {"value": "transparent"} }
-        },
-        "labels": {
-          "enter": {
-            "align": {"value": "left"},
-            "baseline": {"value": "top"},
-            "fontSize": {"value": 12},
-            "fontWeight": {"value": "bold"}
-          }
-        }
-      }
     },
     {
-      "title": "Miles driven per capita each year",
-      "orient": "bottom", "scale": "x",
-      "domain": false, "ticks": false, "labels": false
+      "name": "xscale",
+      "type": "band",
+      "domain": {"data": "table", "field": "category"},
+      "range": "width",
+      "padding": 0.05,
+      "round": true
     },
     {
-      "orient": "left",
-      "scale": "y",
-      "tickCount": 5,
-      "tickSize": 0,
-      "grid": true,
-      "domain": false,
-      "format": "$0.2f",
-      "encode": {
-        "domain": {
-          "enter": {"stroke": {"value": "transparent"}}
-        },
-        "labels": {
-          "enter": {
-            "align": {"value": "left"},
-            "baseline": {"value": "bottom"},
-            "fontSize": {"value": 12},
-            "fontWeight": {"value": "bold"}
-          }
-        }
-      }
-    },
-    {
-      "title": "Price of a gallon of gasoline (adjusted for inflation)",
-      "orient": "right", "scale": "y",
-      "domain": false, "ticks": false, "labels": false
+      "name": "yscale",
+      "domain": {"data": "table", "field": "amount"},
+      "nice": true,
+      "range": "height"
     }
   ],
 
   "marks": [
     {
+      "type": "rect",
+      "from": {"data":"table"},
+      "name": "bar",
+      "encode": {
+        "enter": {
+          "x": {"scale": "xscale", "field": "category"},
+          "width": {"scale": "xscale", "band": 1},
+          "y": {"scale": "yscale", "field": "amount"},
+          "y2": {"scale": "yscale", "value": 0}
+        },
+        "update": {
+          "fill": {"value": "steelblue"}
+        }
+      }
+    },
+    {
       "type": "symbol",
       "from": {"data": "drive"},
+      "name": "point",
       "encode": {
         "enter": {
           "x": {"scale": "x", "field": "miles"},
@@ -105,19 +92,20 @@
     },
     {
       "type": "text",
-      "from": {"data": "drive"},
+      "from": {"data": "point"},
       "encode": {
         "enter": {
-          "x": {"scale": "x", "field": "miles"},
-          "y": {"scale": "y", "field": "gas"},
+          "x": {"field": "x"},
+          "y": {"field": "y"},
           "fill": {"value": "#000"},
-          "text": {"field": "year"},
+          "text": {"field": "datum.year"},
           "fontSize": {"value": 14}
         }
       },
       "transform": [{
         "type": "label",
-        "size": [1000, 1000]
+        "size": [1000, 1000],
+        "avoidMarks": ["bar"]
       }]
     }
   ]
