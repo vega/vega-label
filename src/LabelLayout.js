@@ -44,6 +44,7 @@ export default function() {
       config.placed = ret.reduce(function(total, d) {
         return total + (d.fill !== null);
       }, 0);
+      config.id = i;
       console.log(JSON.stringify(config) + ",");
     }
     return ret;
