@@ -14,8 +14,8 @@ var spec = JSON.parse(jsonText);
 
 var suffix = ['cluster_3_', ''];
 var types = ['clustered', 'uniform'];
-var ns = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 10000];
-var sizes = [1000, 10000];
+var ns = [2000, 4000, 6000, 8000, 10000];
+var sizes = [1000, 2000];
 var labelers = ["pixel", "particle"];
 
 function render(typeItr, nItr, sizeItr, labelerItr) {
