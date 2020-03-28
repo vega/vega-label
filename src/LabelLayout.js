@@ -10,6 +10,7 @@ var PLACE_LABELS = {
   "pixel": pixel.placeLabels,
   "particle": particle.placeLabels,
 };
+var LABELERS = ["pixel", "particle"];
 
 export default function() {
   var markData = [],
@@ -22,30 +23,32 @@ export default function() {
 
   label.layout = function() {
     var ret;
-    config.labeler = labeler;
-    for (var i = 0; i < NUM_RECORDS; i++) {
-      var avoidMarksCtx = drawAvoidMarks(avoidMarks, size[0], size[1]);
-      var before = performance.now();
-      var data = markData.map(function(d) {
-        var textHeight = d.fontSize;
-        return {
-          fontSize: d.fontSize,
-          x: d.datum.x,
-          y: d.datum.y,
-          textWidth: null,
-          textHeight: textHeight,
-          fill: d.fill,
-          datum: d
-        };
-      });
-      
-      ret = PLACE_LABELS[labeler](data, size, padding, avoidMarksCtx);
-      config.runtime = performance.now() - before;
-      config.placed = ret.reduce(function(total, d) {
-        return total + (d.fill !== null);
-      }, 0);
-      config.id = i;
-      console.log(JSON.stringify(config) + ",");
+    for (var j = 0; j < LABELERS.length; j++) {
+      config.labeler = LABELERS[i];
+      for (var i = 0; i < NUM_RECORDS; i++) {
+        var avoidMarksCtx = drawAvoidMarks(avoidMarks, size[0], size[1]);
+        var before = performance.now();
+        var data = markData.map(function(d) {
+          var textHeight = d.fontSize;
+          return {
+            fontSize: d.fontSize,
+            x: d.datum.x,
+            y: d.datum.y,
+            textWidth: null,
+            textHeight: textHeight,
+            fill: d.fill,
+            datum: d
+          };
+        });
+        
+        ret = PLACE_LABELS[labeler](data, size, padding, avoidMarksCtx);
+        config.runtime = performance.now() - before;
+        config.placed = ret.reduce(function(total, d) {
+          return total + (d.fill !== null);
+        }, 0);
+        config.id = i;
+        console.log(JSON.stringify(config) + ",");
+      }
     }
     return ret;
   };
