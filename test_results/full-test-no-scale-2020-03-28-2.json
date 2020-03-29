@@ -4,7 +4,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 266,
+        "runtime": 239,
         "placed": 70,
         "id": 0
     },
@@ -13,7 +13,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 276,
+        "runtime": 359,
         "placed": 70,
         "id": 1
     },
@@ -22,7 +22,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 224,
+        "runtime": 261,
         "placed": 70,
         "id": 2
     },
@@ -31,7 +31,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 298,
+        "runtime": 231,
         "placed": 70,
         "id": 3
     },
@@ -40,7 +40,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 324,
+        "runtime": 265,
         "placed": 70,
         "id": 4
     },
@@ -49,7 +49,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 218,
+        "runtime": 280,
         "placed": 70,
         "id": 5
     },
@@ -58,7 +58,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 247,
+        "runtime": 236,
         "placed": 70,
         "id": 6
     },
@@ -67,7 +67,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 237,
+        "runtime": 225,
         "placed": 70,
         "id": 7
     },
@@ -76,7 +76,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 313,
+        "runtime": 242,
         "placed": 70,
         "id": 8
     },
@@ -85,7 +85,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 249,
+        "runtime": 251,
         "placed": 70,
         "id": 9
     },
@@ -94,7 +94,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 40,
+        "runtime": 35,
         "placed": 70,
         "id": 0
     },
@@ -103,7 +103,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 124,
+        "runtime": 121,
         "placed": 70,
         "id": 1
     },
@@ -112,7 +112,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 26,
+        "runtime": 29,
         "placed": 70,
         "id": 2
     },
@@ -121,9 +121,36 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 33,
+        "runtime": 23,
         "placed": 70,
         "id": 3
+    },
+    {
+        "type": "clustered",
+        "num_point": 2000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 24,
+        "placed": 70,
+        "id": 4
+    },
+    {
+        "type": "clustered",
+        "num_point": 2000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 23,
+        "placed": 70,
+        "id": 5
+    },
+    {
+        "type": "clustered",
+        "num_point": 2000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 30,
+        "placed": 70,
+        "id": 6
     },
     {
         "type": "clustered",
@@ -132,33 +159,6 @@
         "labeler": "pixel",
         "runtime": 25,
         "placed": 70,
-        "id": 4
-    },
-    {
-        "type": "clustered",
-        "num_point": 2000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 26,
-        "placed": 70,
-        "id": 5
-    },
-    {
-        "type": "clustered",
-        "num_point": 2000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 27,
-        "placed": 70,
-        "id": 6
-    },
-    {
-        "type": "clustered",
-        "num_point": 2000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 36,
-        "placed": 70,
         "id": 7
     },
     {
@@ -166,7 +166,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 27,
+        "runtime": 25,
         "placed": 70,
         "id": 8
     },
@@ -175,7 +175,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 34,
+        "runtime": 29,
         "placed": 70,
         "id": 9
     },
@@ -184,7 +184,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1032,
+        "runtime": 832,
         "placed": 69,
         "id": 0
     },
@@ -193,9 +193,36 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 753,
+        "runtime": 663,
         "placed": 69,
         "id": 1
+    },
+    {
+        "type": "clustered",
+        "num_point": 2000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 539,
+        "placed": 69,
+        "id": 2
+    },
+    {
+        "type": "clustered",
+        "num_point": 2000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 550,
+        "placed": 69,
+        "id": 3
+    },
+    {
+        "type": "clustered",
+        "num_point": 2000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 881,
+        "placed": 69,
+        "id": 4
     },
     {
         "type": "clustered",
@@ -204,33 +231,6 @@
         "labeler": "particle",
         "runtime": 645,
         "placed": 69,
-        "id": 2
-    },
-    {
-        "type": "clustered",
-        "num_point": 2000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 681,
-        "placed": 69,
-        "id": 3
-    },
-    {
-        "type": "clustered",
-        "num_point": 2000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 643,
-        "placed": 69,
-        "id": 4
-    },
-    {
-        "type": "clustered",
-        "num_point": 2000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 697,
-        "placed": 69,
         "id": 5
     },
     {
@@ -238,7 +238,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 707,
+        "runtime": 670,
         "placed": 69,
         "id": 6
     },
@@ -247,7 +247,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1086,
+        "runtime": 661,
         "placed": 69,
         "id": 7
     },
@@ -256,7 +256,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 968,
+        "runtime": 727,
         "placed": 69,
         "id": 8
     },
@@ -265,7 +265,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 684,
+        "runtime": 998,
         "placed": 69,
         "id": 9
     },
@@ -274,7 +274,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 78,
+        "runtime": 43,
         "placed": 69,
         "id": 0
     },
@@ -283,7 +283,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 64,
+        "runtime": 45,
         "placed": 69,
         "id": 1
     },
@@ -292,7 +292,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 76,
+        "runtime": 42,
         "placed": 69,
         "id": 2
     },
@@ -301,7 +301,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 70,
+        "runtime": 42,
         "placed": 69,
         "id": 3
     },
@@ -310,7 +310,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 65,
+        "runtime": 40,
         "placed": 69,
         "id": 4
     },
@@ -319,7 +319,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 66,
+        "runtime": 38,
         "placed": 69,
         "id": 5
     },
@@ -328,7 +328,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 62,
+        "runtime": 39,
         "placed": 69,
         "id": 6
     },
@@ -337,7 +337,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 69,
+        "runtime": 39,
         "placed": 69,
         "id": 7
     },
@@ -346,7 +346,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 60,
+        "runtime": 38,
         "placed": 69,
         "id": 8
     },
@@ -355,7 +355,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 68,
+        "runtime": 41,
         "placed": 69,
         "id": 9
     },
@@ -364,7 +364,7 @@
         "num_point": 4000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 367,
+        "runtime": 263,
         "placed": 59,
         "id": 0
     },
@@ -373,9 +373,36 @@
         "num_point": 4000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 314,
+        "runtime": 311,
         "placed": 59,
         "id": 1
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 296,
+        "placed": 59,
+        "id": 2
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 305,
+        "placed": 59,
+        "id": 3
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 375,
+        "placed": 59,
+        "id": 4
     },
     {
         "type": "clustered",
@@ -384,383 +411,356 @@
         "labeler": "particle",
         "runtime": 320,
         "placed": 59,
+        "id": 5
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 347,
+        "placed": 59,
+        "id": 6
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 336,
+        "placed": 59,
+        "id": 7
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 334,
+        "placed": 59,
+        "id": 8
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 336,
+        "placed": 59,
+        "id": 9
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 51,
+        "placed": 58,
+        "id": 0
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 47,
+        "placed": 58,
+        "id": 1
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 40,
+        "placed": 58,
         "id": 2
     },
     {
         "type": "clustered",
         "num_point": 4000,
         "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 258,
-        "placed": 59,
+        "labeler": "pixel",
+        "runtime": 40,
+        "placed": 58,
         "id": 3
     },
     {
         "type": "clustered",
         "num_point": 4000,
         "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 300,
-        "placed": 59,
+        "labeler": "pixel",
+        "runtime": 39,
+        "placed": 58,
         "id": 4
     },
     {
         "type": "clustered",
         "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 43,
+        "placed": 58,
+        "id": 5
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 41,
+        "placed": 58,
+        "id": 6
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 39,
+        "placed": 58,
+        "id": 7
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 37,
+        "placed": 58,
+        "id": 8
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 38,
+        "placed": 58,
+        "id": 9
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1096,
+        "placed": 58,
+        "id": 0
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 985,
+        "placed": 58,
+        "id": 1
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 937,
+        "placed": 58,
+        "id": 2
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 931,
+        "placed": 58,
+        "id": 3
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1282,
+        "placed": 58,
+        "id": 4
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 930,
+        "placed": 58,
+        "id": 5
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1205,
+        "placed": 58,
+        "id": 6
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1212,
+        "placed": 58,
+        "id": 7
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1069,
+        "placed": 58,
+        "id": 8
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1372,
+        "placed": 58,
+        "id": 9
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 68,
+        "placed": 58,
+        "id": 0
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 63,
+        "placed": 58,
+        "id": 1
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 58,
+        "placed": 58,
+        "id": 2
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 57,
+        "placed": 58,
+        "id": 3
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 58,
+        "placed": 58,
+        "id": 4
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 57,
+        "placed": 58,
+        "id": 5
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 54,
+        "placed": 58,
+        "id": 6
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 54,
+        "placed": 58,
+        "id": 7
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 55,
+        "placed": 58,
+        "id": 8
+    },
+    {
+        "type": "clustered",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 55,
+        "placed": 58,
+        "id": 9
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 426,
+        "placed": 48,
+        "id": 0
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 491,
+        "placed": 48,
+        "id": 1
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 508,
+        "placed": 48,
+        "id": 2
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 397,
+        "placed": 48,
+        "id": 3
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
         "chart_width": 1000,
         "labeler": "particle",
         "runtime": 490,
-        "placed": 59,
-        "id": 5
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 371,
-        "placed": 59,
-        "id": 6
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 358,
-        "placed": 59,
-        "id": 7
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 372,
-        "placed": 59,
-        "id": 8
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 338,
-        "placed": 59,
-        "id": 9
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 57,
-        "placed": 58,
-        "id": 0
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 56,
-        "placed": 58,
-        "id": 1
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 53,
-        "placed": 58,
-        "id": 2
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 63,
-        "placed": 58,
-        "id": 3
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 219,
-        "placed": 58,
-        "id": 4
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 53,
-        "placed": 58,
-        "id": 5
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 58,
-        "placed": 58,
-        "id": 6
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 56,
-        "placed": 58,
-        "id": 7
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 56,
-        "placed": 58,
-        "id": 8
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 57,
-        "placed": 58,
-        "id": 9
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1103,
-        "placed": 58,
-        "id": 0
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 978,
-        "placed": 58,
-        "id": 1
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 935,
-        "placed": 58,
-        "id": 2
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 972,
-        "placed": 58,
-        "id": 3
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1280,
-        "placed": 58,
-        "id": 4
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 922,
-        "placed": 58,
-        "id": 5
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1251,
-        "placed": 58,
-        "id": 6
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1284,
-        "placed": 58,
-        "id": 7
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1104,
-        "placed": 58,
-        "id": 8
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1364,
-        "placed": 58,
-        "id": 9
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 94,
-        "placed": 58,
-        "id": 0
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 85,
-        "placed": 58,
-        "id": 1
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 75,
-        "placed": 58,
-        "id": 2
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 74,
-        "placed": 58,
-        "id": 3
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 74,
-        "placed": 58,
-        "id": 4
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 76,
-        "placed": 58,
-        "id": 5
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 71,
-        "placed": 58,
-        "id": 6
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 75,
-        "placed": 58,
-        "id": 7
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 74,
-        "placed": 58,
-        "id": 8
-    },
-    {
-        "type": "clustered",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 76,
-        "placed": 58,
-        "id": 9
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 467,
-        "placed": 48,
-        "id": 0
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 509,
-        "placed": 48,
-        "id": 1
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 562,
-        "placed": 48,
-        "id": 2
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 441,
-        "placed": 48,
-        "id": 3
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 627,
         "placed": 48,
         "id": 4
     },
@@ -769,7 +769,7 @@
         "num_point": 6000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 473,
+        "runtime": 437,
         "placed": 48,
         "id": 5
     },
@@ -778,7 +778,7 @@
         "num_point": 6000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 458,
+        "runtime": 444,
         "placed": 48,
         "id": 6
     },
@@ -787,7 +787,7 @@
         "num_point": 6000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 511,
+        "runtime": 435,
         "placed": 48,
         "id": 7
     },
@@ -796,7 +796,7 @@
         "num_point": 6000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 504,
+        "runtime": 439,
         "placed": 48,
         "id": 8
     },
@@ -805,801 +805,738 @@
         "num_point": 6000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 584,
+        "runtime": 443,
         "placed": 48,
         "id": 9
     },
     {
         "type": "clustered",
         "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 76,
-        "placed": 46,
-        "id": 0
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 63,
-        "placed": 46,
-        "id": 1
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 60,
-        "placed": 46,
-        "id": 2
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 61,
-        "placed": 46,
-        "id": 3
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 58,
-        "placed": 46,
-        "id": 4
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 65,
-        "placed": 46,
-        "id": 5
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 67,
-        "placed": 46,
-        "id": 6
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 61,
-        "placed": 46,
-        "id": 7
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 54,
-        "placed": 46,
-        "id": 8
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 56,
-        "placed": 46,
-        "id": 9
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1606,
-        "placed": 49,
-        "id": 0
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1460,
-        "placed": 49,
-        "id": 1
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1332,
-        "placed": 49,
-        "id": 2
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1431,
-        "placed": 49,
-        "id": 3
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1720,
-        "placed": 49,
-        "id": 4
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1407,
-        "placed": 49,
-        "id": 5
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1807,
-        "placed": 49,
-        "id": 6
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1640,
-        "placed": 49,
-        "id": 7
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1820,
-        "placed": 49,
-        "id": 8
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1345,
-        "placed": 49,
-        "id": 9
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 115,
-        "placed": 49,
-        "id": 0
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 101,
-        "placed": 49,
-        "id": 1
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 97,
-        "placed": 49,
-        "id": 2
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 93,
-        "placed": 49,
-        "id": 3
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 100,
-        "placed": 49,
-        "id": 4
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 101,
-        "placed": 49,
-        "id": 5
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 98,
-        "placed": 49,
-        "id": 6
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 103,
-        "placed": 49,
-        "id": 7
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 94,
-        "placed": 49,
-        "id": 8
-    },
-    {
-        "type": "clustered",
-        "num_point": 6000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 106,
-        "placed": 49,
-        "id": 9
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 665,
-        "placed": 63,
-        "id": 0
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 716,
-        "placed": 63,
-        "id": 1
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 641,
-        "placed": 63,
-        "id": 2
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 570,
-        "placed": 63,
-        "id": 3
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 565,
-        "placed": 63,
-        "id": 4
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 564,
-        "placed": 63,
-        "id": 5
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 570,
-        "placed": 63,
-        "id": 6
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 579,
-        "placed": 63,
-        "id": 7
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 572,
-        "placed": 63,
-        "id": 8
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 690,
-        "placed": 63,
-        "id": 9
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 94,
-        "placed": 61,
-        "id": 0
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 78,
-        "placed": 61,
-        "id": 1
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 72,
-        "placed": 61,
-        "id": 2
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 78,
-        "placed": 61,
-        "id": 3
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 163,
-        "placed": 61,
-        "id": 4
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 70,
-        "placed": 61,
-        "id": 5
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 66,
-        "placed": 61,
-        "id": 6
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 68,
-        "placed": 61,
-        "id": 7
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 67,
-        "placed": 61,
-        "id": 8
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 68,
-        "placed": 61,
-        "id": 9
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1561,
-        "placed": 61,
-        "id": 0
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1583,
-        "placed": 61,
-        "id": 1
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1521,
-        "placed": 61,
-        "id": 2
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1557,
-        "placed": 61,
-        "id": 3
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1884,
-        "placed": 61,
-        "id": 4
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1575,
-        "placed": 61,
-        "id": 5
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1800,
-        "placed": 61,
-        "id": 6
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1672,
-        "placed": 61,
-        "id": 7
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1934,
-        "placed": 61,
-        "id": 8
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 2000,
-        "labeler": "particle",
-        "runtime": 1567,
-        "placed": 61,
-        "id": 9
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 128,
-        "placed": 61,
-        "id": 0
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 111,
-        "placed": 61,
-        "id": 1
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 106,
-        "placed": 61,
-        "id": 2
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 622,
-        "placed": 61,
-        "id": 3
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 104,
-        "placed": 61,
-        "id": 4
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 106,
-        "placed": 61,
-        "id": 5
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 107,
-        "placed": 61,
-        "id": 6
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 110,
-        "placed": 61,
-        "id": 7
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 107,
-        "placed": 61,
-        "id": 8
-    },
-    {
-        "type": "clustered",
-        "num_point": 8000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 108,
-        "placed": 61,
-        "id": 9
-    },
-    {
-        "type": "clustered",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 700,
-        "placed": 51,
-        "id": 0
-    },
-    {
-        "type": "clustered",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 741,
-        "placed": 51,
-        "id": 1
-    },
-    {
-        "type": "clustered",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 758,
-        "placed": 51,
-        "id": 2
-    },
-    {
-        "type": "clustered",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 800,
-        "placed": 51,
-        "id": 3
-    },
-    {
-        "type": "clustered",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 694,
-        "placed": 51,
-        "id": 4
-    },
-    {
-        "type": "clustered",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 722,
-        "placed": 51,
-        "id": 5
-    },
-    {
-        "type": "clustered",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 695,
-        "placed": 51,
-        "id": 6
-    },
-    {
-        "type": "clustered",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 692,
-        "placed": 51,
-        "id": 7
-    },
-    {
-        "type": "clustered",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 776,
-        "placed": 51,
-        "id": 8
-    },
-    {
-        "type": "clustered",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 813,
-        "placed": 51,
-        "id": 9
-    },
-    {
-        "type": "clustered",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 119,
-        "placed": 52,
-        "id": 0
-    },
-    {
-        "type": "clustered",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 86,
-        "placed": 52,
-        "id": 1
-    },
-    {
-        "type": "clustered",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 85,
-        "placed": 52,
-        "id": 2
-    },
-    {
-        "type": "clustered",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 86,
-        "placed": 52,
-        "id": 3
-    },
-    {
-        "type": "clustered",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 82,
-        "placed": 52,
-        "id": 4
-    },
-    {
-        "type": "clustered",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 83,
-        "placed": 52,
-        "id": 5
-    },
-    {
-        "type": "clustered",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 85,
-        "placed": 52,
-        "id": 6
-    },
-    {
-        "type": "clustered",
-        "num_point": 10000,
         "chart_width": 1000,
         "labeler": "pixel",
         "runtime": 84,
-        "placed": 52,
+        "placed": 46,
+        "id": 0
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 58,
+        "placed": 46,
+        "id": 1
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 55,
+        "placed": 46,
+        "id": 2
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 57,
+        "placed": 46,
+        "id": 3
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 105,
+        "placed": 46,
+        "id": 4
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 79,
+        "placed": 46,
+        "id": 5
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 48,
+        "placed": 46,
+        "id": 6
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 48,
+        "placed": 46,
         "id": 7
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 49,
+        "placed": 46,
+        "id": 8
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 48,
+        "placed": 46,
+        "id": 9
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1519,
+        "placed": 49,
+        "id": 0
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1221,
+        "placed": 49,
+        "id": 1
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1558,
+        "placed": 49,
+        "id": 2
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1308,
+        "placed": 49,
+        "id": 3
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1624,
+        "placed": 49,
+        "id": 4
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1256,
+        "placed": 49,
+        "id": 5
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1716,
+        "placed": 49,
+        "id": 6
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1344,
+        "placed": 49,
+        "id": 7
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1245,
+        "placed": 49,
+        "id": 8
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1291,
+        "placed": 49,
+        "id": 9
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 72,
+        "placed": 49,
+        "id": 0
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 67,
+        "placed": 49,
+        "id": 1
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 69,
+        "placed": 49,
+        "id": 2
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 70,
+        "placed": 49,
+        "id": 3
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 77,
+        "placed": 49,
+        "id": 4
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 75,
+        "placed": 49,
+        "id": 5
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 70,
+        "placed": 49,
+        "id": 6
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 70,
+        "placed": 49,
+        "id": 7
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 75,
+        "placed": 49,
+        "id": 8
+    },
+    {
+        "type": "clustered",
+        "num_point": 6000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 76,
+        "placed": 49,
+        "id": 9
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 606,
+        "placed": 63,
+        "id": 0
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 613,
+        "placed": 63,
+        "id": 1
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 625,
+        "placed": 63,
+        "id": 2
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 588,
+        "placed": 63,
+        "id": 3
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 609,
+        "placed": 63,
+        "id": 4
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 556,
+        "placed": 63,
+        "id": 5
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 540,
+        "placed": 63,
+        "id": 6
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 549,
+        "placed": 63,
+        "id": 7
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 582,
+        "placed": 63,
+        "id": 8
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 542,
+        "placed": 63,
+        "id": 9
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 182,
+        "placed": 60,
+        "id": 0
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 76,
+        "placed": 60,
+        "id": 1
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 67,
+        "placed": 60,
+        "id": 2
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 78,
+        "placed": 60,
+        "id": 3
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 77,
+        "placed": 60,
+        "id": 4
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 81,
+        "placed": 60,
+        "id": 5
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 83,
+        "placed": 60,
+        "id": 6
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 80,
+        "placed": 60,
+        "id": 7
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 76,
+        "placed": 60,
+        "id": 8
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 63,
+        "placed": 60,
+        "id": 9
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1749,
+        "placed": 61,
+        "id": 0
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1599,
+        "placed": 61,
+        "id": 1
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1536,
+        "placed": 61,
+        "id": 2
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1544,
+        "placed": 61,
+        "id": 3
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1883,
+        "placed": 61,
+        "id": 4
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1529,
+        "placed": 61,
+        "id": 5
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1854,
+        "placed": 61,
+        "id": 6
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1821,
+        "placed": 61,
+        "id": 7
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1929,
+        "placed": 61,
+        "id": 8
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 2000,
+        "labeler": "particle",
+        "runtime": 1571,
+        "placed": 61,
+        "id": 9
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 107,
+        "placed": 60,
+        "id": 0
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 93,
+        "placed": 60,
+        "id": 1
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 90,
+        "placed": 60,
+        "id": 2
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 112,
+        "placed": 60,
+        "id": 3
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 88,
+        "placed": 60,
+        "id": 4
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 89,
+        "placed": 60,
+        "id": 5
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 97,
+        "placed": 60,
+        "id": 6
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 89,
+        "placed": 60,
+        "id": 7
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 91,
+        "placed": 60,
+        "id": 8
+    },
+    {
+        "type": "clustered",
+        "num_point": 8000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 93,
+        "placed": 60,
+        "id": 9
+    },
+    {
+        "type": "clustered",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 693,
+        "placed": 51,
+        "id": 0
+    },
+    {
+        "type": "clustered",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 868,
+        "placed": 51,
+        "id": 1
+    },
+    {
+        "type": "clustered",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 743,
+        "placed": 51,
+        "id": 2
+    },
+    {
+        "type": "clustered",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 788,
+        "placed": 51,
+        "id": 3
+    },
+    {
+        "type": "clustered",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 709,
+        "placed": 51,
+        "id": 4
+    },
+    {
+        "type": "clustered",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 822,
+        "placed": 51,
+        "id": 5
+    },
+    {
+        "type": "clustered",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 728,
+        "placed": 51,
+        "id": 6
+    },
+    {
+        "type": "clustered",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 815,
+        "placed": 51,
+        "id": 7
+    },
+    {
+        "type": "clustered",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 754,
+        "placed": 51,
+        "id": 8
+    },
+    {
+        "type": "clustered",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 850,
+        "placed": 51,
+        "id": 9
+    },
+    {
+        "type": "clustered",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 90,
+        "placed": 52,
+        "id": 0
     },
     {
         "type": "clustered",
@@ -1608,6 +1545,69 @@
         "labeler": "pixel",
         "runtime": 79,
         "placed": 52,
+        "id": 1
+    },
+    {
+        "type": "clustered",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 72,
+        "placed": 52,
+        "id": 2
+    },
+    {
+        "type": "clustered",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 73,
+        "placed": 52,
+        "id": 3
+    },
+    {
+        "type": "clustered",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 80,
+        "placed": 52,
+        "id": 4
+    },
+    {
+        "type": "clustered",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 81,
+        "placed": 52,
+        "id": 5
+    },
+    {
+        "type": "clustered",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 141,
+        "placed": 52,
+        "id": 6
+    },
+    {
+        "type": "clustered",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 85,
+        "placed": 52,
+        "id": 7
+    },
+    {
+        "type": "clustered",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 72,
+        "placed": 52,
         "id": 8
     },
     {
@@ -1615,7 +1615,7 @@
         "num_point": 10000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 82,
+        "runtime": 94,
         "placed": 52,
         "id": 9
     },
@@ -1624,7 +1624,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 2282,
+        "runtime": 2191,
         "placed": 53,
         "id": 0
     },
@@ -1633,7 +1633,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1838,
+        "runtime": 1857,
         "placed": 53,
         "id": 1
     },
@@ -1642,7 +1642,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1835,
+        "runtime": 1830,
         "placed": 53,
         "id": 2
     },
@@ -1651,7 +1651,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1837,
+        "runtime": 1857,
         "placed": 53,
         "id": 3
     },
@@ -1660,7 +1660,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1886,
+        "runtime": 1856,
         "placed": 53,
         "id": 4
     },
@@ -1669,7 +1669,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1940,
+        "runtime": 1934,
         "placed": 53,
         "id": 5
     },
@@ -1678,7 +1678,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 2268,
+        "runtime": 2335,
         "placed": 53,
         "id": 6
     },
@@ -1687,7 +1687,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1886,
+        "runtime": 1949,
         "placed": 53,
         "id": 7
     },
@@ -1696,7 +1696,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 2266,
+        "runtime": 2329,
         "placed": 53,
         "id": 8
     },
@@ -1705,7 +1705,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1956,
+        "runtime": 1969,
         "placed": 53,
         "id": 9
     },
@@ -1714,7 +1714,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 150,
+        "runtime": 113,
         "placed": 53,
         "id": 0
     },
@@ -1723,7 +1723,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 137,
+        "runtime": 111,
         "placed": 53,
         "id": 1
     },
@@ -1732,7 +1732,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 128,
+        "runtime": 104,
         "placed": 53,
         "id": 2
     },
@@ -1741,7 +1741,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 127,
+        "runtime": 105,
         "placed": 53,
         "id": 3
     },
@@ -1750,7 +1750,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 128,
+        "runtime": 102,
         "placed": 53,
         "id": 4
     },
@@ -1759,7 +1759,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 128,
+        "runtime": 104,
         "placed": 53,
         "id": 5
     },
@@ -1768,7 +1768,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 124,
+        "runtime": 106,
         "placed": 53,
         "id": 6
     },
@@ -1777,7 +1777,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 122,
+        "runtime": 104,
         "placed": 53,
         "id": 7
     },
@@ -1786,7 +1786,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 125,
+        "runtime": 104,
         "placed": 53,
         "id": 8
     },
@@ -1795,7 +1795,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 126,
+        "runtime": 104,
         "placed": 53,
         "id": 9
     },
@@ -1804,7 +1804,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 197,
+        "runtime": 189,
         "placed": 345,
         "id": 0
     },
@@ -1813,7 +1813,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 195,
+        "runtime": 193,
         "placed": 345,
         "id": 1
     },
@@ -1822,7 +1822,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 219,
+        "runtime": 220,
         "placed": 345,
         "id": 2
     },
@@ -1831,7 +1831,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 264,
+        "runtime": 285,
         "placed": 345,
         "id": 3
     },
@@ -1840,7 +1840,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 247,
+        "runtime": 243,
         "placed": 345,
         "id": 4
     },
@@ -1849,7 +1849,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 228,
+        "runtime": 218,
         "placed": 345,
         "id": 5
     },
@@ -1858,7 +1858,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 179,
+        "runtime": 193,
         "placed": 345,
         "id": 6
     },
@@ -1867,7 +1867,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 179,
+        "runtime": 181,
         "placed": 345,
         "id": 7
     },
@@ -1876,7 +1876,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 186,
+        "runtime": 199,
         "placed": 345,
         "id": 8
     },
@@ -1894,35 +1894,35 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 45,
-        "placed": 331,
-        "id": 0
-    },
-    {
-        "type": "uniform",
-        "num_point": 2000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 35,
-        "placed": 331,
-        "id": 1
-    },
-    {
-        "type": "uniform",
-        "num_point": 2000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 31,
-        "placed": 331,
-        "id": 2
-    },
-    {
-        "type": "uniform",
-        "num_point": 2000,
-        "chart_width": 1000,
-        "labeler": "pixel",
         "runtime": 38,
         "placed": 331,
+        "id": 0
+    },
+    {
+        "type": "uniform",
+        "num_point": 2000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 28,
+        "placed": 331,
+        "id": 1
+    },
+    {
+        "type": "uniform",
+        "num_point": 2000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 27,
+        "placed": 331,
+        "id": 2
+    },
+    {
+        "type": "uniform",
+        "num_point": 2000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 40,
+        "placed": 331,
         "id": 3
     },
     {
@@ -1939,7 +1939,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 31,
+        "runtime": 26,
         "placed": 331,
         "id": 5
     },
@@ -1948,7 +1948,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 42,
+        "runtime": 37,
         "placed": 331,
         "id": 6
     },
@@ -1957,7 +1957,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 31,
+        "runtime": 26,
         "placed": 331,
         "id": 7
     },
@@ -1966,7 +1966,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 32,
+        "runtime": 27,
         "placed": 331,
         "id": 8
     },
@@ -1975,7 +1975,7 @@
         "num_point": 2000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 30,
+        "runtime": 29,
         "placed": 331,
         "id": 9
     },
@@ -1984,7 +1984,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 868,
+        "runtime": 870,
         "placed": 367,
         "id": 0
     },
@@ -1993,7 +1993,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 683,
+        "runtime": 688,
         "placed": 367,
         "id": 1
     },
@@ -2002,7 +2002,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 507,
+        "runtime": 514,
         "placed": 367,
         "id": 2
     },
@@ -2011,7 +2011,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 529,
+        "runtime": 534,
         "placed": 367,
         "id": 3
     },
@@ -2020,7 +2020,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 518,
+        "runtime": 520,
         "placed": 367,
         "id": 4
     },
@@ -2029,7 +2029,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 544,
+        "runtime": 545,
         "placed": 367,
         "id": 5
     },
@@ -2038,7 +2038,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 553,
+        "runtime": 550,
         "placed": 367,
         "id": 6
     },
@@ -2047,7 +2047,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 857,
+        "runtime": 869,
         "placed": 367,
         "id": 7
     },
@@ -2056,7 +2056,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 664,
+        "runtime": 645,
         "placed": 367,
         "id": 8
     },
@@ -2065,7 +2065,7 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 575,
+        "runtime": 638,
         "placed": 367,
         "id": 9
     },
@@ -2074,8 +2074,8 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 90,
-        "placed": 358,
+        "runtime": 49,
+        "placed": 357,
         "id": 0
     },
     {
@@ -2083,8 +2083,8 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 67,
-        "placed": 358,
+        "runtime": 52,
+        "placed": 357,
         "id": 1
     },
     {
@@ -2092,8 +2092,8 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 64,
-        "placed": 358,
+        "runtime": 46,
+        "placed": 357,
         "id": 2
     },
     {
@@ -2101,8 +2101,8 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 63,
-        "placed": 358,
+        "runtime": 43,
+        "placed": 357,
         "id": 3
     },
     {
@@ -2110,8 +2110,8 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 60,
-        "placed": 358,
+        "runtime": 40,
+        "placed": 357,
         "id": 4
     },
     {
@@ -2119,8 +2119,8 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 62,
-        "placed": 358,
+        "runtime": 43,
+        "placed": 357,
         "id": 5
     },
     {
@@ -2128,8 +2128,8 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 62,
-        "placed": 358,
+        "runtime": 43,
+        "placed": 357,
         "id": 6
     },
     {
@@ -2137,8 +2137,8 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 61,
-        "placed": 358,
+        "runtime": 44,
+        "placed": 357,
         "id": 7
     },
     {
@@ -2146,8 +2146,8 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 62,
-        "placed": 358,
+        "runtime": 43,
+        "placed": 357,
         "id": 8
     },
     {
@@ -2155,8 +2155,8 @@
         "num_point": 2000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 64,
-        "placed": 358,
+        "runtime": 43,
+        "placed": 357,
         "id": 9
     },
     {
@@ -2164,7 +2164,7 @@
         "num_point": 4000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 511,
+        "runtime": 487,
         "placed": 241,
         "id": 0
     },
@@ -2173,7 +2173,7 @@
         "num_point": 4000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 528,
+        "runtime": 536,
         "placed": 241,
         "id": 1
     },
@@ -2182,7 +2182,7 @@
         "num_point": 4000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 539,
+        "runtime": 514,
         "placed": 241,
         "id": 2
     },
@@ -2191,7 +2191,7 @@
         "num_point": 4000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 467,
+        "runtime": 525,
         "placed": 241,
         "id": 3
     },
@@ -2200,7 +2200,7 @@
         "num_point": 4000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 463,
+        "runtime": 540,
         "placed": 241,
         "id": 4
     },
@@ -2209,7 +2209,7 @@
         "num_point": 4000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 463,
+        "runtime": 449,
         "placed": 241,
         "id": 5
     },
@@ -2218,7 +2218,7 @@
         "num_point": 4000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 471,
+        "runtime": 581,
         "placed": 241,
         "id": 6
     },
@@ -2227,7 +2227,7 @@
         "num_point": 4000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 497,
+        "runtime": 484,
         "placed": 241,
         "id": 7
     },
@@ -2236,7 +2236,7 @@
         "num_point": 4000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 578,
+        "runtime": 489,
         "placed": 241,
         "id": 8
     },
@@ -2245,7 +2245,7 @@
         "num_point": 4000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 512,
+        "runtime": 476,
         "placed": 241,
         "id": 9
     },
@@ -2257,78 +2257,6 @@
         "runtime": 69,
         "placed": 225,
         "id": 0
-    },
-    {
-        "type": "uniform",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 51,
-        "placed": 225,
-        "id": 1
-    },
-    {
-        "type": "uniform",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 47,
-        "placed": 225,
-        "id": 2
-    },
-    {
-        "type": "uniform",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 49,
-        "placed": 225,
-        "id": 3
-    },
-    {
-        "type": "uniform",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 49,
-        "placed": 225,
-        "id": 4
-    },
-    {
-        "type": "uniform",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 59,
-        "placed": 225,
-        "id": 5
-    },
-    {
-        "type": "uniform",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 46,
-        "placed": 225,
-        "id": 6
-    },
-    {
-        "type": "uniform",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 48,
-        "placed": 225,
-        "id": 7
-    },
-    {
-        "type": "uniform",
-        "num_point": 4000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 49,
-        "placed": 225,
-        "id": 8
     },
     {
         "type": "uniform",
@@ -2337,6 +2265,78 @@
         "labeler": "pixel",
         "runtime": 52,
         "placed": 225,
+        "id": 1
+    },
+    {
+        "type": "uniform",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 42,
+        "placed": 225,
+        "id": 2
+    },
+    {
+        "type": "uniform",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 42,
+        "placed": 225,
+        "id": 3
+    },
+    {
+        "type": "uniform",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 45,
+        "placed": 225,
+        "id": 4
+    },
+    {
+        "type": "uniform",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 51,
+        "placed": 225,
+        "id": 5
+    },
+    {
+        "type": "uniform",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 50,
+        "placed": 225,
+        "id": 6
+    },
+    {
+        "type": "uniform",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 50,
+        "placed": 225,
+        "id": 7
+    },
+    {
+        "type": "uniform",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 57,
+        "placed": 225,
+        "id": 8
+    },
+    {
+        "type": "uniform",
+        "num_point": 4000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 51,
+        "placed": 225,
         "id": 9
     },
     {
@@ -2344,7 +2344,7 @@
         "num_point": 4000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1183,
+        "runtime": 1165,
         "placed": 262,
         "id": 0
     },
@@ -2353,7 +2353,7 @@
         "num_point": 4000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 966,
+        "runtime": 961,
         "placed": 262,
         "id": 1
     },
@@ -2362,7 +2362,7 @@
         "num_point": 4000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 830,
+        "runtime": 781,
         "placed": 262,
         "id": 2
     },
@@ -2371,7 +2371,7 @@
         "num_point": 4000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 846,
+        "runtime": 824,
         "placed": 262,
         "id": 3
     },
@@ -2380,7 +2380,7 @@
         "num_point": 4000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1279,
+        "runtime": 1271,
         "placed": 262,
         "id": 4
     },
@@ -2389,7 +2389,7 @@
         "num_point": 4000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1275,
+        "runtime": 1266,
         "placed": 262,
         "id": 5
     },
@@ -2398,7 +2398,7 @@
         "num_point": 4000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1719,
+        "runtime": 1677,
         "placed": 262,
         "id": 6
     },
@@ -2407,7 +2407,7 @@
         "num_point": 4000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1282,
+        "runtime": 1327,
         "placed": 262,
         "id": 7
     },
@@ -2416,7 +2416,7 @@
         "num_point": 4000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1399,
+        "runtime": 1383,
         "placed": 262,
         "id": 8
     },
@@ -2425,7 +2425,7 @@
         "num_point": 4000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1594,
+        "runtime": 1633,
         "placed": 262,
         "id": 9
     },
@@ -2434,7 +2434,7 @@
         "num_point": 4000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 141,
+        "runtime": 110,
         "placed": 252,
         "id": 0
     },
@@ -2443,7 +2443,7 @@
         "num_point": 4000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 128,
+        "runtime": 108,
         "placed": 252,
         "id": 1
     },
@@ -2452,7 +2452,7 @@
         "num_point": 4000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 111,
+        "runtime": 98,
         "placed": 252,
         "id": 2
     },
@@ -2461,7 +2461,7 @@
         "num_point": 4000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 82,
+        "runtime": 61,
         "placed": 252,
         "id": 3
     },
@@ -2469,226 +2469,190 @@
         "type": "uniform",
         "num_point": 4000,
         "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 87,
-        "placed": 252,
-        "id": 4
-    },
-    {
-        "type": "uniform",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 84,
-        "placed": 252,
-        "id": 5
-    },
-    {
-        "type": "uniform",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 80,
-        "placed": 252,
-        "id": 6
-    },
-    {
-        "type": "uniform",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 80,
-        "placed": 252,
-        "id": 7
-    },
-    {
-        "type": "uniform",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 82,
-        "placed": 252,
-        "id": 8
-    },
-    {
-        "type": "uniform",
-        "num_point": 4000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 82,
-        "placed": 252,
-        "id": 9
-    },
-    {
-        "type": "uniform",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 699,
-        "placed": 157,
-        "id": 0
-    },
-    {
-        "type": "uniform",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 704,
-        "placed": 157,
-        "id": 1
-    },
-    {
-        "type": "uniform",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 713,
-        "placed": 157,
-        "id": 2
-    },
-    {
-        "type": "uniform",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 665,
-        "placed": 157,
-        "id": 3
-    },
-    {
-        "type": "uniform",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 739,
-        "placed": 157,
-        "id": 4
-    },
-    {
-        "type": "uniform",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 675,
-        "placed": 157,
-        "id": 5
-    },
-    {
-        "type": "uniform",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 783,
-        "placed": 157,
-        "id": 6
-    },
-    {
-        "type": "uniform",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 668,
-        "placed": 157,
-        "id": 7
-    },
-    {
-        "type": "uniform",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 787,
-        "placed": 157,
-        "id": 8
-    },
-    {
-        "type": "uniform",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 787,
-        "placed": 157,
-        "id": 9
-    },
-    {
-        "type": "uniform",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 92,
-        "placed": 141,
-        "id": 0
-    },
-    {
-        "type": "uniform",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 97,
-        "placed": 141,
-        "id": 1
-    },
-    {
-        "type": "uniform",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 72,
-        "placed": 141,
-        "id": 2
-    },
-    {
-        "type": "uniform",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 75,
-        "placed": 141,
-        "id": 3
-    },
-    {
-        "type": "uniform",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 77,
-        "placed": 141,
-        "id": 4
-    },
-    {
-        "type": "uniform",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 84,
-        "placed": 141,
-        "id": 5
-    },
-    {
-        "type": "uniform",
-        "num_point": 6000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 75,
-        "placed": 141,
-        "id": 6
-    },
-    {
-        "type": "uniform",
-        "num_point": 6000,
-        "chart_width": 1000,
         "labeler": "pixel",
         "runtime": 69,
-        "placed": 141,
+        "placed": 252,
+        "id": 4
+    },
+    {
+        "type": "uniform",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 67,
+        "placed": 252,
+        "id": 5
+    },
+    {
+        "type": "uniform",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 61,
+        "placed": 252,
+        "id": 6
+    },
+    {
+        "type": "uniform",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 62,
+        "placed": 252,
+        "id": 7
+    },
+    {
+        "type": "uniform",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 63,
+        "placed": 252,
+        "id": 8
+    },
+    {
+        "type": "uniform",
+        "num_point": 4000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 65,
+        "placed": 252,
+        "id": 9
+    },
+    {
+        "type": "uniform",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 687,
+        "placed": 157,
+        "id": 0
+    },
+    {
+        "type": "uniform",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 740,
+        "placed": 157,
+        "id": 1
+    },
+    {
+        "type": "uniform",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 736,
+        "placed": 157,
+        "id": 2
+    },
+    {
+        "type": "uniform",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 648,
+        "placed": 157,
+        "id": 3
+    },
+    {
+        "type": "uniform",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 740,
+        "placed": 157,
+        "id": 4
+    },
+    {
+        "type": "uniform",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 655,
+        "placed": 157,
+        "id": 5
+    },
+    {
+        "type": "uniform",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 670,
+        "placed": 157,
+        "id": 6
+    },
+    {
+        "type": "uniform",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 681,
+        "placed": 157,
         "id": 7
     },
     {
         "type": "uniform",
         "num_point": 6000,
         "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 66,
-        "placed": 141,
+        "labeler": "particle",
+        "runtime": 681,
+        "placed": 157,
         "id": 8
+    },
+    {
+        "type": "uniform",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 688,
+        "placed": 157,
+        "id": 9
+    },
+    {
+        "type": "uniform",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 84,
+        "placed": 141,
+        "id": 0
+    },
+    {
+        "type": "uniform",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 82,
+        "placed": 141,
+        "id": 1
+    },
+    {
+        "type": "uniform",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 149,
+        "placed": 141,
+        "id": 2
+    },
+    {
+        "type": "uniform",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 63,
+        "placed": 141,
+        "id": 3
+    },
+    {
+        "type": "uniform",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 65,
+        "placed": 141,
+        "id": 4
     },
     {
         "type": "uniform",
@@ -2697,6 +2661,42 @@
         "labeler": "pixel",
         "runtime": 67,
         "placed": 141,
+        "id": 5
+    },
+    {
+        "type": "uniform",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 68,
+        "placed": 141,
+        "id": 6
+    },
+    {
+        "type": "uniform",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 74,
+        "placed": 141,
+        "id": 7
+    },
+    {
+        "type": "uniform",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 69,
+        "placed": 141,
+        "id": 8
+    },
+    {
+        "type": "uniform",
+        "num_point": 6000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 73,
+        "placed": 141,
         "id": 9
     },
     {
@@ -2704,7 +2704,7 @@
         "num_point": 6000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1365,
+        "runtime": 1911,
         "placed": 177,
         "id": 0
     },
@@ -2713,7 +2713,7 @@
         "num_point": 6000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1152,
+        "runtime": 1722,
         "placed": 177,
         "id": 1
     },
@@ -2722,7 +2722,7 @@
         "num_point": 6000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1038,
+        "runtime": 1913,
         "placed": 177,
         "id": 2
     },
@@ -2731,7 +2731,7 @@
         "num_point": 6000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1068,
+        "runtime": 1724,
         "placed": 177,
         "id": 3
     },
@@ -2740,7 +2740,7 @@
         "num_point": 6000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1330,
+        "runtime": 2066,
         "placed": 177,
         "id": 4
     },
@@ -2749,7 +2749,7 @@
         "num_point": 6000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1068,
+        "runtime": 1808,
         "placed": 177,
         "id": 5
     },
@@ -2758,7 +2758,7 @@
         "num_point": 6000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1700,
+        "runtime": 2252,
         "placed": 177,
         "id": 6
     },
@@ -2767,7 +2767,7 @@
         "num_point": 6000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1763,
+        "runtime": 1748,
         "placed": 177,
         "id": 7
     },
@@ -2776,7 +2776,7 @@
         "num_point": 6000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1858,
+        "runtime": 1774,
         "placed": 177,
         "id": 8
     },
@@ -2785,7 +2785,7 @@
         "num_point": 6000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1798,
+        "runtime": 2173,
         "placed": 177,
         "id": 9
     },
@@ -2794,7 +2794,7 @@
         "num_point": 6000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 127,
+        "runtime": 89,
         "placed": 167,
         "id": 0
     },
@@ -2803,7 +2803,7 @@
         "num_point": 6000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 113,
+        "runtime": 83,
         "placed": 167,
         "id": 1
     },
@@ -2812,7 +2812,7 @@
         "num_point": 6000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 111,
+        "runtime": 85,
         "placed": 167,
         "id": 2
     },
@@ -2821,7 +2821,7 @@
         "num_point": 6000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 99,
+        "runtime": 82,
         "placed": 167,
         "id": 3
     },
@@ -2830,7 +2830,7 @@
         "num_point": 6000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 105,
+        "runtime": 473,
         "placed": 167,
         "id": 4
     },
@@ -2839,7 +2839,7 @@
         "num_point": 6000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 110,
+        "runtime": 88,
         "placed": 167,
         "id": 5
     },
@@ -2848,7 +2848,7 @@
         "num_point": 6000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 106,
+        "runtime": 88,
         "placed": 167,
         "id": 6
     },
@@ -2857,7 +2857,7 @@
         "num_point": 6000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 112,
+        "runtime": 88,
         "placed": 167,
         "id": 7
     },
@@ -2866,7 +2866,7 @@
         "num_point": 6000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 110,
+        "runtime": 88,
         "placed": 167,
         "id": 8
     },
@@ -2875,7 +2875,7 @@
         "num_point": 6000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 112,
+        "runtime": 101,
         "placed": 167,
         "id": 9
     },
@@ -2884,7 +2884,7 @@
         "num_point": 8000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 954,
+        "runtime": 926,
         "placed": 92,
         "id": 0
     },
@@ -2893,7 +2893,7 @@
         "num_point": 8000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 989,
+        "runtime": 995,
         "placed": 92,
         "id": 1
     },
@@ -2902,7 +2902,7 @@
         "num_point": 8000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 1071,
+        "runtime": 1088,
         "placed": 92,
         "id": 2
     },
@@ -2911,9 +2911,18 @@
         "num_point": 8000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 890,
+        "runtime": 876,
         "placed": 92,
         "id": 3
+    },
+    {
+        "type": "uniform",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 879,
+        "placed": 92,
+        "id": 4
     },
     {
         "type": "uniform",
@@ -2922,15 +2931,6 @@
         "labeler": "particle",
         "runtime": 869,
         "placed": 92,
-        "id": 4
-    },
-    {
-        "type": "uniform",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 889,
-        "placed": 92,
         "id": 5
     },
     {
@@ -2938,7 +2938,7 @@
         "num_point": 8000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 940,
+        "runtime": 929,
         "placed": 92,
         "id": 6
     },
@@ -2947,7 +2947,7 @@
         "num_point": 8000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 897,
+        "runtime": 910,
         "placed": 92,
         "id": 7
     },
@@ -2956,7 +2956,7 @@
         "num_point": 8000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 953,
+        "runtime": 992,
         "placed": 92,
         "id": 8
     },
@@ -2965,7 +2965,7 @@
         "num_point": 8000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 910,
+        "runtime": 905,
         "placed": 92,
         "id": 9
     },
@@ -2974,7 +2974,7 @@
         "num_point": 8000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 109,
+        "runtime": 100,
         "placed": 76,
         "id": 0
     },
@@ -2983,7 +2983,7 @@
         "num_point": 8000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 94,
+        "runtime": 96,
         "placed": 76,
         "id": 1
     },
@@ -2992,7 +2992,7 @@
         "num_point": 8000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 89,
+        "runtime": 91,
         "placed": 76,
         "id": 2
     },
@@ -3010,9 +3010,45 @@
         "num_point": 8000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 93,
+        "runtime": 83,
         "placed": 76,
         "id": 4
+    },
+    {
+        "type": "uniform",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 102,
+        "placed": 76,
+        "id": 5
+    },
+    {
+        "type": "uniform",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 108,
+        "placed": 76,
+        "id": 6
+    },
+    {
+        "type": "uniform",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 99,
+        "placed": 76,
+        "id": 7
+    },
+    {
+        "type": "uniform",
+        "num_point": 8000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 100,
+        "placed": 76,
+        "id": 8
     },
     {
         "type": "uniform",
@@ -3021,42 +3057,6 @@
         "labeler": "pixel",
         "runtime": 91,
         "placed": 76,
-        "id": 5
-    },
-    {
-        "type": "uniform",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 96,
-        "placed": 76,
-        "id": 6
-    },
-    {
-        "type": "uniform",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 94,
-        "placed": 76,
-        "id": 7
-    },
-    {
-        "type": "uniform",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 94,
-        "placed": 76,
-        "id": 8
-    },
-    {
-        "type": "uniform",
-        "num_point": 8000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 94,
-        "placed": 76,
         "id": 9
     },
     {
@@ -3064,7 +3064,7 @@
         "num_point": 8000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1532,
+        "runtime": 1591,
         "placed": 106,
         "id": 0
     },
@@ -3073,7 +3073,7 @@
         "num_point": 8000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1458,
+        "runtime": 1476,
         "placed": 106,
         "id": 1
     },
@@ -3082,7 +3082,7 @@
         "num_point": 8000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1933,
+        "runtime": 1957,
         "placed": 106,
         "id": 2
     },
@@ -3091,7 +3091,7 @@
         "num_point": 8000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 2179,
+        "runtime": 2190,
         "placed": 106,
         "id": 3
     },
@@ -3100,7 +3100,7 @@
         "num_point": 8000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 2451,
+        "runtime": 2557,
         "placed": 106,
         "id": 4
     },
@@ -3109,7 +3109,7 @@
         "num_point": 8000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 2280,
+        "runtime": 2380,
         "placed": 106,
         "id": 5
     },
@@ -3118,7 +3118,7 @@
         "num_point": 8000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 2612,
+        "runtime": 2635,
         "placed": 106,
         "id": 6
     },
@@ -3127,7 +3127,7 @@
         "num_point": 8000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 2210,
+        "runtime": 2252,
         "placed": 106,
         "id": 7
     },
@@ -3136,7 +3136,7 @@
         "num_point": 8000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 2435,
+        "runtime": 2416,
         "placed": 106,
         "id": 8
     },
@@ -3145,7 +3145,7 @@
         "num_point": 8000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 2551,
+        "runtime": 2517,
         "placed": 106,
         "id": 9
     },
@@ -3154,7 +3154,7 @@
         "num_point": 8000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 154,
+        "runtime": 306,
         "placed": 99,
         "id": 0
     },
@@ -3163,7 +3163,7 @@
         "num_point": 8000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 144,
+        "runtime": 107,
         "placed": 99,
         "id": 1
     },
@@ -3172,7 +3172,7 @@
         "num_point": 8000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 127,
+        "runtime": 108,
         "placed": 99,
         "id": 2
     },
@@ -3181,7 +3181,7 @@
         "num_point": 8000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 126,
+        "runtime": 107,
         "placed": 99,
         "id": 3
     },
@@ -3190,7 +3190,7 @@
         "num_point": 8000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 133,
+        "runtime": 110,
         "placed": 99,
         "id": 4
     },
@@ -3199,7 +3199,7 @@
         "num_point": 8000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 120,
+        "runtime": 122,
         "placed": 99,
         "id": 5
     },
@@ -3208,7 +3208,7 @@
         "num_point": 8000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 132,
+        "runtime": 100,
         "placed": 99,
         "id": 6
     },
@@ -3226,7 +3226,7 @@
         "num_point": 8000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 128,
+        "runtime": 106,
         "placed": 99,
         "id": 8
     },
@@ -3235,7 +3235,7 @@
         "num_point": 8000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 130,
+        "runtime": 109,
         "placed": 99,
         "id": 9
     },
@@ -3244,7 +3244,7 @@
         "num_point": 10000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 1125,
+        "runtime": 1097,
         "placed": 53,
         "id": 0
     },
@@ -3253,7 +3253,7 @@
         "num_point": 10000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 1229,
+        "runtime": 1141,
         "placed": 53,
         "id": 1
     },
@@ -3262,36 +3262,9 @@
         "num_point": 10000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 1164,
+        "runtime": 1137,
         "placed": 53,
         "id": 2
-    },
-    {
-        "type": "uniform",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 1167,
-        "placed": 53,
-        "id": 3
-    },
-    {
-        "type": "uniform",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 1115,
-        "placed": 53,
-        "id": 4
-    },
-    {
-        "type": "uniform",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "particle",
-        "runtime": 1241,
-        "placed": 53,
-        "id": 5
     },
     {
         "type": "uniform",
@@ -3300,6 +3273,33 @@
         "labeler": "particle",
         "runtime": 1116,
         "placed": 53,
+        "id": 3
+    },
+    {
+        "type": "uniform",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 1067,
+        "placed": 53,
+        "id": 4
+    },
+    {
+        "type": "uniform",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 1124,
+        "placed": 53,
+        "id": 5
+    },
+    {
+        "type": "uniform",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "particle",
+        "runtime": 1105,
+        "placed": 53,
         "id": 6
     },
     {
@@ -3307,7 +3307,7 @@
         "num_point": 10000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 1151,
+        "runtime": 1094,
         "placed": 53,
         "id": 7
     },
@@ -3316,7 +3316,7 @@
         "num_point": 10000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 1177,
+        "runtime": 1251,
         "placed": 53,
         "id": 8
     },
@@ -3325,7 +3325,7 @@
         "num_point": 10000,
         "chart_width": 1000,
         "labeler": "particle",
-        "runtime": 1181,
+        "runtime": 1084,
         "placed": 53,
         "id": 9
     },
@@ -3334,7 +3334,7 @@
         "num_point": 10000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 211,
+        "runtime": 126,
         "placed": 45,
         "id": 0
     },
@@ -3343,7 +3343,7 @@
         "num_point": 10000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 115,
+        "runtime": 128,
         "placed": 45,
         "id": 1
     },
@@ -3352,7 +3352,7 @@
         "num_point": 10000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 118,
+        "runtime": 125,
         "placed": 45,
         "id": 2
     },
@@ -3361,7 +3361,7 @@
         "num_point": 10000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 119,
+        "runtime": 110,
         "placed": 45,
         "id": 3
     },
@@ -3379,18 +3379,9 @@
         "num_point": 10000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 119,
+        "runtime": 102,
         "placed": 45,
         "id": 5
-    },
-    {
-        "type": "uniform",
-        "num_point": 10000,
-        "chart_width": 1000,
-        "labeler": "pixel",
-        "runtime": 121,
-        "placed": 45,
-        "id": 6
     },
     {
         "type": "uniform",
@@ -3399,6 +3390,15 @@
         "labeler": "pixel",
         "runtime": 117,
         "placed": 45,
+        "id": 6
+    },
+    {
+        "type": "uniform",
+        "num_point": 10000,
+        "chart_width": 1000,
+        "labeler": "pixel",
+        "runtime": 108,
+        "placed": 45,
         "id": 7
     },
     {
@@ -3406,7 +3406,7 @@
         "num_point": 10000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 118,
+        "runtime": 110,
         "placed": 45,
         "id": 8
     },
@@ -3415,7 +3415,7 @@
         "num_point": 10000,
         "chart_width": 1000,
         "labeler": "pixel",
-        "runtime": 115,
+        "runtime": 119,
         "placed": 45,
         "id": 9
     },
@@ -3424,7 +3424,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 2094,
+        "runtime": 1906,
         "placed": 54,
         "id": 0
     },
@@ -3433,7 +3433,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1574,
+        "runtime": 1710,
         "placed": 54,
         "id": 1
     },
@@ -3442,7 +3442,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 1623,
+        "runtime": 1605,
         "placed": 54,
         "id": 2
     },
@@ -3451,7 +3451,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 2114,
+        "runtime": 2735,
         "placed": 54,
         "id": 3
     },
@@ -3460,7 +3460,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 2662,
+        "runtime": 3053,
         "placed": 54,
         "id": 4
     },
@@ -3469,7 +3469,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 3005,
+        "runtime": 2682,
         "placed": 54,
         "id": 5
     },
@@ -3478,7 +3478,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 2643,
+        "runtime": 3092,
         "placed": 54,
         "id": 6
     },
@@ -3487,7 +3487,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 2892,
+        "runtime": 2685,
         "placed": 54,
         "id": 7
     },
@@ -3496,7 +3496,7 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 2931,
+        "runtime": 2985,
         "placed": 54,
         "id": 8
     },
@@ -3505,27 +3505,9 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "particle",
-        "runtime": 2926,
+        "runtime": 3018,
         "placed": 54,
         "id": 9
-    },
-    {
-        "type": "uniform",
-        "num_point": 10000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 189,
-        "placed": 50,
-        "id": 0
-    },
-    {
-        "type": "uniform",
-        "num_point": 10000,
-        "chart_width": 2000,
-        "labeler": "pixel",
-        "runtime": 159,
-        "placed": 50,
-        "id": 1
     },
     {
         "type": "uniform",
@@ -3533,8 +3515,8 @@
         "chart_width": 2000,
         "labeler": "pixel",
         "runtime": 152,
-        "placed": 50,
-        "id": 2
+        "placed": 49,
+        "id": 0
     },
     {
         "type": "uniform",
@@ -3542,7 +3524,25 @@
         "chart_width": 2000,
         "labeler": "pixel",
         "runtime": 153,
-        "placed": 50,
+        "placed": 49,
+        "id": 1
+    },
+    {
+        "type": "uniform",
+        "num_point": 10000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 136,
+        "placed": 49,
+        "id": 2
+    },
+    {
+        "type": "uniform",
+        "num_point": 10000,
+        "chart_width": 2000,
+        "labeler": "pixel",
+        "runtime": 145,
+        "placed": 49,
         "id": 3
     },
     {
@@ -3550,8 +3550,8 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 151,
-        "placed": 50,
+        "runtime": 149,
+        "placed": 49,
         "id": 4
     },
     {
@@ -3559,8 +3559,8 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 141,
-        "placed": 50,
+        "runtime": 138,
+        "placed": 49,
         "id": 5
     },
     {
@@ -3568,8 +3568,8 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 146,
-        "placed": 50,
+        "runtime": 127,
+        "placed": 49,
         "id": 6
     },
     {
@@ -3577,8 +3577,8 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 151,
-        "placed": 50,
+        "runtime": 135,
+        "placed": 49,
         "id": 7
     },
     {
@@ -3586,8 +3586,8 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 149,
-        "placed": 50,
+        "runtime": 134,
+        "placed": 49,
         "id": 8
     },
     {
@@ -3595,8 +3595,8 @@
         "num_point": 10000,
         "chart_width": 2000,
         "labeler": "pixel",
-        "runtime": 151,
-        "placed": 50,
-        "id": 11
+        "runtime": 134,
+        "placed": 49,
+        "id": 9
     }
 ]

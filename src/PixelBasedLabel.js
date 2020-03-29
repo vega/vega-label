@@ -12,6 +12,7 @@ export function placeLabels(data, size, padding, avoidMarksCtx) {
   // var before;
   // before = performance.now();
   bitMaps.mark = getMarkBitMap(data, width, height, avoidMarksCtx);
+  // bitMaps.mark.write("canvas", width, height);
 
   data.forEach(function(d) {
     d.z = 1;
@@ -104,20 +105,20 @@ function getMarkBitMap(data, width, height, avoidMarksCtx) {
     avoidMarksCtx.getImageData(0, 0, width, height).data.buffer
   );
 
-  var x, y, x_, pixelSize_, pixelSize = bitMap.pixelSize;
-  for (y = 0; y < height; y++) {
-    for (x = 0; x < width; x += pixelSize) {
-      if (!bitMap.get(x, y)) {
-        pixelSize_ = (pixelSize < width - x) ? pixelSize : width - x;
-        for (x_ = 0; x_ < pixelSize_; x_++) {
-          if (buffer[y * width + (x + x_)]) {
-            bitMap.mark(x + x_, y);
-            break;
-          }
-        }
+  var i,
+      len = buffer.length,
+      from = 0;
+  for (i = 0; i < len; i++) {
+    if (!buffer[i]) {
+      if (from !== i) {
+        bitMap.setRange(from, i - 1);
       }
+      from = i + 1;
     }
   }
-  
+  if (from !== len) {
+    bitMap.setRange(from, len - 1);
+  }
+
   return bitMap;
 }
