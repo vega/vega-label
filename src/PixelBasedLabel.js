@@ -49,7 +49,7 @@ function findAvailablePosition(datum, bitMaps, padding, checkAvailability) {
       if (!i && !j) continue;
       if (!textWidthCalculated) {
         datum.boundary = getBoundary(datum, i, j, padding);
-        searchBound = getSearchBound(getBoundary(datum, i, j, padding), bitMaps.mark);
+        searchBound = getSearchBound(datum.boundary);
         if (checkCollision(searchBound, bitMaps.mark)) {
           continue;
         } else {
@@ -59,7 +59,7 @@ function findAvailablePosition(datum, bitMaps, padding, checkAvailability) {
       }
 
       datum.boundary = getBoundary(datum, i, j, padding);
-      searchBound = getSearchBound(datum.boundary, bitMaps.mark);
+      searchBound = getSearchBound(datum.boundary);
 
       if (outOfBound(searchBound, bitMaps.mark)) continue;
       
@@ -75,12 +75,12 @@ function outOfBound(b, bm) {
   return b.startX < 0 || b.startY < 0 || b.endY >= bm.height || b.endX >= bm.width;
 }
 
-function getSearchBound(bound, bm) {
+function getSearchBound(bound) {
   return {
-    startX: bm.bin(bound.x),
-    startY: bm.bin(bound.y),
-    endX: bm.bin(bound.x2),
-    endY: bm.bin(bound.y2),
+    startX: ~~bound.x,
+    startY: ~~bound.y,
+    endX: ~~bound.x2,
+    endY: ~~bound.y2,
   };
 }
 

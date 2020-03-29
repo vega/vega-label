@@ -136,25 +136,14 @@ function getMarkBin(data, width, height, minTextWidth, minTextHeight, avoidMarks
   var buffer = new Uint32Array(
     avoidMarksCtx.getImageData(0, 0, width, height).data.buffer
   );
-  var xStep = ~~(minTextWidth / 2),
-      yStep = ~~(minTextHeight / 2);
-  var xHalfStep = xStep / 2,
-      yHalfStep = yStep / 2;
-  var x, y, xIn, yIn;
-  var toAdd;
-  for (y = 0; y < height; y += yStep) {
-    for (x = 0; x < width; x += xStep) {
-      toAdd = false;
-      for (yIn = 0; yIn < yStep && y + yIn < height && !toAdd; yIn++) {
-        for (xIn = 0; xIn < xStep && x + xIn < width && !toAdd; xIn++) {
-          toAdd = buffer[(y + yIn) * width + (x + xIn)];
-        }
-      }
-      if (toAdd) {
-        bin.add(x + xHalfStep, y + yHalfStep);
+
+  var x, y;
+  for (y = 0; y < height; y++) {
+    for (x = 0; x < width; x++) {
+      if (buffer[y * width + x]) {
+        bin.add(x, y);
       }
     }
   }
-  
   return bin;
 }

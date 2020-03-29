@@ -10,7 +10,7 @@ var PLACE_LABELS = {
   "pixel": pixel.placeLabels,
   "particle": particle.placeLabels,
 };
-var LABELERS = ["pixel", "particle"];
+var LABELERS = ["particle", "pixel"];
 
 export default function() {
   var markData = [],
@@ -24,7 +24,8 @@ export default function() {
   label.layout = function() {
     var ret;
     for (var j = 0; j < LABELERS.length; j++) {
-      config.labeler = LABELERS[i];
+      labeler = LABELERS[j];
+      config.labeler = labeler;
       for (var i = 0; i < NUM_RECORDS; i++) {
         var avoidMarksCtx = drawAvoidMarks(avoidMarks, size[0], size[1]);
         var before = performance.now();
