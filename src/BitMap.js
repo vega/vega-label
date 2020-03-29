@@ -14,10 +14,13 @@ var SIZE = 0x20
 
 
 export function BitMap(_width, _height) {
-  this.pixelSize = ~~(Math.min(_width, _height) / 1000.0);
-  this.pixelSize = this.pixelSize >= 1 ? this.pixelSize : 1;
+  // this.pixelSize = ~~(Math.min(_width, _height) / 1000.0);
+  // this.pixelSize = this.pixelSize >= 1 ? this.pixelSize : 1;
+  this.pixelSize = 1;
   this.width = ~~((_width + this.pixelSize) / this.pixelSize);
   this.height = ~~((_height + this.pixelSize) / this.pixelSize);
+  // this.width = _width;
+  // this.height = _height;
   this.array = new Uint32Array(~~(((this.width * this.height) + SIZE) / SIZE));
 
   this.markScaled = function (x, y) {
@@ -100,5 +103,6 @@ export function BitMap(_width, _height) {
 
   this.bin = function (coordinate) {
     return ~~(coordinate / this.pixelSize);
+    // return coordinate;
   };
 }

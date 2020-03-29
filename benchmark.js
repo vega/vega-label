@@ -15,7 +15,7 @@ var spec = JSON.parse(jsonText);
 var suffix = ['cluster_3_', ''];
 var types = ['clustered', 'uniform'];
 var ns = [2000, 4000, 6000, 8000, 10000];
-var sizes = [1000, 2000, 4000];
+var sizes = [1000, 2000];
 
 function render(typeItr, nItr, sizeItr) {
   var n = ns[nItr];
@@ -44,7 +44,7 @@ function render(typeItr, nItr, sizeItr) {
   if (typeItr >= types.length) {
     console.log("done");
   } else {
-    setTimeout(render, 120000, typeItr, nItr, sizeItr);
+    setTimeout(render, 60000, typeItr, nItr, sizeItr);
   }
 }
 
