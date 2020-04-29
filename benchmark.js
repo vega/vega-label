@@ -24,6 +24,7 @@ function render(typeItr, nItr, sizeItr) {
   spec["width"] = size;
   spec["height"] = size;
   spec["data"][0]["url"] = `../data/test_label_${suffix[typeItr]}${n}.json`;
+  spec["marks"][0]["encode"]["enter"]["size"]["value"] = 20000 * size * size / 1000000;
   spec["marks"][2]["transform"][0]["size"] = [size, size, {type: types[typeItr], num_point: n, chart_width: size}];
   spec["marks"][2]["encode"]["enter"]["fontSize"]["value"] = 14 * size / 1000;
   new vega.View(vega.parse(spec))

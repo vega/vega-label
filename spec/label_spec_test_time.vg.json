@@ -11,14 +11,14 @@
     {
       "name": "table",
       "values": [
-        {"category": "A", "amount": 28},
-        {"category": "B", "amount": 55},
-        {"category": "C", "amount": 43},
-        {"category": "D", "amount": 91},
-        {"category": "E", "amount": 81},
-        {"category": "F", "amount": 53},
-        {"category": "G", "amount": 19},
-        {"category": "H", "amount": 87}
+        {"category": "A", "amount": 0},
+        {"category": "B", "amount": 1},
+        {"category": "C", "amount": 2},
+        {"category": "D", "amount": 3},
+        {"category": "E", "amount": 4},
+        {"category": "F", "amount": 5},
+        {"category": "G", "amount": 6},
+        {"category": "H", "amount": 7}
       ]
     }
   ],
@@ -60,15 +60,14 @@
 
   "marks": [
     {
-      "type": "rect",
+      "type": "symbol",
       "from": {"data":"table"},
       "name": "bar",
       "encode": {
         "enter": {
-          "x": {"scale": "xscale", "field": "category"},
-          "width": {"scale": "xscale", "band": 1},
-          "y": {"scale": "yscale", "field": "amount"},
-          "y2": {"scale": "yscale", "value": 0}
+          "xc": {"scale": "xscale", "field": "category"},
+          "yc": {"scale": "yscale", "field": "amount"},
+          "size": {"value": 20000}
         },
         "update": {
           "fill": {"value": "steelblue"}

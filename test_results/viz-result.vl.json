@@ -1,0 +1,51 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+    "data": {
+      "url": "https://gist.githubusercontent.com/chanwutk/9631735a3e6b384af5659edca3d8c0aa/raw/989af07609861446207de436fbd568066e38f306/label-result-mark-no-scale-2020-03-28.json"
+    },
+    "facet": {
+      "column": {"field": "chart_width", "type": "nominal"},
+      "row": {"field": "type", "type": "nominal"}
+    },
+    "spec": {
+      "layer": [
+        {
+          "mark": {"type": "line", "point": true},
+          "encoding": {
+            "y": {
+              "field": "runtime",
+              "type": "quantitative",
+              "axis": {"title": "runtime (median) (ms)"},
+              "aggregate": "median"
+            },
+            "color": {"field": "labeler", "type": "nominal"},
+            "x": {"field": "num_point", "type": "quantitative"}
+          }
+        },
+        {
+    "transform": [
+      {
+        "aggregate": [{
+         "op": "argmin",
+         "field": "runtime",
+         "as": "argmin"
+        }],
+        "groupby": ["labeler", "num_point", "chart_width", "type"]
+      }
+    ],
+          "mark": {"type": "text", "baseline": "bottom"},
+          "encoding": {
+            "text": {"field": "argmin.runtime", "type": "nominal"},
+            
+            "y": {
+              "field": "argmin.runtime",
+              "type": "quantitative",
+              "axis": {"title": "runtime (median) (ms)"}
+            },
+            "color": {"field": "labeler", "type": "nominal"},
+            "x": {"field": "num_point", "type": "quantitative"}
+          }
+        }
+      ]
+    }
+  }
