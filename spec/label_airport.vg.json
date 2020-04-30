@@ -1,0 +1,87 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "background": "white",
+  "padding": 5,
+  "width": 500,
+  "height": 300,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "../data/us-10m.json",
+      "format": {"type": "topojson", "feature": "states"}
+    },
+    {
+      "name": "source_1",
+      "url": "../data/airports.csv",
+      "format": {"type": "csv", "delimiter": ","},
+      "transform": [
+        {
+          "type": "geojson",
+          "fields": ["longitude", "latitude"],
+          "signal": "layer_1_geojson_0"
+        },
+        {
+          "type": "geopoint",
+          "projection": "projection",
+          "fields": ["longitude", "latitude"],
+          "as": ["layer_1_x", "layer_1_y"]
+        }
+      ]
+    }
+  ],
+  "projections": [
+    {
+      "name": "projection",
+      "size": {"signal": "[width, height]"},
+      "fit": {"signal": "[data('source_0'), layer_1_geojson_0]"},
+      "type": "albersUsa"
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "shape",
+      "style": ["geoshape"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {"fill": {"value": null}, "stroke": {"value": "black"}}
+      },
+      "transform": [{"type": "geoshape", "projection": "projection"}]
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "symbol",
+      "style": ["circle"],
+      "from": {"data": "source_1"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": {"value": "steelblue"},
+          "x": {"field": "layer_1_x"},
+          "y": {"field": "layer_1_y"},
+          "size": {"value": 2},
+          "shape": {"value": "circle"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "layer_1_marks"},
+      "encode": {
+        "enter": {
+          "x": {"field": "x"},
+          "y": {"field": "y"},
+          "fill": {"value": "#000"},
+          "text": {"field": "datum.name"},
+          "fontSize": {"value": 10}
+        }
+      },
+      "transform": [{
+        "type": "label",
+        "size": [500, 300],
+        "avoidMarks": ["layer_0_marks"]
+      }]
+    }
+  ]
+}
