@@ -25,9 +25,13 @@ function render(typeItr, nItr, sizeItr) {
   spec["height"] = size;
   // spec["data"][0]["url"] = `../data/test_label_${suffix[typeItr]}${n}.json`;
   // spec["marks"][0]["encode"]["enter"]["size"]["value"] = 20000 * size * size / 1000000;
-  spec["marks"][4]["transform"][0]["size"] = [size, size, {type: types[typeItr], num_point: n, chart_width: size}];
-  spec["marks"][5]["transform"][0]["size"] = [size, size, {type: types[typeItr], num_point: n, chart_width: size}];
   // spec["marks"][2]["encode"]["enter"]["fontSize"]["value"] = 14 * size / 1000;
+  // spec["marks"][2]["transform"][0]["size"] = [size, size, {type: types[typeItr]}];
+  
+  spec["marks"][4]["transform"][0]["size"] = [size, size, {type: types[typeItr]}];
+  spec["marks"][5]["transform"][0]["size"] = [size, size, {type: types[typeItr]}];
+  spec["marks"][2]["encode"]["update"]["strokeWidth"]["value"] = 1 * size / 1000;
+  spec["marks"][3]["encode"]["update"]["size"]["value"] = 6 * size / 1000;
   spec["marks"][4]["encode"]["enter"]["fontSize"]["value"] = 7 * size / 1000;
   spec["marks"][5]["encode"]["enter"]["fontSize"]["value"] = 5 * size / 1000;
   new vega.View(vega.parse(spec))

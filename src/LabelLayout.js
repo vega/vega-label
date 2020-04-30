@@ -23,9 +23,13 @@ export default function() {
 
   label.layout = function() {
     var ret;
+    var result = config;
+    result.num_point = markData.length;
+    result.chart_width = size[0];
+
     for (var j = 0; j < LABELERS.length; j++) {
       labeler = LABELERS[j];
-      config.labeler = labeler;
+      result.labeler = labeler;
       for (var i = 0; i < NUM_RECORDS; i++) {
         var avoidMarksCtx = drawAvoidMarks(avoidMarks, size[0], size[1]);
         var before = performance.now();
@@ -43,12 +47,12 @@ export default function() {
         });
         
         ret = PLACE_LABELS[labeler](data, size, padding, avoidMarksCtx);
-        config.runtime = performance.now() - before;
-        config.placed = ret.reduce(function(total, d) {
+        result.runtime = performance.now() - before;
+        result.placed = ret.reduce(function(total, d) {
           return total + (d.fill !== null);
         }, 0);
-        config.id = i;
-        console.log(JSON.stringify(config) + ",");
+        result.id = i;
+        console.log(JSON.stringify(result) + ",");
       }
     }
     return ret;

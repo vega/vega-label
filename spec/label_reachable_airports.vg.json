@@ -112,7 +112,7 @@
         "from": {"data": "data_0"},
         "encode": {
           "update": {
-            "opacity": {"value": 0.7},
+            "opacity": {"value": 0.3},
             "fill": {"value": "gray"},
             "x": {"field": "layer_1_x"},
             "y": {"field": "layer_1_y"},
@@ -129,6 +129,7 @@
         "encode": {
           "update": {
             "stroke": {"value": "black"},
+            "strokeWidth": {"value": 1},
             "x": {"field": "layer_2_x"},
             "x2": {"field": "layer_2_x2"},
             "y": {"field": "layer_2_y"},
@@ -143,7 +144,7 @@
         "from": {"data": "reachable_lines"},
         "encode": {
           "update": {
-            "size": {"value": 5},
+            "size": {"value": 6},
             "fill": {"value": "black"},
             "x": {"field": "x2"},
             "y": {"field": "y2"}
