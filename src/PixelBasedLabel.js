@@ -33,6 +33,7 @@ export function placeLabels(data, size, padding, avoidMarksCtx) {
     d.y = d.boundary.yc;
   });
   // console.log(performance.now() - before);
+  // bitMaps.mark.write("canvas", width, height);
 
   return data;
 }

@@ -24,6 +24,11 @@ export function placeLabels(data, size, padding, avoidMarksCtx) {
   // bins.mark.write("canvas", width, height);
 
   data.forEach(function(d) {
+    if (d.x === undefined || d.y === undefined) {
+      d.fill = null;
+      d.z = 0;
+      return;
+    }
     d.z = 1;
     d.currentPosition = [-1, -1];
     findAvailablePosition(d, bins, padding, function() {
@@ -106,8 +111,8 @@ function placeLabel(b, bin, minTextWidth, minTextHeight) {
 function checkCollision(d, b, searchBound, bin) {
   var x, y, p, bucket;
 
-  for (x = searchBound.startX-1; x <= searchBound.endX+1; x++) {
-    for (y = searchBound.startY-1; y <= searchBound.endY+1; y++) {
+  for (x = searchBound.startX; x <= searchBound.endX; x++) {
+    for (y = searchBound.startY; y <= searchBound.endY; y++) {
       bucket = bin.getBinned(x, y);
       if (bucket) {
         for (p = 0; p < bucket.length; p++) {
@@ -142,6 +147,10 @@ function getMarkBin(data, width, height, minTextWidth, minTextHeight, avoidMarks
     for (x = 0; x < width; x++) {
       if (buffer[y * width + x]) {
         bin.add(x, y);
+        // bin.add(x-0.5, y-0.5);
+        // bin.add(x-0.5, y+0.5);
+        // bin.add(x+0.5, y-0.5);
+        // bin.add(x+0.5, y+0.5);
       }
     }
   }
