@@ -22,6 +22,10 @@ export function placeLabels(data, size, padding, avoidMarksCtx) {
   // todo: write avoidMarksCtx to bins
   bins.mark = getMarkBin(data, width, height, minTextWidth, minTextHeight, avoidMarksCtx);
   // bins.mark.write("canvas", width, height);
+  console.log(process);
+  // console.log(process.memoryUsage());
+  // var k = "strin";
+  // console.log(process.memoryUsage());
 
   data.forEach(function(d) {
     if (d.x === undefined || d.y === undefined) {

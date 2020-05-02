@@ -1,49 +1,120 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {
-    "url": "https://gist.githubusercontent.com/chanwutk/c087f4caa1d8ccdbb5f64fe686841524/raw/d5c1832bb064f1f3b9c8e01a0ea307be4fc365b2/label-result-mark-2020-04-29.json"
+    "url": "https://gist.githubusercontent.com/chanwutk/b284c59837d72fa39c76dbf1a4cba87a/raw/7f26b0b2350ea1a072ac05f0eb1388e8ca9a6ebd/reachable_airports_result_2020_05_01.json"
   },
   "transform": [
     {
       "calculate": "datum.labeler === 'particle' ? 'Particle-Based': 'Bitmap-Based'",
-      "as": "labeler"
-    }
-  ],
-  "facet": {
-    "column": {
-      "field": "chart_width",
-      "type": "nominal",
-      "title": "Chart width and height"
+      "as": "labeler_text"
     },
-    "row": {
-      "field": "type",
-      "type": "nominal",
-      "title": "Data Points Distribution"
-    }
-  },
-  "spec": {
-    "layer": [
-      {
-        "mark": {"type": "line", "point": true},
+    {"calculate": "datum.placed", "as": "Number of Labels Placed"},
+    {"calculate": "datum.runtime", "as": "Median of Running Time (ms)"},
+    {"filter": "datum.num_point > 300"},
+    {"filter": "datum.chart_width <= 4000"}
+  ],
+  "vconcat": [
+    {
+      "title": "Comparison between both algorithms",
+      "repeat": {
+        "column": ["Number of Labels Placed", "Median of Running Time (ms)"]
+      },
+      "spec": {
+        "height": 120,
         "encoding": {
-          "y": {
-            "field": "runtime",
+          "x": {
+            "field": "chart_width",
             "type": "quantitative",
-            "aggregate": "median",
-            "title": "Median of Running Time (ms)"
+            "title": "Chart width and height"
           },
           "color": {
-            "field": "labeler",
+            "field": "labeler_text",
             "type": "nominal",
-            "title": "Labeling Algorithm"
-          },
-          "x": {
-            "field": "num_point",
-            "type": "quantitative",
-            "title": "Number of Data Points"
+            "title": "Algorithm"
           }
-        }
+        },
+        "layer": [
+          {
+            "mark": {"type": "line", "point": true},
+            "encoding": {
+              "y": {
+                "field": {"repeat": "column"},
+                "type": "quantitative",
+                "aggregate": "median"
+              }
+            }
+          },
+          {
+            "mark": {"type": "errorband", "extent": "iqr"},
+            "encoding": {
+              "y": {"field": {"repeat": "column"}, "type": "quantitative"}
+            }
+          }
+        ]
       }
-    ]
-  }
+    },
+    {
+      "transform": [
+        {
+          "aggregate": [
+            {"op": "median", "field": "placed", "as": "median_p"},
+            {"op": "median", "field": "runtime", "as": "median_r"}
+          ],
+          "groupby": ["chart_width", "labeler"]
+        },
+        {
+          "calculate": "log(datum.median_p) * (datum.labeler === 'particle' ? 1 : -1)",
+          "as": "median_p"
+        },
+        {
+          "calculate": "log(datum.median_r) * (datum.labeler === 'particle' ? 1 : -1)",
+          "as": "median_r"
+        },
+        {
+          "aggregate": [
+            {"op": "sum", "field": "median_p", "as": "p"},
+            {"op": "sum", "field": "median_r", "as": "r"}
+          ],
+          "groupby": ["chart_width"]
+        },
+        {"calculate": "(exp(datum.p)-1)*100", "as": "Number of Labels Placed "},
+        {"calculate": "(exp(datum.r)-1)*100", "as": "Median of Running Time"}
+      ],
+      "title": "Percentage difference between both algorithms",
+      "repeat": {
+        "column": ["Number of Labels Placed ", "Median of Running Time"]
+      },
+      "spec": {
+        "height": 120,
+        "encoding": {
+          "x": {
+            "field": "chart_width",
+            "type": "quantitative",
+            "title": "Chart width and height"
+          }
+        },
+        "layer": [
+          {
+            "mark": {"type": "line", "point": true},
+            "encoding": {
+              "y": {"field": {"repeat": "column"}, "type": "quantitative"},
+              "color": {"value": "darkgrey"}
+            }
+          },
+          {
+            "mark": {"type": "text", "baseline": "bottom", "dy": -4, "dx": -5},
+            "encoding": {
+              "y": {"field": {"repeat": "column"}, "type": "quantitative"},
+              "text": {
+                "field": {"repeat": "column"},
+                "type": "quantitative",
+                "format": ".1f"
+              },
+              "color": {"value": "black"}
+            }
+          }
+        ]
+      }
+    }
+  ]
 }
