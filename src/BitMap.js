@@ -13,7 +13,7 @@ var MOD = 0x1f;
 var SIZE = 0x20
 
 
-export function BitMap(_width, _height) {
+export function BitMap(_width, _height, _minTextHeight) {
   // this.pixelSize = ~~(Math.min(_width, _height) / 1000.0);
   // this.pixelSize = this.pixelSize >= 1 ? this.pixelSize : 1;
   this.pixelSize = 1;
@@ -21,6 +21,7 @@ export function BitMap(_width, _height) {
   // this.height = ~~((_height + this.pixelSize) / this.pixelSize);
   this.width = _width;
   this.height = _height;
+  this.vSkip = _minTextHeight > 1 ? _minTextHeight - 1 : 1;
   this.array = new Uint32Array(~~(((this.width * this.height) + SIZE) / SIZE));
 
   this.markScaled = function (x, y) {
@@ -79,7 +80,7 @@ export function BitMap(_width, _height) {
   this.setAllScaled = function (sx, sy, ex, ey) {
     var from, to,
         dFrom, dTo;
-    for (; sy <= ey; sy++) {
+    for (; sy < ey; sy += this.vSkip) {
       from = (sy * this.width) + sx;
       to = (sy * this.width) + ex;
       dFrom = from >>> DIV;
@@ -93,6 +94,20 @@ export function BitMap(_width, _height) {
         for (var i = dFrom + 1; i < dTo; i++) {
           this.array[i] = ~0x0;
         }
+      }
+    }
+    from = (ey * this.width) + sx;
+    to = (ey * this.width) + ex;
+    dFrom = from >>> DIV;
+    dTo = to >>> DIV;
+    if (dFrom === dTo) {
+      this.array[dFrom] |= right0[from & MOD] & right1[(to & MOD) + 1];
+    } else {
+      this.array[dFrom] |= right0[from & MOD];
+      this.array[dTo] |= right1[(to & MOD) + 1];
+
+      for (i = dFrom + 1; i < dTo; i++) {
+        this.array[i] = ~0x0;
       }
     }
   }

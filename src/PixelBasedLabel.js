@@ -4,14 +4,18 @@ import { getBoundary, labelWidth } from './Common';
 
 export function placeLabels(data, size, padding, avoidMarksCtx) {
   var width = 0, height = 0,
-      bitMaps = {};
+      bitMaps = {}, n = data.length,
+      minTextHeight = -1;
 
   width = size[0];
   height = size[1];
 
   // var before;
   // before = performance.now();
-  bitMaps.mark = getMarkBitMap(data, width, height, avoidMarksCtx);
+  for (var i = 0; i < n; i++) {
+    minTextHeight = data[i].textHeight < minTextHeight ? data[i].textHeight : minTextHeight;
+  }
+  bitMaps.mark = getMarkBitMap(data, width, height, avoidMarksCtx, minTextHeight);
   // bitMaps.mark.write("canvas", width, height);
 
   data.forEach(function(d) {
@@ -94,9 +98,9 @@ function checkCollision(b, bitMap) {
   return bitMap.getAllScaled(b.startX, b.startY, b.endX, b.endY);
 }
 
-function getMarkBitMap(data, width, height, avoidMarksCtx) {
+function getMarkBitMap(data, width, height, avoidMarksCtx, minTextHeight) {
   if (!data.length) return null;
-  var bitMap = new BitMap(width, height);
+  var bitMap = new BitMap(width, height, minTextHeight);
 
   data.forEach(function(d) {
     bitMap.mark(d.x, d.y);

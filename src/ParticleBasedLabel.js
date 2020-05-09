@@ -4,7 +4,7 @@ import { getBoundary, labelWidth } from './Common';
 
 export function placeLabels(data, size, padding, avoidMarksCtx) {
   var width = 0, height = 0,
-      bins = {},
+      bins = {}, n = data.length,
       minTextWidth = Number.MAX_SAFE_INTEGER, 
       minTextHeight = Number.MAX_SAFE_INTEGER;
 
@@ -13,16 +13,17 @@ export function placeLabels(data, size, padding, avoidMarksCtx) {
 
   // var before;
   // before = performance.now();
-  data.forEach(function(d) {
+  for (var i = 0; i < n; i++) {
+    var d = data[i];
     var datum = d.datum;
     d.textWidth = labelWidth(datum.text, datum.fontSize, datum.font);
     minTextWidth = d.textWidth < minTextWidth ? d.textWidth : minTextWidth;
     minTextHeight = d.textHeight < minTextHeight ? d.textHeight : minTextHeight;
-  });
+  }
   // todo: write avoidMarksCtx to bins
   bins.mark = getMarkBin(data, width, height, minTextWidth, minTextHeight, avoidMarksCtx);
   // bins.mark.write("canvas", width, height);
-  console.log(process);
+  // console.log(process);
   // console.log(process.memoryUsage());
   // var k = "strin";
   // console.log(process.memoryUsage());
