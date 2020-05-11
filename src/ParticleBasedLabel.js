@@ -148,14 +148,24 @@ function getMarkBin(data, width, height, minTextWidth, minTextHeight, avoidMarks
   );
 
   var x, y;
+  var rightMost, bottomMost;
   for (y = 0; y < height; y++) {
     for (x = 0; x < width; x++) {
       if (buffer[y * width + x]) {
-        bin.add(x, y);
-        // bin.add(x-0.5, y-0.5);
-        // bin.add(x-0.5, y+0.5);
-        // bin.add(x+0.5, y-0.5);
-        // bin.add(x+0.5, y+0.5);
+        // bin.add(x, y);
+        bin.add(x-0.5, y-0.5);
+        bottomMost = y === height - 1 || !buffer[(y+1) * width + x];
+        rightMost = x === width - 1 || !buffer[y * width + x + 1];
+        if (bottomMost) {
+          bin.add(x-0.5, y+0.5);
+          if (rightMost) {
+            bin.add(x+0.5, y+0.5);
+          }
+        }
+        if (rightMost) { 
+          bin.add(x+0.5, y-0.5);
+        }
+        
       }
     }
   }
