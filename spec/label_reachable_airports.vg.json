@@ -116,7 +116,7 @@
             "fill": {"value": "gray"},
             "x": {"field": "layer_1_x"},
             "y": {"field": "layer_1_y"},
-            "size": {"value": 5},
+            "size": {"value": 4},
             "shape": {"value": "circle"}
           }
         }
@@ -159,9 +159,9 @@
           "enter": {
             "x": {"field": "x"},
             "y": {"field": "y"},
-            "fill": {"value": "red"},
+            "fill": {"value": "firebrick"},
             "text": {"field": "datum.datum.name"},
-            "fontSize": {"value": 12}
+            "fontSize": {"value": 7}
           }
         },
         "transform": [{
@@ -180,8 +180,10 @@
             "y": {"field": "y0"},
             "x2": {"field": "x1"},
             "y2": {"field": "y1"},
-            "opacity": {"value": 0.1},
-            "fill": {"field": "fill"}
+            "fillOpacity": {"value": 0.1},
+            "fill": {"field": "fill"},
+            "strokeOpacity": {"value": 0.3},
+            "stroke": {"field": "fill"}
           }
         }
       },
@@ -193,9 +195,9 @@
           "enter": {
             "x": {"field": "x"},
             "y": {"field": "y"},
-            "fill": {"value": "black"},
+            "fill": {"value": "teal"},
             "text": {"field": "datum.name"},
-            "fontSize": {"value": 7}
+            "fontSize": {"value": 5}
           }
         },
         "transform": [{
@@ -214,8 +216,10 @@
             "y": {"field": "y0"},
             "x2": {"field": "x1"},
             "y2": {"field": "y1"},
-            "opacity": {"value": 0.1},
-            "fill": {"field": "fill"}
+            "fillOpacity": {"value": 0.1},
+            "fill": {"field": "fill"},
+            "strokeOpacity": {"value": 0.3},
+            "stroke": {"field": "fill"}
           }
         }
       }

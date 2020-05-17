@@ -24,7 +24,7 @@
     "test": "tape 'test/**/*-test.js' && eslint index.js src",
     "prepublishOnly": "npm run build",
     "postpublish": "git push && git push --tags && zip -j build/label.zip -- LICENSE README.md build/label.js build/label.min.js",
-    "bench": "npm build && python -m http.server"
+    "bench": "yarn build && python -m http.server"
   },
   "dependencies": {
     "vega-canvas": "^1.1.0",

@@ -14,14 +14,19 @@ var spec = JSON.parse(jsonText);
 
 var sizes = [1000, 2000, 3000, 4000, 5000];
 
+var hwRatio = 500 / 800;
+
 function render(sizeItr) {
   var size = sizes[sizeItr];
 
+  var height = size * hwRatio;
   spec["width"] = size;
-  spec["height"] = size;
-  spec["marks"][4]["transform"][0]["size"] = [size, size, {}];
-  spec["marks"][6]["transform"][0]["size"] = [size, size, {}];
+  spec["height"] = height;
+  spec["padding"] = 5 * size / 1000;
+  spec["marks"][4]["transform"][0]["size"] = [size, height, {}];
+  spec["marks"][6]["transform"][0]["size"] = [size, height, {}];
   spec["marks"][2]["encode"]["update"]["strokeWidth"]["value"] = 1 * size / 1000;
+  spec["marks"][1]["encode"]["update"]["size"]["value"] = 4 * size / 1000;
   spec["marks"][3]["encode"]["update"]["size"]["value"] = 6 * size / 1000;
   spec["marks"][4]["encode"]["enter"]["fontSize"]["value"] = 7 * size / 1000;
   spec["marks"][6]["encode"]["enter"]["fontSize"]["value"] = 5 * size / 1000;
@@ -35,7 +40,7 @@ function render(sizeItr) {
   if (sizeItr >= sizes.length) {
     console.log("done");
   } else {
-    setTimeout(render, 60000, sizeItr);
+    setTimeout(render, 15000, sizeItr);
   }
 }
 
