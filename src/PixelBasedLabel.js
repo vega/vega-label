@@ -68,7 +68,7 @@ function findAvailablePosition(datum, bitMaps, padding, checkAvailability) {
       searchBound = getSearchBound(datum.boundary);
 
       if (outOfBound(searchBound, bitMaps.mark)) continue;
-      
+
       datum.currentPosition = [i, j];
       datum.searchBound = searchBound;
       checkAvailability();

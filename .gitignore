@@ -8,3 +8,4 @@ dist
 *.class
 runtime_test
 test_code
+data/
