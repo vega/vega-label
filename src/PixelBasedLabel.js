@@ -102,10 +102,6 @@ function getMarkBitMap(data, width, height, avoidMarksCtx, minTextHeight) {
   if (!data.length) return null;
   var bitMap = new BitMap(width, height, minTextHeight);
 
-  data.forEach(function(d) {
-    bitMap.mark(d.x, d.y);
-  });
-
   var buffer = new Uint32Array(
     avoidMarksCtx.getImageData(0, 0, width, height).data.buffer
   );

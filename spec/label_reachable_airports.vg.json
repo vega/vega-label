@@ -167,7 +167,7 @@
         "transform": [{
           "type": "label",
           "size": [500, 300],
-          "avoidMarks": ["reachable_lines"]
+          "avoidMarks": ["reachable_lines", "reachable_endpoints"]
         }]
       },
       {
@@ -203,7 +203,7 @@
         "transform": [{
           "type": "label",
           "size": [500, 300],
-          "avoidMarks": ["reachable_lines", "label_endpoints_background", "reachable_endpoints", "us_map"]
+          "avoidMarks": ["reachable_lines", "label_endpoints_background", "reachable_endpoints", "us_map", "airport_points"]
         }]
       },
       {

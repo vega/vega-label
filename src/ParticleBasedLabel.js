@@ -142,10 +142,6 @@ function getMarkBin(data, width, height, maxTextWidth, maxTextHeight, avoidMarks
   if (!data.length) return null;
   var bin = new ArrayMap(width, height, maxTextWidth, maxTextHeight);
 
-  data.forEach(function(d) {
-    bin.add(d.x, d.y);
-  });
-
   var buffer = new Uint32Array(
     avoidMarksCtx.getImageData(0, 0, width, height).data.buffer
   );

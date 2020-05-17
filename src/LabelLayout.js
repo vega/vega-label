@@ -27,6 +27,8 @@ export default function() {
     var result = config;
     result.num_point = markData.length;
     result.chart_width = size[0];
+    
+    var padding = 2 * Math.sqrt(markData[0].datum.size / Math.PI);
 
     for (var j = 0; j < LABELERS.length; j++) {
       labeler = LABELERS[j];
