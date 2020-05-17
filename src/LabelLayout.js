@@ -10,8 +10,8 @@ var PLACE_LABELS = {
   "pixel": pixel.placeLabels,
   "particle": particle.placeLabels,
 };
-// var LABELERS = [ "pixel", "particle"];
-var LABELERS = [ "particle", "pixel"];
+var LABELERS = [ "pixel", "particle"];
+// var LABELERS = [ "particle", "pixel"];
 
 export default function() {
   var markData = [],
