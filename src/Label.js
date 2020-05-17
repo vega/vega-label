@@ -3,7 +3,7 @@ import cloud from './LabelLayout';
 import {Transform} from 'vega-dataflow';
 import {inherits, isFunction} from 'vega-util';
 
-var Output = ['x', 'y', 'z', 'fill', 'align', 'baseline'];
+var Output = ['x', 'y', 'z', 'fill', 'align', 'baseline', 'textWidth', 'x0', 'y0', 'x1', 'y1'];
 
 var Params = [];
 
@@ -55,14 +55,23 @@ prototype.transform = function(_, pulse) {
   // var t2 = new Date();
   // console.log(t2.getTime() - t1.getTime());
 
+  var w, h;
   labels.forEach(function(l) {
     t = l.datum;
+    w = l.textWidth / 2.0;
+    h = l.textHeight / 2.0;
     t[as[0]] = l.x;
     t[as[1]] = l.y;
     t[as[2]] = l.z
     t[as[3]] = l.fill;
     t[as[4]] = 'center';
     t[as[5]] = 'middle';
+    t[as[6]] = l.textWidth;
+    t[as[7]] = l.x - w;
+    t[as[8]] = l.y - h;
+    t[as[9]] = l.x + w;
+    t[as[10]] = l.y + h;
+
   });
 
   return pulse.reflow(mod).modifies(as);

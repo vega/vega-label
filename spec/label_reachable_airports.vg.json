@@ -171,6 +171,21 @@
         }]
       },
       {
+        "name": "label_endpoints_background",
+        "type": "rect",
+        "from": {"data": "label_endpoints"},
+        "encode": {
+          "enter": {
+            "x": {"field": "x0"},
+            "y": {"field": "y0"},
+            "x2": {"field": "x1"},
+            "y2": {"field": "y1"},
+            "opacity": {"value": 0.1},
+            "fill": {"field": "fill"}
+          }
+        }
+      },
+      {
         "name": "label_airports",
         "type": "text",
         "from": {"data": "airport_points"},
@@ -186,8 +201,23 @@
         "transform": [{
           "type": "label",
           "size": [500, 300],
-          "avoidMarks": ["reachable_lines", "label_endpoints", "reachable_endpoints", "us_map"]
+          "avoidMarks": ["reachable_lines", "label_endpoints_background", "reachable_endpoints", "us_map"]
         }]
+      },
+      {
+        "name": "label_airports_background",
+        "type": "rect",
+        "from": {"data": "label_airports"},
+        "encode": {
+          "enter": {
+            "x": {"field": "x0"},
+            "y": {"field": "y0"},
+            "x2": {"field": "x1"},
+            "y2": {"field": "y1"},
+            "opacity": {"value": 0.1},
+            "fill": {"field": "fill"}
+          }
+        }
       }
     ]
   }
