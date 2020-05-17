@@ -1,6 +1,6 @@
 /*eslint no-unused-vars: "warn"*/
 import { BitMap } from './BitMap';
-import { getBoundary, labelWidth } from './Common';
+import { getBoundary, labelWidth, POSITIONS_LEN, POSITIONS } from './Common';
 
 export function placeLabels(data, size, padding, avoidMarksCtx) {
   var width = 0, height = 0,
@@ -20,7 +20,6 @@ export function placeLabels(data, size, padding, avoidMarksCtx) {
 
   data.forEach(function(d) {
     d.z = 1;
-    d.currentPosition = [-1, -1];
     findAvailablePosition(d, bitMaps, padding, function() {
       if (!checkCollision(d.searchBound, bitMaps.mark)) {
         d.labelPlaced = true;
@@ -43,37 +42,35 @@ export function placeLabels(data, size, padding, avoidMarksCtx) {
 }
 
 function findAvailablePosition(datum, bitMaps, padding, checkAvailability) {
-  var i, j,
-      searchBound,
-      initJ = datum.currentPosition[1];
+  var i,
+      dx, dy,
+      searchBound;
 
   datum.labelPlaced = false;
   datum.textWidth = 1;
   var textWidthCalculated = false;
-  for (i = datum.currentPosition[0]; i <= 1 && !datum.labelPlaced; i++) {
-    for (j = initJ; j <= 1 && !datum.labelPlaced; j++) {
-      if (!i && !j) continue;
-      if (!textWidthCalculated) {
-        datum.boundary = getBoundary(datum, i, j, padding);
-        searchBound = getSearchBound(datum.boundary);
-        if (checkCollision(searchBound, bitMaps.mark)) {
-          continue;
-        } else {
-          textWidthCalculated = true;
-          datum.textWidth = labelWidth(datum.datum.text, datum.datum.fontSize, datum.datum.font);
-        }
-      }
-
-      datum.boundary = getBoundary(datum, i, j, padding);
+  for (i = 0; i < POSITIONS_LEN && !datum.labelPlaced; i++) {
+    dx = POSITIONS[i][0];
+    dy = POSITIONS[i][1];
+    if (!textWidthCalculated) {
+      datum.boundary = getBoundary(datum, dx, dy, padding);
       searchBound = getSearchBound(datum.boundary);
-
-      if (outOfBound(searchBound, bitMaps.mark)) continue;
-
-      datum.currentPosition = [i, j];
-      datum.searchBound = searchBound;
-      checkAvailability();
+      if (checkCollision(searchBound, bitMaps.mark)) {
+        continue;
+      } else {
+        textWidthCalculated = true;
+        datum.textWidth = labelWidth(datum.datum.text, datum.datum.fontSize, datum.datum.font);
+      }
     }
-    initJ = -1;
+
+    datum.boundary = getBoundary(datum, dx, dy, padding);
+    searchBound = getSearchBound(datum.boundary);
+
+    if (outOfBound(searchBound, bitMaps.mark)) continue;
+
+    datum.currentPosition = [dx, dy];
+    datum.searchBound = searchBound;
+    checkAvailability();
   }
 }
 

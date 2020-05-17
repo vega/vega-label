@@ -1,6 +1,6 @@
 /*eslint no-unused-vars: "warn"*/
 /*eslint no-console: "warn"*/
-import { labelWidth } from './Common';
+import { labelWidth, getAnchor } from './Common';
 import * as particle from './ParticleBasedLabel';
 import * as pixel from './PixelBasedLabel';
 import { drawAvoidMarks } from './markBitmaps';
@@ -51,6 +51,13 @@ export default function() {
         
         ret = PLACE_LABELS[labeler](data, size, padding, avoidMarksCtx);
         result.runtime = performance.now() - before;
+        ret.forEach(function(d) {
+          if ('currentPosition' in d) {
+            var anchor = getAnchor(d, d.currentPosition[0], d.currentPosition[1], padding);
+            d.xAnchor = anchor.xAnchor;
+            d.yAnchor = anchor.yAnchor;
+          }
+        });
         result.placed = ret.reduce(function(total, d) {
           return total + (d.fill !== null);
         }, 0);

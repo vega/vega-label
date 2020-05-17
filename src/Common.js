@@ -11,9 +11,8 @@ export function getBoundary(d, dx, dy, padding) {
       y = d.y,
       w = d.textWidth,
       h = d.textHeight;
-  var size = (dy * dy) + (dx * dx),
-      _y = y + (h * dy / 2.0) + (padding * dy / size),
-      _x = x + (w * dx / 2.0) + (padding * dx / size);
+  var _y = y + (h * dy / 2.0) + (padding * dy),
+      _x = x + (w * dx / 2.0) + (padding * dx);
   return {
     y: _y - (h / 2.0),
     yc: _y,
@@ -23,3 +22,38 @@ export function getBoundary(d, dx, dy, padding) {
     x2: _x + (w / 2.0),
   }
 }
+
+export function getAnchor(d, dx, dy, padding) {
+  var x = d.datum.x,
+      y = d.datum.y;
+  return {
+    xAnchor: x + padding * dx,
+    yAnchor: y + padding * dy,
+  };
+}
+
+
+var positions = [
+  [-1, 1],
+  [-1, -1],
+  [1, -1],
+  [1, 1],
+  [1, 0],
+  [0, -1],
+  [-1, 0],
+  [0, 1],
+];
+
+for (var i = 0.1; i < 1; i += 0.1) {
+  positions.push([1, i]);
+  positions.push([-1, i]);
+  positions.push([i, 1]);
+  positions.push([i, -1]);
+  positions.push([1, -i]);
+  positions.push([-1, -i]);
+  positions.push([-i, 1]);
+  positions.push([-i, -1]);
+}
+
+export var POSITIONS = positions;
+export var POSITIONS_LEN = positions.length;

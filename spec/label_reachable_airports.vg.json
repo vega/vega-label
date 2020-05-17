@@ -110,10 +110,11 @@
         "type": "symbol",
         "style": ["circle"],
         "from": {"data": "data_0"},
+        "zindex": 2,
         "encode": {
           "update": {
-            "opacity": {"value": 0.3},
-            "fill": {"value": "gray"},
+            "opacity": {"value": 1},
+            "fill": {"value": "lightgray"},
             "x": {"field": "layer_1_x"},
             "y": {"field": "layer_1_y"},
             "size": {"value": 4},
@@ -126,6 +127,7 @@
         "type": "rule",
         "style": ["rule"],
         "from": {"data": "source_2"},
+        "zindex": 2,
         "encode": {
           "update": {
             "stroke": {"value": "black"},
@@ -142,6 +144,7 @@
         "type": "symbol",
         "style": ["circle"],
         "from": {"data": "reachable_lines"},
+        "zindex": 2,
         "encode": {
           "update": {
             "size": {"value": 6},
@@ -155,6 +158,7 @@
         "name": "label_endpoints",
         "type": "text",
         "from": {"data": "reachable_endpoints"},
+        "zindex": 2,
         "encode": {
           "enter": {
             "x": {"field": "x"},
@@ -174,6 +178,7 @@
         "name": "label_endpoints_background",
         "type": "rect",
         "from": {"data": "label_endpoints"},
+        "zindex": 1,
         "encode": {
           "enter": {
             "x": {"field": "x0"},
@@ -191,6 +196,7 @@
         "name": "label_airports",
         "type": "text",
         "from": {"data": "airport_points"},
+        "zindex": 2,
         "encode": {
           "enter": {
             "x": {"field": "x"},
@@ -210,6 +216,7 @@
         "name": "label_airports_background",
         "type": "rect",
         "from": {"data": "label_airports"},
+        "zindex": 1,
         "encode": {
           "enter": {
             "x": {"field": "x0"},
@@ -218,6 +225,38 @@
             "y2": {"field": "y1"},
             "fillOpacity": {"value": 0.1},
             "fill": {"field": "fill"},
+            "strokeOpacity": {"value": 0.3},
+            "stroke": {"field": "fill"}
+          }
+        }
+      },
+      {
+        "name": "label_airports_rule",
+        "type": "rule",
+        "from": {"data": "label_airports"},
+        "zindex": 1,
+        "encode": {
+          "enter": {
+            "x": {"field": "datum.x"},
+            "y": {"field": "datum.y"},
+            "x2": {"field": "xAnchor"},
+            "y2": {"field": "yAnchor"},
+            "strokeOpacity": {"value": 0.3},
+            "stroke": {"field": "fill"}
+          }
+        }
+      },
+      {
+        "name": "label_endpoints_rule",
+        "type": "rule",
+        "from": {"data": "label_endpoints"},
+        "zindex": 1,
+        "encode": {
+          "enter": {
+            "x": {"field": "datum.x"},
+            "y": {"field": "datum.y"},
+            "x2": {"field": "xAnchor"},
+            "y2": {"field": "yAnchor"},
             "strokeOpacity": {"value": 0.3},
             "stroke": {"field": "fill"}
           }

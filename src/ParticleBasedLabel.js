@@ -1,6 +1,6 @@
 /*eslint no-unused-vars: "warn"*/
 import { ArrayMap } from './ArrayMap';
-import { getBoundary, labelWidth } from './Common';
+import { getBoundary, labelWidth, POSITIONS, POSITIONS_LEN } from './Common';
 
 export function placeLabels(data, size, padding, avoidMarksCtx) {
   var width = 0, height = 0, bins = {}, n = data.length,
@@ -38,7 +38,6 @@ export function placeLabels(data, size, padding, avoidMarksCtx) {
       return;
     }
     d.z = 1;
-    d.currentPosition = [-1, -1];
     findAvailablePosition(d, bins, padding, function() {
       if (!checkCollision(d, d.boundary, d.searchBound, bins.mark)) {
         d.labelPlaced = true;
@@ -60,24 +59,23 @@ export function placeLabels(data, size, padding, avoidMarksCtx) {
 }
 
 function findAvailablePosition(datum, bins, padding, checkAvailability) {
-  var i, j,
-      searchBound,
-      initJ = datum.currentPosition[1];
+  var i,
+      dx, dy,
+      searchBound;
 
   datum.labelPlaced = false;
-  for (i = datum.currentPosition[0]; i <= 1 && !datum.labelPlaced; i++) {
-    for (j = initJ; j <= 1 && !datum.labelPlaced; j++) {
-      if (!i && !j) continue;
-      datum.boundary = getBoundary(datum, i, j, padding);
-      searchBound = getSearchBound(datum.boundary, bins.mark);
+  for (i = 0; i < POSITIONS_LEN && !datum.labelPlaced; i++) {
+    dx = POSITIONS[i][0];
+    dy = POSITIONS[i][1];
 
-      if (outOfBound(searchBound, bins.mark)) continue;
-      
-      datum.currentPosition = [i, j];
-      datum.searchBound = searchBound;
-      checkAvailability();
-    }
-    initJ = -1;
+    datum.boundary = getBoundary(datum, dx, dy, padding);
+    searchBound = getSearchBound(datum.boundary, bins.mark);
+
+    if (outOfBound(searchBound, bins.mark)) continue;
+    
+    datum.currentPosition = [dx, dy];
+    datum.searchBound = searchBound;
+    checkAvailability();
   }
 }
 

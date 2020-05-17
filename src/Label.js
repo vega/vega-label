@@ -3,7 +3,7 @@ import cloud from './LabelLayout';
 import {Transform} from 'vega-dataflow';
 import {inherits, isFunction} from 'vega-util';
 
-var Output = ['x', 'y', 'z', 'fill', 'align', 'baseline', 'textWidth', 'x0', 'y0', 'x1', 'y1'];
+var Output = ['x', 'y', 'z', 'fill', 'align', 'baseline', 'textWidth', 'x0', 'y0', 'x1', 'y1', 'xAnchor', 'yAnchor'];
 
 var Params = [];
 
@@ -71,7 +71,8 @@ prototype.transform = function(_, pulse) {
     t[as[8]] = l.y - h;
     t[as[9]] = l.x + w;
     t[as[10]] = l.y + h;
-
+    t[as[11]] = l.xAnchor;
+    t[as[12]] = l.yAnchor;
   });
 
   return pulse.reflow(mod).modifies(as);
