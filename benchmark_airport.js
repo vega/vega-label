@@ -29,7 +29,8 @@ function render(sizeItr) {
   spec["marks"][6]["transform"][0]["size"] = [size, height, {}];
   
   // line width
-  spec["marks"][2]["encode"]["update"]["strokeWidth"]["value"] = 1 * size / 1000;
+  spec["marks"][0]["encode"]["update"]["strokeWidth"]["value"] = 0.5 * size / 1000;
+  spec["marks"][2]["encode"]["update"]["strokeWidth"]["value"] = 0.5 * size / 1000;
 
   // point radius
   spec["marks"][1]["encode"]["update"]["size"]["value"] = Math.pow(1 * size / 1000, 2) * Math.PI;

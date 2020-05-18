@@ -100,7 +100,11 @@
         "style": ["geoshape"],
         "from": {"data": "source_0"},
         "encode": {
-          "update": {"fill": {"value": null}, "stroke": {"value": "lightgray"}}
+          "update": {
+            "fill": {"value": null},
+            "stroke": {"value": "lightgray"},
+            "strokeWidth": {"value": 1}
+          }
         },
         "transform": [{"type": "geoshape", "projection": "projection"}]
       },
