@@ -31,6 +31,7 @@ export default function() {
     var padding = 2 * Math.sqrt(markData[0].datum.size / Math.PI);
     var labelers = config.noTest ? [LABELERS[0]] : LABELERS;
     var numRecords = config.noText ? 1 : NUM_RECORDS;
+    console.log(avoidMarks);
 
     for (var j = 0; j < labelers.length; j++) {
       labeler = labelers[j];
