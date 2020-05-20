@@ -24,7 +24,9 @@ export function placeLabels(data, size, padding, avoidMarksCtx) {
     maxTextHeight = d.textHeight > maxTextHeight ? d.textHeight : maxTextHeight;
   }
   // todo: write avoidMarksCtx to bins
+  var before = performance.now();
   bins.mark = getMarkBin(data, width, height, maxTextWidth, maxTextHeight, avoidMarksCtx);
+  console.log(performance.now() - before);
   // bins.mark.write("canvas", width, height);
   // console.log(process);
   // console.log(process.memoryUsage());

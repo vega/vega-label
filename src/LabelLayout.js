@@ -29,13 +29,15 @@ export default function() {
     result.chart_width = size[0];
     
     var padding = 2 * Math.sqrt(markData[0].datum.size / Math.PI);
+    var labelers = config.noTest ? [LABELERS[0]] : LABELERS;
+    var numRecords = config.noText ? 1 : NUM_RECORDS;
 
-    for (var j = 0; j < LABELERS.length; j++) {
-      labeler = LABELERS[j];
+    for (var j = 0; j < labelers.length; j++) {
+      labeler = labelers[j];
       result.labeler = labeler;
-      for (var i = 0; i < NUM_RECORDS; i++) {
-        var avoidMarksCtx = drawAvoidMarks(avoidMarks, size[0], size[1]);
+      for (var i = 0; i < numRecords; i++) {
         var before = performance.now();
+        var avoidMarksCtx = drawAvoidMarks(avoidMarks, size[0], size[1]);
         var data = markData.map(function(d) {
           var textHeight = d.fontSize;
           return {
@@ -58,11 +60,14 @@ export default function() {
             d.yAnchor = anchor.yAnchor;
           }
         });
-        result.placed = ret.reduce(function(total, d) {
-          return total + (d.fill !== null);
-        }, 0);
-        result.id = i;
-        console.log(JSON.stringify(result) + ",");
+
+        if (!config.noTest) {
+          result.placed = ret.reduce(function(total, d) {
+            return total + (d.fill !== null);
+          }, 0);
+          result.id = i;
+          console.log(JSON.stringify(result) + ",");
+        }
         // return ret;
       }
     }

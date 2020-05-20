@@ -25,7 +25,7 @@ function render(sizeItr) {
   spec["padding"] = 5 * size / 1000;
   
   // chart size
-  spec["marks"][4]["transform"][0]["size"] = [size, height, {}];
+  spec["marks"][4]["transform"][0]["size"] = [size, height, {noTest: true}];
   spec["marks"][6]["transform"][0]["size"] = [size, height, {}];
   
   // line width

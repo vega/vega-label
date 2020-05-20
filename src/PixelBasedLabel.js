@@ -15,7 +15,9 @@ export function placeLabels(data, size, padding, avoidMarksCtx) {
   for (var i = 0; i < n; i++) {
     minTextHeight = data[i].textHeight < minTextHeight ? data[i].textHeight : minTextHeight;
   }
+  var before = performance.now();
   bitMaps.mark = getMarkBitMap(data, width, height, avoidMarksCtx, minTextHeight);
+  console.log(performance.now() - before);
   // bitMaps.mark.write("canvas", width, height);
 
   data.forEach(function(d) {
