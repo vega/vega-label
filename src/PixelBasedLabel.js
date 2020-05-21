@@ -2,7 +2,7 @@
 import { BitMap } from './BitMap';
 import { getBoundary, labelWidth, POSITIONS_LEN, POSITIONS } from './Common';
 
-export function placeLabels(data, size, padding, avoidMarksCtx) {
+export function placeLabels(data, size, padding, marksInfo, marksRenderer) {
   var width = 0, height = 0,
       bitMaps = {}, n = data.length,
       minTextHeight = -1;
@@ -15,9 +15,9 @@ export function placeLabels(data, size, padding, avoidMarksCtx) {
   for (var i = 0; i < n; i++) {
     minTextHeight = data[i].textHeight < minTextHeight ? data[i].textHeight : minTextHeight;
   }
-  var before = performance.now();
-  bitMaps.mark = getMarkBitMap(data, width, height, avoidMarksCtx, minTextHeight);
-  console.log(performance.now() - before);
+  // var before = performance.now();
+  bitMaps.mark = getMarkBitMap(data, width, height, marksInfo, marksRenderer, minTextHeight);
+  // console.log(performance.now() - before);
   // bitMaps.mark.write("canvas", width, height);
 
   data.forEach(function(d) {
@@ -97,27 +97,34 @@ function checkCollision(b, bitMap) {
   return bitMap.getAllScaled(b.startX, b.startY, b.endX, b.endY);
 }
 
-function getMarkBitMap(data, width, height, avoidMarksCtx, minTextHeight) {
+function getMarkBitMap(data, width, height, marksInfo, marksRenderer, minTextHeight) {
   if (!data.length) return null;
   var bitMap = new BitMap(width, height, minTextHeight);
+  var i, len;
 
-  var buffer = new Uint32Array(
-    avoidMarksCtx.getImageData(0, 0, width, height).data.buffer
-  );
+  if (marksRenderer === 'image') {
+    var buffer = new Uint32Array(
+      marksInfo.getImageData(0, 0, width, height).data.buffer
+    );
 
-  var i,
-      len = buffer.length,
-      from = 0;
-  for (i = 0; i < len; i++) {
-    if (!buffer[i]) {
-      if (from !== i) {
-        bitMap.setRange(from, i - 1);
+    var from = 0;
+    len = buffer.length;
+    for (i = 0; i < len; i++) {
+      if (!buffer[i]) {
+        if (from !== i) {
+          bitMap.setRange(from, i - 1);
+        }
+        from = i + 1;
       }
-      from = i + 1;
     }
-  }
-  if (from !== len) {
-    bitMap.setRange(from, len - 1);
+    if (from !== len) {
+      bitMap.setRange(from, len - 1);
+    }
+  } else {
+    len = marksInfo.length;
+    for (i = 0; i < len; i++) {
+      bitMap.mark(marksInfo[i][0], marksInfo[i][1]);
+    }
   }
 
   return bitMap;

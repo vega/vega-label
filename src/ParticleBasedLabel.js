@@ -2,7 +2,7 @@
 import { ArrayMap } from './ArrayMap';
 import { getBoundary, labelWidth, POSITIONS, POSITIONS_LEN } from './Common';
 
-export function placeLabels(data, size, padding, avoidMarksCtx) {
+export function placeLabels(data, size, padding, marksInfo, marksRenderer) {
   var width = 0, height = 0, bins = {}, n = data.length,
       minTextWidth = Number.MAX_SAFE_INTEGER,
       minTextHeight = Number.MAX_SAFE_INTEGER,
@@ -23,10 +23,10 @@ export function placeLabels(data, size, padding, avoidMarksCtx) {
     maxTextWidth = d.textWidth > maxTextWidth ? d.textWidth : maxTextWidth;
     maxTextHeight = d.textHeight > maxTextHeight ? d.textHeight : maxTextHeight;
   }
-  // todo: write avoidMarksCtx to bins
-  var before = performance.now();
-  bins.mark = getMarkBin(data, width, height, maxTextWidth, maxTextHeight, avoidMarksCtx);
-  console.log(performance.now() - before);
+  // todo: write marksInfo to bins
+  // var before = performance.now();
+  bins.mark = getMarkBin(data, width, height, maxTextWidth, maxTextHeight, marksInfo, marksRenderer);
+  // console.log(performance.now() - before);
   // bins.mark.write("canvas", width, height);
   // console.log(process);
   // console.log(process.memoryUsage());
@@ -138,20 +138,27 @@ function isIn(bound, point) {
          (bound.y <= point[1] && point[1] <= bound.y2);
 }
 
-function getMarkBin(data, width, height, maxTextWidth, maxTextHeight, avoidMarksCtx) {
+function getMarkBin(data, width, height, maxTextWidth, maxTextHeight, marksInfo, marksRenderer) {
   if (!data.length) return null;
   var bin = new ArrayMap(width, height, maxTextWidth, maxTextHeight);
 
-  var buffer = new Uint32Array(
-    avoidMarksCtx.getImageData(0, 0, width, height).data.buffer
-  );
+  if (marksRenderer === 'image') {
+    var buffer = new Uint32Array(
+      marksInfo.getImageData(0, 0, width, height).data.buffer
+    );
 
-  var x, y;
-  for (y = 0; y < height; y++) {
-    for (x = 0; x < width; x++) {
-      if (buffer[y * width + x]) {
-        bin.add(x, y);
+    var x, y;
+    for (y = 0; y < height; y++) {
+      for (x = 0; x < width; x++) {
+        if (buffer[y * width + x]) {
+          bin.add(x, y);
+        }
       }
+    }
+  } else {
+    var i, len = marksInfo.length;
+    for (i = 0; i < len; i++) {
+      bin.add(marksInfo[i][0], marksInfo[i][1]);
     }
   }
   return bin;

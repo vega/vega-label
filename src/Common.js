@@ -44,16 +44,16 @@ var positions = [
   [0, 1],
 ];
 
-for (var i = 0.1; i < 1; i += 0.1) {
-  positions.push([1, i]);
-  positions.push([-1, i]);
-  positions.push([i, 1]);
-  positions.push([i, -1]);
-  positions.push([1, -i]);
-  positions.push([-1, -i]);
-  positions.push([-i, 1]);
-  positions.push([-i, -1]);
-}
+// for (var i = 0.1; i < 1; i += 0.1) {
+//   positions.push([1, i]);
+//   positions.push([-1, i]);
+//   positions.push([i, 1]);
+//   positions.push([i, -1]);
+//   positions.push([1, -i]);
+//   positions.push([-1, -i]);
+//   positions.push([-i, 1]);
+//   positions.push([-i, -1]);
+// }
 
 export var POSITIONS = positions;
 export var POSITIONS_LEN = positions.length;

@@ -4,14 +4,24 @@ import { labelWidth, getAnchor } from './Common';
 import * as particle from './ParticleBasedLabel';
 import * as pixel from './PixelBasedLabel';
 import { drawAvoidMarks } from './markBitmaps';
+import { pointCoverAvoidMarks } from './markArrayMap';
 
 var NUM_RECORDS = 10;
+
 var PLACE_LABELS = {
   "pixel": pixel.placeLabels,
   "particle": particle.placeLabels,
 };
 var LABELERS = [ "pixel", "particle"];
 // var LABELERS = [ "particle", "pixel"];
+
+var RENDER_MARKS = {
+  "image": drawAvoidMarks,
+  "vector": pointCoverAvoidMarks,
+};
+
+// var MARKS_RENDERERS = ["image", "vector"];
+var MARKS_RENDERERS = ["vector", "image"];
 
 export default function() {
   var markData = [],
@@ -20,7 +30,8 @@ export default function() {
       label = {},
       config,
       avoidMarks = [],
-      labeler;
+      labeler,
+      marksRenderer;
 
   label.layout = function() {
     var ret;
@@ -29,47 +40,58 @@ export default function() {
     result.chart_width = size[0];
     
     var padding = 2 * Math.sqrt(markData[0].datum.size / Math.PI);
-    var labelers = config.noTest ? [LABELERS[0]] : LABELERS;
-    var numRecords = config.noText ? 1 : NUM_RECORDS;
-    console.log(avoidMarks);
+    var labelers, numRecords, marksRenderers;
+    if (config.noTest) {
+      numRecords = 1;
+      labelers = [LABELERS[0]];
+      marksRenderers = [MARKS_RENDERERS[0]];
+    } else {
+      numRecords = NUM_RECORDS;
+      labelers = LABELERS;
+      marksRenderers = MARKS_RENDERERS;
+    }
 
-    for (var j = 0; j < labelers.length; j++) {
-      labeler = labelers[j];
-      result.labeler = labeler;
-      for (var i = 0; i < numRecords; i++) {
-        var before = performance.now();
-        var avoidMarksCtx = drawAvoidMarks(avoidMarks, size[0], size[1]);
-        var data = markData.map(function(d) {
-          var textHeight = d.fontSize;
-          return {
-            fontSize: d.fontSize,
-            x: d.datum.x,
-            y: d.datum.y,
-            textWidth: null,
-            textHeight: textHeight,
-            fill: d.fill,
-            datum: d
-          };
-        });
-        
-        ret = PLACE_LABELS[labeler](data, size, padding, avoidMarksCtx);
-        result.runtime = performance.now() - before;
-        ret.forEach(function(d) {
-          if ('currentPosition' in d) {
-            var anchor = getAnchor(d, d.currentPosition[0], d.currentPosition[1], padding);
-            d.xAnchor = anchor.xAnchor;
-            d.yAnchor = anchor.yAnchor;
+    for (var i0 = 0; i0 < marksRenderers.length; i0++) {
+      marksRenderer = marksRenderers[i0];
+      result.marksRenderer = marksRenderer;
+      for (var i1 = 0; i1 < labelers.length; i1++) {
+        labeler = labelers[i1];
+        result.labeler = labeler;
+        for (var i2 = 0; i2 < numRecords; i2++) {
+          var before = performance.now();
+          var marksInfo = RENDER_MARKS[marksRenderer](avoidMarks, size[0], size[1]);
+          var data = markData.map(function(d) {
+            var textHeight = d.fontSize;
+            return {
+              fontSize: d.fontSize,
+              x: d.datum.x,
+              y: d.datum.y,
+              textWidth: null,
+              textHeight: textHeight,
+              fill: d.fill,
+              datum: d
+            };
+          });
+          
+          ret = PLACE_LABELS[labeler](data, size, padding, marksInfo, marksRenderer);
+          result.runtime = performance.now() - before;
+          ret.forEach(function(d) {
+            if ('currentPosition' in d) {
+              var anchor = getAnchor(d, d.currentPosition[0], d.currentPosition[1], padding);
+              d.xAnchor = anchor.xAnchor;
+              d.yAnchor = anchor.yAnchor;
+            }
+          });
+
+          if (!config.noTest) {
+            result.placed = ret.reduce(function(total, d) {
+              return total + (d.fill !== null);
+            }, 0);
+            result.id = i2;
+            console.log(JSON.stringify(result) + ",");
           }
-        });
-
-        if (!config.noTest) {
-          result.placed = ret.reduce(function(total, d) {
-            return total + (d.fill !== null);
-          }, 0);
-          result.id = i;
-          console.log(JSON.stringify(result) + ",");
+          // return ret;
         }
-        // return ret;
       }
     }
     return ret;

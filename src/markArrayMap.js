@@ -1,18 +1,20 @@
+/*eslint no-unused-vars: "warn"*/
 function pointCoverLine(avoidMark, particles) {
   var i, j, n = avoidMark.length;
-  var x1, x2, y1, y2, vx, vy, pvx, pvy, item;
+  var x1, x2, y1, y2, vx, vy, pvx, pvy, item, size;
   var halfWidth = avoidMark[0].strokeWidth / 2.0;
   for (i = 0; i < n; i++) {
     item = avoidMark[i];
-    if (item.y1 === item.y2) {
-      if (item.x1 < item.x2) {
-        x1 = item.x1;
+    var count = particles.length;
+    if (item.y === item.y2) {
+      if (item.x < item.x2) {
+        x1 = item.x;
         x2 = item.x2;
       } else {
         x1 = item.x2;
-        x2 = item.x1;
+        x2 = item.x;
       }
-      y1 = item.y1;
+      y1 = item.y;
 
       for (j = 0; x1 + j < x2; j++) {
         particles.push([x1 + j, y1 + halfWidth]);
@@ -23,21 +25,23 @@ function pointCoverLine(avoidMark, particles) {
       continue;
     }
 
-    if (item.y1 < item.y2) {
-      x1 = item.x1;
+    if (item.y < item.y2) {
+      x1 = item.x;
       x2 = item.x2;
-      y1 = item.y1;
+      y1 = item.y;
       y2 = item.y2;
     } else {
       x1 = item.x2;
-      x2 = item.x1;
+      x2 = item.x;
       y1 = item.y2;
-      y2 = item.y1;
+      y2 = item.y;
     }
 
     vx = x2 - x1;
     vy = y2 - y1;
-    size = (vx * vx) + (vy * vy);
+    size = Math.sqrt((vx * vx) + (vy * vy));
+    vx /= size;
+    vy /= size;
     pvx = -vy * halfWidth;
     pvy = vx * halfWidth;
 
@@ -58,10 +62,10 @@ var CIRCLE_PARTS = [
 ];
 var CIRCLE_PARTS_LEN = CIRCLE_PARTS.length;
 function pointCoverCircle(avoidMark, particles) {
-  var i, ang, angEnd, vang, r, n = avoidmark.length;
+  var i, j, ang, angEnd, vang, r, n = avoidMark.length;
   var item, x, y, x0, y0;
   for (i = 0; i < n; i++) {
-    item = avoidmark[i];
+    item = avoidMark[i];
     r = Math.sqrt(item.size / Math.PI);
     x0 = item.x;
     y0 = item.y;
@@ -79,24 +83,28 @@ function pointCoverCircle(avoidMark, particles) {
 }
 
 function pointCoverRect(avoidMark, particles) {
-  var i, j, k, n = avoidmark.length;
+  var i, j, k, n = avoidMark.length;
   var x1, x2, y1, y2, item;
   for (i = 0; i < n; i++) {
-    item = avoidmark[i];
-    if (item.y1 < item.y2) {
-      y1 = item.y1;
+    item = avoidMark[i];
+    if (!item.fill) {
+      continue;
+    }
+
+    if (item.y < item.y2) {
+      y1 = item.y;
       y2 = item.y2;
     } else {
       y1 = item.y2;
-      y2 = item.y1;
+      y2 = item.y;
     }
 
-    if (item.x1 < item.x2) {
-      x1 = item.x1;
+    if (item.x < item.x2) {
+      x1 = item.x;
       x2 = item.x2;
     } else {
       x1 = item.x2;
-      x2 = item.x1;
+      x2 = item.x;
     }
 
     // TODO: incoperate label width/height
@@ -116,19 +124,30 @@ function pointCoverRect(avoidMark, particles) {
 }
 
 function pointCoverGeo(avoidMark, particles) {
-  var i, n = avoidmark.length;
-  var item, x, y, strokeWidth, coordinates, coordinatesLen;
-  for (i = 0; i < n; i++) {
-    item = avoidmark[i];
-    strokeWidth = item.strokeWidth;
-    coordinates = item.datum.geometry.coordinated;
-    coordinatesLen = coordinates.length;
-
-    // TODO: add line width
-    for (j = 0; j < coordinatesLen; j++) {
-      particles.push(coordinates[j]);
-    }
-  }
+  // var i, j, k, n = avoidMark.length;
+  // var item, strokeWidth, coordinatesGroups, coordinatesGroupsLen, coordinates, coordinatesLen;
+  // for (i = 0; i < n; i++) {
+  //   item = avoidMark[i];
+  //   console.log(item);
+  //   strokeWidth = item.strokeWidth;
+  //   coordinatesGroups = item.datum.geometry.coordinates;
+  //   coordinatesGroupsLen = coordinatesGroups.length;
+  //   // TODO: add line width
+  //   for (j = 0; j < coordinatesGroupsLen; j++) {
+  //     coordinates = coordinatesGroups[j];
+  //     coordinatesLen = coordinates.length;
+  //     if (coordinates[0].length === 2 && typeof coordinates[0][0] === "number" && typeof coordinates[0][1] === "number") {
+  //       for (k = 0; k < coordinatesLen; k++) {
+  //         particles.push(coordinates[k]);
+  //       }
+  //     } else {
+  //       for (k = 0; k < coordinatesLen; k++) {
+  //         particles.push(coordinates[0][k]);
+  //       }
+  //     }
+  //   }
+  // }
+  return;
 }
 
 var pointCover = {
@@ -138,14 +157,15 @@ var pointCover = {
   shape: pointCoverGeo,
 };
 
-export function pointCoverAvoidMarks(avoidMarks) {
+export function pointCoverAvoidMarks(avoidMarks, _width, _height) {
   var particles = [],
       i, n = avoidMarks.length;
   for (i = 0; i < n; i++) {
-    const t = markType(avoidMarks[i]);
+    var t = markType(avoidMarks[i]);
     pointCover[t](avoidMarks[i], particles);
   }
-  return particles
+  // console.log(particles.length);
+  return particles;
 }
 
 function markType(avoidMark) {
