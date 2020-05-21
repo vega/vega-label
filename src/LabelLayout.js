@@ -60,6 +60,7 @@ export default function() {
         for (var i2 = 0; i2 < numRecords; i2++) {
           var before = performance.now();
           var marksInfo = RENDER_MARKS[marksRenderer](avoidMarks, size[0], size[1]);
+          result.markInfoRuntime = performance.now() - before;
           var data = markData.map(function(d) {
             var textHeight = d.fontSize;
             return {
@@ -75,7 +76,7 @@ export default function() {
           
           ret = PLACE_LABELS[labeler](data, size, padding, marksInfo, marksRenderer);
           result.runtime = performance.now() - before;
-          ret.forEach(function(d) {
+          ret[0].forEach(function(d) {
             if ('currentPosition' in d) {
               var anchor = getAnchor(d, d.currentPosition[0], d.currentPosition[1], padding);
               d.xAnchor = anchor.xAnchor;
@@ -84,17 +85,18 @@ export default function() {
           });
 
           if (!config.noTest) {
-            result.placed = ret.reduce(function(total, d) {
+            result.placed = ret[0].reduce(function(total, d) {
               return total + (d.fill !== null);
             }, 0);
             result.id = i2;
+            result.markRenderRuntime = ret[1];
             console.log(JSON.stringify(result) + ",");
           }
           // return ret;
         }
       }
     }
-    return ret;
+    return ret[0];
   };
 
   label.markData = function(_) {
