@@ -1,6 +1,6 @@
 /*eslint no-unused-vars: "warn"*/
 /*eslint no-console: "warn"*/
-import { labelWidth, getAnchor } from './Common';
+import { getAnchor } from './Common';
 import * as particle from './ParticleBasedLabel';
 import * as pixel from './PixelBasedLabel';
 import { drawAvoidMarks } from './markBitmaps';
