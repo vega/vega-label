@@ -15,9 +15,9 @@ export function placeLabels(data, size, padding, marksInfo, marksRenderer) {
   for (var i = 0; i < n; i++) {
     minTextHeight = data[i].textHeight < minTextHeight ? data[i].textHeight : minTextHeight;
   }
-  // var before = performance.now();
+  var before = performance.now();
   bitMaps.mark = getMarkBitMap(data, width, height, marksInfo, marksRenderer, minTextHeight);
-  // console.log(performance.now() - before);
+  var after = (performance.now() - before);
   // bitMaps.mark.write("canvas", width, height);
 
   data.forEach(function(d) {
@@ -40,7 +40,7 @@ export function placeLabels(data, size, padding, marksInfo, marksRenderer) {
   // console.log(performance.now() - before);
   // bitMaps.mark.write("canvas", width, height);
 
-  return data;
+  return [data, after];
 }
 
 function findAvailablePosition(datum, bitMaps, padding, checkAvailability) {
