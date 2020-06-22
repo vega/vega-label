@@ -1,6 +1,10 @@
-export function ArrayMap(_width, _height, _binWidth, _binHeight) {
+export function ArrayMap(_width, _height, _binWidth, _binHeight, minTextWidth, minTextHeight) {
   this.binWidthSize = ~~_binWidth;
   this.binHeightSize = ~~_binHeight;
+  this.minTextWidth = minTextWidth;
+  this.minTextHeight = minTextHeight;
+  this._width = _width;
+  this.height = _height;
   this.width = ~~((_width + this.binWidthSize - 1) / this.binWidthSize);
   this.height = ~~((_height + this.binHeightSize - 1) / this.binHeightSize);
   this.array = new Array(this.width * this.height);
@@ -20,6 +24,21 @@ export function ArrayMap(_width, _height, _binWidth, _binHeight) {
   this.add = function (x, y) {
     this.addBinned(this.binWidth(x), this.binHeight(y), [x, y]);
   };
+
+  this.addRect = function (x1, y1, x2, y2) {
+    var y;
+    for (; x1 < x2; x1 += this.minTextWidth) {
+      for (y = y1; y < y2; y += this.minTextHeight) {
+        this.add(x1, y);
+      }
+      this.add(x1, y2);
+    }
+
+    for (; y1 < y2; y1 += this.minTextHeight) {
+      this.add(x2, y1);
+    }
+    this.add(x2, y2);
+  }
 
   this.addWithData = function (x, y, data) {
     this.addBinned(this.binWidth(x), this.binHeight(y), [x, y, data]);
@@ -50,7 +69,7 @@ export function ArrayMap(_width, _height, _binWidth, _binHeight) {
       if (this.array[i]) {
         for (var j = 0; j < this.array[i].length; j++) {
           ctx.fillStyle = this.array[i][j].length == 3 ? this.array[i][j][2] : "black";
-          ctx.fillRect(this.array[i][j][0], this.array[i][j][1], 3, 3);
+          ctx.fillRect(this.array[i][j][0], this.array[i][j][1], 1, 1);
         }
       }
     }

@@ -12,7 +12,8 @@ rawFile.send(null);
 
 var spec = JSON.parse(jsonText);
 
-var sizes = [1000, 2000, 3000, 4000, 5000];
+// var sizes = [1000, 2000, 4000, 8000];
+var sizes = [8000];
 
 var hwRatio = 500 / 800;
 
@@ -29,7 +30,7 @@ function render(sizeItr) {
   spec["marks"][6]["transform"][0]["size"] = [size, height, {}];
   
   // line width
-  spec["marks"][0]["encode"]["update"]["strokeWidth"]["value"] = 0.5 * size / 1000;
+  spec["marks"][0]["encode"]["enter"]["strokeWidth"]["value"] = 0.5 * size / 1000;
   spec["marks"][2]["encode"]["update"]["strokeWidth"]["value"] = 0.5 * size / 1000;
 
   // point radius
@@ -49,7 +50,7 @@ function render(sizeItr) {
   if (sizeItr >= sizes.length) {
     console.log("done");
   } else {
-    setTimeout(render, 20000, sizeItr);
+    setTimeout(render, 20000 * size / 1000, sizeItr);
   }
 }
 

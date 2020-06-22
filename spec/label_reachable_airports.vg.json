@@ -11,17 +11,27 @@
     },
     "data": [
       {
-        "name": "source_0",
+        "name": "data_states",
         "url": "data/us-10m.json",
         "format": {"type": "topojson", "feature": "states"}
       },
       {
-        "name": "source_1",
+        "name": "projected_states",
+        "source": "data_states",
+        "transform": [
+          {
+            "type": "geopath",
+            "projection": "projection"
+          }
+        ]
+      },
+      {
+        "name": "data_airports",
         "url": "data/airports.csv",
         "format": {"type": "csv", "delimiter": ","}
       },
       {
-        "name": "source_2",
+        "name": "data_flights",
         "url": "data/flights-airport.csv",
         "format": {
           "type": "csv",
@@ -29,10 +39,10 @@
           "delimiter": ","
         },
         "transform": [
-          {"type": "filter", "expr": "datum[\"origin\"]===\"SEA\""},
+          {"type": "filter", "expr": "datum['origin']==='SEA'"},
           {
             "type": "lookup",
-            "from": "source_1",
+            "from": "data_airports",
             "key": "iata",
             "fields": ["origin"],
             "values": ["latitude", "longitude"],
@@ -40,7 +50,7 @@
           },
           {
             "type": "lookup",
-            "from": "source_1",
+            "from": "data_airports",
             "key": "iata",
             "fields": ["destination"],
             "values": ["latitude", "longitude", "name"],
@@ -49,40 +59,40 @@
           {
             "type": "geojson",
             "fields": ["dest_longitude", "dest_latitude"],
-            "signal": "layer_2_geojson_1"
+            "signal": "flights_geojson"
           },
           {
             "type": "geopoint",
             "projection": "projection",
             "fields": ["origin_longitude", "origin_latitude"],
-            "as": ["layer_2_x", "layer_2_y"]
+            "as": ["origin_x", "origin_y"]
           },
           {
             "type": "geopoint",
             "projection": "projection",
             "fields": ["dest_longitude", "dest_latitude"],
-            "as": ["layer_2_x2", "layer_2_y2"]
+            "as": ["dest_x", "dest_y"]
           }
         ]
       },
       {
-        "name": "source_3",
-        "source": "source_1",
+        "name": "projected_airports",
+        "source": "data_airports",
         "transform": [
           {
             "type": "lookup",
-            "from": "source_2",
+            "from": "data_flights",
             "key": "destination",
             "fields": ["iata"],
             "values": ["name"],
             "as": ["is_dest"]
           },
-          {"type": "filter", "expr": "datum[\"is_dest\"]===null"},
+          {"type": "filter", "expr": "datum['is_dest']===null"},
           {
             "type": "geopoint",
             "projection": "projection",
             "fields": ["longitude", "latitude"],
-            "as": ["layer_1_x", "layer_1_y"]
+            "as": ["_x", "_y"]
           }
         ]
       }
@@ -92,38 +102,39 @@
         "name": "projection",
         "size": {"signal": "[width, height]"},
         "fit": {
-          "signal": "[data('source_0'), layer_2_geojson_1]"
+          "signal": "[data('data_states'), flights_geojson]"
         },
         "type": "albersUsa"
       }
     ],
     "marks": [
       {
+        "type": "path",
         "name": "us_map",
-        "type": "shape",
-        "style": ["geoshape"],
-        "from": {"data": "source_0"},
+        "from": {"data": "projected_states"},
         "encode": {
-          "update": {
+          "enter": {
             "fill": {"value": null},
             "stroke": {"value": "lightgray"},
             "strokeWidth": {"value": 1}
+          },
+          "update": {
+            "path": {"field": "path"}
           }
-        },
-        "transform": [{"type": "geoshape", "projection": "projection"}]
+        }
       },
       {
         "name": "airport_points",
         "type": "symbol",
         "style": ["circle"],
-        "from": {"data": "source_3"},
+        "from": {"data": "projected_airports"},
         "zindex": 2,
         "encode": {
           "update": {
             "opacity": {"value": 1},
             "fill": {"value": "darkgray"},
-            "x": {"field": "layer_1_x"},
-            "y": {"field": "layer_1_y"},
+            "x": {"field": "_x"},
+            "y": {"field": "_y"},
             "size": {"value": 4},
             "shape": {"value": "circle"}
           }
@@ -133,16 +144,16 @@
         "name": "reachable_lines",
         "type": "rule",
         "style": ["rule"],
-        "from": {"data": "source_2"},
+        "from": {"data": "data_flights"},
         "zindex": 2,
         "encode": {
           "update": {
             "stroke": {"value": "black"},
             "strokeWidth": {"value": 1},
-            "x": {"field": "layer_2_x"},
-            "x2": {"field": "layer_2_x2"},
-            "y": {"field": "layer_2_y"},
-            "y2": {"field": "layer_2_y2"}
+            "x": {"field": "origin_x"},
+            "x2": {"field": "dest_x"},
+            "y": {"field": "origin_y"},
+            "y2": {"field": "dest_y"}
           }
         }
       },
@@ -216,7 +227,13 @@
         "transform": [{
           "type": "label",
           "size": [500, 300],
-          "avoidMarks": ["reachable_lines", "label_endpoints_background", "reachable_endpoints", "airport_points"]
+          "avoidMarks": [
+            "reachable_lines",
+            "label_endpoints_background",
+            "reachable_endpoints",
+            "airport_points",
+            "us_map"
+          ]
         }]
       },
       {

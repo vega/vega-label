@@ -2,26 +2,21 @@
 /*eslint no-console: "warn"*/
 import { getAnchor } from './Common';
 import * as particle from './ParticleBasedLabel';
+import * as fasterParticle from './FasterParticleBasedLabel';
 import * as pixel from './PixelBasedLabel';
-import { drawAvoidMarks } from './markBitmaps';
-import { pointCoverAvoidMarks } from './markArrayMap';
+import * as rbush from './RBushLabel';
 
-var NUM_RECORDS = 10;
+var NUM_RECORDS = 1;
 
 var PLACE_LABELS = {
   "pixel": pixel.placeLabels,
   "particle": particle.placeLabels,
+  "rbush": rbush.placeLabels,
+  "fasterParticle": fasterParticle.placeLabels
 };
-var LABELERS = [ "pixel", "particle"];
-// var LABELERS = [ "particle", "pixel"];
-
-var RENDER_MARKS = {
-  "image": drawAvoidMarks,
-  "vector": pointCoverAvoidMarks,
-};
-
-// var MARKS_RENDERERS = ["image", "vector"];
-var MARKS_RENDERERS = ["vector", "image"];
+// var LABELERS = [ "pixel", "particle", "rbush"];
+// var LABELERS = ["particle", "fasterParticle", "rbush", "pixel"];
+var LABELERS = ["particle", "rbush", "pixel", "fasterParticle"];
 
 export default function() {
   var markData = [],
@@ -30,8 +25,7 @@ export default function() {
       label = {},
       config,
       avoidMarks = [],
-      labeler,
-      marksRenderer;
+      labeler;
 
   label.layout = function() {
     var ret;
@@ -40,59 +34,50 @@ export default function() {
     result.chart_width = size[0];
     
     var padding = 2 * Math.sqrt(markData[0].datum.size / Math.PI);
-    var labelers, numRecords, marksRenderers;
+    var labelers, numRecords;
     if (config.noTest) {
       numRecords = 1;
       labelers = [LABELERS[0]];
-      marksRenderers = [MARKS_RENDERERS[0]];
     } else {
       numRecords = NUM_RECORDS;
       labelers = LABELERS;
-      marksRenderers = MARKS_RENDERERS;
     }
 
-    for (var i0 = 0; i0 < marksRenderers.length; i0++) {
-      marksRenderer = marksRenderers[i0];
-      result.marksRenderer = marksRenderer;
-      for (var i1 = 0; i1 < labelers.length; i1++) {
-        labeler = labelers[i1];
-        result.labeler = labeler;
-        for (var i2 = 0; i2 < numRecords; i2++) {
-          var before = performance.now();
-          var marksInfo = RENDER_MARKS[marksRenderer](avoidMarks, size[0], size[1]);
-          result.markInfoRuntime = performance.now() - before;
-          var data = markData.map(function(d) {
-            var textHeight = d.fontSize;
-            return {
-              fontSize: d.fontSize,
-              x: d.datum.x,
-              y: d.datum.y,
-              textWidth: null,
-              textHeight: textHeight,
-              fill: d.fill,
-              datum: d
-            };
-          });
-          
-          ret = PLACE_LABELS[labeler](data, size, padding, marksInfo, marksRenderer);
-          result.runtime = performance.now() - before;
-          ret[0].forEach(function(d) {
-            if ('currentPosition' in d) {
-              var anchor = getAnchor(d, d.currentPosition[0], d.currentPosition[1], padding);
-              d.xAnchor = anchor.xAnchor;
-              d.yAnchor = anchor.yAnchor;
-            }
-          });
-
-          if (!config.noTest) {
-            result.placed = ret[0].reduce(function(total, d) {
-              return total + (d.fill !== null);
-            }, 0);
-            result.id = i2;
-            result.markRenderRuntime = ret[1];
-            console.log(JSON.stringify(result) + ",");
+    for (var i0 = 0; i0 < labelers.length; i0++) {
+      labeler = labelers[i0];
+      result.labeler = labeler;
+      for (var i1 = 0; i1 < numRecords; i1++) {
+        var before = performance.now();
+        var data = markData.map(function(d) {
+          var textHeight = d.fontSize;
+          return {
+            fontSize: d.fontSize,
+            x: d.datum.x,
+            y: d.datum.y,
+            textWidth: null,
+            textHeight: textHeight,
+            fill: d.fill,
+            datum: d
+          };
+        });
+        
+        ret = PLACE_LABELS[labeler](data, size, padding, avoidMarks);
+        result.runtime = performance.now() - before;
+        ret[0].forEach(function(d) {
+          if ('currentPosition' in d) {
+            var anchor = getAnchor(d, d.currentPosition[0], d.currentPosition[1], padding);
+            d.xAnchor = anchor.xAnchor;
+            d.yAnchor = anchor.yAnchor;
           }
-          // return ret;
+        });
+
+        if (!config.noTest) {
+          result.placed = ret[0].reduce(function(total, d) {
+            return total + (d.fill !== null);
+          }, 0);
+          result.id = i1;
+          result.markRenderRuntime = ret[1];
+          console.log(JSON.stringify(result) + ",");
         }
       }
     }

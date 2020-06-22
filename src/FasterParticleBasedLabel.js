@@ -1,7 +1,8 @@
+
 /*eslint no-unused-vars: "warn"*/
 import { ArrayMap } from './ArrayMap';
 import { getBoundary, labelWidth, POSITIONS, POSITIONS_LEN, considerLabelFactory } from './Common';
-import { drawAvoidMarks } from './ProjectionImage';
+import { drawAvoidMarksAndVectorizeRects } from './ProjectionHybrid';
 
 export function placeLabels(data, size, padding, avoidMarks) {
   var width = 0, height = 0, bins = {}, n = data.length,
@@ -40,8 +41,7 @@ export function placeLabels(data, size, padding, avoidMarks) {
   return [data, after];
 }
 
-function findPosition(datum, bins, padding) {
-  var i,
+function findPosition(datum, bins, padding) { var i,
       dx, dy,
       searchBound;
 
@@ -119,27 +119,80 @@ function checkCollision(d, b, searchBound, bin) {
 }
 
 function isIn(bound, point) {
-  return (bound.x <= point[0] && point[0] <= bound.x2) &&
-         (bound.y <= point[1] && point[1] <= bound.y2);
+  return (Math.floor(bound.x) < point[0] && point[0] < Math.ceil(bound.x2)) &&
+         (Math.floor(bound.y) < point[1] && point[1] < Math.ceil(bound.y2));
 }
 
 function getMarkBin(data, width, height, maxTextWidth, maxTextHeight, minTextWidth, minTextHeight, avoidMarks) {
   if (!data.length) return null;
   var bin = new ArrayMap(width, height, maxTextWidth, maxTextHeight, minTextWidth, minTextHeight);
-  var marksInfo = drawAvoidMarks(avoidMarks, width, height);
+  var marksInfo = drawAvoidMarksAndVectorizeRects(avoidMarks, width, height);
 
   var buffer = new Uint32Array(
-    marksInfo.getImageData(0, 0, width, height).data.buffer
+    marksInfo.canvas.getImageData(0, 0, width, height).data.buffer
   );
 
-  var x, y;
-  for (y = 0; y < height; y++) {
-    for (x = 0; x < width; x++) {
-      if (buffer[y * width + x]) {
-        bin.add(x + 0.5, y + 0.5);
+  minTextWidth = ~~minTextWidth;
+  minTextHeight = ~~minTextHeight;
+
+  var x, y, surroundingPixels;
+  for (y = 1; y < height; y++) {
+    for (x = 1; x < width; x++) {
+      surroundingPixels =
+        !!buffer[y     * width + x] +
+        !!buffer[(y-1) * width + (x-1)] +
+        !!buffer[y     * width + (x-1)] +
+        !!buffer[(y-1) * width + x];
+      if (0 < surroundingPixels && surroundingPixels < 4) {
+        bin.add(x, y);
+      } else if (surroundingPixels === 4 && x % minTextWidth === 0 && y % minTextHeight === 0) {
+        bin.add(x, y);
       }
     }
   }
 
+  var h_1 = height - 1, w_1 = width - 1;
+  for (y = 1; y < height; y++) {
+    if (buffer[y * width] || buffer[(y-1) * width]) {
+      bin.add(0, y);
+    }
+
+    if (buffer[y * width + w_1] || buffer[(y-1) * width + w_1]) {
+      bin.add(width, y);
+    }
+  }
+
+  for (x = 1; x < width; x++) {
+    if (buffer[x] || buffer[x-1]) {
+      bin.add(x, 0);
+    }
+
+    if (buffer[h_1 * width + x] || buffer[h_1 * width + (x-1)]) {
+      bin.add(x, height);
+    }
+  }
+
+  if (buffer[0]) {
+    bin.add(0, 0);
+  }
+  if (buffer[0 * width + w_1]) {
+    bin.add(width, 0);
+  }
+  if (buffer[h_1 * width]) {
+    bin.add(0, height);
+  }
+  if (buffer[h_1 * width + w_1]) {
+    bin.add(width, height);
+  }
+
+  var sWidth;
+  marksInfo.rects.forEach(function(r) {
+    if (r.stroke) {
+      sWidth = r.strokeWidth / 2.0;
+      bin.addRect(r.minX - sWidth, r.minY - sWidth, r.maxX + sWidth, r.maxY + sWidth);
+    } else if (r.fill) {
+      bin.addRect(r.minX, r.minY, r.maxX, r.maxY);
+    }
+  });
   return bin;
 }

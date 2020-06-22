@@ -21,7 +21,7 @@ export function BitMap(_width, _height, _minTextHeight) {
   // this.height = ~~((_height + this.pixelSize) / this.pixelSize);
   this.width = _width;
   this.height = _height;
-  this.vSkip = _minTextHeight > 1 ? _minTextHeight - 1 : 1;
+  this.vSkip = _minTextHeight > 1 ? _minTextHeight : 1;
   this.array = new Uint32Array(~~(((this.width * this.height) + SIZE) / SIZE));
 
   this.markScaled = function (x, y) {

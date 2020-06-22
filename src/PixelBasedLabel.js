@@ -1,8 +1,9 @@
 /*eslint no-unused-vars: "warn"*/
 import { BitMap } from './BitMap';
-import { getBoundary, labelWidth, POSITIONS_LEN, POSITIONS } from './Common';
+import { getBoundary, labelWidth, POSITIONS_LEN, POSITIONS, considerLabelFactory } from './Common';
+import { drawAvoidMarks } from './ProjectionImage';
 
-export function placeLabels(data, size, padding, marksInfo, marksRenderer) {
+export function placeLabels(data, size, padding, avoidMarks) {
   var width = 0, height = 0,
       bitMaps = {}, n = data.length,
       minTextHeight = -1;
@@ -16,34 +17,18 @@ export function placeLabels(data, size, padding, marksInfo, marksRenderer) {
     minTextHeight = data[i].textHeight < minTextHeight ? data[i].textHeight : minTextHeight;
   }
   var before = performance.now();
-  bitMaps.mark = getMarkBitMap(data, width, height, marksInfo, marksRenderer, minTextHeight);
+  bitMaps.mark = getMarkBitMap(data, width, height, avoidMarks, minTextHeight);
   var after = (performance.now() - before);
   // bitMaps.mark.write("canvas", width, height);
 
-  data.forEach(function(d) {
-    d.z = 1;
-    findAvailablePosition(d, bitMaps, padding, function() {
-      if (!checkCollision(d.searchBound, bitMaps.mark)) {
-        d.labelPlaced = true;
-      }
-    });
-
-    if (d.labelPlaced) {
-      placeLabel(d.searchBound, bitMaps.mark);
-    } else {
-      d.fill = null;
-      d.z = 0;
-    }
-    d.x = d.boundary.xc;
-    d.y = d.boundary.yc;
-  });
+  data.forEach(considerLabelFactory(bitMaps, padding, findPosition, place));
   // console.log(performance.now() - before);
   // bitMaps.mark.write("canvas", width, height);
 
   return [data, after];
 }
 
-function findAvailablePosition(datum, bitMaps, padding, checkAvailability) {
+function findPosition(datum, bitMaps, padding) {
   var i,
       dx, dy,
       searchBound;
@@ -72,7 +57,9 @@ function findAvailablePosition(datum, bitMaps, padding, checkAvailability) {
 
     datum.currentPosition = [dx, dy];
     datum.searchBound = searchBound;
-    checkAvailability();
+    if (!checkCollision(datum.searchBound, bitMaps.mark)) {
+      datum.labelPlaced = true;
+    }
   }
 }
 
@@ -89,42 +76,35 @@ function getSearchBound(bound) {
   };
 }
 
-function placeLabel(b, bitMap) {
-  bitMap.setAllScaled(b.startX, b.startY, b.endX, b.endY);
+function place(datum, bitMap) {
+  bitMap.setAllScaled(datum.searchBound.startX, datum.searchBound.startY, datum.searchBound.endX, datum.searchBound.endY);
 }
 
 function checkCollision(b, bitMap) {
   return bitMap.getAllScaled(b.startX, b.startY, b.endX, b.endY);
 }
 
-function getMarkBitMap(data, width, height, marksInfo, marksRenderer, minTextHeight) {
+function getMarkBitMap(data, width, height, avoidMarks, minTextHeight) {
   if (!data.length) return null;
   var bitMap = new BitMap(width, height, minTextHeight);
   var i, len;
 
-  if (marksRenderer === 'image') {
-    var buffer = new Uint32Array(
-      marksInfo.getImageData(0, 0, width, height).data.buffer
-    );
+  var buffer = new Uint32Array(
+    drawAvoidMarks(avoidMarks, width, height).getImageData(0, 0, width, height).data.buffer
+  );
 
-    var from = 0;
-    len = buffer.length;
-    for (i = 0; i < len; i++) {
-      if (!buffer[i]) {
-        if (from !== i) {
-          bitMap.setRange(from, i - 1);
-        }
-        from = i + 1;
+  var from = 0;
+  len = buffer.length;
+  for (i = 0; i < len; i++) {
+    if (!buffer[i]) {
+      if (from !== i) {
+        bitMap.setRange(from, i - 1);
       }
+      from = i + 1;
     }
-    if (from !== len) {
-      bitMap.setRange(from, len - 1);
-    }
-  } else {
-    len = marksInfo.length;
-    for (i = 0; i < len; i++) {
-      bitMap.mark(marksInfo[i][0], marksInfo[i][1]);
-    }
+  }
+  if (from !== len) {
+    bitMap.setRange(from, len - 1);
   }
 
   return bitMap;

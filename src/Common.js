@@ -23,6 +23,28 @@ export function getBoundary(d, dx, dy, padding) {
   }
 }
 
+export function considerLabelFactory(projections, padding, findPosition, place) {
+  return function(d) {
+    if (d.x === undefined || d.y === undefined) {
+      d.fill = null;
+      d.z = 0;
+      return;
+    }
+
+    d.z = 1;
+    findPosition(d, projections, padding);
+
+    if (d.labelPlaced) {
+      place(d, projections.mark);
+    } else {
+      d.fill = null;
+      d.z = 0;
+    }
+    d.x = d.boundary.xc;
+    d.y = d.boundary.yc;
+  }
+}
+
 export function getAnchor(d, dx, dy, padding) {
   var x = d.datum.x,
       y = d.datum.y;

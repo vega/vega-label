@@ -27,11 +27,12 @@
     "bench": "yarn build && python -m http.server"
   },
   "dependencies": {
+    "rbush": "^3.0.1",
     "vega-canvas": "^1.1.0",
     "vega-dataflow": "^4.0.3",
     "vega-scale": "^2.4.0",
-    "vega-statistics": "^1.2.1",
     "vega-scenegraph": "^4.6.0",
+    "vega-statistics": "^1.2.1",
     "vega-util": "^1.7.0"
   },
   "devDependencies": {
