@@ -57,6 +57,8 @@ export default function() {
             textWidth: null,
             textHeight: textHeight,
             fill: d.fill,
+            font: d.font,
+            text: d.text,
             datum: d
           };
         });

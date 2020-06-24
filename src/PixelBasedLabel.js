@@ -46,7 +46,7 @@ function findPosition(datum, bitMaps, padding) {
         continue;
       } else {
         textWidthCalculated = true;
-        datum.textWidth = labelWidth(datum.datum.text, datum.datum.fontSize, datum.datum.font);
+        datum.textWidth = labelWidth(datum.text, datum.fontSize, datum.font);
       }
     }
 

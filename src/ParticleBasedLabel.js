@@ -17,8 +17,7 @@ export function placeLabels(data, size, padding, avoidMarks) {
   // before = performance.now();
   for (var i = 0; i < n; i++) {
     var d = data[i];
-    var datum = d.datum;
-    d.textWidth = labelWidth(datum.text, datum.fontSize, datum.font);
+    d.textWidth = labelWidth(d.text, d.fontSize, d.font);
     minTextWidth = d.textWidth < minTextWidth ? d.textWidth : minTextWidth;
     minTextHeight = d.textHeight < minTextHeight ? d.textHeight : minTextHeight;
     maxTextWidth = d.textWidth > maxTextWidth ? d.textWidth : maxTextWidth;

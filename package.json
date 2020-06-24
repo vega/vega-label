@@ -24,23 +24,26 @@
     "test": "tape 'test/**/*-test.js' && eslint index.js src",
     "prepublishOnly": "npm run build",
     "postpublish": "git push && git push --tags && zip -j build/label.zip -- LICENSE README.md build/label.js build/label.min.js",
-    "bench": "yarn build && python -m http.server"
+    "bench": "yarn build && python -m http.server",
+    "bench2": "yarn build && node benchmark/benchmark.js"
   },
   "dependencies": {
+    "canvas": "^2.6.1",
+    "esm": "^3.2.25",
     "rbush": "^3.0.1",
-    "vega-canvas": "^1.1.0",
-    "vega-dataflow": "^4.0.3",
-    "vega-scale": "^2.4.0",
-    "vega-scenegraph": "^4.6.0",
-    "vega-statistics": "^1.2.1",
-    "vega-util": "^1.7.0"
+    "vega-canvas": "^1.2.2",
+    "vega-dataflow": "^5.7.0",
+    "vega-scale": "^7.0.0",
+    "vega-scenegraph": "^4.8.3",
+    "vega-statistics": "^1.7.6",
+    "vega-util": "^1.14.1"
   },
   "devDependencies": {
-    "canvas": "^2.6.0",
     "eslint": "6.8.0",
     "rollup": "2.0.6",
     "tape": "4.13.2",
     "uglify-js": "3.8.0",
+    "vega": "^5.13.0",
     "vega-transforms": "^2.0.0"
   },
   "browser": {
