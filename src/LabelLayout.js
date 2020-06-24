@@ -5,6 +5,7 @@ import * as particle from './ParticleBasedLabel';
 import * as fasterParticle from './FasterParticleBasedLabel';
 import * as pixel from './PixelBasedLabel';
 import * as rbush from './RBushLabel';
+import sizeof from 'object-sizeof';
 
 var NUM_RECORDS = 20;
 
@@ -70,6 +71,7 @@ export default function() {
             d.yAnchor = anchor.yAnchor;
           }
         });
+        result.memory = sizeof(ret[2]);
 
         if (!config.noTest) {
           result.placed = ret[0].reduce(function(total, d) {
