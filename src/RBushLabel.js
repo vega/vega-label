@@ -5,7 +5,7 @@ import { getBoundary, POSITIONS, POSITIONS_LEN, considerLabelFactory, labelWidth
 import { drawAvoidMarksAndVectorizeRects } from './ProjectionHybrid';
 
 export function placeLabels(data, size, padding, avoidMarks) {
-  var width = 0, height = 0, trees = {}, n = data.length,
+  var width = 0, height = 0, tree, n = data.length,
       minTextWidth = Number.MAX_SAFE_INTEGER,
       minTextHeight = Number.MAX_SAFE_INTEGER;
 
@@ -22,20 +22,20 @@ export function placeLabels(data, size, padding, avoidMarks) {
   // before = performance.now();
   // todo: write marksInfo to bins
   var before = performance.now();
-  trees.mark = getMarkTree(data, width, height, avoidMarks, minTextWidth, minTextHeight);
+  tree = getMarkTree(data, width, height, avoidMarks, minTextWidth, minTextHeight);
   var after = (performance.now() - before);
-  // trees.mark.write("canvas", width, height);
+  // tree.write("canvas", width, height);
   // console.log(process);
   // console.log(process.memoryUsage());
   // var k = "strin";
   // console.log(process.memoryUsage());
-  data.forEach(considerLabelFactory(trees, padding, findPosition, place));
-  // bins.mark.write("canvas-after", width, height);
+  data.forEach(considerLabelFactory(tree, padding, findPosition, place));
+  // bins.write("canvas-after", width, height);
 
-  return [data, after];
+  return [data, after, tree];
 }
 
-function findPosition(datum, trees, padding) {
+function findPosition(datum, tree, padding) {
   var i, dx, dy;
 
   datum.labelPlaced = false;
@@ -45,10 +45,10 @@ function findPosition(datum, trees, padding) {
 
     datum.boundary = getBoundary(datum, dx, dy, padding);
 
-    if (outOfBound(datum.boundary, trees.mark)) continue;
+    if (outOfBound(datum.boundary, tree)) continue;
     
     datum.currentPosition = [dx, dy];
-    if (!checkCollision(datum.boundary, trees.mark)) {
+    if (!checkCollision(datum.boundary, tree)) {
       datum.labelPlaced = true;
     }
   }

@@ -1,10 +1,8 @@
 var vega = require('vega')
 var Label = require('../build/label');
 var spec = require('./spec').spec;
-// var utils = require('./utils');
 
 global.performance = require('perf_hooks').performance;
-
 vega.transforms.label = Label.label;
 
 var sizes = Label.benchmarkUtils.sizes;
@@ -16,11 +14,6 @@ async function test(s) {
 
   // generate a static PNG image
   await view.toCanvas()
-    .then(function(canvas) {
-      // process node-canvas instance
-      // for example, generate a PNG stream to write
-      canvas.createPNGStream();
-    })
     .catch(function(err) { console.error(err); });
 }
 

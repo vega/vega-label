@@ -23,7 +23,7 @@ export function getBoundary(d, dx, dy, padding) {
   }
 }
 
-export function considerLabelFactory(projections, padding, findPosition, place) {
+export function considerLabelFactory(projection, padding, findPosition, place) {
   return function(d) {
     if (d.x === undefined || d.y === undefined) {
       d.fill = null;
@@ -32,10 +32,10 @@ export function considerLabelFactory(projections, padding, findPosition, place) 
     }
 
     d.z = 1;
-    findPosition(d, projections, padding);
+    findPosition(d, projection, padding);
 
     if (d.labelPlaced) {
-      place(d, projections.mark);
+      place(d, projection);
     } else {
       d.fill = null;
       d.z = 0;

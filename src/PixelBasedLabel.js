@@ -5,7 +5,7 @@ import { drawAvoidMarks } from './ProjectionImage';
 
 export function placeLabels(data, size, padding, avoidMarks) {
   var width = 0, height = 0,
-      bitMaps = {}, n = data.length,
+      bitMap, n = data.length,
       minTextHeight = -1;
 
   width = size[0];
@@ -17,18 +17,18 @@ export function placeLabels(data, size, padding, avoidMarks) {
     minTextHeight = data[i].textHeight < minTextHeight ? data[i].textHeight : minTextHeight;
   }
   var before = performance.now();
-  bitMaps.mark = getMarkBitMap(data, width, height, avoidMarks, minTextHeight);
+  bitMap = getMarkBitMap(data, width, height, avoidMarks, minTextHeight);
   var after = (performance.now() - before);
   // bitMaps.mark.write("canvas", width, height);
 
-  data.forEach(considerLabelFactory(bitMaps, padding, findPosition, place));
+  data.forEach(considerLabelFactory(bitMap, padding, findPosition, place));
   // console.log(performance.now() - before);
-  // bitMaps.mark.write("canvas", width, height);
+  // bitMap.write("canvas", width, height);
 
-  return [data, after];
+  return [data, after, bitMap];
 }
 
-function findPosition(datum, bitMaps, padding) {
+function findPosition(datum, bitMap, padding) {
   var i,
       dx, dy,
       searchBound;
@@ -42,7 +42,7 @@ function findPosition(datum, bitMaps, padding) {
     if (!textWidthCalculated) {
       datum.boundary = getBoundary(datum, dx, dy, padding);
       searchBound = getSearchBound(datum.boundary);
-      if (checkCollision(searchBound, bitMaps.mark)) {
+      if (checkCollision(searchBound, bitMap)) {
         continue;
       } else {
         textWidthCalculated = true;
@@ -53,11 +53,11 @@ function findPosition(datum, bitMaps, padding) {
     datum.boundary = getBoundary(datum, dx, dy, padding);
     searchBound = getSearchBound(datum.boundary);
 
-    if (outOfBound(searchBound, bitMaps.mark)) continue;
+    if (outOfBound(searchBound, bitMap)) continue;
 
     datum.currentPosition = [dx, dy];
     datum.searchBound = searchBound;
-    if (!checkCollision(datum.searchBound, bitMaps.mark)) {
+    if (!checkCollision(datum.searchBound, bitMap)) {
       datum.labelPlaced = true;
     }
   }

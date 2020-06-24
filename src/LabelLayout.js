@@ -14,9 +14,7 @@ var PLACE_LABELS = {
   "rbush": rbush.placeLabels,
   "fasterParticle": fasterParticle.placeLabels
 };
-// var LABELERS = [ "pixel", "particle", "rbush"];
-// var LABELERS = ["particle", "fasterParticle", "rbush", "pixel"];
-var LABELERS = ["particle", "rbush", "pixel", "fasterParticle"];
+var LABELERS = ["particle", "pixel", "fasterParticle"];
 
 export default function() {
   var markData = [],

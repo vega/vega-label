@@ -4,7 +4,7 @@ import { getBoundary, labelWidth, POSITIONS, POSITIONS_LEN, considerLabelFactory
 import { drawAvoidMarks } from './ProjectionImage';
 
 export function placeLabels(data, size, padding, avoidMarks) {
-  var width = 0, height = 0, bins = {}, n = data.length,
+  var width = 0, height = 0, bin, n = data.length,
       minTextWidth = Number.MAX_SAFE_INTEGER,
       minTextHeight = Number.MAX_SAFE_INTEGER,
       maxTextWidth = Number.MIN_SAFE_INTEGER,
@@ -25,21 +25,21 @@ export function placeLabels(data, size, padding, avoidMarks) {
   }
   // todo: write marksInfo to bins
   var before = performance.now();
-  bins.mark = getMarkBin(data, width, height, maxTextWidth, maxTextHeight, minTextWidth, minTextHeight, avoidMarks);
+  bin = getMarkBin(data, width, height, maxTextWidth, maxTextHeight, minTextWidth, minTextHeight, avoidMarks);
   var after = (performance.now() - before);
-  // bins.mark.write("canvas", width, height);
+  // bin.write("canvas", width, height);
   // console.log(process);
   // console.log(process.memoryUsage());
   // var k = "strin";
   // console.log(process.memoryUsage());
 
-  data.forEach(considerLabelFactory(bins, padding, findPosition, place));
+  data.forEach(considerLabelFactory(bin, padding, findPosition, place));
   // bins.mark.write("canvas-after", width, height);
 
-  return [data, after];
+  return [data, after, bin];
 }
 
-function findPosition(datum, bins, padding) {
+function findPosition(datum, bin, padding) {
   var i,
       dx, dy,
       searchBound;
@@ -50,13 +50,13 @@ function findPosition(datum, bins, padding) {
     dy = POSITIONS[i][1];
 
     datum.boundary = getBoundary(datum, dx, dy, padding);
-    searchBound = getSearchBound(datum.boundary, bins.mark);
+    searchBound = getSearchBound(datum.boundary, bin);
 
-    if (outOfBound(datum.boundary, bins.mark)) continue;
+    if (outOfBound(datum.boundary, bin)) continue;
     
     datum.currentPosition = [dx, dy];
     datum.searchBound = searchBound;
-    if (!checkCollision(datum, datum.boundary, datum.searchBound, bins.mark)) {
+    if (!checkCollision(datum, datum.boundary, datum.searchBound, bin)) {
       datum.labelPlaced = true;
     }
   }
@@ -118,8 +118,8 @@ function checkCollision(d, b, searchBound, bin) {
 }
 
 function isIn(bound, point) {
-  return (bound.x <= point[0] && point[0] <= bound.x2) &&
-         (bound.y <= point[1] && point[1] <= bound.y2);
+  return (bound.x < point[0] && point[0] < bound.x2) &&
+         (bound.y < point[1] && point[1] < bound.y2);
 }
 
 function getMarkBin(data, width, height, maxTextWidth, maxTextHeight, minTextWidth, minTextHeight, avoidMarks) {

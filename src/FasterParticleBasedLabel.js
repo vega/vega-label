@@ -5,7 +5,7 @@ import { getBoundary, labelWidth, POSITIONS, POSITIONS_LEN, considerLabelFactory
 import { drawAvoidMarksAndVectorizeRects } from './ProjectionHybrid';
 
 export function placeLabels(data, size, padding, avoidMarks) {
-  var width = 0, height = 0, bins = {}, n = data.length,
+  var width = 0, height = 0, bin, n = data.length,
       minTextWidth = Number.MAX_SAFE_INTEGER,
       minTextHeight = Number.MAX_SAFE_INTEGER,
       maxTextWidth = Number.MIN_SAFE_INTEGER,
@@ -26,18 +26,18 @@ export function placeLabels(data, size, padding, avoidMarks) {
   }
   // todo: write marksInfo to bins
   var before = performance.now();
-  bins.mark = getMarkBin(data, width, height, maxTextWidth, maxTextHeight, minTextWidth, minTextHeight, avoidMarks);
+  bin = getMarkBin(data, width, height, maxTextWidth, maxTextHeight, minTextWidth, minTextHeight, avoidMarks);
   var after = (performance.now() - before);
-  // bins.mark.write("canvas", width, height);
+  // bin.write("canvas", width, height);
   // console.log(process);
   // console.log(process.memoryUsage());
   // var k = "strin";
   // console.log(process.memoryUsage());
 
-  data.forEach(considerLabelFactory(bins, padding, findPosition, place));
+  data.forEach(considerLabelFactory(bin, padding, findPosition, place));
   // bins.mark.write("canvas-after", width, height);
 
-  return [data, after];
+  return [data, after, bin];
 }
 
 function findPosition(datum, bins, padding) { var i,
@@ -50,13 +50,13 @@ function findPosition(datum, bins, padding) { var i,
     dy = POSITIONS[i][1];
 
     datum.boundary = getBoundary(datum, dx, dy, padding);
-    searchBound = getSearchBound(datum.boundary, bins.mark);
+    searchBound = getSearchBound(datum.boundary, bins);
 
-    if (outOfBound(datum.boundary, bins.mark)) continue;
+    if (outOfBound(datum.boundary, bins)) continue;
     
     datum.currentPosition = [dx, dy];
     datum.searchBound = searchBound;
-    if (!checkCollision(datum, datum.boundary, datum.searchBound, bins.mark)) {
+    if (!checkCollision(datum, datum.boundary, datum.searchBound, bins)) {
       datum.labelPlaced = true;
     }
   }
