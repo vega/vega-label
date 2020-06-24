@@ -119,8 +119,8 @@ function checkCollision(d, b, searchBound, bin) {
 }
 
 function isIn(bound, point) {
-  return (Math.floor(bound.x) < point[0] && point[0] < Math.ceil(bound.x2)) &&
-         (Math.floor(bound.y) < point[1] && point[1] < Math.ceil(bound.y2));
+  return (bound.x < point[0] && point[0] < bound.x2) &&
+         (bound.y < point[1] && point[1] < bound.y2);
 }
 
 function getMarkBin(data, width, height, maxTextWidth, maxTextHeight, minTextWidth, minTextHeight, avoidMarks) {
@@ -185,14 +185,8 @@ function getMarkBin(data, width, height, maxTextWidth, maxTextHeight, minTextWid
     bin.add(width, height);
   }
 
-  var sWidth;
   marksInfo.rects.forEach(function(r) {
-    if (r.stroke) {
-      sWidth = r.strokeWidth / 2.0;
-      bin.addRect(r.minX - sWidth, r.minY - sWidth, r.maxX + sWidth, r.maxY + sWidth);
-    } else if (r.fill) {
-      bin.addRect(r.minX, r.minY, r.maxX, r.maxY);
-    }
+    bin.addRect(r.minX, r.minY, r.maxX, r.maxY);
   });
   return bin;
 }

@@ -17,22 +17,30 @@ export function drawAvoidMarksAndVectorizeRects(avoidMarks, width, height) {
 function extractRectsInfo(rects) {
   var rectsLength = rects.length,
       rectsInfo = [];
-  var i, j, rectLength, rect, item;
+  var i, j, rectLength, rect, item, halfStrokeWidth;
 
   for (i = 0; i < rectsLength; i++) {
     rect = rects[i];
     rectLength = rect.length;
     for (j = 0; j < rectLength; j++) {
       item = rect[j];
-      rectsInfo.push({
-        minX: item.x,
-        minY: item.y,
-        maxX: item.x2,
-        maxY: item.y2,
-        fill: item.fill,
-        stoke: item.stroke,
-        strokeWidth: item.strokeWidth
-      });
+      if (item.stroke) {
+        halfStrokeWidth = item.strokeWidth;
+        halfStrokeWidth = halfStrokeWidth === null || halfStrokeWidth === undefined ? 0.5 : (halfStrokeWidth / 2.0);
+        rectsInfo.push({
+          minX: item.x - halfStrokeWidth,
+          minY: item.y - halfStrokeWidth,
+          maxX: item.x2 + halfStrokeWidth,
+          maxY: item.y2 + halfStrokeWidth,
+        });
+      } else if (item.fill) {
+        rectsInfo.push({
+          minX: item.x,
+          minY: item.y,
+          maxX: item.x2,
+          maxY: item.y2,
+        });
+      }
     }
   }
 

@@ -12,8 +12,8 @@ rawFile.send(null);
 
 var spec = JSON.parse(jsonText);
 
-// var sizes = [1000, 2000, 4000, 8000];
-var sizes = [8000];
+var sizes = [1000, 2000, 4000, 8000];
+// var sizes = [8000];
 
 var hwRatio = 500 / 800;
 
@@ -50,7 +50,7 @@ function render(sizeItr) {
   if (sizeItr >= sizes.length) {
     console.log("done");
   } else {
-    setTimeout(render, 20000 * size / 1000, sizeItr);
+    setTimeout(render, 40000 * size / 1000, sizeItr);
   }
 }
 

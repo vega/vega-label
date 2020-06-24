@@ -6,7 +6,7 @@ import * as fasterParticle from './FasterParticleBasedLabel';
 import * as pixel from './PixelBasedLabel';
 import * as rbush from './RBushLabel';
 
-var NUM_RECORDS = 1;
+var NUM_RECORDS = 20;
 
 var PLACE_LABELS = {
   "pixel": pixel.placeLabels,
