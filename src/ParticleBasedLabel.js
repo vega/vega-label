@@ -50,29 +50,16 @@ function findPosition(datum, bin, padding) {
     dy = POSITIONS[i][1];
 
     datum.boundary = getBoundary(datum, dx, dy, padding);
-    searchBound = getSearchBound(datum.boundary, bin);
+    searchBound = bin.getSearchBound(datum.boundary);
 
-    if (outOfBound(datum.boundary, bin)) continue;
+    if (bin.outOfBound(datum.boundary)) continue;
     
     datum.currentPosition = [dx, dy];
     datum.searchBound = searchBound;
-    if (!checkCollision(datum, datum.boundary, datum.searchBound, bin)) {
+    if (!bin.checkCollision(datum.boundary, datum.searchBound)) {
       datum.labelPlaced = true;
     }
   }
-}
-
-export function outOfBound(b, bm) {
-  return b.x < 0 || b.y < 0 || b.y2 >= bm._height || b.x2 >= bm._width;
-}
-
-function getSearchBound(bound, bm) {
-  return {
-    startX: bm.binWidth(bound.x),
-    startY: bm.binHeight(bound.y),
-    endX: bm.binWidth(bound.x2),
-    endY: bm.binHeight(bound.y2),
-  };
 }
 
 function place(datum, bin) {
@@ -98,28 +85,6 @@ function place(datum, bin) {
   }
 
   bin.add(ex, ey);
-}
-
-function checkCollision(d, b, searchBound, bin) {
-  var x, y, p, bucket;
-
-  for (x = searchBound.startX; x <= searchBound.endX; x++) {
-    for (y = searchBound.startY; y <= searchBound.endY; y++) {
-      bucket = bin.getBinned(x, y);
-      if (bucket) {
-        for (p = 0; p < bucket.length; p++) {
-          if (isIn(b, bucket[p])) return true;
-        }
-      }
-    }
-  }
-  
-  return false;
-}
-
-function isIn(bound, point) {
-  return (bound.x < point[0] && point[0] < bound.x2) &&
-         (bound.y < point[1] && point[1] < bound.y2);
 }
 
 function getMarkBin(data, width, height, maxTextWidth, maxTextHeight, minTextWidth, minTextHeight, avoidMarks) {

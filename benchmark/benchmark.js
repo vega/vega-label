@@ -8,6 +8,7 @@ vega.transforms.label = Label.label;
 var NUM_TESTS = 20;
 var sizes = Label.benchmarkUtils.sizes;
 var resize = Label.benchmarkUtils.resize;
+// var labelers = ["particle", "improvedParticle", "pixel"];
 var labelers = ["particle", "improvedParticle", "pixel"];
 
 async function test(s) {

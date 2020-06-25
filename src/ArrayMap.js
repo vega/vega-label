@@ -16,14 +16,31 @@ export function ArrayMap(_width, _height, _binWidth, _binHeight, minTextWidth, m
   };
 
   this.addBinned = function (x, y, val) {
-    if (!this.array[this.getPosition(x, y)])
-      this.array[this.getPosition(x, y)] = [];
-    this.array[this.getPosition(x, y)].push(val);
+    var position = this.getPosition(x, y);
+    if (!this.array[position])
+      this.array[position] = [];
+    this.array[position].push(val);
   };
 
   this.add = function (x, y) {
     this.addBinned(this.binWidth(x), this.binHeight(y), [x, y]);
   };
+
+  this.sparseAdd = function (x, y, padding) {
+    var x1 = Math.max(x - padding, 0);
+    var x2 = Math.min(x + padding, this._width);
+    var y1 = Math.max(y - padding, 0);
+    var y2 = Math.min(y + padding, this._height);
+    var bound = {
+      x: x1,
+      y: y1,
+      x2: x2,
+      y2: y2
+    };
+    if (!this.checkCollision(bound, this.getSearchBound(bound))) {
+      this.add(x, y);
+    }
+  }
 
   this.addRect = function (x1, y1, x2, y2) {
     var y;
@@ -52,6 +69,36 @@ export function ArrayMap(_width, _height, _binWidth, _binHeight, minTextWidth, m
     return this.getBinned(this.binWidth(x), this.binHeight(y));
   };
 
+  this.checkCollision = function(b, searchBound) {
+    var x, y, p, bucket;
+
+    for (x = searchBound.startX; x <= searchBound.endX; x++) {
+      for (y = searchBound.startY; y <= searchBound.endY; y++) {
+        bucket = this.getBinned(x, y);
+        if (bucket) {
+          for (p = 0; p < bucket.length; p++) {
+            if (isIn(b, bucket[p])) return true;
+          }
+        }
+      }
+    }
+    
+    return false;
+  }
+
+  this.outOfBound = function(b) {
+    return b.x < 0 || b.y < 0 || b.y2 >= this._height || b.x2 >= this._width;
+  }
+
+  this.getSearchBound = function(bound) {
+    return {
+      startX: this.binWidth(bound.x),
+      startY: this.binHeight(bound.y),
+      endX: this.binWidth(bound.x2),
+      endY: this.binHeight(bound.y2),
+    };
+  }
+
   this.binWidth = function (coordinate) {
     return Math.floor(coordinate / this.binWidthSize);
   };
@@ -74,4 +121,10 @@ export function ArrayMap(_width, _height, _binWidth, _binHeight, minTextWidth, m
       }
     }
   }
+}
+
+
+function isIn(bound, point) {
+  return (bound.x < point[0] && point[0] < bound.x2) &&
+         (bound.y < point[1] && point[1] < bound.y2);
 }

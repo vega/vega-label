@@ -42,6 +42,10 @@ export function RBushMap(_width, _height) {
     });
   }
 
+  this.outOfBound = function(b) {
+    return b.x < 0 || b.y < 0 || b.y2 >= this._height || b.x2 >= this._width;
+  }
+
   this.write = function(id, width, height) {
     var canvas = document.getElementById(id);
     canvas.setAttribute("width", width);

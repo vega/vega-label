@@ -40,7 +40,7 @@ export function placeLabels(data, size, padding, avoidMarks) {
   return [data, after, bin];
 }
 
-function findPosition(datum, bins, padding) { var i,
+function findPosition(datum, bin, padding) { var i,
       dx, dy,
       searchBound;
 
@@ -50,29 +50,16 @@ function findPosition(datum, bins, padding) { var i,
     dy = POSITIONS[i][1];
 
     datum.boundary = getBoundary(datum, dx, dy, padding);
-    searchBound = getSearchBound(datum.boundary, bins);
+    searchBound = bin.getSearchBound(datum.boundary);
 
-    if (outOfBound(datum.boundary, bins)) continue;
+    if (bin.outOfBound(datum.boundary)) continue;
     
     datum.currentPosition = [dx, dy];
     datum.searchBound = searchBound;
-    if (!checkCollision(datum, datum.boundary, datum.searchBound, bins)) {
+    if (!bin.checkCollision(datum.boundary, datum.searchBound)) {
       datum.labelPlaced = true;
     }
   }
-}
-
-export function outOfBound(b, bm) {
-  return b.x < 0 || b.y < 0 || b.y2 >= bm._height || b.x2 >= bm._width;
-}
-
-function getSearchBound(bound, bm) {
-  return {
-    startX: bm.binWidth(bound.x),
-    startY: bm.binHeight(bound.y),
-    endX: bm.binWidth(bound.x2),
-    endY: bm.binHeight(bound.y2),
-  };
 }
 
 function place(datum, bin) {
@@ -100,28 +87,6 @@ function place(datum, bin) {
   bin.add(ex, ey);
 }
 
-function checkCollision(d, b, searchBound, bin) {
-  var x, y, p, bucket;
-
-  for (x = searchBound.startX; x <= searchBound.endX; x++) {
-    for (y = searchBound.startY; y <= searchBound.endY; y++) {
-      bucket = bin.getBinned(x, y);
-      if (bucket) {
-        for (p = 0; p < bucket.length; p++) {
-          if (isIn(b, bucket[p])) return true;
-        }
-      }
-    }
-  }
-  
-  return false;
-}
-
-function isIn(bound, point) {
-  return (bound.x < point[0] && point[0] < bound.x2) &&
-         (bound.y < point[1] && point[1] < bound.y2);
-}
-
 function getMarkBin(data, width, height, maxTextWidth, maxTextHeight, minTextWidth, minTextHeight, avoidMarks) {
   if (!data.length) return null;
   var bin = new ArrayMap(width, height, maxTextWidth, maxTextHeight, minTextWidth, minTextHeight);
@@ -134,6 +99,7 @@ function getMarkBin(data, width, height, maxTextWidth, maxTextHeight, minTextWid
   minTextWidth = ~~minTextWidth;
   minTextHeight = ~~minTextHeight;
 
+  var p = 6;
   var x, y, surroundingPixels;
   for (y = 1; y < height; y++) {
     for (x = 1; x < width; x++) {
@@ -144,8 +110,10 @@ function getMarkBin(data, width, height, maxTextWidth, maxTextHeight, minTextWid
         !!buffer[(y-1) * width + x];
       if (0 < surroundingPixels && surroundingPixels < 4) {
         bin.add(x, y);
+        // bin.sparseAdd(x, y, 3);
       } else if (surroundingPixels === 4 && x % minTextWidth === 0 && y % minTextHeight === 0) {
         bin.add(x, y);
+        // bin.sparseAdd(x, y, 3);
       }
     }
   }
@@ -154,34 +122,42 @@ function getMarkBin(data, width, height, maxTextWidth, maxTextHeight, minTextWid
   for (y = 1; y < height; y++) {
     if (buffer[y * width] || buffer[(y-1) * width]) {
       bin.add(0, y);
+      // bin.sparseAdd(0, y, p);
     }
 
     if (buffer[y * width + w_1] || buffer[(y-1) * width + w_1]) {
       bin.add(width, y);
+      // bin.sparseAdd(width, y, p);
     }
   }
 
   for (x = 1; x < width; x++) {
     if (buffer[x] || buffer[x-1]) {
       bin.add(x, 0);
+      // bin.sparseAdd(x, 0, p);
     }
 
     if (buffer[h_1 * width + x] || buffer[h_1 * width + (x-1)]) {
       bin.add(x, height);
+      // bin.sparseAdd(x, height, p);
     }
   }
 
   if (buffer[0]) {
     bin.add(0, 0);
+    // bin.sparseAdd(0, 0, p);
   }
   if (buffer[0 * width + w_1]) {
     bin.add(width, 0);
+    // bin.sparseAdd(width, 0, p);
   }
   if (buffer[h_1 * width]) {
     bin.add(0, height);
+    // bin.sparseAdd(0, height, p);
   }
   if (buffer[h_1 * width + w_1]) {
     bin.add(width, height);
+    // bin.sparseAdd(width, height, p);
   }
 
   marksInfo.rects.forEach(function(r) {

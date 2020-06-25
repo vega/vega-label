@@ -1,6 +1,5 @@
 /*eslint no-unused-vars: "warn"*/
 import { RBushMap } from './RBushMap';
-import { outOfBound } from './ParticleBasedLabel';
 import { getBoundary, POSITIONS, POSITIONS_LEN, considerLabelFactory, labelWidth } from './Common';
 import { drawAvoidMarksAndVectorizeRects } from './ProjectionHybrid';
 
@@ -45,7 +44,7 @@ function findPosition(datum, tree, padding) {
 
     datum.boundary = getBoundary(datum, dx, dy, padding);
 
-    if (outOfBound(datum.boundary, tree)) continue;
+    if (tree.outOfBound(datum.boundary)) continue;
     
     datum.currentPosition = [dx, dy];
     if (!checkCollision(datum.boundary, tree)) {
