@@ -2,7 +2,7 @@
 /*eslint no-console: "warn"*/
 import { getAnchor } from './Common';
 import * as particle from './ParticleBasedLabel';
-import * as fasterParticle from './FasterParticleBasedLabel';
+import * as improvedParticle from './ImprovedParticleBasedLabel';
 import * as pixel from './PixelBasedLabel';
 import * as rbush from './RBushLabel';
 import sizeof from 'object-sizeof';
@@ -13,9 +13,9 @@ var PLACE_LABELS = {
   "pixel": pixel.placeLabels,
   "particle": particle.placeLabels,
   "rbush": rbush.placeLabels,
-  "fasterParticle": fasterParticle.placeLabels
+  "improvedParticle": improvedParticle.placeLabels
 };
-var LABELERS = ["particle", "pixel", "fasterParticle"];
+var LABELERS = ["particle", "pixel", "improvedParticle"];
 
 export default function() {
   var markData = [],
