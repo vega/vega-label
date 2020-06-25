@@ -203,6 +203,7 @@ var pointCover = {
   path: pointCoverPaths,
 };
 
+// eslint-disable-next-line no-unused-vars
 export function pointCoverAvoidMarks(avoidMarks, _width, _height) {
   var particles = [],
       i, n = avoidMarks.length;

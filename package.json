@@ -24,8 +24,8 @@
     "test": "tape 'test/**/*-test.js' && eslint index.js src",
     "prepublishOnly": "npm run build",
     "postpublish": "git push && git push --tags && zip -j build/label.zip -- LICENSE README.md build/label.js build/label.min.js",
-    "bench": "yarn build && python -m http.server",
-    "bench2": "yarn build && node benchmark/benchmark.js"
+    "demo": "yarn build && python -m http.server",
+    "bench": "yarn build && node benchmark/benchmark.js"
   },
   "dependencies": {
     "canvas": "^2.6.1",

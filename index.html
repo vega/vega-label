@@ -10,6 +10,19 @@
 </head>
 
 <body>  
+  <span>width</span>
+  <input id="size" />
+
+  <span>labeler</span>
+  <select id="labeler">
+    <option value="particle">Particle-Based</option>
+    <option value="pixel">Pixel-Based</option>
+    <option value="improvedParticle">Improved Particle-Based</option>
+    <option value="rbush">Particle-Based + RBush</option>
+  </select>
+
+  <button onclick="render()">render</button>
+
   <div id="vis"></div>
   <canvas id="canvas"></canvas>
   <canvas id="canvas-after"></canvas>
