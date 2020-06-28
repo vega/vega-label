@@ -99,7 +99,7 @@ function getMarkBin(data, width, height, maxTextWidth, maxTextHeight, minTextWid
   minTextWidth = ~~minTextWidth;
   minTextHeight = ~~minTextHeight;
 
-  var p = 6;
+  // var p = 6;
   var x, y, surroundingPixels;
   for (y = 1; y < height; y++) {
     for (x = 1; x < width; x++) {
@@ -110,10 +110,10 @@ function getMarkBin(data, width, height, maxTextWidth, maxTextHeight, minTextWid
         !!buffer[(y-1) * width + x];
       if (0 < surroundingPixels && surroundingPixels < 4) {
         bin.add(x, y);
-        // bin.sparseAdd(x, y, 3);
+        // bin.sparseAdd(x, y, p);
       } else if (surroundingPixels === 4 && x % minTextWidth === 0 && y % minTextHeight === 0) {
         bin.add(x, y);
-        // bin.sparseAdd(x, y, 3);
+        // bin.sparseAdd(x, y, p);
       }
     }
   }

@@ -1,120 +1,323 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "data": {
-    "url": "https://gist.githubusercontent.com/chanwutk/b284c59837d72fa39c76dbf1a4cba87a/raw/7f26b0b2350ea1a072ac05f0eb1388e8ca9a6ebd/reachable_airports_result_2020_05_01.json"
+  "vconcat": [
+    {
+      "data": {
+    "url": "https://gist.githubusercontent.com/chanwutk/34d78049ebb6980d26ebf3483af9d5a2/raw/60628ce9257ddcbcd6ccaceb043173fb75040153/reachable_airports_aggregated_particle_2020_06_26.csv"
   },
   "transform": [
     {
-      "calculate": "datum.labeler === 'particle' ? 'Particle-Based': 'Bitmap-Based'",
-      "as": "labeler_text"
+      "calculate": "datum.labeler === 'pixel' ? 'Bitmap-Based' : 'Particle-Based'",
+      "as": "labeler"
     },
-    {"calculate": "datum.placed", "as": "Number of Labels Placed"},
-    {"calculate": "datum.runtime", "as": "Median of Running Time (ms)"},
-    {"filter": "datum.num_point > 300"},
-    {"filter": "datum.chart_width <= 4000"}
+    {"calculate": "~~(datum.diff_runtime * 100)", "as": "diff_runtime_p"},
+    {"calculate": "~~(datum.diff_placed * 100)", "as": "diff_placed_p"},
+    {"calculate": "~~datum.diff_runtime + '%'", "as": "text_diff_runtime"},
+    {"calculate": "~~datum.diff_placed + '%'", "as": "text_diff_placed"}
   ],
-  "vconcat": [
+  "hconcat": [
     {
-      "title": "Comparison between both algorithms",
-      "repeat": {
-        "column": ["Number of Labels Placed", "Median of Running Time (ms)"]
+      "title": {"text": "Runtime (ms)", "dy": -9},
+      "height": 170,
+      "width": 200,
+      "encoding": {
+        "x": {
+          "field": "chart_width",
+          "type": "quantitative",
+          "scale": {"type": "log"},
+          "title": "Chart width and height"
+        }
       },
-      "spec": {
-        "height": 120,
-        "encoding": {
-          "x": {
-            "field": "chart_width",
-            "type": "quantitative",
-            "title": "Chart width and height"
-          },
-          "color": {
-            "field": "labeler_text",
-            "type": "nominal",
-            "title": "Algorithm"
+      "layer": [
+        {
+          "transform": [{"filter": "datum.labeler === 'Particle-Based'"}],
+          "mark": {"type": "area"},
+          "encoding": {
+            "y": {"field": "runtime", "type": "quantitative", "title": null},
+            "y2": {"field": "pixel_runtime"},
+            "color": {"value": "lightgray"}
           }
         },
-        "layer": [
-          {
-            "mark": {"type": "line", "point": true},
-            "encoding": {
-              "y": {
-                "field": {"repeat": "column"},
-                "type": "quantitative",
-                "aggregate": "median"
+        {
+          "mark": {"type": "line", "point": true},
+          "encoding": {
+            "y": {"field": "runtime", "type": "quantitative"},
+            "color": {
+              "field": "labeler",
+              "type": "nominal",
+              "legend": {
+                "orient": "bottom",
+                "values": ["Particle-Based", "Improved Particle-Based", "Bitmap-Based"]
               }
             }
+          }
+        },
+        {
+          "transform": [{"filter": "datum.labeler === 'Particle-Based'"}],
+          "mark": {
+            "type": "text",
+            "point": true,
+            "baseline": "bottom",
+            "dy": -5
           },
-          {
-            "mark": {"type": "errorband", "extent": "iqr"},
-            "encoding": {
-              "y": {"field": {"repeat": "column"}, "type": "quantitative"}
+          "encoding": {
+            "y": {"field": "runtime", "type": "quantitative"},
+            "color": {"field": "labeler", "type": "nominal"},
+            "text": {
+              "field": "runtime",
+              "type": "quantitative",
+              "format": ".0f"
             }
           }
-        ]
-      }
+        },
+        {
+          "transform": [{"filter": "datum.labeler === 'Bitmap-Based'"}],
+          "mark": {"type": "text", "point": true, "baseline": "top", "dy": 5, "dx": 7},
+          "encoding": {
+            "y": {"field": "runtime", "type": "quantitative"},
+            "color": {"field": "labeler", "type": "nominal"},
+            "text": {
+              "field": "runtime",
+              "type": "quantitative",
+              "format": ".0f"
+            }
+          }
+        },
+        {
+          "transform": [{"filter": "datum.labeler === 'Particle-Based'"}],
+          "mark": {"type": "text"},
+          "encoding": {
+            "y": {"field": "center_runtime", "type": "quantitative"},
+            "text": {"field": "text_diff_runtime", "type": "nominal"},
+            "color": {"value": "black"}
+          }
+        }
+      ]
     },
     {
-      "transform": [
-        {
-          "aggregate": [
-            {"op": "median", "field": "placed", "as": "median_p"},
-            {"op": "median", "field": "runtime", "as": "median_r"}
-          ],
-          "groupby": ["chart_width", "labeler"]
-        },
-        {
-          "calculate": "log(datum.median_p) * (datum.labeler === 'particle' ? 1 : -1)",
-          "as": "median_p"
-        },
-        {
-          "calculate": "log(datum.median_r) * (datum.labeler === 'particle' ? 1 : -1)",
-          "as": "median_r"
-        },
-        {
-          "aggregate": [
-            {"op": "sum", "field": "median_p", "as": "p"},
-            {"op": "sum", "field": "median_r", "as": "r"}
-          ],
-          "groupby": ["chart_width"]
-        },
-        {"calculate": "(exp(datum.p)-1)*100", "as": "Number of Labels Placed "},
-        {"calculate": "(exp(datum.r)-1)*100", "as": "Median of Running Time"}
-      ],
-      "title": "Percentage difference between both algorithms",
-      "repeat": {
-        "column": ["Number of Labels Placed ", "Median of Running Time"]
+      "title": {"text": "Number of labels placed"},
+      "height": 170,
+      "width": 200,
+      "encoding": {
+        "x": {
+          "field": "chart_width",
+          "type": "quantitative",
+          "scale": {"type": "log"},
+          "title": "Chart width and height"
+        }
       },
-      "spec": {
-        "height": 120,
-        "encoding": {
-          "x": {
-            "field": "chart_width",
-            "type": "quantitative",
-            "title": "Chart width and height"
+      "layer": [
+        {
+          "transform": [{"filter": "datum.labeler === 'Particle-Based'"}],
+          "mark": {"type": "area"},
+          "encoding": {
+            "y": {"field": "placed", "type": "quantitative", "title": null},
+            "y2": {"field": "pixel_placed"},
+            "color": {"value": "lightgray"}
           }
         },
-        "layer": [
-          {
-            "mark": {"type": "line", "point": true},
-            "encoding": {
-              "y": {"field": {"repeat": "column"}, "type": "quantitative"},
-              "color": {"value": "darkgrey"}
-            }
+        {
+          "mark": {"type": "line", "point": true},
+          "encoding": {
+            "y": {"field": "placed", "type": "quantitative"},
+            "color": {"field": "labeler", "type": "nominal"}
+          }
+        },
+        {
+          "transform": [{"filter": "datum.labeler === 'Particle-Based'"}],
+          "mark": {
+            "type": "text",
+            "point": true,
+            "baseline": "bottom",
+            "dy": -5
           },
-          {
-            "mark": {"type": "text", "baseline": "bottom", "dy": -4, "dx": -5},
-            "encoding": {
-              "y": {"field": {"repeat": "column"}, "type": "quantitative"},
-              "text": {
-                "field": {"repeat": "column"},
-                "type": "quantitative",
-                "format": ".1f"
-              },
-              "color": {"value": "black"}
+          "encoding": {
+            "y": {"field": "placed", "type": "quantitative"},
+            "color": {"field": "labeler", "type": "nominal"},
+            "text": {"field": "placed", "type": "quantitative", "format": ".0f"}
+          }
+        },
+        {
+          "transform": [{"filter": "datum.labeler === 'Bitmap-Based'"}],
+          "mark": {"type": "text", "point": true, "baseline": "top", "dy": 5, "dx": 11},
+          "encoding": {
+            "y": {"field": "placed", "type": "quantitative"},
+            "color": {"field": "labeler", "type": "nominal"},
+            "text": {"field": "placed", "type": "quantitative", "format": ".0f"}
+          }
+        },
+        {
+          "transform": [{"filter": "datum.labeler === 'Particle-Based'"}],
+          "mark": {"type": "text"},
+          "encoding": {
+            "y": {"field": "center_placed", "type": "quantitative"},
+            "text": {"field": "text_diff_placed", "type": "nominal"},
+            "color": {"value": "black"}
+          }
+        }
+      ]
+    }
+  ]
+    },
+    {
+      "data": {
+    "url_": "https://gist.githubusercontent.com/chanwutk/34d78049ebb6980d26ebf3483af9d5a2/raw/60628ce9257ddcbcd6ccaceb043173fb75040153/reachable_airports_aggregated_particle_2020_06_26.csv",
+    "url": "https://gist.githubusercontent.com/chanwutk/bff99aebcec483e2fdeb24ec2d8a45ac/raw/fa02b140a3c3f029d7825947918b26bb80e1b187/reachable_airports_aggregated_particle_2020_06_26.csv"
+  },
+  "transform": [
+    {
+      "calculate": "datum.labeler === 'pixel' ? 'Bitmap-Based' : 'Improved Particle-Based'",
+      "as": "labeler"
+    },
+    {"calculate": "~~(datum.diff_runtime * 100)", "as": "diff_runtime_p"},
+    {"calculate": "~~(datum.diff_placed * 100)", "as": "diff_placed_p"},
+    {"calculate": "~~datum.diff_runtime + '%'", "as": "text_diff_runtime"},
+    {"calculate": "~~datum.diff_placed + '%'", "as": "text_diff_placed"}
+  ],
+  "hconcat": [
+    {
+      "title": {"text": "Runtime (ms)", "dy": -4},
+      "height": 170,
+      "width": 200,
+      "encoding": {
+        "x": {
+          "field": "chart_width",
+          "type": "quantitative",
+          "scale": {"type": "log"},
+          "title": "Chart width and height"
+        }
+      },
+      "layer": [
+        {
+          "transform": [{"filter": "datum.labeler === 'Improved Particle-Based'"}],
+          "mark": {"type": "area"},
+          "encoding": {
+            "y": {"field": "runtime", "type": "quantitative", "title": null},
+            "y2": {"field": "pixel_runtime"},
+            "color": {"value": "lightgray"}
+          }
+        },
+        {
+          "mark": {"type": "line", "point": true},
+          "encoding": {
+            "y": {"field": "runtime", "type": "quantitative"},
+            "color": {
+              "field": "labeler",
+              "type": "nominal",
+              "legend": {
+                "orient": "bottom",
+                "title": "Labelers",
+                "values": ["Particle-Based", "Improved Particle-Based", "Bitmap-Based"]
+              }
             }
           }
-        ]
-      }
+        },
+        {
+          "transform": [{"filter": "datum.labeler === 'Improved Particle-Based'"}],
+          "mark": {
+            "type": "text",
+            "point": true,
+            "baseline": "bottom",
+            "dy": -5
+          },
+          "encoding": {
+            "y": {"field": "runtime", "type": "quantitative"},
+            "color": {"field": "labeler", "type": "nominal"},
+            "text": {
+              "field": "runtime",
+              "type": "quantitative",
+              "format": ".0f"
+            }
+          }
+        },
+        {
+          "transform": [{"filter": "datum.labeler === 'Bitmap-Based'"}],
+          "mark": {"type": "text", "point": true, "baseline": "top", "dy": 5, "dx": 7},
+          "encoding": {
+            "y": {"field": "runtime", "type": "quantitative"},
+            "color": {"field": "labeler", "type": "nominal"},
+            "text": {
+              "field": "runtime",
+              "type": "quantitative",
+              "format": ".0f"
+            }
+          }
+        },
+        {
+          "transform": [{"filter": "datum.labeler === 'Improved Particle-Based'"}],
+          "mark": {"type": "text"},
+          "encoding": {
+            "y": {"field": "center_runtime", "type": "quantitative"},
+            "text": {"field": "text_diff_runtime", "type": "nominal"},
+            "color": {"value": "black"}
+          }
+        }
+      ]
+    },
+    {
+      "title": {"text": "Number of labels placed"},
+      "height": 170,
+      "width": 200,
+      "encoding": {
+        "x": {
+          "field": "chart_width",
+          "type": "quantitative",
+          "scale": {"type": "log"},
+          "title": "Chart width and height"
+        }
+      },
+      "layer": [
+        {
+          "transform": [{"filter": "datum.labeler === 'Improved Particle-Based'"}],
+          "mark": {"type": "area"},
+          "encoding": {
+            "y": {"field": "placed", "type": "quantitative", "title": null},
+            "y2": {"field": "pixel_placed"},
+            "color": {"value": "lightgray"}
+          }
+        },
+        {
+          "mark": {"type": "line", "point": true},
+          "encoding": {
+            "y": {"field": "placed", "type": "quantitative"},
+            "color": {"field": "labeler", "type": "nominal"}
+          }
+        },
+        {
+          "transform": [{"filter": "datum.labeler === 'Improved Particle-Based'"}],
+          "mark": {
+            "type": "text",
+            "point": true,
+            "baseline": "bottom",
+            "dy": -5
+          },
+          "encoding": {
+            "y": {"field": "placed", "type": "quantitative"},
+            "color": {"field": "labeler", "type": "nominal"},
+            "text": {"field": "placed", "type": "quantitative", "format": ".0f"}
+          }
+        },
+        {
+          "transform": [{"filter": "datum.labeler === 'Bitmap-Based'"}],
+          "mark": {"type": "text", "point": true, "baseline": "top", "dy": 5, "dx": 11},
+          "encoding": {
+            "y": {"field": "placed", "type": "quantitative"},
+            "color": {"field": "labeler", "type": "nominal"},
+            "text": {"field": "placed", "type": "quantitative", "format": ".0f"}
+          }
+        },
+        {
+          "transform": [{"filter": "datum.labeler === 'Improved Particle-Based'"}],
+          "mark": {"type": "text"},
+          "encoding": {
+            "y": {"field": "center_placed", "type": "quantitative"},
+            "text": {"field": "text_diff_placed", "type": "nominal"},
+            "color": {"value": "black"}
+          }
+        }
+      ]
+    }
+  ]
     }
   ]
 }

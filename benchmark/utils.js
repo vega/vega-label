@@ -1,4 +1,5 @@
-var sizes = [500, 1000, 2000, 4000, 8000];
+var sizes = [1000, 2000, 4000, 8000];
+// var sizes = [4000, 8000];
 var hwRatio = 500 / 800;
 
 function resize(spec, size, labeler, id) {
