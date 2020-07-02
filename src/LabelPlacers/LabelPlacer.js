@@ -44,7 +44,7 @@ export default class LabelPlacer {
       dx = (this.anchors[i] & 0x3) - 1;
       dy = ((this.anchors[i] >>> 0x2) & 0x3) - 1;
 
-      isInside = (dx === 0 && dy === 0) || this.offsets[i] < 0;
+      isInside = this.bm1 && ((dx === 0 && dy === 0) || this.offsets[i] < 0);
       sizeFactor = dx && dy ? SIZE_FACTOR : 1;
       insideFactor = this.offsets[i] < 0 ? -1 : 1;
 
